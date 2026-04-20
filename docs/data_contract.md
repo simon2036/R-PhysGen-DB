@@ -32,6 +32,32 @@ Interpretation:
 
 - `Tier A/B/C` rows with `model_inclusion=yes` are the promoted subset
 - `Tier D` rows with `model_inclusion=no` remain inventory-only until promoted
+- `source_bundle=pubchem_bulk` is reserved for generated `Tier D` candidate rows sourced from the PubChem FTP bulk intake
+
+## Bulk Candidate Artifacts
+
+Bulk PubChem acquisition writes three contract-level artifacts:
+
+- `data/bronze/pubchem_candidate_pool.parquet`
+  Filtered, RDKit-standardized candidate pool with structural annotations, de-duplication flags, and `volatility_status`.
+- `data/bronze/pubchem_candidate_filter_audit.parquet`
+  Per-CID audit log for the materialized bulk-screening universe, showing whether a record passed hard filters and which exclusion reasons were triggered.
+- `data/raw/generated/pubchem_tierd_candidates.csv`
+  Generated `seed_catalog`-compatible supplement used by `pipelines/generate_wave2_seed_catalog.py` to append a capped batch of `Tier D` rows.
+
+Rules:
+
+- The bulk candidate pool is a `Tier D`-only entry path.
+- `build_v1_dataset.py` resolves `source_bundle=pubchem_bulk` rows from `pubchem_candidate_pool.parquet` and must not fall back to live per-record PubChem API requests for those rows.
+- Existing curated `refrigerant` rows remain authoritative for completeness validation.
+- Large local-only raw FTP bundles and regenerated bulk artifacts that should not be pushed to normal Git history are documented in `docs/local_large_artifacts.md`.
+
+Audit semantics:
+
+- The current `pubchem_candidate_filter_audit.parquet` is not a full `123,857,780`-row PubChem negative ledger.
+- It covers the coarse-survivor universe produced by the cheap DuckDB prefilter on `CID-Mass.gz`, then records why a surviving CID was excluded by later stages such as `multi_component`, `non_neutral`, `disallowed_elements`, `screening_error:*`, or `missing_smiles`.
+- This keeps the audit table operationally small enough to inspect and regenerate while still explaining why a near-candidate failed to become part of `pubchem_candidate_pool.parquet`.
+- If the project later needs a full coarse-filter failure ledger for all PubChem mass rows, that should be treated as a separate artifact with a different storage and retention expectation.
 
 ## Core Tables
 
@@ -74,6 +100,8 @@ Key fields:
 - `family`
 - `entity_scope`
 - `model_inclusion`
+
+For `source_bundle=pubchem_bulk`, the molecule identity is resolved from the local bulk candidate pool using the generated `seed_id=tierd_pubchem_<cid>` mapping.
 
 ### `molecule_alias`
 
@@ -124,6 +152,8 @@ Split assignment, label masks, confidence, and scaffold grouping for the promote
 ### `model_ready`
 
 The final model-facing join. This table is intentionally filtered to `model_inclusion=yes`.
+
+Bulk-only `Tier D` candidates are expected to resolve into inventory tables such as `molecule_core` and `molecule_alias`, but they are excluded from `model_dataset_index` and `model_ready` until promoted.
 
 ## Manual Observation Inputs
 

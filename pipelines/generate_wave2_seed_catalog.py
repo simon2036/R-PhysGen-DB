@@ -16,6 +16,7 @@ if str(SRC) not in sys.path:
 
 OUTPUT = ROOT / "data" / "raw" / "manual" / "seed_catalog.csv"
 PUBLIC_REFRIGERANT_INVENTORY = ROOT / "data" / "raw" / "manual" / "refrigerant_inventory.csv"
+GENERATED_PUBCHEM_TIERD_CANDIDATES = ROOT / "data" / "raw" / "generated" / "pubchem_tierd_candidates.csv"
 
 BASELINE_TIER_B_COUNT = 48
 BASELINE_TIER_C_COUNT = 40
@@ -566,6 +567,9 @@ def build_rows() -> list[dict[str, str]]:
             }
         )
 
+    for item in _load_generated_pubchem_tierd_candidates():
+        append(item)
+
     return rows
 
 
@@ -614,6 +618,13 @@ def _load_public_refrigerant_inventory() -> list[dict[str, str]]:
     if not PUBLIC_REFRIGERANT_INVENTORY.exists():
         return []
     with PUBLIC_REFRIGERANT_INVENTORY.open("r", encoding="utf-8", newline="") as handle:
+        return [{key: value.strip() for key, value in row.items()} for row in csv.DictReader(handle)]
+
+
+def _load_generated_pubchem_tierd_candidates() -> list[dict[str, str]]:
+    if not GENERATED_PUBCHEM_TIERD_CANDIDATES.exists():
+        return []
+    with GENERATED_PUBCHEM_TIERD_CANDIDATES.open("r", encoding="utf-8", newline="") as handle:
         return [{key: value.strip() for key, value in row.items()} for row in csv.DictReader(handle)]
 
 

@@ -48,6 +48,7 @@ def build_dataset(refresh_remote: bool = False) -> dict[str, Any]:
     seed_catalog = pd.read_csv(paths["seed_catalog"]).fillna("")
     manual_observations = _load_manual_observations(paths)
     coolprop_aliases = load_yaml(paths["coolprop_aliases"]).get("mappings", {})
+    bulk_pubchem_lookup = _load_bulk_pubchem_candidate_lookup(paths)
 
     source_manifest_rows: list[dict[str, Any]] = []
     resolution_rows: list[dict[str, Any]] = []
@@ -101,20 +102,21 @@ def build_dataset(refresh_remote: bool = False) -> dict[str, Any]:
         r_number = _clean_str(seed.get("r_number"))
 
         try:
-            pubchem_path = paths["raw_pubchem"] / f"{slugify(seed_id)}.json"
-            pubchem_snapshot = _load_or_fetch_json(
-                pubchem_path,
-                refresh_remote,
-                lambda seed=seed: _fetch_pubchem_payload(pubchem, seed),
+            pubchem_snapshot = _resolve_pubchem_snapshot(
+                pubchem=pubchem,
+                seed=seed,
+                paths=paths,
+                refresh_remote=refresh_remote,
+                bulk_pubchem_lookup=bulk_pubchem_lookup,
             )
             pubchem_payload = pubchem_snapshot["payload"]
             source_manifest_rows.append(
                 _source_manifest_entry(
                     source_id=pubchem_source_id,
-                    source_type="public_database",
-                    source_name="PubChem PUG REST",
-                    license_name="NCBI / PubChem public",
-                    local_path=pubchem_path,
+                    source_type=pubchem_snapshot["source_type"],
+                    source_name=pubchem_snapshot["source_name"],
+                    license_name=pubchem_snapshot["license_name"],
+                    local_path=pubchem_snapshot["local_path"],
                     upstream_url=pubchem_payload["pubchem_record"]["url"],
                     status=pubchem_snapshot["source_status"],
                 )
@@ -453,9 +455,12 @@ def _paths() -> dict[str, Path]:
         "manual_observations": DATA_DIR / "raw" / "manual" / "manual_property_observations.csv",
         "manual_observations_dir": DATA_DIR / "raw" / "manual" / "observations",
         "coolprop_aliases": DATA_DIR / "raw" / "manual" / "coolprop_aliases.yaml",
+        "raw_generated_pubchem_tierd_candidates": DATA_DIR / "raw" / "generated" / "pubchem_tierd_candidates.csv",
         "bronze_source_manifest": DATA_DIR / "bronze" / "source_manifest.parquet",
         "bronze_pending_sources": DATA_DIR / "bronze" / "pending_sources.parquet",
         "bronze_seed_resolution": DATA_DIR / "bronze" / "seed_resolution.parquet",
+        "bronze_pubchem_candidate_pool": DATA_DIR / "bronze" / "pubchem_candidate_pool.parquet",
+        "bronze_pubchem_candidate_filter_audit": DATA_DIR / "bronze" / "pubchem_candidate_filter_audit.parquet",
         "silver_molecule_core": DATA_DIR / "silver" / "molecule_core.parquet",
         "silver_molecule_alias": DATA_DIR / "silver" / "molecule_alias.parquet",
         "silver_property_observation": DATA_DIR / "silver" / "property_observation.parquet",
@@ -641,7 +646,73 @@ def _fetch_global_sources(
     return result
 
 
-def _fetch_pubchem_payload(pubchem: PubChemClient, seed: dict[str, Any]) -> dict[str, Any]:
+def _resolve_pubchem_snapshot(
+    *,
+    pubchem: PubChemClient,
+    seed: dict[str, Any],
+    paths: dict[str, Path],
+    refresh_remote: bool,
+    bulk_pubchem_lookup: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
+    if _is_bulk_pubchem_seed(seed):
+        payload = _fetch_pubchem_payload(pubchem, seed, bulk_pubchem_lookup=bulk_pubchem_lookup)
+        return {
+            "payload": payload,
+            "source_status": "registered",
+            "source_type": "public_database",
+            "source_name": "PubChem FTP Bulk Candidate Pool",
+            "license_name": "NCBI / PubChem public",
+            "local_path": paths["bronze_pubchem_candidate_pool"],
+        }
+
+    pubchem_path = paths["raw_pubchem"] / f"{slugify(str(seed.get('seed_id', '')))}.json"
+    snapshot = _load_or_fetch_json(
+        pubchem_path,
+        refresh_remote,
+        lambda seed=seed: _fetch_pubchem_payload(pubchem, seed),
+    )
+    snapshot["source_type"] = "public_database"
+    snapshot["source_name"] = "PubChem PUG REST"
+    snapshot["license_name"] = "NCBI / PubChem public"
+    snapshot["local_path"] = pubchem_path
+    return snapshot
+
+
+def _fetch_pubchem_payload(
+    pubchem: PubChemClient,
+    seed: dict[str, Any],
+    *,
+    bulk_pubchem_lookup: dict[str, dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    if _is_bulk_pubchem_seed(seed):
+        seed_id = _clean_str(seed.get("seed_id"))
+        record = (bulk_pubchem_lookup or {}).get(seed_id)
+        if not record:
+            raise KeyError(f"Missing PubChem bulk candidate pool record for {seed_id}")
+        cid = _clean_str(record.get("cid"))
+        synonyms = _normalize_bulk_synonyms(record.get("synonyms"))
+        return {
+            "seed": seed,
+            "pubchem_record": {
+                "cid": cid,
+                "query": _clean_str(seed.get("query_name")) or cid,
+                "query_type": "cid",
+                "molecular_formula": _clean_str(record.get("formula")),
+                "molecular_weight": float(record.get("molecular_weight")),
+                "canonical_smiles": _clean_str(record.get("canonical_smiles")),
+                "isomeric_smiles": _clean_str(record.get("isomeric_smiles")),
+                "inchi": _clean_str(record.get("inchi")),
+                "inchikey": _clean_str(record.get("inchikey")),
+                "raw": record,
+                "url": f"https://pubchem.ncbi.nlm.nih.gov/compound/{cid}",
+            },
+            "synonyms": {
+                "cid": cid,
+                "synonyms": synonyms,
+                "url": "https://ftp.ncbi.nlm.nih.gov/pubchem/Compound/Extras/CID-Synonym-filtered.gz",
+            },
+        }
+
     pubchem_record = pubchem.resolve_compound(_clean_str(seed.get("query_name")), _clean_str(seed.get("pubchem_query_type")) or "name")
     synonyms_record = pubchem.fetch_synonyms(pubchem_record["cid"])
     return {
@@ -801,6 +872,9 @@ def _register_manual_sources(paths: dict[str, Path]) -> list[dict[str, Any]]:
         ("source_refrigerant_inventory", "manual_catalog", "Curated Refrigerant Inventory", paths["refrigerant_inventory"]),
         ("source_manual_property_observations", "manual_curated_reference", "Manual Property Observations", paths["manual_observations"]),
         ("source_coolprop_aliases", "manual_catalog", "Explicit CoolProp Alias Mappings", paths["coolprop_aliases"]),
+        ("source_pubchem_tierd_generated", "manual_catalog", "Generated PubChem Tier D Candidates", paths["raw_generated_pubchem_tierd_candidates"]),
+        ("source_pubchem_candidate_pool", "derived_harmonized", "PubChem Bulk Candidate Pool", paths["bronze_pubchem_candidate_pool"]),
+        ("source_pubchem_candidate_filter_audit", "derived_harmonized", "PubChem Bulk Candidate Filter Audit", paths["bronze_pubchem_candidate_filter_audit"]),
     ]
     for extra_path in sorted(paths["manual_observations_dir"].glob("*.csv")) if paths["manual_observations_dir"].exists() else []:
         source_rows.append(
@@ -1313,6 +1387,42 @@ def _append_family_prefixed_aliases(rows: list[dict[str, Any]], mol_id: str, r_n
         _append_alias(rows, mol_id, "synonym", f"{prefix}{suffix}", False, "family_derived")
 
 
+def _is_bulk_pubchem_seed(seed: dict[str, Any]) -> bool:
+    return _clean_str(seed.get("source_bundle")) == "pubchem_bulk"
+
+
+def _load_bulk_pubchem_candidate_lookup(paths: dict[str, Path]) -> dict[str, dict[str, Any]]:
+    pool_path = paths.get("bronze_pubchem_candidate_pool")
+    if not pool_path or not pool_path.exists():
+        return {}
+
+    df = pd.read_parquet(pool_path).fillna("")
+    lookup: dict[str, dict[str, Any]] = {}
+    for record in df.to_dict(orient="records"):
+        cid = _clean_str(record.get("cid"))
+        if not cid:
+            continue
+        lookup[f"tierd_pubchem_{cid}"] = record
+    return lookup
+
+
+def _normalize_bulk_synonyms(value: Any) -> list[str]:
+    if value is None:
+        return []
+    if hasattr(value, "tolist") and not isinstance(value, (str, bytes)):
+        value = value.tolist()
+    if isinstance(value, list):
+        return [_clean_str(item) for item in value if _clean_str(item)]
+    if isinstance(value, tuple):
+        return [_clean_str(item) for item in value if _clean_str(item)]
+    if isinstance(value, set):
+        return [_clean_str(item) for item in value if _clean_str(item)]
+    if pd.isna(value):
+        return []
+    cleaned = _clean_str(value)
+    return [cleaned] if cleaned else []
+
+
 def _clean_str(value: Any) -> str:
     if value is None or pd.isna(value):
         return ""
@@ -1727,14 +1837,14 @@ def _build_model_dataset_index(
     molecule_core: pd.DataFrame,
 ) -> pd.DataFrame:
     if structure_features.empty:
-        return pd.DataFrame(columns=["mol_id", "split"])
+        return pd.DataFrame(columns=["mol_id", "scaffold_key", "split"])
 
     model_eligible = set(
         molecule_core.loc[molecule_core["model_inclusion"].astype(str).str.strip().str.lower() == "yes", "mol_id"].tolist()
     )
     structure_features = structure_features.loc[structure_features["mol_id"].isin(model_eligible)].copy()
     if structure_features.empty:
-        return pd.DataFrame(columns=["mol_id", "split"])
+        return pd.DataFrame(columns=["mol_id", "scaffold_key", "split"])
 
     usable = property_recommended.loc[
         (property_recommended["mol_id"].isin(model_eligible))
@@ -1813,9 +1923,9 @@ def _build_molecule_master(molecule_core: pd.DataFrame, alias_df: pd.DataFrame, 
 
 def _build_model_ready(molecule_master: pd.DataFrame, property_matrix: pd.DataFrame, model_dataset_index: pd.DataFrame) -> pd.DataFrame:
     merged = pd.merge(molecule_master, property_matrix, on="mol_id", how="left")
-    merged = pd.merge(merged, model_dataset_index, on=["mol_id", "scaffold_key"], how="left")
     if model_dataset_index.empty:
         return merged.iloc[0:0].copy()
+    merged = pd.merge(merged, model_dataset_index, on=["mol_id", "scaffold_key"], how="left")
     return merged.loc[merged["mol_id"].isin(model_dataset_index["mol_id"])].reset_index(drop=True)
 
 

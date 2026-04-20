@@ -2,3 +2,8 @@
 __pycache__/
 .pytest_cache/
 data/index/*.tmp
+
+# Local-only PubChem bulk assets; see docs/local_large_artifacts.md
+data/raw/pubchem_bulk/
+data/bronze/pubchem_candidate_pool.parquet
+data/bronze/pubchem_candidate_filter_audit.parquet

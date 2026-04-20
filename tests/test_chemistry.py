@@ -15,3 +15,9 @@ def test_feature_generation_produces_selfies_and_scaffold() -> None:
     assert features["selfies"]
     assert features["scaffold_key"]
     assert features["double_bond_count"] >= 1
+
+
+def test_feature_generation_tolerates_selfies_encoder_edge_cases() -> None:
+    features = compute_structure_features("C=C=IBr")
+    assert features["selfies"] == ""
+    assert features["scaffold_key"]

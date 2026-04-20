@@ -7,6 +7,7 @@ import re
 from typing import Any
 
 import selfies as sf
+from selfies.exceptions import EncoderError
 from rdkit import Chem, DataStructs
 from rdkit.Chem import Crippen, Descriptors, MACCSkeys, QED, rdFingerprintGenerator, rdMolDescriptors, rdmolops
 from rdkit.Chem.MolStandardize import rdMolStandardize
@@ -100,6 +101,56 @@ def standardize_smiles(smiles: str) -> dict[str, Any]:
     }
 
 
+def compute_screening_features(smiles: str) -> dict[str, Any]:
+    standardized = standardize_smiles(smiles)
+    mol = standardized["mol"]
+    formula = standardized["formula"]
+    counts = _parse_formula(formula)
+
+    carbonyl = Chem.MolFromSmarts("[CX3]=[OX1]")
+    ether = Chem.MolFromSmarts("[OD2]([#6])[#6]")
+
+    halogen_count_total = int(counts.get("F", 0) + counts.get("Cl", 0) + counts.get("Br", 0) + counts.get("I", 0))
+    hydrogen_count = int(counts.get("H", 0))
+    allowed_elements = {"C", "H", "F", "Cl", "Br", "I", "O", "N", "S"}
+    disallowed_elements = sorted(element for element in counts if element not in allowed_elements)
+
+    return {
+        "canonical_smiles": standardized["canonical_smiles"],
+        "isomeric_smiles": standardized["isomeric_smiles"],
+        "inchi": standardized["inchi"],
+        "inchikey": standardized["inchikey"],
+        "inchikey_first_block": standardized["inchikey_first_block"],
+        "formula": formula,
+        "molecular_weight": standardized["molecular_weight"],
+        "charge": standardized["charge"],
+        "heavy_atom_count": standardized["heavy_atom_count"],
+        "stereo_flag": standardized["stereo_flag"],
+        "ez_isomer": standardized["ez_isomer"],
+        "ring_count": int(rdMolDescriptors.CalcNumRings(mol)),
+        "double_bond_count": int(sum(1 for bond in mol.GetBonds() if bond.GetBondType() == Chem.BondType.DOUBLE)),
+        "atom_count_c": int(counts.get("C", 0)),
+        "atom_count_h": hydrogen_count,
+        "atom_count_f": int(counts.get("F", 0)),
+        "atom_count_cl": int(counts.get("Cl", 0)),
+        "atom_count_br": int(counts.get("Br", 0)),
+        "atom_count_i": int(counts.get("I", 0)),
+        "atom_count_o": int(counts.get("O", 0)),
+        "atom_count_n": int(counts.get("N", 0)),
+        "atom_count_s": int(counts.get("S", 0)),
+        "total_atom_count": int(sum(counts.values())),
+        "carbon_count": int(counts.get("C", 0)),
+        "halogen_count_total": halogen_count_total,
+        "has_halogen": bool(halogen_count_total),
+        "has_c_c_double_bond": bool(mol.HasSubstructMatch(Chem.MolFromSmarts("C=C"))),
+        "has_ether": bool(mol.HasSubstructMatch(ether)),
+        "has_carbonyl": bool(mol.HasSubstructMatch(carbonyl)),
+        "f_h_ratio": None if hydrogen_count == 0 else float(counts.get("F", 0) / hydrogen_count),
+        "allowed_elements_only": not disallowed_elements,
+        "disallowed_elements": disallowed_elements,
+    }
+
+
 def compute_structure_features(smiles: str) -> dict[str, Any]:
     standardized = standardize_smiles(smiles)
     mol = standardized["mol"]
@@ -115,6 +166,10 @@ def compute_structure_features(smiles: str) -> dict[str, Any]:
     carbonyl = Chem.MolFromSmarts("[CX3]=[OX1]")
     ether = Chem.MolFromSmarts("[OD2]([#6])[#6]")
     cf3 = Chem.MolFromSmarts("[CX4](F)(F)F")
+    try:
+        selfies = sf.encoder(standardized["isomeric_smiles"])
+    except EncoderError:
+        selfies = ""
 
     return {
         "mol_id": None,
@@ -141,7 +196,7 @@ def compute_structure_features(smiles: str) -> dict[str, Any]:
         "has_carbonyl": bool(mol.HasSubstructMatch(carbonyl)),
         "murcko_scaffold": murcko,
         "scaffold_key": scaffold_key,
-        "selfies": sf.encoder(standardized["isomeric_smiles"]),
+        "selfies": selfies,
         "morgan_fp_hex": _bitvect_to_hex(morgan_fp),
         "maccs_fp_hex": _bitvect_to_hex(maccs_fp),
     }
