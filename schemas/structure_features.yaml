@@ -1,0 +1,33 @@
+table_name: structure_features
+layer: gold
+path: data/gold/structure_features.parquet
+primary_key:
+  - mol_id
+columns:
+  - {name: mol_id, dtype: string, required: true}
+  - {name: formula, dtype: string, required: true}
+  - {name: mol_weight, dtype: float, required: true}
+  - {name: logp, dtype: float, required: true}
+  - {name: tpsa, dtype: float, required: true}
+  - {name: qed, dtype: float, required: true}
+  - {name: heavy_atom_count, dtype: int, required: true}
+  - {name: ring_count, dtype: int, required: true}
+  - {name: double_bond_count, dtype: int, required: true}
+  - {name: atom_count_c, dtype: int, required: true}
+  - {name: atom_count_h, dtype: int, required: true}
+  - {name: atom_count_f, dtype: int, required: true}
+  - {name: atom_count_cl, dtype: int, required: true}
+  - {name: atom_count_br, dtype: int, required: true}
+  - {name: atom_count_i, dtype: int, required: true}
+  - {name: atom_count_o, dtype: int, required: true}
+  - {name: atom_count_n, dtype: int, required: true}
+  - {name: atom_count_s, dtype: int, required: true}
+  - {name: has_c_c_double_bond, dtype: bool, required: true}
+  - {name: has_cf3, dtype: bool, required: true}
+  - {name: has_ether, dtype: bool, required: true}
+  - {name: has_carbonyl, dtype: bool, required: true}
+  - {name: murcko_scaffold, dtype: string, required: false}
+  - {name: scaffold_key, dtype: string, required: true}
+  - {name: selfies, dtype: string, required: true}
+  - {name: morgan_fp_hex, dtype: string, required: true}
+  - {name: maccs_fp_hex, dtype: string, required: true}

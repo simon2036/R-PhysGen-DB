@@ -1,0 +1,63 @@
+{
+  "seed": {
+    "seed_id": "tierc_candidate_1225yee",
+    "r_number": "R-1225ye(E)",
+    "family": "HFO",
+    "query_name": "(E)-1,2,3,3,3-pentafluoroprop-1-ene",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 3,
+    "selection_role": "candidate",
+    "coverage_tier": "C",
+    "source_bundle": "pubchem",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "notes": "pentafluoropropene candidate"
+  },
+  "pubchem_record": {
+    "cid": "6329539",
+    "query": "(E)-1,2,3,3,3-pentafluoroprop-1-ene",
+    "query_type": "name",
+    "molecular_formula": "C3HF5",
+    "molecular_weight": 132.03,
+    "canonical_smiles": "C(=C(C(F)(F)F)F)F",
+    "isomeric_smiles": "C(=C(\\C(F)(F)F)/F)\\F",
+    "inchi": "InChI=1S/C3HF5/c4-1-2(5)3(6,7)8/h1H/b2-1+",
+    "inchikey": "DMUPYMORYHFFCT-OWOJBTEDSA-N",
+    "raw": {
+      "CID": 6329539,
+      "MolecularFormula": "C3HF5",
+      "MolecularWeight": "132.03",
+      "SMILES": "C(=C(\\C(F)(F)F)/F)\\F",
+      "ConnectivitySMILES": "C(=C(C(F)(F)F)F)F",
+      "InChI": "InChI=1S/C3HF5/c4-1-2(5)3(6,7)8/h1H/b2-1+",
+      "InChIKey": "DMUPYMORYHFFCT-OWOJBTEDSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/%28E%29-1%2C2%2C3%2C3%2C3-pentafluoroprop-1-ene/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "6329539",
+    "synonyms": [
+      "(E)-1,2,3,3,3-pentafluoroprop-1-ene",
+      "RefChem:406230",
+      "822-953-9",
+      "(E)-1,2,3,3,3-Pentafluoropropene",
+      "5595-10-8",
+      "(1E)-1,2,3,3,3-pentafluoroprop-1-ene",
+      "MFCD02262202",
+      "1,2,3,3,3-pentafluoro-1-propene",
+      "LYM99RK2KK",
+      "SCHEMBL52206",
+      "(E)-HFC-1225ye",
+      "DMUPYMORYHFFCT-OWOJBTEDSA-N",
+      "DTXSID401027221",
+      "AKOS025310306",
+      "1,2,3,3,3-Pentafluoropropene, (E)-",
+      "(1E)-1,2,3,3,3-Pentafluoro-1-propene",
+      "1-Propene, 1,2,3,3,3-pentafluoro-, (1E)-"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/6329539/synonyms/JSON"
+  }
+}

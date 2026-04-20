@@ -1,0 +1,69 @@
+{
+  "seed": {
+    "seed_id": "tierc_candidate_dfe_e",
+    "r_number": "",
+    "family": "Candidate",
+    "query_name": "(E)-1,2-difluoroethene",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 3,
+    "selection_role": "candidate",
+    "coverage_tier": "C",
+    "source_bundle": "pubchem",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "notes": "trans-1,2-difluoroethene candidate"
+  },
+  "pubchem_record": {
+    "cid": "5365501",
+    "query": "(E)-1,2-difluoroethene",
+    "query_type": "name",
+    "molecular_formula": "C2H2F2",
+    "molecular_weight": 64.03,
+    "canonical_smiles": "C(=CF)F",
+    "isomeric_smiles": "C(=C/F)\\F",
+    "inchi": "InChI=1S/C2H2F2/c3-1-2-4/h1-2H/b2-1+",
+    "inchikey": "WFLOTYSKFUPZQB-OWOJBTEDSA-N",
+    "raw": {
+      "CID": 5365501,
+      "MolecularFormula": "C2H2F2",
+      "MolecularWeight": "64.03",
+      "SMILES": "C(=C/F)\\F",
+      "ConnectivitySMILES": "C(=CF)F",
+      "InChI": "InChI=1S/C2H2F2/c3-1-2-4/h1-2H/b2-1+",
+      "InChIKey": "WFLOTYSKFUPZQB-OWOJBTEDSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/%28E%29-1%2C2-difluoroethene/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "5365501",
+    "synonyms": [
+      "(E)-1,2-Difluoroethylene",
+      "1630-78-0",
+      "trans-1,2-Difluoroethylene",
+      "DTXSID201311511",
+      "RefChem:1100209",
+      "DTXCID801741344",
+      "216-629-0",
+      "1,2-Difluoroethylene",
+      "(E)-1,2-Difluoroethene",
+      "Ethene, 1,2-difluoro-, (1E)- (9CI)",
+      "Ethene, 1,2-difluoro-, (E)-",
+      "1320-41-8",
+      "MFCD00077511",
+      "C2H2F2",
+      "Difluoroethene",
+      "1,2-Difluoroethylene (FC-1132)",
+      "Ethene, difluoro-",
+      "EINECS 216-629-0",
+      "SCHEMBL529",
+      "Ethylene, 1,2-difluoro-",
+      "(E)-CHF=CHF",
+      "(E)-1,2-Difluoroethene #",
+      "NS00045450"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/5365501/synonyms/JSON"
+  }
+}

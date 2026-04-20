@@ -1,0 +1,342 @@
+{
+  "seed_catalog_count": 132,
+  "refrigerant_count": 70,
+  "candidate_count": 62,
+  "resolved_molecule_count": 128,
+  "observation_count": 1859,
+  "recommended_count": 1132,
+  "regulatory_status_count": 95,
+  "pending_source_count": 47,
+  "qc_issue_count": 0,
+  "recommended_property_coverage": {
+    "acentric_factor": 110,
+    "ashrae_safety": 45,
+    "atmospheric_lifetime_yr": 11,
+    "boiling_point_c": 115,
+    "cop_standard_cycle": 89,
+    "critical_density_kgm3": 110,
+    "critical_pressure_mpa": 114,
+    "critical_temp_c": 115,
+    "gwp_100yr": 82,
+    "gwp_20yr": 6,
+    "gwp_ar4_100yr": 10,
+    "gwp_ar5_100yr": 10,
+    "odp": 65,
+    "toxicity_class": 45,
+    "vaporization_enthalpy_kjmol": 116,
+    "volumetric_cooling_mjm3": 89
+  },
+  "tier_coverage": {
+    "A": {
+      "molecule_count": 32,
+      "property_coverage": {
+        "acentric_factor": 1.0,
+        "ashrae_safety": 0.90625,
+        "atmospheric_lifetime_yr": 0.25,
+        "boiling_point_c": 1.0,
+        "cop_standard_cycle": 0.90625,
+        "critical_density_kgm3": 1.0,
+        "critical_pressure_mpa": 1.0,
+        "critical_temp_c": 1.0,
+        "gwp_100yr": 0.96875,
+        "gwp_20yr": 0.1875,
+        "gwp_ar4_100yr": 0.21875,
+        "gwp_ar5_100yr": 0.21875,
+        "odp": 0.9375,
+        "toxicity_class": 0.90625,
+        "vaporization_enthalpy_kjmol": 1.0,
+        "volumetric_cooling_mjm3": 0.90625
+      }
+    },
+    "B": {
+      "molecule_count": 48,
+      "property_coverage": {
+        "acentric_factor": 1.0,
+        "ashrae_safety": 0.3125,
+        "atmospheric_lifetime_yr": 0.0625,
+        "boiling_point_c": 1.0,
+        "cop_standard_cycle": 0.8125,
+        "critical_density_kgm3": 1.0,
+        "critical_pressure_mpa": 1.0,
+        "critical_temp_c": 1.0,
+        "gwp_100yr": 0.5416666666666666,
+        "gwp_ar4_100yr": 0.0625,
+        "gwp_ar5_100yr": 0.0625,
+        "odp": 0.5416666666666666,
+        "toxicity_class": 0.3125,
+        "vaporization_enthalpy_kjmol": 1.0,
+        "volumetric_cooling_mjm3": 0.8125
+      }
+    },
+    "C": {
+      "molecule_count": 40,
+      "property_coverage": {
+        "acentric_factor": 0.75,
+        "ashrae_safety": 0.025,
+        "boiling_point_c": 0.775,
+        "cop_standard_cycle": 0.525,
+        "critical_density_kgm3": 0.75,
+        "critical_pressure_mpa": 0.775,
+        "critical_temp_c": 0.775,
+        "gwp_100yr": 0.6,
+        "odp": 0.225,
+        "toxicity_class": 0.025,
+        "vaporization_enthalpy_kjmol": 0.85,
+        "volumetric_cooling_mjm3": 0.525
+      }
+    },
+    "D": {
+      "molecule_count": 8,
+      "property_coverage": {
+        "boiling_point_c": 0.5,
+        "critical_pressure_mpa": 0.375,
+        "critical_temp_c": 0.5,
+        "gwp_100yr": 0.125,
+        "vaporization_enthalpy_kjmol": 0.25
+      }
+    }
+  },
+  "inventory_property_gaps": {
+    "candidate": {
+      "B": {
+        "gwp_100yr": {
+          "present_count": 5,
+          "missing_count": 16,
+          "total_count": 21
+        },
+        "odp": {
+          "present_count": 4,
+          "missing_count": 17,
+          "total_count": 21
+        },
+        "ashrae_safety": {
+          "present_count": 1,
+          "missing_count": 20,
+          "total_count": 21
+        },
+        "toxicity_class": {
+          "present_count": 1,
+          "missing_count": 20,
+          "total_count": 21
+        }
+      },
+      "C": {
+        "gwp_100yr": {
+          "present_count": 23,
+          "missing_count": 11,
+          "total_count": 34
+        },
+        "odp": {
+          "present_count": 8,
+          "missing_count": 26,
+          "total_count": 34
+        },
+        "ashrae_safety": {
+          "present_count": 0,
+          "missing_count": 34,
+          "total_count": 34
+        },
+        "toxicity_class": {
+          "present_count": 0,
+          "missing_count": 34,
+          "total_count": 34
+        }
+      },
+      "D": {
+        "gwp_100yr": {
+          "present_count": 0,
+          "missing_count": 7,
+          "total_count": 7
+        },
+        "odp": {
+          "present_count": 0,
+          "missing_count": 7,
+          "total_count": 7
+        },
+        "ashrae_safety": {
+          "present_count": 0,
+          "missing_count": 7,
+          "total_count": 7
+        },
+        "toxicity_class": {
+          "present_count": 0,
+          "missing_count": 7,
+          "total_count": 7
+        }
+      }
+    },
+    "refrigerant": {
+      "A": {
+        "gwp_100yr": {
+          "present_count": 31,
+          "missing_count": 1,
+          "total_count": 32
+        },
+        "odp": {
+          "present_count": 30,
+          "missing_count": 2,
+          "total_count": 32
+        },
+        "ashrae_safety": {
+          "present_count": 29,
+          "missing_count": 3,
+          "total_count": 32
+        },
+        "toxicity_class": {
+          "present_count": 29,
+          "missing_count": 3,
+          "total_count": 32
+        }
+      },
+      "B": {
+        "gwp_100yr": {
+          "present_count": 21,
+          "missing_count": 6,
+          "total_count": 27
+        },
+        "odp": {
+          "present_count": 22,
+          "missing_count": 5,
+          "total_count": 27
+        },
+        "ashrae_safety": {
+          "present_count": 14,
+          "missing_count": 13,
+          "total_count": 27
+        },
+        "toxicity_class": {
+          "present_count": 14,
+          "missing_count": 13,
+          "total_count": 27
+        }
+      },
+      "C": {
+        "gwp_100yr": {
+          "present_count": 1,
+          "missing_count": 5,
+          "total_count": 6
+        },
+        "odp": {
+          "present_count": 1,
+          "missing_count": 5,
+          "total_count": 6
+        },
+        "ashrae_safety": {
+          "present_count": 1,
+          "missing_count": 5,
+          "total_count": 6
+        },
+        "toxicity_class": {
+          "present_count": 1,
+          "missing_count": 5,
+          "total_count": 6
+        }
+      },
+      "D": {
+        "gwp_100yr": {
+          "present_count": 1,
+          "missing_count": 4,
+          "total_count": 5
+        },
+        "odp": {
+          "present_count": 0,
+          "missing_count": 5,
+          "total_count": 5
+        },
+        "ashrae_safety": {
+          "present_count": 0,
+          "missing_count": 5,
+          "total_count": 5
+        },
+        "toxicity_class": {
+          "present_count": 0,
+          "missing_count": 5,
+          "total_count": 5
+        }
+      }
+    }
+  },
+  "split_counts": {
+    "train": 84,
+    "validation": 18,
+    "test": 18
+  },
+  "unresolved_refrigerants": [],
+  "unresolved_events": [
+    {
+      "seed_id": "anchor_r1234yf",
+      "stage": "nist",
+      "detail": "No tables found"
+    },
+    {
+      "seed_id": "anchor_r1234zee",
+      "stage": "nist",
+      "detail": "No tables found"
+    },
+    {
+      "seed_id": "anchor_r1234zez",
+      "stage": "nist",
+      "detail": "No tables found"
+    },
+    {
+      "seed_id": "anchor_r1233zde",
+      "stage": "nist",
+      "detail": "No tables found"
+    },
+    {
+      "seed_id": "seed_r1336mzze",
+      "stage": "nist",
+      "detail": "No tables found"
+    },
+    {
+      "seed_id": "seed_novec649",
+      "stage": "nist",
+      "detail": "No tables found"
+    },
+    {
+      "seed_id": "seed_d4",
+      "stage": "coolprop",
+      "detail": "For now, we don't support p [26.3303 Pa] below ptriple [73.0661 Pa] when T [283.15] is less than Tmin [290.25] : PropsSI(\"Hmass\",\"T\",283.15,\"P\",26.33030043,\"D4\")"
+    },
+    {
+      "seed_id": "seed_deuterium",
+      "stage": "nist",
+      "detail": "0 parsed observations"
+    },
+    {
+      "seed_id": "seed_methyllinoleate",
+      "stage": "nist",
+      "detail": "0 parsed observations"
+    },
+    {
+      "seed_id": "seed_methylpalmitate",
+      "stage": "coolprop",
+      "detail": "For now, we don't support p [0.000569253 Pa] below ptriple [0.0164014 Pa] when T [283.15] is less than Tmin [302.71] : PropsSI(\"Hmass\",\"T\",283.15,\"P\",0.0005692530544,\"MethylPalmitate\")"
+    },
+    {
+      "seed_id": "seed_methylstearate",
+      "stage": "coolprop",
+      "detail": "For now, we don't support p [4.41931e-05 Pa] below ptriple [0.00601096 Pa] when T [283.15] is less than Tmin [311.84] : PropsSI(\"Hmass\",\"T\",283.15,\"P\",4.419307781e-05,\"MethylStearate\")"
+    },
+    {
+      "seed_id": "seed_neon",
+      "stage": "nist",
+      "detail": "0 parsed observations"
+    },
+    {
+      "seed_id": "seed_p_xylene",
+      "stage": "coolprop",
+      "detail": "For now, we don't support p [338.125 Pa] below ptriple [580.085 Pa] when T [283.15] is less than Tmin [286.4] : PropsSI(\"Hmass\",\"T\",283.15,\"P\",338.1251812,\"p-Xylene\")"
+    },
+    {
+      "seed_id": "tierc_candidate_1224ydz",
+      "stage": "pubchem",
+      "detail": "400 Client Error: PUGREST.BadRequest for url: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/smiles/F/C%28Cl%29%3DC%28%5CF%29C%28F%29F/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+    },
+    {
+      "seed_id": "tierc_candidate_1336mzzz",
+      "stage": "pubchem",
+      "detail": "400 Client Error: PUGREST.BadRequest for url: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/smiles/FC%28F%29%28F%29/C%3DC%5CC%28F%29%28F%29F/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+    }
+  ]
+}

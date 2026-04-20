@@ -1,0 +1,610 @@
+{
+  "schema_checks": [
+    {
+      "table": "source_manifest",
+      "row_count": 277
+    },
+    {
+      "table": "pending_sources",
+      "row_count": 47
+    },
+    {
+      "table": "molecule_core",
+      "row_count": 128
+    },
+    {
+      "table": "molecule_alias",
+      "row_count": 2432
+    },
+    {
+      "table": "property_observation",
+      "row_count": 1859
+    },
+    {
+      "table": "regulatory_status",
+      "row_count": 95
+    },
+    {
+      "table": "property_recommended",
+      "row_count": 1132
+    },
+    {
+      "table": "structure_features",
+      "row_count": 128
+    },
+    {
+      "table": "model_dataset_index",
+      "row_count": 120
+    }
+  ],
+  "integration_checks": [
+    "source_manifest: table exists",
+    "source_manifest: has required column source_id",
+    "source_manifest: has required column source_type",
+    "source_manifest: has required column source_name",
+    "source_manifest: has required column license",
+    "source_manifest: has required column retrieved_at",
+    "source_manifest: has required column parser_version",
+    "source_manifest: has required column status",
+    "pending_sources: table exists",
+    "pending_sources: has required column pending_id",
+    "pending_sources: has required column seed_id",
+    "pending_sources: has required column requested_source",
+    "pending_sources: has required column status",
+    "pending_sources: has required column detail",
+    "molecule_core: table exists",
+    "molecule_core: has required column mol_id",
+    "molecule_core: has required column seed_id",
+    "molecule_core: has required column family",
+    "molecule_core: has required column canonical_smiles",
+    "molecule_core: has required column isomeric_smiles",
+    "molecule_core: has required column inchi",
+    "molecule_core: has required column inchikey",
+    "molecule_core: has required column inchikey_first_block",
+    "molecule_core: has required column formula",
+    "molecule_core: has required column molecular_weight",
+    "molecule_core: has required column charge",
+    "molecule_core: has required column heavy_atom_count",
+    "molecule_core: has required column stereo_flag",
+    "molecule_core: has required column pubchem_query",
+    "molecule_core: has required column status",
+    "molecule_alias: table exists",
+    "molecule_alias: has required column mol_id",
+    "molecule_alias: has required column alias_type",
+    "molecule_alias: has required column alias_value",
+    "molecule_alias: has required column is_primary",
+    "molecule_alias: has required column source_name",
+    "property_observation: table exists",
+    "property_observation: has required column observation_id",
+    "property_observation: has required column mol_id",
+    "property_observation: has required column property_name",
+    "property_observation: has required column value",
+    "property_observation: has required column unit",
+    "property_observation: has required column source_type",
+    "property_observation: has required column source_name",
+    "property_observation: has required column source_id",
+    "property_observation: has required column method",
+    "property_observation: has required column quality_level",
+    "property_observation: has required column qc_status",
+    "regulatory_status: table exists",
+    "regulatory_status: has required column regulatory_status_id",
+    "regulatory_status: has required column mol_id",
+    "regulatory_status: has required column end_use",
+    "regulatory_status: has required column jurisdiction",
+    "regulatory_status: has required column acceptability",
+    "regulatory_status: has required column listing_status",
+    "regulatory_status: has required column raw_substitute",
+    "regulatory_status: has required column source_id",
+    "regulatory_status: has required column source_name",
+    "regulatory_status: has required column source_type",
+    "property_recommended: table exists",
+    "property_recommended: has required column mol_id",
+    "property_recommended: has required column property_name",
+    "property_recommended: has required column value",
+    "property_recommended: has required column unit",
+    "property_recommended: has required column selected_source_id",
+    "property_recommended: has required column selected_source_name",
+    "property_recommended: has required column selected_quality_level",
+    "property_recommended: has required column source_priority",
+    "property_recommended: has required column source_count",
+    "property_recommended: has required column conflict_flag",
+    "structure_features: table exists",
+    "structure_features: has required column mol_id",
+    "structure_features: has required column formula",
+    "structure_features: has required column mol_weight",
+    "structure_features: has required column logp",
+    "structure_features: has required column tpsa",
+    "structure_features: has required column qed",
+    "structure_features: has required column heavy_atom_count",
+    "structure_features: has required column ring_count",
+    "structure_features: has required column double_bond_count",
+    "structure_features: has required column atom_count_c",
+    "structure_features: has required column atom_count_h",
+    "structure_features: has required column atom_count_f",
+    "structure_features: has required column atom_count_cl",
+    "structure_features: has required column atom_count_br",
+    "structure_features: has required column atom_count_i",
+    "structure_features: has required column atom_count_o",
+    "structure_features: has required column atom_count_n",
+    "structure_features: has required column atom_count_s",
+    "structure_features: has required column has_c_c_double_bond",
+    "structure_features: has required column has_cf3",
+    "structure_features: has required column has_ether",
+    "structure_features: has required column has_carbonyl",
+    "structure_features: has required column scaffold_key",
+    "structure_features: has required column selfies",
+    "structure_features: has required column morgan_fp_hex",
+    "structure_features: has required column maccs_fp_hex",
+    "model_dataset_index: table exists",
+    "model_dataset_index: has required column mol_id",
+    "model_dataset_index: has required column split",
+    "model_dataset_index: has required column scaffold_key",
+    "model_dataset_index: has required column confidence_score",
+    "model_dataset_index: has required column source_coverage_count",
+    "model_dataset_index: has required column has_boiling_point_c",
+    "model_dataset_index: has required column has_critical_temp_c",
+    "model_dataset_index: has required column has_critical_pressure_mpa",
+    "model_dataset_index: has required column has_vaporization_enthalpy_kjmol",
+    "model_dataset_index: has required column has_cop_standard_cycle",
+    "model_dataset_index: has required column has_volumetric_cooling_mjm3",
+    "model_dataset_index: has required column has_gwp_100yr",
+    "model_dataset_index: has required column has_odp",
+    "model_dataset_index: has required column has_ashrae_safety",
+    "model_dataset_index: has required column has_toxicity_class",
+    "molecule_master: table exists",
+    "molecule_master: has required column mol_id",
+    "molecule_master: has required column r_number_primary",
+    "molecule_master: has required column family",
+    "molecule_master: has required column canonical_smiles",
+    "molecule_master: has required column isomeric_smiles",
+    "molecule_master: has required column inchikey",
+    "molecule_master: has required column formula",
+    "molecule_master: has required column mol_weight",
+    "molecule_master: has required column scaffold_key",
+    "molecule_master: has required column selfies",
+    "property_matrix: table exists",
+    "property_matrix: has required column mol_id",
+    "property_matrix: has required column boiling_point_c",
+    "property_matrix: has required column critical_temp_c",
+    "property_matrix: has required column critical_pressure_mpa",
+    "property_matrix: has required column vaporization_enthalpy_kjmol",
+    "property_matrix: has required column gwp_100yr",
+    "property_matrix: has required column odp",
+    "property_matrix: has required column ashrae_safety",
+    "property_matrix: has required column toxicity_class",
+    "model_ready: table exists",
+    "model_ready: has required column mol_id",
+    "model_ready: has required column canonical_smiles",
+    "model_ready: has required column isomeric_smiles",
+    "model_ready: has required column selfies",
+    "model_ready: has required column scaffold_key",
+    "model_ready: has required column split",
+    "model_ready: has required column confidence_score",
+    "R-32: alias resolves to one mol_id",
+    "R-32: present in molecule_master",
+    "R-134a: alias resolves to one mol_id",
+    "R-134a: present in molecule_master",
+    "R-1234yf: alias resolves to one mol_id",
+    "R-1234yf: present in molecule_master",
+    "R-744: alias resolves to one mol_id",
+    "R-744: present in molecule_master",
+    "R-717: alias resolves to one mol_id",
+    "R-717: present in molecule_master",
+    "R-1234ze(E)/R-1234ze(Z): separated",
+    "Recommended values: source tracing intact",
+    "Scaffold split: no leakage",
+    "Wave 2C entity pool: at least 120 molecules",
+    "Curated refrigerant inventory: every refrigerant seed resolves to a molecule",
+    "model_ready: aligned with model_dataset_index eligibility",
+    "Tier A: boiling_point_c coverage 1.000 >= 0.950",
+    "Tier A: critical_temp_c coverage 1.000 >= 0.950",
+    "Tier A: critical_pressure_mpa coverage 1.000 >= 0.950",
+    "Tier A: odp coverage 0.938 >= 0.900",
+    "Tier A: gwp_100yr coverage 0.969 >= 0.900",
+    "Tier A: ashrae_safety coverage 0.906 >= 0.900",
+    "Tier B: boiling_point_c coverage 1.000 >= 0.800",
+    "Tier B: critical_temp_c coverage 1.000 >= 0.800",
+    "Tier B: critical_pressure_mpa coverage 1.000 >= 0.800"
+  ],
+  "inventory_checks": [
+    {
+      "refrigerant_count": 70,
+      "candidate_count": 62,
+      "resolved_refrigerant_count": 70,
+      "unresolved_refrigerant_count": 0
+    }
+  ],
+  "quality_gate_checks": [],
+  "errors": [],
+  "coverage_by_tier": {
+    "A": {
+      "acentric_factor": 1.0,
+      "ashrae_safety": 0.90625,
+      "atmospheric_lifetime_yr": 0.25,
+      "boiling_point_c": 1.0,
+      "cop_standard_cycle": 0.90625,
+      "critical_density_kgm3": 1.0,
+      "critical_pressure_mpa": 1.0,
+      "critical_temp_c": 1.0,
+      "gwp_100yr": 0.96875,
+      "gwp_20yr": 0.1875,
+      "gwp_ar4_100yr": 0.21875,
+      "gwp_ar5_100yr": 0.21875,
+      "odp": 0.9375,
+      "toxicity_class": 0.90625,
+      "vaporization_enthalpy_kjmol": 1.0,
+      "volumetric_cooling_mjm3": 0.90625,
+      "molecule_count": 32
+    },
+    "B": {
+      "acentric_factor": 1.0,
+      "ashrae_safety": 0.3125,
+      "atmospheric_lifetime_yr": 0.0625,
+      "boiling_point_c": 1.0,
+      "cop_standard_cycle": 0.8125,
+      "critical_density_kgm3": 1.0,
+      "critical_pressure_mpa": 1.0,
+      "critical_temp_c": 1.0,
+      "gwp_100yr": 0.5416666666666666,
+      "gwp_ar4_100yr": 0.0625,
+      "gwp_ar5_100yr": 0.0625,
+      "odp": 0.5416666666666666,
+      "toxicity_class": 0.3125,
+      "vaporization_enthalpy_kjmol": 1.0,
+      "volumetric_cooling_mjm3": 0.8125,
+      "molecule_count": 48
+    },
+    "C": {
+      "acentric_factor": 0.75,
+      "ashrae_safety": 0.025,
+      "boiling_point_c": 0.775,
+      "cop_standard_cycle": 0.525,
+      "critical_density_kgm3": 0.75,
+      "critical_pressure_mpa": 0.775,
+      "critical_temp_c": 0.775,
+      "gwp_100yr": 0.6,
+      "odp": 0.225,
+      "toxicity_class": 0.025,
+      "vaporization_enthalpy_kjmol": 0.85,
+      "volumetric_cooling_mjm3": 0.525,
+      "molecule_count": 40
+    },
+    "D": {
+      "ashrae_safety": 0.0,
+      "boiling_point_c": 0.5,
+      "critical_pressure_mpa": 0.375,
+      "critical_temp_c": 0.5,
+      "gwp_100yr": 0.125,
+      "odp": 0.0,
+      "vaporization_enthalpy_kjmol": 0.25,
+      "molecule_count": 8
+    }
+  },
+  "refrigerant_count": 70,
+  "candidate_count": 62,
+  "unresolved_refrigerants": [],
+  "inventory_property_gaps": {
+    "candidate": {
+      "B": {
+        "gwp_100yr": {
+          "present_count": 5,
+          "missing_count": 16,
+          "total_count": 21
+        },
+        "odp": {
+          "present_count": 4,
+          "missing_count": 17,
+          "total_count": 21
+        },
+        "ashrae_safety": {
+          "present_count": 1,
+          "missing_count": 20,
+          "total_count": 21
+        },
+        "toxicity_class": {
+          "present_count": 1,
+          "missing_count": 20,
+          "total_count": 21
+        }
+      },
+      "C": {
+        "gwp_100yr": {
+          "present_count": 23,
+          "missing_count": 11,
+          "total_count": 34
+        },
+        "odp": {
+          "present_count": 8,
+          "missing_count": 26,
+          "total_count": 34
+        },
+        "ashrae_safety": {
+          "present_count": 0,
+          "missing_count": 34,
+          "total_count": 34
+        },
+        "toxicity_class": {
+          "present_count": 0,
+          "missing_count": 34,
+          "total_count": 34
+        }
+      },
+      "D": {
+        "gwp_100yr": {
+          "present_count": 0,
+          "missing_count": 7,
+          "total_count": 7
+        },
+        "odp": {
+          "present_count": 0,
+          "missing_count": 7,
+          "total_count": 7
+        },
+        "ashrae_safety": {
+          "present_count": 0,
+          "missing_count": 7,
+          "total_count": 7
+        },
+        "toxicity_class": {
+          "present_count": 0,
+          "missing_count": 7,
+          "total_count": 7
+        }
+      }
+    },
+    "refrigerant": {
+      "A": {
+        "gwp_100yr": {
+          "present_count": 31,
+          "missing_count": 1,
+          "total_count": 32
+        },
+        "odp": {
+          "present_count": 30,
+          "missing_count": 2,
+          "total_count": 32
+        },
+        "ashrae_safety": {
+          "present_count": 29,
+          "missing_count": 3,
+          "total_count": 32
+        },
+        "toxicity_class": {
+          "present_count": 29,
+          "missing_count": 3,
+          "total_count": 32
+        }
+      },
+      "B": {
+        "gwp_100yr": {
+          "present_count": 21,
+          "missing_count": 6,
+          "total_count": 27
+        },
+        "odp": {
+          "present_count": 22,
+          "missing_count": 5,
+          "total_count": 27
+        },
+        "ashrae_safety": {
+          "present_count": 14,
+          "missing_count": 13,
+          "total_count": 27
+        },
+        "toxicity_class": {
+          "present_count": 14,
+          "missing_count": 13,
+          "total_count": 27
+        }
+      },
+      "C": {
+        "gwp_100yr": {
+          "present_count": 1,
+          "missing_count": 5,
+          "total_count": 6
+        },
+        "odp": {
+          "present_count": 1,
+          "missing_count": 5,
+          "total_count": 6
+        },
+        "ashrae_safety": {
+          "present_count": 1,
+          "missing_count": 5,
+          "total_count": 6
+        },
+        "toxicity_class": {
+          "present_count": 1,
+          "missing_count": 5,
+          "total_count": 6
+        }
+      },
+      "D": {
+        "gwp_100yr": {
+          "present_count": 1,
+          "missing_count": 4,
+          "total_count": 5
+        },
+        "odp": {
+          "present_count": 0,
+          "missing_count": 5,
+          "total_count": 5
+        },
+        "ashrae_safety": {
+          "present_count": 0,
+          "missing_count": 5,
+          "total_count": 5
+        },
+        "toxicity_class": {
+          "present_count": 0,
+          "missing_count": 5,
+          "total_count": 5
+        }
+      }
+    }
+  },
+  "inventory_convergence": {
+    "refrigerant_count": 70,
+    "candidate_count": 62,
+    "inventory_property_gaps": {
+      "candidate": {
+        "B": {
+          "gwp_100yr": {
+            "present_count": 5,
+            "missing_count": 16,
+            "total_count": 21
+          },
+          "odp": {
+            "present_count": 4,
+            "missing_count": 17,
+            "total_count": 21
+          },
+          "ashrae_safety": {
+            "present_count": 1,
+            "missing_count": 20,
+            "total_count": 21
+          },
+          "toxicity_class": {
+            "present_count": 1,
+            "missing_count": 20,
+            "total_count": 21
+          }
+        },
+        "C": {
+          "gwp_100yr": {
+            "present_count": 23,
+            "missing_count": 11,
+            "total_count": 34
+          },
+          "odp": {
+            "present_count": 8,
+            "missing_count": 26,
+            "total_count": 34
+          },
+          "ashrae_safety": {
+            "present_count": 0,
+            "missing_count": 34,
+            "total_count": 34
+          },
+          "toxicity_class": {
+            "present_count": 0,
+            "missing_count": 34,
+            "total_count": 34
+          }
+        },
+        "D": {
+          "gwp_100yr": {
+            "present_count": 0,
+            "missing_count": 7,
+            "total_count": 7
+          },
+          "odp": {
+            "present_count": 0,
+            "missing_count": 7,
+            "total_count": 7
+          },
+          "ashrae_safety": {
+            "present_count": 0,
+            "missing_count": 7,
+            "total_count": 7
+          },
+          "toxicity_class": {
+            "present_count": 0,
+            "missing_count": 7,
+            "total_count": 7
+          }
+        }
+      },
+      "refrigerant": {
+        "A": {
+          "gwp_100yr": {
+            "present_count": 31,
+            "missing_count": 1,
+            "total_count": 32
+          },
+          "odp": {
+            "present_count": 30,
+            "missing_count": 2,
+            "total_count": 32
+          },
+          "ashrae_safety": {
+            "present_count": 29,
+            "missing_count": 3,
+            "total_count": 32
+          },
+          "toxicity_class": {
+            "present_count": 29,
+            "missing_count": 3,
+            "total_count": 32
+          }
+        },
+        "B": {
+          "gwp_100yr": {
+            "present_count": 21,
+            "missing_count": 6,
+            "total_count": 27
+          },
+          "odp": {
+            "present_count": 22,
+            "missing_count": 5,
+            "total_count": 27
+          },
+          "ashrae_safety": {
+            "present_count": 14,
+            "missing_count": 13,
+            "total_count": 27
+          },
+          "toxicity_class": {
+            "present_count": 14,
+            "missing_count": 13,
+            "total_count": 27
+          }
+        },
+        "C": {
+          "gwp_100yr": {
+            "present_count": 1,
+            "missing_count": 5,
+            "total_count": 6
+          },
+          "odp": {
+            "present_count": 1,
+            "missing_count": 5,
+            "total_count": 6
+          },
+          "ashrae_safety": {
+            "present_count": 1,
+            "missing_count": 5,
+            "total_count": 6
+          },
+          "toxicity_class": {
+            "present_count": 1,
+            "missing_count": 5,
+            "total_count": 6
+          }
+        },
+        "D": {
+          "gwp_100yr": {
+            "present_count": 1,
+            "missing_count": 4,
+            "total_count": 5
+          },
+          "odp": {
+            "present_count": 0,
+            "missing_count": 5,
+            "total_count": 5
+          },
+          "ashrae_safety": {
+            "present_count": 0,
+            "missing_count": 5,
+            "total_count": 5
+          },
+          "toxicity_class": {
+            "present_count": 0,
+            "missing_count": 5,
+            "total_count": 5
+          }
+        }
+      }
+    }
+  }
+}

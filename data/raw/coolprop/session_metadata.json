@@ -1,0 +1,18 @@
+{
+  "coolprop_version": "7.2.0",
+  "standard_cycle": {
+    "evaporating_temp_c": 5.0,
+    "condensing_temp_c": 50.0,
+    "superheat_k": 5.0,
+    "subcooling_k": 5.0,
+    "compressor_isentropic_efficiency": 0.75
+  },
+  "transcritical_co2_cycle": {
+    "evaporating_temp_c": -5.0,
+    "gas_cooler_outlet_temp_c": 35.0,
+    "high_side_pressure_mpa": 9.0,
+    "superheat_k": 5.0,
+    "compressor_isentropic_efficiency": 0.7
+  },
+  "available_fluid_count": 124
+}

@@ -1,0 +1,14 @@
+table_name: pending_sources
+layer: bronze
+path: data/bronze/pending_sources.parquet
+primary_key:
+  - pending_id
+columns:
+  - {name: pending_id, dtype: string, required: true}
+  - {name: seed_id, dtype: string, required: true}
+  - {name: r_number, dtype: string, required: false}
+  - {name: mol_id, dtype: string, required: false}
+  - {name: requested_source, dtype: string, required: true}
+  - {name: status, dtype: string, required: true}
+  - {name: detail, dtype: string, required: true}
+  - {name: required_env_var, dtype: string, required: false}

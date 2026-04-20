@@ -1,0 +1,21 @@
+table_name: model_dataset_index
+layer: gold
+path: data/gold/model_dataset_index.parquet
+primary_key:
+  - mol_id
+columns:
+  - {name: mol_id, dtype: string, required: true}
+  - {name: split, dtype: string, required: true}
+  - {name: scaffold_key, dtype: string, required: true}
+  - {name: confidence_score, dtype: float, required: true}
+  - {name: source_coverage_count, dtype: int, required: true}
+  - {name: has_boiling_point_c, dtype: bool, required: true}
+  - {name: has_critical_temp_c, dtype: bool, required: true}
+  - {name: has_critical_pressure_mpa, dtype: bool, required: true}
+  - {name: has_vaporization_enthalpy_kjmol, dtype: bool, required: true}
+  - {name: has_cop_standard_cycle, dtype: bool, required: true}
+  - {name: has_volumetric_cooling_mjm3, dtype: bool, required: true}
+  - {name: has_gwp_100yr, dtype: bool, required: true}
+  - {name: has_odp, dtype: bool, required: true}
+  - {name: has_ashrae_safety, dtype: bool, required: true}
+  - {name: has_toxicity_class, dtype: bool, required: true}

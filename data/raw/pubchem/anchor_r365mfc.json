@@ -1,0 +1,68 @@
+{
+  "seed": {
+    "seed_id": "anchor_r365mfc",
+    "r_number": "R-365mfc",
+    "family": "HFC",
+    "query_name": "406-58-6",
+    "pubchem_query_type": "name",
+    "nist_query": "406-58-6",
+    "nist_query_type": "name",
+    "coolprop_fluid": "R365MFC",
+    "priority_tier": 1,
+    "selection_role": "anchor",
+    "coverage_tier": "A",
+    "source_bundle": "pubchem+nist+coolprop+epa",
+    "coolprop_support_expected": "yes",
+    "regulatory_priority": "high",
+    "notes": "heavy HFC with explicit CoolProp alias"
+  },
+  "pubchem_record": {
+    "cid": "67884",
+    "query": "406-58-6",
+    "query_type": "name",
+    "molecular_formula": "C4H5F5",
+    "molecular_weight": 148.07,
+    "canonical_smiles": "CC(CC(F)(F)F)(F)F",
+    "isomeric_smiles": "CC(CC(F)(F)F)(F)F",
+    "inchi": "InChI=1S/C4H5F5/c1-3(5,6)2-4(7,8)9/h2H2,1H3",
+    "inchikey": "WZLFPVPRZGTCKP-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 67884,
+      "MolecularFormula": "C4H5F5",
+      "MolecularWeight": "148.07",
+      "SMILES": "CC(CC(F)(F)F)(F)F",
+      "ConnectivitySMILES": "CC(CC(F)(F)F)(F)F",
+      "InChI": "InChI=1S/C4H5F5/c1-3(5,6)2-4(7,8)9/h2H2,1H3",
+      "InChIKey": "WZLFPVPRZGTCKP-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/406-58-6/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "67884",
+    "synonyms": [
+      "1,1,1,3,3-Pentafluorobutane",
+      "406-58-6",
+      "Butane, 1,1,1,3,3-pentafluoro-",
+      "DTXSID5073901",
+      "RefChem:70832",
+      "DTXCID9039787",
+      "430-250-1",
+      "HFC-365mfc",
+      "MFCD03094115",
+      "2,2,4,4,4-Pentafluorobutane",
+      "C4H5F5",
+      "Butane,1,1,1,3,3-pentafluoro-",
+      "EC 430-250-1",
+      "SCHEMBL19832",
+      "SCHEMBL5808710",
+      "SCHEMBL8936534",
+      "MSK162752",
+      "SBB086566",
+      "AKOS006229977",
+      "1,1,1,3,3-pentakis(fluoranyl)butane",
+      "NS00008154",
+      "Q2249494"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/67884/synonyms/JSON"
+  }
+}

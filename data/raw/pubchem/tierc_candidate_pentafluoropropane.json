@@ -1,0 +1,66 @@
+{
+  "seed": {
+    "seed_id": "tierc_candidate_pentafluoropropane",
+    "r_number": "",
+    "family": "HFC",
+    "query_name": "FC(F)(F)C(F)CF",
+    "pubchem_query_type": "smiles",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "pubchem",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "pentafluoropropane isomer candidate"
+  },
+  "pubchem_record": {
+    "cid": "164598",
+    "query": "FC(F)(F)C(F)CF",
+    "query_type": "smiles",
+    "molecular_formula": "C3H3F5",
+    "molecular_weight": 134.05,
+    "canonical_smiles": "C(C(C(F)(F)F)F)F",
+    "isomeric_smiles": "C(C(C(F)(F)F)F)F",
+    "inchi": "InChI=1S/C3H3F5/c4-1-2(5)3(6,7)8/h2H,1H2",
+    "inchikey": "ZDCWZRQSHBQRGN-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 164598,
+      "MolecularFormula": "C3H3F5",
+      "MolecularWeight": "134.05",
+      "SMILES": "C(C(C(F)(F)F)F)F",
+      "ConnectivitySMILES": "C(C(C(F)(F)F)F)F",
+      "InChI": "InChI=1S/C3H3F5/c4-1-2(5)3(6,7)8/h2H,1H2",
+      "InChIKey": "ZDCWZRQSHBQRGN-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/smiles/FC%28F%29%28F%29C%28F%29CF/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "164598",
+    "synonyms": [
+      "1,1,1,2,3-pentafluoropropane",
+      "431-31-2",
+      "HFC-245eb",
+      "Propane, 1,1,1,2,3-pentafluoro-",
+      "DTXSID70883382",
+      "RefChem:409365",
+      "DTXCID501022917",
+      "689-755-0",
+      "1,2,3,3,3-pentafluoropropane",
+      "MFCD00236624",
+      "SCHEMBL24709",
+      "SCHEMBL1469242",
+      "SCHEMBL3307699",
+      "SCHEMBL7706944",
+      "FYTUVXBBRGWWRD-UHFFFAOYSA-N",
+      "SBB085848",
+      "AKOS006227791",
+      "FP78746"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/164598/synonyms/JSON"
+  }
+}

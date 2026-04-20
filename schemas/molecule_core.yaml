@@ -1,0 +1,25 @@
+table_name: molecule_core
+layer: silver
+path: data/silver/molecule_core.parquet
+primary_key:
+  - mol_id
+columns:
+  - {name: mol_id, dtype: string, required: true}
+  - {name: seed_id, dtype: string, required: true}
+  - {name: family, dtype: string, required: true}
+  - {name: canonical_smiles, dtype: string, required: true}
+  - {name: isomeric_smiles, dtype: string, required: true}
+  - {name: inchi, dtype: string, required: true}
+  - {name: inchikey, dtype: string, required: true}
+  - {name: inchikey_first_block, dtype: string, required: true}
+  - {name: formula, dtype: string, required: true}
+  - {name: molecular_weight, dtype: float, required: true}
+  - {name: charge, dtype: int, required: true}
+  - {name: heavy_atom_count, dtype: int, required: true}
+  - {name: stereo_flag, dtype: bool, required: true}
+  - {name: ez_isomer, dtype: string, required: false}
+  - {name: pubchem_cid, dtype: string, required: false}
+  - {name: pubchem_query, dtype: string, required: true}
+  - {name: entity_scope, dtype: string, required: false}
+  - {name: model_inclusion, dtype: string, required: false}
+  - {name: status, dtype: string, required: true}

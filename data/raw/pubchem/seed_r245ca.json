@@ -1,0 +1,68 @@
+{
+  "seed": {
+    "seed_id": "seed_r245ca",
+    "r_number": "R-245ca",
+    "family": "HFC",
+    "query_name": "679-86-7",
+    "pubchem_query_type": "name",
+    "nist_query": "679-86-7",
+    "nist_query_type": "name",
+    "coolprop_fluid": "R245ca",
+    "priority_tier": 2,
+    "selection_role": "expansion",
+    "coverage_tier": "B",
+    "source_bundle": "pubchem+nist+coolprop+epa",
+    "coolprop_support_expected": "yes",
+    "regulatory_priority": "medium",
+    "notes": "auto-generated from CoolProp fluid metadata: R245ca"
+  },
+  "pubchem_record": {
+    "cid": "69624",
+    "query": "679-86-7",
+    "query_type": "name",
+    "molecular_formula": "C3H3F5",
+    "molecular_weight": 134.05,
+    "canonical_smiles": "C(C(C(F)F)(F)F)F",
+    "isomeric_smiles": "C(C(C(F)F)(F)F)F",
+    "inchi": "InChI=1S/C3H3F5/c4-1-3(7,8)2(5)6/h2H,1H2",
+    "inchikey": "AWTOFSDLNREIFS-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 69624,
+      "MolecularFormula": "C3H3F5",
+      "MolecularWeight": "134.05",
+      "SMILES": "C(C(C(F)F)(F)F)F",
+      "ConnectivitySMILES": "C(C(C(F)F)(F)F)F",
+      "InChI": "InChI=1S/C3H3F5/c4-1-3(7,8)2(5)6/h2H,1H2",
+      "InChIKey": "AWTOFSDLNREIFS-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/679-86-7/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "69624",
+    "synonyms": [
+      "1,1,2,2,3-Pentafluoropropane",
+      "679-86-7",
+      "DTXSID3073925",
+      "RefChem:409555",
+      "DTXCID9045219",
+      "633-257-8",
+      "HFC-245ca",
+      "Propane,1,1,2,2,3-pentafluoro-",
+      "MFCD00153226",
+      "Propane, 1,1,2,2,3-pentafluoro-",
+      "HFC 245ca",
+      "R-245ca",
+      "SCHEMBL80669",
+      "SCHEMBL144306",
+      "SCHEMBL1470395",
+      "SCHEMBL6372508",
+      "1,1,2,2,3-pentafluoro-propane",
+      "1,1,2,2,3-Pentafluoropropane #",
+      "SBB085847",
+      "AKOS015852848",
+      "FP78779",
+      "1,1,2,2,3-Pentafluoropropane, 99%"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/69624/synonyms/JSON"
+  }
+}

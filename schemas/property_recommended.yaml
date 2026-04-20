@@ -1,0 +1,19 @@
+table_name: property_recommended
+layer: gold
+path: data/gold/property_recommended.parquet
+primary_key:
+  - mol_id
+  - property_name
+columns:
+  - {name: mol_id, dtype: string, required: true}
+  - {name: property_name, dtype: string, required: true}
+  - {name: value, dtype: string, required: true}
+  - {name: value_num, dtype: float, required: false}
+  - {name: unit, dtype: string, required: true}
+  - {name: selected_source_id, dtype: string, required: true}
+  - {name: selected_source_name, dtype: string, required: true}
+  - {name: selected_quality_level, dtype: string, required: true}
+  - {name: source_priority, dtype: int, required: true}
+  - {name: source_count, dtype: int, required: true}
+  - {name: conflict_flag, dtype: bool, required: true}
+  - {name: conflict_detail, dtype: string, required: false}

@@ -1,0 +1,6 @@
+seed_id,r_number,family,query_name,pubchem_query_type,nist_query,nist_query_type,coolprop_fluid,notes
+inventory_r114a,R-114a,CFC,"1,1-dichloro-1,2,2,2-tetrafluoroethane",name,"1,1-dichloro-1,2,2,2-tetrafluoroethane",name,,"public refrigerant inventory addition outside current CoolProp coverage"
+inventory_r134,R-134,HFC,"1,1,2,2-tetrafluoroethane",name,"1,1,2,2-tetrafluoroethane",name,,"public refrigerant inventory addition outside current CoolProp coverage"
+inventory_r143,R-143,HFC,"1,1,2-trifluoroethane",name,"1,1,2-trifluoroethane",name,,"public refrigerant inventory addition outside current CoolProp coverage"
+inventory_r152,R-152,HFC,"1,2-difluoroethane",name,"1,2-difluoroethane",name,,"public refrigerant inventory addition outside current CoolProp coverage"
+inventory_r611,R-611,Candidate,"methyl formate",name,"methyl formate",name,,"public refrigerant inventory addition outside current CoolProp coverage"

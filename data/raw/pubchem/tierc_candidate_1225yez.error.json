@@ -1,0 +1,20 @@
+{
+  "seed": {
+    "seed_id": "tierc_candidate_1225yez",
+    "r_number": "R-1225ye(Z)",
+    "family": "HFO",
+    "query_name": "F/C=C(\\F)C(F)(F)F",
+    "pubchem_query_type": "smiles",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 3,
+    "selection_role": "candidate",
+    "coverage_tier": "C",
+    "source_bundle": "pubchem",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "notes": "pentafluoropropene candidate isomer"
+  },
+  "error": "400 Client Error: PUGREST.BadRequest for url: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/smiles/F/C%3DC%28%5CF%29C%28F%29%28F%29F/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+}

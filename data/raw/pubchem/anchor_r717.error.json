@@ -1,0 +1,20 @@
+{
+  "seed": {
+    "seed_id": "anchor_r717",
+    "r_number": "R-717",
+    "family": "Natural",
+    "query_name": "7664-41-7",
+    "pubchem_query_type": "name",
+    "nist_query": "7664-41-7",
+    "nist_query_type": "name",
+    "coolprop_fluid": "Ammonia",
+    "priority_tier": 1,
+    "selection_role": "anchor",
+    "coverage_tier": "A",
+    "source_bundle": "pubchem+nist+coolprop+epa",
+    "coolprop_support_expected": "yes",
+    "regulatory_priority": "high",
+    "notes": "mandatory validation entity"
+  },
+  "error": "HTTPSConnectionPool(host='pubchem.ncbi.nlm.nih.gov', port=443): Max retries exceeded with url: /rest/pug/compound/name/7664-41-7/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))"
+}

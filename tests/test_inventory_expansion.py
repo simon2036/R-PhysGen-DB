@@ -1,0 +1,211 @@
+from __future__ import annotations
+
+import importlib.util
+from pathlib import Path
+
+import pandas as pd
+
+from r_physgen_db import pipeline
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def _load_seed_generator_module():
+    path = ROOT / "pipelines" / "generate_wave2_seed_catalog.py"
+    spec = importlib.util.spec_from_file_location("generate_wave2_seed_catalog", path)
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_seed_catalog_build_rows_supports_inventory_tail() -> None:
+    module = _load_seed_generator_module()
+
+    rows = module.build_rows()
+
+    assert len(rows) > 120
+    assert all("entity_scope" in row for row in rows)
+    assert all("model_inclusion" in row for row in rows)
+    assert sum(1 for row in rows if row["coverage_tier"] == "A") == 32
+    assert sum(1 for row in rows if row["coverage_tier"] == "B") == 48
+    assert sum(1 for row in rows if row["coverage_tier"] == "C") == 40
+    assert any(row["coverage_tier"] == "D" for row in rows)
+    assert all(row["model_inclusion"] == "yes" for row in rows if row["coverage_tier"] in {"A", "B", "C"})
+    assert all(row["model_inclusion"] == "no" for row in rows if row["coverage_tier"] == "D")
+    assert all(row["selection_role"] == "inventory" for row in rows if row["coverage_tier"] == "D")
+    assert any(row["r_number"] == "R-114a" for row in rows)
+
+
+def test_load_manual_observations_merges_legacy_and_directory_without_duplicates(tmp_path: Path) -> None:
+    raw_manual = tmp_path / "data" / "raw" / "manual"
+    raw_manual.mkdir(parents=True)
+    observations_dir = raw_manual / "observations"
+    observations_dir.mkdir()
+
+    header = (
+        "seed_id,r_number,property_name,value,value_num,unit,temperature,pressure,phase,source_type,"
+        "source_name,source_url,method,uncertainty,quality_level,assessment_version,time_horizon,year,notes\n"
+    )
+    row = (
+        "seed_x,R-999,gwp_100yr,10,10,dimensionless,,,,manual_curated_reference,Example,https://example.com,"
+        "manual,,manual_curated_reference,AR6,100,2026,test row\n"
+    )
+    (raw_manual / "manual_property_observations.csv").write_text(header + row, encoding="utf-8")
+    (observations_dir / "extra.csv").write_text(header + row, encoding="utf-8")
+
+    loaded = pipeline._load_manual_observations(
+        {
+            "manual_observations": raw_manual / "manual_property_observations.csv",
+            "manual_observations_dir": observations_dir,
+        }
+    )
+
+    assert len(loaded) == 1
+    assert loaded.iloc[0]["r_number"] == "R-999"
+
+
+def test_epa_grouped_candidate_mapping_skips_refrigerant_inventory_rows() -> None:
+    gwp_df = pd.DataFrame(
+        [
+            {
+                "substance_name": "Hydrocarbons (C5-C20)",
+                "gwp_text": "1.3-3.7",
+                "gwp_100yr": None,
+                "gwp_range_min": 1.3,
+                "gwp_range_max": 3.7,
+                "reference": "Calculated",
+                "is_range": True,
+            },
+        ]
+    )
+    molecule_context = pd.DataFrame(
+        [
+            {
+                "mol_id": "mol_candidate",
+                "seed_id": "seed_candidate",
+                "family": "Candidate",
+                "formula": "C5H12",
+                "pubchem_query": "109-66-0",
+                "coverage_tier": "D",
+                "selection_role": "inventory",
+                "entity_scope": "candidate",
+            },
+            {
+                "mol_id": "mol_refrigerant",
+                "seed_id": "seed_refrigerant",
+                "family": "Natural",
+                "formula": "C5H12",
+                "pubchem_query": "109-66-0",
+                "coverage_tier": "D",
+                "selection_role": "inventory",
+                "entity_scope": "refrigerant",
+            },
+        ]
+    )
+
+    rows = pipeline._epa_gwp_reference_property_rows(
+        gwp_df=gwp_df,
+        alias_lookup={},
+        molecule_context=molecule_context,
+        source_id="source_epa_gwp",
+    )
+
+    assert {row["mol_id"] for row in rows} == {"mol_candidate"}
+
+
+def test_model_outputs_only_include_model_ready_inventory() -> None:
+    structure_features = pd.DataFrame(
+        [
+            {"mol_id": "mol_keep", "scaffold_key": "scaf_a"},
+            {"mol_id": "mol_drop", "scaffold_key": "scaf_b"},
+        ]
+    )
+    property_recommended = pd.DataFrame(
+        [
+            {
+                "mol_id": "mol_keep",
+                "property_name": "gwp_100yr",
+                "value": "1",
+                "value_num": 1.0,
+                "selected_quality_level": "manual_curated_reference",
+            },
+            {
+                "mol_id": "mol_drop",
+                "property_name": "gwp_100yr",
+                "value": "2",
+                "value_num": 2.0,
+                "selected_quality_level": "manual_curated_reference",
+            },
+        ]
+    )
+    molecule_core = pd.DataFrame(
+        [
+            {"mol_id": "mol_keep", "model_inclusion": "yes"},
+            {"mol_id": "mol_drop", "model_inclusion": "no"},
+        ]
+    )
+    molecule_master = pd.DataFrame(
+        [
+            {"mol_id": "mol_keep", "scaffold_key": "scaf_a", "canonical_smiles": "C", "isomeric_smiles": "C", "selfies": "[C]"},
+            {"mol_id": "mol_drop", "scaffold_key": "scaf_b", "canonical_smiles": "CC", "isomeric_smiles": "CC", "selfies": "[C][C]"},
+        ]
+    )
+    property_matrix = pd.DataFrame(
+        [
+            {"mol_id": "mol_keep", "gwp_100yr": 1.0},
+            {"mol_id": "mol_drop", "gwp_100yr": 2.0},
+        ]
+    )
+
+    model_index = pipeline._build_model_dataset_index(structure_features, property_recommended, molecule_core)
+    model_ready = pipeline._build_model_ready(molecule_master, property_matrix, model_index)
+
+    assert model_index["mol_id"].tolist() == ["mol_keep"]
+    assert model_ready["mol_id"].tolist() == ["mol_keep"]
+
+
+def test_quality_report_includes_inventory_metrics() -> None:
+    seed_catalog = pd.DataFrame(
+        [
+            {"seed_id": "seed_keep", "coverage_tier": "A", "entity_scope": "refrigerant"},
+            {"seed_id": "seed_gap", "coverage_tier": "D", "entity_scope": "refrigerant"},
+            {"seed_id": "seed_candidate", "coverage_tier": "D", "entity_scope": "candidate"},
+        ]
+    )
+    molecule_core = pd.DataFrame(
+        [
+            {"mol_id": "mol_keep", "seed_id": "seed_keep"},
+            {"mol_id": "mol_candidate", "seed_id": "seed_candidate"},
+        ]
+    )
+    property_observation = pd.DataFrame([{"mol_id": "mol_keep"}])
+    property_recommended = pd.DataFrame(
+        [
+            {"mol_id": "mol_keep", "property_name": "gwp_100yr", "selected_source_id": "source_manual"},
+        ]
+    )
+    model_ready = pd.DataFrame([{"mol_id": "mol_keep", "split": "train"}])
+    resolution_df = pd.DataFrame(
+        [
+            {"seed_id": "seed_gap", "stage": "pubchem", "status": "failed", "detail": "not found"},
+        ]
+    )
+
+    report = pipeline._build_quality_report(
+        seed_catalog=seed_catalog,
+        molecule_core=molecule_core,
+        property_observation=property_observation,
+        property_recommended=property_recommended,
+        model_ready=model_ready,
+        qc_issues=pd.DataFrame(columns=["mol_id", "issue_type", "detail"]),
+        resolution_df=resolution_df,
+        regulatory_status=pd.DataFrame(columns=["mol_id"]),
+        pending_sources=pd.DataFrame(columns=["pending_id"]),
+    )
+
+    assert report["refrigerant_count"] == 2
+    assert report["candidate_count"] == 1
+    assert report["unresolved_refrigerants"] == [{"seed_id": "seed_gap", "stage": "pubchem", "detail": "not found"}]
+    assert report["inventory_property_gaps"]["refrigerant"]["D"]["gwp_100yr"]["missing_count"] == 1

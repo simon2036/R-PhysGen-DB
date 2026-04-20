@@ -1,0 +1,70 @@
+{
+  "seed": {
+    "seed_id": "seed_hfe143m",
+    "r_number": "",
+    "family": "Ether",
+    "query_name": "421-14-7",
+    "pubchem_query_type": "name",
+    "nist_query": "421-14-7",
+    "nist_query_type": "name",
+    "coolprop_fluid": "HFE143m",
+    "priority_tier": 2,
+    "selection_role": "expansion",
+    "coverage_tier": "B",
+    "source_bundle": "pubchem+nist+coolprop",
+    "coolprop_support_expected": "yes",
+    "regulatory_priority": "low",
+    "notes": "auto-generated from CoolProp fluid metadata: HFE143m"
+  },
+  "pubchem_record": {
+    "cid": "73947",
+    "query": "421-14-7",
+    "query_type": "name",
+    "molecular_formula": "C2H3F3O",
+    "molecular_weight": 100.04,
+    "canonical_smiles": "COC(F)(F)F",
+    "isomeric_smiles": "COC(F)(F)F",
+    "inchi": "InChI=1S/C2H3F3O/c1-6-2(3,4)5/h1H3",
+    "inchikey": "JRHMNRMPVRXNOS-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 73947,
+      "MolecularFormula": "C2H3F3O",
+      "MolecularWeight": "100.04",
+      "SMILES": "COC(F)(F)F",
+      "ConnectivitySMILES": "COC(F)(F)F",
+      "InChI": "InChI=1S/C2H3F3O/c1-6-2(3,4)5/h1H3",
+      "InChIKey": "JRHMNRMPVRXNOS-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/421-14-7/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "73947",
+    "synonyms": [
+      "421-14-7",
+      "Trifluoromethoxymethane",
+      "DTXSID5073903",
+      "RefChem:1100422",
+      "DTXCID7040029",
+      "Trifluoromethyl methyl ether",
+      "trifluoro(methoxy)methane",
+      "Methane, trifluoromethoxy-",
+      "Methyl trifluoromethyl ether",
+      "MFCD01320773",
+      "Methane,trifluoromethoxy-",
+      "Trifluoromethoxymethone",
+      "Methyl perfluoromethyl ether",
+      "Ether, methyl trifluoromethyl",
+      "CF3OCH3",
+      "SCHEMBL10462",
+      "SCHEMBL10463",
+      "SCHEMBL1897395",
+      "SCHEMBL17729837",
+      "SCHEMBL29777449",
+      "JRHMNRMPVRXNOS-UHFFFAOYSA-N",
+      "AKOS006228983",
+      "DB-050847",
+      "(Trifluoromethoxy)methane, 1,1,1-Trifluoro-2-oxapropane"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/73947/synonyms/JSON"
+  }
+}

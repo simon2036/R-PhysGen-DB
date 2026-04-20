@@ -1,0 +1,72 @@
+{
+  "seed": {
+    "seed_id": "tierc_candidate_1225yez",
+    "r_number": "R-1225ye(Z)",
+    "family": "HFO",
+    "query_name": "(Z)-1,2,3,3,3-pentafluoroprop-1-ene",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 3,
+    "selection_role": "candidate",
+    "coverage_tier": "C",
+    "source_bundle": "pubchem",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "notes": "pentafluoropropene candidate isomer"
+  },
+  "pubchem_record": {
+    "cid": "5708673",
+    "query": "(Z)-1,2,3,3,3-pentafluoroprop-1-ene",
+    "query_type": "name",
+    "molecular_formula": "C3HF5",
+    "molecular_weight": 132.03,
+    "canonical_smiles": "C(=C(C(F)(F)F)F)F",
+    "isomeric_smiles": "C(=C(/C(F)(F)F)\\F)\\F",
+    "inchi": "InChI=1S/C3HF5/c4-1-2(5)3(6,7)8/h1H/b2-1-",
+    "inchikey": "DMUPYMORYHFFCT-UPHRSURJSA-N",
+    "raw": {
+      "CID": 5708673,
+      "MolecularFormula": "C3HF5",
+      "MolecularWeight": "132.03",
+      "SMILES": "C(=C(/C(F)(F)F)\\F)\\F",
+      "ConnectivitySMILES": "C(=C(C(F)(F)F)F)F",
+      "InChI": "InChI=1S/C3HF5/c4-1-2(5)3(6,7)8/h1H/b2-1-",
+      "InChIKey": "DMUPYMORYHFFCT-UPHRSURJSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/%28Z%29-1%2C2%2C3%2C3%2C3-pentafluoroprop-1-ene/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "5708673",
+    "synonyms": [
+      "(Z)-1,2,3,3,3-Pentafluoropropene",
+      "5528-43-8",
+      "(1Z)-1,2,3,3,3-Pentafluoro-1-propene",
+      "DTXSID001027281",
+      "RefChem:1049543",
+      "DTXCID701032295",
+      "226-875-0",
+      "1-Propene, 1,2,3,3,3-pentafluoro-",
+      "(Z)-1,2,3,3,3-pentafluoroprop-1-ene",
+      "MFCD00798133",
+      "1,2,3,3,3-pentafluoro-1-propene",
+      "(Z)-1,2,3,3,3-pentafluoro-1-propene",
+      "EINECS 226-875-0",
+      "WMN4AB7SQJ",
+      "1-Propene, 1,2,3,3,3-pentafluoro-, (1Z)-",
+      "(1Z)-1,2,3,3,3-pentafluoroprop-1-ene",
+      "Norflurane EP Impurity H",
+      "(Z)-1,2,3,3,3-PENTAFLUOROPROPENE 97",
+      "SCHEMBL319798",
+      "SCHEMBL777691",
+      "SBB085799",
+      "AKOS006223413",
+      "1,2,3,3,3-Pentafluoropropene, (Z)-",
+      "DB-225120",
+      "NS00044192",
+      "Q2403411"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/5708673/synonyms/JSON"
+  }
+}

@@ -1,0 +1,8 @@
+table_name: mixture_component
+status: reserved_for_phase_2
+description: Placeholder for mixture compositions. Not populated in V1.
+planned_columns:
+  - mixture_id
+  - mol_id
+  - composition_basis
+  - fraction_value

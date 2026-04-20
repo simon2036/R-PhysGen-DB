@@ -1,0 +1,20 @@
+table_name: regulatory_status
+layer: silver
+path: data/silver/regulatory_status.parquet
+primary_key:
+  - regulatory_status_id
+columns:
+  - {name: regulatory_status_id, dtype: string, required: true}
+  - {name: mol_id, dtype: string, required: true}
+  - {name: end_use, dtype: string, required: true}
+  - {name: jurisdiction, dtype: string, required: true}
+  - {name: acceptability, dtype: string, required: true}
+  - {name: listing_status, dtype: string, required: true}
+  - {name: retrofit_new, dtype: string, required: false}
+  - {name: use_conditions, dtype: string, required: false}
+  - {name: effective_date, dtype: string, required: false}
+  - {name: trade_names, dtype: string, required: false}
+  - {name: raw_substitute, dtype: string, required: true}
+  - {name: source_id, dtype: string, required: true}
+  - {name: source_name, dtype: string, required: true}
+  - {name: source_type, dtype: string, required: true}

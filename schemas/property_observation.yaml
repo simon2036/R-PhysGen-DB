@@ -1,0 +1,27 @@
+table_name: property_observation
+layer: silver
+path: data/silver/property_observation.parquet
+primary_key:
+  - observation_id
+columns:
+  - {name: observation_id, dtype: string, required: true}
+  - {name: mol_id, dtype: string, required: true}
+  - {name: property_name, dtype: string, required: true}
+  - {name: value, dtype: string, required: true}
+  - {name: value_num, dtype: float, required: false}
+  - {name: unit, dtype: string, required: true}
+  - {name: temperature, dtype: string, required: false}
+  - {name: pressure, dtype: string, required: false}
+  - {name: phase, dtype: string, required: false}
+  - {name: source_type, dtype: string, required: true}
+  - {name: source_name, dtype: string, required: true}
+  - {name: source_id, dtype: string, required: true}
+  - {name: method, dtype: string, required: true}
+  - {name: uncertainty, dtype: string, required: false}
+  - {name: quality_level, dtype: string, required: true}
+  - {name: assessment_version, dtype: string, required: false}
+  - {name: time_horizon, dtype: string, required: false}
+  - {name: year, dtype: string, required: false}
+  - {name: notes, dtype: string, required: false}
+  - {name: qc_status, dtype: string, required: true}
+  - {name: qc_flags, dtype: string, required: false}

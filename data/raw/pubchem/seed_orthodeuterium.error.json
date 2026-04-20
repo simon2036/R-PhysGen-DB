@@ -1,0 +1,20 @@
+{
+  "seed": {
+    "seed_id": "seed_orthodeuterium",
+    "r_number": "",
+    "family": "Candidate",
+    "query_name": "7782-39-0o",
+    "pubchem_query_type": "name",
+    "nist_query": "7782-39-0o",
+    "nist_query_type": "name",
+    "coolprop_fluid": "OrthoDeuterium",
+    "priority_tier": 3,
+    "selection_role": "candidate",
+    "coverage_tier": "C",
+    "source_bundle": "pubchem+nist+coolprop",
+    "coolprop_support_expected": "yes",
+    "regulatory_priority": "low",
+    "notes": "auto-generated from CoolProp fluid metadata: OrthoDeuterium"
+  },
+  "error": "404 Client Error: PUGREST.NotFound for url: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/7782-39-0o/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+}

@@ -1,0 +1,13 @@
+table_name: molecule_alias
+layer: silver
+path: data/silver/molecule_alias.parquet
+primary_key:
+  - mol_id
+  - alias_type
+  - alias_value
+columns:
+  - {name: mol_id, dtype: string, required: true}
+  - {name: alias_type, dtype: string, required: true}
+  - {name: alias_value, dtype: string, required: true}
+  - {name: is_primary, dtype: bool, required: true}
+  - {name: source_name, dtype: string, required: true}

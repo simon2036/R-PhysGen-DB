@@ -1,0 +1,12 @@
+pandas
+duckdb
+pyarrow
+requests
+pyyaml
+selfies
+CoolProp
+rdkit
+pytest
+beautifulsoup4
+html5lib
+lxml

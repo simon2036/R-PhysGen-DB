@@ -1,0 +1,22 @@
+{
+  "seed": {
+    "seed_id": "tierc_candidate_1224ydz",
+    "r_number": "R-1224yd(Z)",
+    "family": "HCFO",
+    "query_name": "F/C(Cl)=C(\\F)C(F)F",
+    "pubchem_query_type": "smiles",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "pubchem",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "chlorotetrafluoropropene candidate"
+  },
+  "error": "400 Client Error: PUGREST.BadRequest for url: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/smiles/F/C%28Cl%29%3DC%28%5CF%29C%28F%29F/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+}

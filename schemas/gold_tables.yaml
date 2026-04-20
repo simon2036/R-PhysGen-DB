@@ -1,0 +1,36 @@
+tables:
+  - table_name: molecule_master
+    path: data/gold/molecule_master.parquet
+    required_columns:
+      - mol_id
+      - r_number_primary
+      - family
+      - canonical_smiles
+      - isomeric_smiles
+      - inchikey
+      - formula
+      - mol_weight
+      - scaffold_key
+      - selfies
+  - table_name: property_matrix
+    path: data/gold/property_matrix.parquet
+    required_columns:
+      - mol_id
+      - boiling_point_c
+      - critical_temp_c
+      - critical_pressure_mpa
+      - vaporization_enthalpy_kjmol
+      - gwp_100yr
+      - odp
+      - ashrae_safety
+      - toxicity_class
+  - table_name: model_ready
+    path: data/gold/model_ready.parquet
+    required_columns:
+      - mol_id
+      - canonical_smiles
+      - isomeric_smiles
+      - selfies
+      - scaffold_key
+      - split
+      - confidence_score

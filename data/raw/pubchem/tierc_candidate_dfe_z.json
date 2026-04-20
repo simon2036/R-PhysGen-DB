@@ -1,0 +1,65 @@
+{
+  "seed": {
+    "seed_id": "tierc_candidate_dfe_z",
+    "r_number": "",
+    "family": "Candidate",
+    "query_name": "(Z)-1,2-difluoroethene",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 3,
+    "selection_role": "candidate",
+    "coverage_tier": "C",
+    "source_bundle": "pubchem",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "notes": "cis-1,2-difluoroethene candidate"
+  },
+  "pubchem_record": {
+    "cid": "5462921",
+    "query": "(Z)-1,2-difluoroethene",
+    "query_type": "name",
+    "molecular_formula": "C2H2F2",
+    "molecular_weight": 64.03,
+    "canonical_smiles": "C(=CF)F",
+    "isomeric_smiles": "C(=C\\F)\\F",
+    "inchi": "InChI=1S/C2H2F2/c3-1-2-4/h1-2H/b2-1-",
+    "inchikey": "WFLOTYSKFUPZQB-UPHRSURJSA-N",
+    "raw": {
+      "CID": 5462921,
+      "MolecularFormula": "C2H2F2",
+      "MolecularWeight": "64.03",
+      "SMILES": "C(=C\\F)\\F",
+      "ConnectivitySMILES": "C(=CF)F",
+      "InChI": "InChI=1S/C2H2F2/c3-1-2-4/h1-2H/b2-1-",
+      "InChIKey": "WFLOTYSKFUPZQB-UPHRSURJSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/%28Z%29-1%2C2-difluoroethene/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "5462921",
+    "synonyms": [
+      "1630-77-9",
+      "(Z)-1,2-Difluoroethylene",
+      "cis-1,2-difluoroethylene",
+      "DTXSID001313123",
+      "RefChem:1081916",
+      "DTXCID301742947",
+      "216-628-5",
+      "(Z)-1,2-difluoroethene",
+      "Ethene, 1,2-difluoro-, (Z)-",
+      "Ethene, 1,2-difluoro-, (1Z)- (9CI)",
+      "(1Z)-1,2-difluoroethene",
+      "cis-1,2-Difluoroethylene (FC-1132)",
+      "cis-Difluoroethene",
+      "EINECS 216-628-5",
+      "cis-1,2-difluoroethene",
+      "(Z)-CHF=CHF",
+      "SCHEMBL1760771",
+      "MFCD00077512",
+      "NS00082091"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/5462921/synonyms/JSON"
+  }
+}

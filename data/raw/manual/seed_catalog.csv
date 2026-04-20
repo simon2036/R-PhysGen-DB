@@ -1,0 +1,133 @@
+seed_id,r_number,family,query_name,pubchem_query_type,nist_query,nist_query_type,coolprop_fluid,priority_tier,selection_role,coverage_tier,source_bundle,coolprop_support_expected,regulatory_priority,entity_scope,model_inclusion,notes
+anchor_r11,R-11,CFC,75-69-4,name,75-69-4,name,R11,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,legacy baseline refrigerant
+anchor_r12,R-12,CFC,75-71-8,name,75-71-8,name,R12,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,legacy baseline refrigerant
+anchor_r13,R-13,CFC,75-72-9,name,75-72-9,name,R13,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,high-gwp benchmark
+anchor_r22,R-22,HCFC,75-45-6,name,75-45-6,name,R22,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,legacy transition refrigerant
+anchor_r23,R-23,HFC,75-46-7,name,75-46-7,name,R23,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,high-gwp HFC
+anchor_r32,R-32,HFC,75-10-5,name,75-10-5,name,R32,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,mandatory validation entity
+anchor_r41,R-41,HFC,593-53-3,name,593-53-3,name,R41,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,light fluorocarbon
+anchor_r113,R-113,CFC,76-13-1,name,76-13-1,name,R113,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,legacy solvent and refrigerant
+anchor_r114,R-114,CFC,76-14-2,name,76-14-2,name,R114,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,legacy high-odp refrigerant
+anchor_r115,R-115,CFC,76-15-3,name,76-15-3,name,R115,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,legacy high-gwp refrigerant
+anchor_r123,R-123,HCFC,306-83-2,name,306-83-2,name,R123,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,low-pressure HCFC
+anchor_r124,R-124,HCFC,2837-89-0,name,2837-89-0,name,R124,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,HCFC benchmark
+anchor_r125,R-125,HFC,354-33-6,name,354-33-6,name,R125,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,common blend component
+anchor_r134a,R-134a,HFC,811-97-2,name,811-97-2,name,R134a,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,mandatory validation entity
+anchor_r143a,R-143a,HFC,420-46-2,name,420-46-2,name,R143a,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,blend component benchmark
+anchor_r152a,R-152a,HFC,75-37-6,name,75-37-6,name,R152A,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,low-gwp flammable HFC
+anchor_r227ea,R-227ea,HFC,431-89-0,name,431-89-0,name,R227EA,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,fire suppression and refrigerant candidate
+anchor_r236fa,R-236fa,HFC,690-39-1,name,690-39-1,name,R236FA,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,heavy HFC benchmark
+anchor_r245fa,R-245fa,HFC,460-73-1,name,460-73-1,name,R245fa,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,organic rankine and foam blowing benchmark
+anchor_r365mfc,R-365mfc,HFC,406-58-6,name,406-58-6,name,R365MFC,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,heavy HFC with explicit CoolProp alias
+anchor_r1234yf,R-1234yf,HFO,754-12-1,name,754-12-1,name,R1234yf,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,mandatory validation entity
+anchor_r1234zee,R-1234ze(E),HFO,29118-24-9,name,29118-24-9,name,R1234ze(E),1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,mandatory ez-isomer separation entity
+anchor_r1234zez,R-1234ze(Z),HFO,29118-25-0,name,29118-25-0,name,R1234ze(Z),1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,mandatory ez-isomer separation entity
+anchor_r1233zde,R-1233zd(E),HCFO,102687-65-0,name,102687-65-0,name,R1233zd(E),1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,low-gwp HCFO benchmark
+anchor_r744,R-744,Natural,124-38-9,name,124-38-9,name,CarbonDioxide,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,mandatory validation entity
+anchor_r717,R-717,Natural,7664-41-7,name,7664-41-7,name,Ammonia,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,mandatory validation entity
+anchor_r290,R-290,Natural,74-98-6,name,74-98-6,name,n-Propane,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,natural low-gwp benchmark
+anchor_r600a,R-600a,Natural,75-28-5,name,75-28-5,name,IsoButane,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,domestic refrigeration benchmark
+anchor_r600,R-600,Natural,106-97-8,name,106-97-8,name,n-Butane,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,natural refrigerant benchmark
+anchor_r1270,R-1270,Natural,115-07-1,name,115-07-1,name,Propylene,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,olefin natural refrigerant
+anchor_r718,R-718,Natural,7732-18-5,name,7732-18-5,name,Water,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,steam and high-temperature heat pump benchmark
+anchor_rc318,RC318,c-HFC,115-25-3,name,115-25-3,name,RC318,1,anchor,A,pubchem+nist+coolprop+epa,yes,high,refrigerant,yes,cyclic fluorocarbon benchmark
+seed_r14,R-14,CFC,75-73-0,name,75-73-0,name,R14,2,expansion,B,pubchem+nist+coolprop+epa,yes,medium,refrigerant,yes,auto-generated from CoolProp fluid metadata: R14
+seed_r21,R-21,HCFC,75-43-4,name,75-43-4,name,R21,2,expansion,B,pubchem+nist+coolprop+epa,yes,medium,refrigerant,yes,auto-generated from CoolProp fluid metadata: R21
+seed_r40,R-40,HCFC,74-87-3,name,74-87-3,name,R40,2,expansion,B,pubchem+nist+coolprop+epa,yes,medium,refrigerant,yes,auto-generated from CoolProp fluid metadata: R40
+seed_r116,R-116,CFC,76-16-4,name,76-16-4,name,R116,2,expansion,B,pubchem+nist+coolprop+epa,yes,medium,refrigerant,yes,auto-generated from CoolProp fluid metadata: R116
+seed_r141b,R-141b,HCFC,1717-00-6,name,1717-00-6,name,R141b,2,expansion,B,pubchem+nist+coolprop+epa,yes,medium,refrigerant,yes,auto-generated from CoolProp fluid metadata: R141b
+seed_r142b,R-142b,HCFC,75-68-3,name,75-68-3,name,R142b,2,expansion,B,pubchem+nist+coolprop+epa,yes,medium,refrigerant,yes,auto-generated from CoolProp fluid metadata: R142b
+seed_r161,R-161,HFC,353-36-6,name,353-36-6,name,R161,2,expansion,B,pubchem+nist+coolprop+epa,yes,medium,refrigerant,yes,auto-generated from CoolProp fluid metadata: R161
+seed_r218,R-218,HFC,76-19-7,name,76-19-7,name,R218,2,expansion,B,pubchem+nist+coolprop+epa,yes,medium,refrigerant,yes,auto-generated from CoolProp fluid metadata: R218
+seed_r236ea,R-236ea,HFC,431-63-0,name,431-63-0,name,R236EA,2,expansion,B,pubchem+nist+coolprop+epa,yes,medium,refrigerant,yes,auto-generated from CoolProp fluid metadata: R236EA
+seed_r245ca,R-245ca,HFC,679-86-7,name,679-86-7,name,R245ca,2,expansion,B,pubchem+nist+coolprop+epa,yes,medium,refrigerant,yes,auto-generated from CoolProp fluid metadata: R245ca
+seed_r1243zf,R-1243zf,HFO,677-21-4,name,677-21-4,name,R1243zf,2,expansion,B,pubchem+nist+coolprop+epa,yes,medium,refrigerant,yes,auto-generated from CoolProp fluid metadata: R1243zf
+seed_r1336mzze,R-1336mzz(E),HFO,66711-86-2,name,66711-86-2,name,R1336mzz(E),2,expansion,B,pubchem+nist+coolprop+epa,yes,medium,refrigerant,yes,auto-generated from CoolProp fluid metadata: R1336mzz(E)
+seed_r13i1,R-13I1,Candidate,2314-97-8,name,2314-97-8,name,R13I1,2,expansion,B,pubchem+nist+coolprop+epa,yes,low,refrigerant,yes,auto-generated from CoolProp fluid metadata: R13I1
+seed_ethane,R-170,Natural,74-84-0,name,74-84-0,name,Ethane,2,expansion,B,pubchem+nist+coolprop+epa,yes,medium,refrigerant,yes,auto-generated from CoolProp fluid metadata: Ethane
+seed_ethylene,R-1150,Natural,74-85-1,name,74-85-1,name,Ethylene,2,expansion,B,pubchem+nist+coolprop+epa,yes,medium,refrigerant,yes,auto-generated from CoolProp fluid metadata: Ethylene
+seed_methane,R-50,Natural,74-82-8,name,74-82-8,name,Methane,2,expansion,B,pubchem+nist+coolprop+epa,yes,medium,refrigerant,yes,auto-generated from CoolProp fluid metadata: Methane
+seed_cyclopropane,,Candidate,75-19-4,name,75-19-4,name,CycloPropane,2,expansion,B,pubchem+nist+coolprop+epa,yes,low,refrigerant,yes,auto-generated from CoolProp fluid metadata: CycloPropane
+seed_cyclopentane,,Candidate,287-92-3,name,287-92-3,name,Cyclopentane,2,expansion,B,pubchem+nist+coolprop+epa,yes,low,refrigerant,yes,auto-generated from CoolProp fluid metadata: Cyclopentane
+seed_cyclohexane,,Candidate,110-82-7,name,110-82-7,name,CycloHexane,2,expansion,B,pubchem+nist+coolprop+epa,yes,low,refrigerant,yes,auto-generated from CoolProp fluid metadata: CycloHexane
+seed_dimethylether,,Ether,115-10-6,name,115-10-6,name,DimethylEther,2,expansion,B,pubchem+nist+coolprop+epa,yes,low,refrigerant,yes,auto-generated from CoolProp fluid metadata: DimethylEther
+seed_diethylether,,Ether,60-29-7,name,60-29-7,name,DiethylEther,2,expansion,B,pubchem+nist+coolprop+epa,yes,low,refrigerant,yes,auto-generated from CoolProp fluid metadata: DiethylEther
+seed_hfe143m,,Ether,421-14-7,name,421-14-7,name,HFE143m,2,expansion,B,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: HFE143m
+seed_novec649,,Ketone,756-13-8,name,756-13-8,name,Novec649,2,expansion,B,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: Novec649
+seed_acetone,,Ketone,67-64-1,name,67-64-1,name,Acetone,2,expansion,B,pubchem+nist+coolprop+epa,yes,low,refrigerant,yes,auto-generated from CoolProp fluid metadata: Acetone
+seed_methanol,,Candidate,67-56-1,name,67-56-1,name,Methanol,2,expansion,B,pubchem+nist+coolprop+epa,yes,low,refrigerant,yes,auto-generated from CoolProp fluid metadata: Methanol
+seed_ethanol,,Candidate,64-17-5,name,64-17-5,name,Ethanol,2,expansion,B,pubchem+nist+coolprop+epa,yes,low,refrigerant,yes,auto-generated from CoolProp fluid metadata: Ethanol
+seed_nitrousoxide,R-744A,Inorganic,10024-97-2,name,10024-97-2,name,NitrousOxide,2,expansion,B,pubchem+nist+coolprop+epa,yes,low,refrigerant,yes,auto-generated from CoolProp fluid metadata: NitrousOxide
+seed_sulfurdioxide,R-764,Inorganic,7446-09-5,name,7446-09-5,name,SulfurDioxide,2,expansion,B,pubchem+nist+coolprop+epa,yes,low,refrigerant,yes,auto-generated from CoolProp fluid metadata: SulfurDioxide
+seed_sulfurhexafluoride,,Inorganic,2551-62-4,name,2551-62-4,name,SulfurHexafluoride,2,expansion,B,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: SulfurHexafluoride
+seed_carbonmonoxide,,Inorganic,630-08-0,name,630-08-0,name,CarbonMonoxide,2,expansion,B,pubchem+nist+coolprop+epa,yes,low,refrigerant,yes,auto-generated from CoolProp fluid metadata: CarbonMonoxide
+seed_carbonylsulfide,,Inorganic,463-58-1,name,463-58-1,name,CarbonylSulfide,2,expansion,B,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: CarbonylSulfide
+seed_hydrogensulfide,,Inorganic,7783-06-4,name,7783-06-4,name,HydrogenSulfide,2,expansion,B,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: HydrogenSulfide
+seed_hydrogenchloride,,Inorganic,7647-01-0,name,7647-01-0,name,HydrogenChloride,2,expansion,B,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: HydrogenChloride
+seed_fluorine,,Inorganic,7782-41-4,name,7782-41-4,name,Fluorine,2,expansion,B,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: Fluorine
+seed_1_butene,,Candidate,106-98-9,name,106-98-9,name,1-Butene,2,expansion,B,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: 1-Butene
+seed_cis_2_butene,,Candidate,590-18-1,name,590-18-1,name,cis-2-Butene,2,expansion,B,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: cis-2-Butene
+seed_trans_2_butene,,Candidate,624-64-6,name,624-64-6,name,trans-2-Butene,2,expansion,B,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: trans-2-Butene
+seed_isobutene,,Candidate,115-11-7,name,115-11-7,name,IsoButene,2,expansion,B,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: IsoButene
+seed_propyne,,Candidate,74-99-7,name,74-99-7,name,Propyne,2,expansion,B,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: Propyne
+seed_neopentane,,Candidate,463-82-1,name,463-82-1,name,Neopentane,2,expansion,B,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: Neopentane
+seed_isopentane,,Candidate,78-78-4,name,78-78-4,name,Isopentane,2,expansion,B,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: Isopentane
+seed_isohexane,,Candidate,107-83-5,name,107-83-5,name,Isohexane,2,expansion,B,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: Isohexane
+seed_n_pentane,,Candidate,109-66-0,name,109-66-0,name,n-Pentane,2,expansion,B,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: n-Pentane
+seed_n_hexane,,Candidate,110-54-3,name,110-54-3,name,n-Hexane,2,expansion,B,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: n-Hexane
+seed_n_heptane,,Candidate,142-82-5,name,142-82-5,name,n-Heptane,2,expansion,B,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: n-Heptane
+seed_n_octane,,Candidate,111-65-9,name,111-65-9,name,n-Octane,2,expansion,B,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: n-Octane
+seed_n_decane,,Candidate,124-18-5,name,124-18-5,name,n-Decane,2,expansion,B,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: n-Decane
+seed_n_nonane,,Candidate,111-84-2,name,111-84-2,name,n-Nonane,2,expansion,B,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: n-Nonane
+seed_argon,R-740,Inorganic,7440-37-1,name,7440-37-1,name,Argon,3,candidate,C,pubchem+nist+coolprop+epa,yes,low,refrigerant,yes,auto-generated from CoolProp fluid metadata: Argon
+seed_benzene,,Aromatic,71-43-2,name,71-43-2,name,Benzene,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: Benzene
+seed_d4,,Siloxane,556-67-2,name,556-67-2,name,D4,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: D4
+seed_d5,,Siloxane,541-02-6,name,541-02-6,name,D5,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: D5
+seed_d6,,Siloxane,540-97-6,name,540-97-6,name,D6,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: D6
+seed_deuterium,,Candidate,7782-39-0,name,7782-39-0,name,Deuterium,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: Deuterium
+seed_dichloroethane,,Candidate,107-06-2,name,107-06-2,name,Dichloroethane,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: Dichloroethane
+seed_dimethylcarbonate,,Candidate,616-38-6,name,616-38-6,name,DimethylCarbonate,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: DimethylCarbonate
+seed_ethylbenzene,,Aromatic,100-41-4,name,100-41-4,name,EthylBenzene,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: EthylBenzene
+seed_ethyleneoxide,,Candidate,75-21-8,name,75-21-8,name,EthyleneOxide,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: EthyleneOxide
+seed_heavywater,,Candidate,7789-20-0,name,7789-20-0,name,HeavyWater,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: HeavyWater
+seed_helium,R-704,Inorganic,7440-59-7,name,7440-59-7,name,Helium,3,candidate,C,pubchem+nist+coolprop+epa,yes,low,refrigerant,yes,auto-generated from CoolProp fluid metadata: Helium
+seed_hydrogen,R-702,Inorganic,1333-74-0,name,1333-74-0,name,Hydrogen,3,candidate,C,pubchem+nist+coolprop+epa,yes,low,refrigerant,yes,auto-generated from CoolProp fluid metadata: Hydrogen
+seed_krypton,,Candidate,7439-90-9,name,7439-90-9,name,Krypton,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: Krypton
+seed_md2m,,Siloxane,141-62-8,name,141-62-8,name,MD2M,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: MD2M
+seed_md3m,,Siloxane,141-63-9,name,141-63-9,name,MD3M,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: MD3M
+seed_md4m,,Siloxane,107-52-8,name,107-52-8,name,MD4M,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: MD4M
+seed_mdm,,Siloxane,107-51-7,name,107-51-7,name,MDM,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: MDM
+seed_mm,,Siloxane,107-46-0,name,107-46-0,name,MM,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: MM
+seed_methyllinoleate,,Candidate,112-63-0,name,112-63-0,name,MethylLinoleate,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: MethylLinoleate
+seed_methyllinolenate,,Candidate,301-00-8,name,301-00-8,name,MethylLinolenate,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: MethylLinolenate
+seed_methyloleate,,Candidate,112-62-9,name,112-62-9,name,MethylOleate,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: MethylOleate
+seed_methylpalmitate,,Candidate,112-39-0,name,112-39-0,name,MethylPalmitate,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: MethylPalmitate
+seed_methylstearate,,Candidate,112-61-8,name,112-61-8,name,MethylStearate,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: MethylStearate
+seed_neon,R-720,Inorganic,7440-01-9,name,7440-01-9,name,Neon,3,candidate,C,pubchem+nist+coolprop+epa,yes,low,refrigerant,yes,auto-generated from CoolProp fluid metadata: Neon
+seed_nitrogen,R-728,Inorganic,7727-37-9,name,7727-37-9,name,Nitrogen,3,candidate,C,pubchem+nist+coolprop+epa,yes,low,refrigerant,yes,auto-generated from CoolProp fluid metadata: Nitrogen
+seed_oxygen,R-732,Inorganic,7782-44-7,name,7782-44-7,name,Oxygen,3,candidate,C,pubchem+nist+coolprop+epa,yes,low,refrigerant,yes,auto-generated from CoolProp fluid metadata: Oxygen
+seed_toluene,,Aromatic,108-88-3,name,108-88-3,name,Toluene,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: Toluene
+seed_xenon,,Candidate,7440-63-3,name,7440-63-3,name,Xenon,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: Xenon
+seed_m_xylene,,Aromatic,108-38-3,name,108-38-3,name,m-Xylene,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: m-Xylene
+seed_n_dodecane,,Candidate,112-40-3,name,112-40-3,name,n-Dodecane,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: n-Dodecane
+seed_n_undecane,,Candidate,1120-21-4,name,1120-21-4,name,n-Undecane,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: n-Undecane
+seed_o_xylene,,Aromatic,95-47-6,name,95-47-6,name,o-Xylene,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: o-Xylene
+seed_p_xylene,,Aromatic,106-42-3,name,106-42-3,name,p-Xylene,3,candidate,C,pubchem+nist+coolprop,yes,low,candidate,yes,auto-generated from CoolProp fluid metadata: p-Xylene
+tierc_candidate_r1123,R-1123,HFO,FC=C(F)F,smiles,,name,,3,candidate,C,pubchem,no,low,candidate,yes,trifluoroethene candidate
+tierc_candidate_r1132a,R-1132a,HFO,C=C(F)F,smiles,,name,,3,candidate,C,pubchem,no,low,candidate,yes,"1,1-difluoroethene candidate"
+tierc_candidate_dfe_e,,Candidate,"(E)-1,2-difluoroethene",name,,name,,3,candidate,C,pubchem,no,low,candidate,yes,"trans-1,2-difluoroethene candidate"
+tierc_candidate_dfe_z,,Candidate,"(Z)-1,2-difluoroethene",name,,name,,3,candidate,C,pubchem,no,low,candidate,yes,"cis-1,2-difluoroethene candidate"
+tierc_candidate_1225yee,R-1225ye(E),HFO,"(E)-1,2,3,3,3-pentafluoroprop-1-ene",name,,name,,3,candidate,C,pubchem,no,low,candidate,yes,pentafluoropropene candidate
+tierc_candidate_1225yez,R-1225ye(Z),HFO,"(Z)-1,2,3,3,3-pentafluoroprop-1-ene",name,,name,,3,candidate,C,pubchem,no,low,candidate,yes,pentafluoropropene candidate isomer
+tierc_candidate_1224ydz,R-1224yd(Z),HCFO,F/C(Cl)=C(\F)C(F)F,smiles,,name,,4,inventory,D,pubchem,no,low,candidate,no,chlorotetrafluoropropene candidate
+tierc_candidate_1336mzzz,R-1336mzz(Z),HFO,FC(F)(F)/C=C\C(F)(F)F,smiles,,name,,4,inventory,D,pubchem,no,low,candidate,no,hexafluorobutene candidate isomer
+tierc_candidate_tfecl,,HCFO,FC(F)=CCl,smiles,,name,,4,inventory,D,pubchem,no,low,candidate,no,chlorotrifluoroethylene candidate
+tierc_candidate_tfebr,,Candidate,FC(F)=CBr,smiles,,name,,4,inventory,D,pubchem,no,low,candidate,no,bromotrifluoroethylene candidate
+tierc_candidate_tfpropene,,HFO,C=CC(F)(F)F,smiles,,name,,4,inventory,D,pubchem,no,low,candidate,no,trifluoropropene candidate
+tierc_candidate_tetrafluoroethane,,HFC,FC(F)C(F)F,smiles,,name,,4,inventory,D,pubchem,no,low,candidate,no,tetrafluoroethane structural isomer candidate
+tierc_candidate_pentafluoropropane,,HFC,FC(F)(F)C(F)CF,smiles,,name,,4,inventory,D,pubchem,no,low,candidate,no,pentafluoropropane isomer candidate
+inventory_r114a,R-114a,CFC,"1,1-dichloro-1,2,2,2-tetrafluoroethane",name,"1,1-dichloro-1,2,2,2-tetrafluoroethane",name,,4,inventory,D,pubchem+nist+epa,no,low,refrigerant,no,public refrigerant inventory addition outside current CoolProp coverage
+inventory_r134,R-134,HFC,"1,1,2,2-tetrafluoroethane",name,"1,1,2,2-tetrafluoroethane",name,,4,inventory,D,pubchem+nist+epa,no,low,refrigerant,no,public refrigerant inventory addition outside current CoolProp coverage
+inventory_r143,R-143,HFC,"1,1,2-trifluoroethane",name,"1,1,2-trifluoroethane",name,,4,inventory,D,pubchem+nist+epa,no,low,refrigerant,no,public refrigerant inventory addition outside current CoolProp coverage
+inventory_r152,R-152,HFC,"1,2-difluoroethane",name,"1,2-difluoroethane",name,,4,inventory,D,pubchem+nist+epa,no,low,refrigerant,no,public refrigerant inventory addition outside current CoolProp coverage
+inventory_r611,R-611,Candidate,methyl formate,name,methyl formate,name,,4,inventory,D,pubchem+nist+epa,no,low,refrigerant,no,public refrigerant inventory addition outside current CoolProp coverage

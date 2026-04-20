@@ -1,0 +1,36 @@
+table_name: source_manifest
+layer: bronze
+path: data/bronze/source_manifest.parquet
+primary_key:
+  - source_id
+columns:
+  - name: source_id
+    dtype: string
+    required: true
+  - name: source_type
+    dtype: string
+    required: true
+  - name: source_name
+    dtype: string
+    required: true
+  - name: license
+    dtype: string
+    required: true
+  - name: retrieved_at
+    dtype: string
+    required: true
+  - name: checksum_sha256
+    dtype: string
+    required: false
+  - name: local_path
+    dtype: string
+    required: false
+  - name: parser_version
+    dtype: string
+    required: true
+  - name: upstream_url
+    dtype: string
+    required: false
+  - name: status
+    dtype: string
+    required: true

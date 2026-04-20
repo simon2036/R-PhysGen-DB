@@ -1,0 +1,8 @@
+table_name: mixture_core
+status: reserved_for_phase_2
+description: Placeholder for mixture refrigerant entities. Not populated in V1.
+planned_columns:
+  - mixture_id
+  - mixture_name
+  - ashrae_blend_designation
+  - notes
