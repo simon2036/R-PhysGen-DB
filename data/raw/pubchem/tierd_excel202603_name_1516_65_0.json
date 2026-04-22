@@ -1,0 +1,66 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_1516_65_0",
+    "r_number": "",
+    "family": "HFO",
+    "query_name": "1516-65-0",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=(Z)-Perfluoro-2-butene"
+  },
+  "pubchem_record": {
+    "cid": "3034116",
+    "query": "1516-65-0",
+    "query_type": "name",
+    "molecular_formula": "C4F8",
+    "molecular_weight": 200.03,
+    "canonical_smiles": "C(=C(C(F)(F)F)F)(C(F)(F)F)F",
+    "isomeric_smiles": "C(=C(\\C(F)(F)F)/F)(\\C(F)(F)F)/F",
+    "inchi": "InChI=1S/C4F8/c5-1(3(7,8)9)2(6)4(10,11)12/b2-1-",
+    "inchikey": "WSJULBMCKQTTIG-UPHRSURJSA-N",
+    "raw": {
+      "CID": 3034116,
+      "MolecularFormula": "C4F8",
+      "MolecularWeight": "200.03",
+      "SMILES": "C(=C(\\C(F)(F)F)/F)(\\C(F)(F)F)/F",
+      "ConnectivitySMILES": "C(=C(C(F)(F)F)F)(C(F)(F)F)F",
+      "InChI": "InChI=1S/C4F8/c5-1(3(7,8)9)2(6)4(10,11)12/b2-1-",
+      "InChIKey": "WSJULBMCKQTTIG-UPHRSURJSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/1516-65-0/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "3034116",
+    "synonyms": [
+      "Perfluoro-2-butene, (Z)-",
+      "(Z)-perfluoro-2-butene",
+      "1516-65-0",
+      "UNII-60ET30BB68",
+      "60ET30BB68",
+      "cis-octafluoro-2-butene",
+      "CIS-PERFLUORO-2-BUTENE",
+      "2-Butene, 1,1,1,2,3,4,4,4-octafluoro-, (2Z)-",
+      "2-Butene, 1,1,1,2,3,4,4,4-octafluoro-, (Z)-",
+      "RefChem:202552",
+      "(Z)-perfluorobut-2-ene",
+      "Norflurane EP Impurity S",
+      "(2Z)-Perfluoro-2-butene",
+      "SCHEMBL2464884",
+      "WSJULBMCKQTTIG-UPHRSURJSA-N",
+      "DTXSID201021465",
+      "(Z)-2-C4F8",
+      "Q27263219"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/3034116/synonyms/JSON"
+  }
+}

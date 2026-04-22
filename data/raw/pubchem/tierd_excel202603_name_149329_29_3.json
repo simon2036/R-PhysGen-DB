@@ -1,0 +1,62 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_149329_29_3",
+    "r_number": "",
+    "family": "HCFC",
+    "query_name": "149329-29-3",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=HCFC-244fa"
+  },
+  "pubchem_record": {
+    "cid": "2782294",
+    "query": "149329-29-3",
+    "query_type": "name",
+    "molecular_formula": "C3H3ClF4",
+    "molecular_weight": 150.5,
+    "canonical_smiles": "C(C(F)Cl)C(F)(F)F",
+    "isomeric_smiles": "C(C(F)Cl)C(F)(F)F",
+    "inchi": "InChI=1S/C3H3ClF4/c4-2(5)1-3(6,7)8/h2H,1H2",
+    "inchikey": "ZGOMEYREADWKLC-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 2782294,
+      "MolecularFormula": "C3H3ClF4",
+      "MolecularWeight": "150.50",
+      "SMILES": "C(C(F)Cl)C(F)(F)F",
+      "ConnectivitySMILES": "C(C(F)Cl)C(F)(F)F",
+      "InChI": "InChI=1S/C3H3ClF4/c4-2(5)1-3(6,7)8/h2H,1H2",
+      "InChIKey": "ZGOMEYREADWKLC-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/149329-29-3/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "2782294",
+    "synonyms": [
+      "3-chloro-1,1,1,3-tetrafluoropropane",
+      "149329-29-3",
+      "DTXSID70382022",
+      "RefChem:278022",
+      "DTXCID70897040",
+      "Propane, 3-chloro-1,1,1,3-tetrafluoro-",
+      "tetrafluoropropyl chloride",
+      "HCFC-244fa",
+      "SCHEMBL136829",
+      "SCHEMBL1023590",
+      "ZGOMEYREADWKLC-UHFFFAOYSA-N",
+      "MFCD04038864",
+      "SBB086745",
+      "AKOS006229000"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/2782294/synonyms/JSON"
+  }
+}

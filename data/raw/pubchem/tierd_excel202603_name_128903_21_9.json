@@ -1,0 +1,67 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_128903_21_9",
+    "r_number": "",
+    "family": "HCFC",
+    "query_name": "128903-21-9",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=HCFC-225aa"
+  },
+  "pubchem_record": {
+    "cid": "62315",
+    "query": "128903-21-9",
+    "query_type": "name",
+    "molecular_formula": "C3HCl2F5",
+    "molecular_weight": 202.93,
+    "canonical_smiles": "C(C(C(F)(F)F)(Cl)Cl)(F)F",
+    "isomeric_smiles": "C(C(C(F)(F)F)(Cl)Cl)(F)F",
+    "inchi": "InChI=1S/C3HCl2F5/c4-2(5,1(6)7)3(8,9)10/h1H",
+    "inchikey": "JEWUXLHWYRSHJK-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 62315,
+      "MolecularFormula": "C3HCl2F5",
+      "MolecularWeight": "202.93",
+      "SMILES": "C(C(C(F)(F)F)(Cl)Cl)(F)F",
+      "ConnectivitySMILES": "C(C(C(F)(F)F)(Cl)Cl)(F)F",
+      "InChI": "InChI=1S/C3HCl2F5/c4-2(5,1(6)7)3(8,9)10/h1H",
+      "InChIKey": "JEWUXLHWYRSHJK-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/128903-21-9/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "62315",
+    "synonyms": [
+      "2,2-DICHLORO-1,1,1,3,3-PENTAFLUOROPROPANE",
+      "HCFC 225aa",
+      "801K277HE4",
+      "DTXSID6042024",
+      "UNII-801K277HE4",
+      "R-225AA",
+      "1,1,1,3,3-PENTAFLUORO-2,2-DICHLOROPROPANE",
+      "RefChem:80967",
+      "DTXCID4022024",
+      "128903-21-9",
+      "HCFC-225aa",
+      "2,2-DICHLORO-1,1,1,3,3-PENTAFLUORO-PROPANE",
+      "Propane, 2,2-dichloro-1,1,1,3,3-pentafluoro-",
+      "pentafluorodichloropropane",
+      "SCHEMBL224372",
+      "SCHEMBL2815434",
+      "FD86332",
+      "NS00122485",
+      "Q27894274"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/62315/synonyms/JSON"
+  }
+}

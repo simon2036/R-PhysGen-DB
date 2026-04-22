@@ -1,0 +1,53 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_121612_64_4",
+    "r_number": "",
+    "family": "HCFC",
+    "query_name": "121612-64-4",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=HCFC-252fd"
+  },
+  "pubchem_record": {
+    "cid": "14226151",
+    "query": "121612-64-4",
+    "query_type": "name",
+    "molecular_formula": "C3H4Cl2F2",
+    "molecular_weight": 148.96,
+    "canonical_smiles": "C(CF)C(F)(Cl)Cl",
+    "isomeric_smiles": "C(CF)C(F)(Cl)Cl",
+    "inchi": "InChI=1S/C3H4Cl2F2/c4-3(5,7)1-2-6/h1-2H2",
+    "inchikey": "YALOPJNQNYIQOA-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 14226151,
+      "MolecularFormula": "C3H4Cl2F2",
+      "MolecularWeight": "148.96",
+      "SMILES": "C(CF)C(F)(Cl)Cl",
+      "ConnectivitySMILES": "C(CF)C(F)(Cl)Cl",
+      "InChI": "InChI=1S/C3H4Cl2F2/c4-3(5,7)1-2-6/h1-2H2",
+      "InChIKey": "YALOPJNQNYIQOA-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/121612-64-4/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "14226151",
+    "synonyms": [
+      "121612-64-4",
+      "HCFC-252fd",
+      "SCHEMBL29204126",
+      "DTXSID301352847",
+      "1,1-Dichloro-1,3-difluoropropane"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/14226151/synonyms/JSON"
+  }
+}

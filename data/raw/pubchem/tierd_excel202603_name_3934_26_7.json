@@ -1,0 +1,55 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_3934_26_7",
+    "r_number": "",
+    "family": "CFC",
+    "query_name": "3934-26-7",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=(Z)-R316c ((Z)-1,2-dichlorohexa- fluoro-cyclobutane)"
+  },
+  "pubchem_record": {
+    "cid": "10889802",
+    "query": "3934-26-7",
+    "query_type": "name",
+    "molecular_formula": "C4Cl2F6",
+    "molecular_weight": 232.94,
+    "canonical_smiles": "C1(C(C(C1(F)Cl)(F)Cl)(F)F)(F)F",
+    "isomeric_smiles": "[C@]1([C@](C(C1(F)F)(F)F)(F)Cl)(F)Cl",
+    "inchi": "InChI=1S/C4Cl2F6/c5-1(7)2(6,8)4(11,12)3(1,9)10/t1-,2+",
+    "inchikey": "LMHAGAHDHRQIMB-XIXRPRMCSA-N",
+    "raw": {
+      "CID": 10889802,
+      "MolecularFormula": "C4Cl2F6",
+      "MolecularWeight": "232.94",
+      "SMILES": "[C@]1([C@](C(C1(F)F)(F)F)(F)Cl)(F)Cl",
+      "ConnectivitySMILES": "C1(C(C(C1(F)Cl)(F)Cl)(F)F)(F)F",
+      "InChI": "InChI=1S/C4Cl2F6/c5-1(7)2(6,8)4(11,12)3(1,9)10/t1-,2+",
+      "InChIKey": "LMHAGAHDHRQIMB-XIXRPRMCSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/3934-26-7/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "10889802",
+    "synonyms": [
+      "3934-26-7",
+      "RefChem:379057",
+      "rel-(1R,2S)-1,2-Dichloro-1,2,3,3,4,4-hexafluorocyclobutane",
+      "Cyclobutane, 1,2-dichloro-1,2,3,3,4,4-hexafluoro-, (1R,2S)-rel-",
+      "CHEMBL504421",
+      "(1R,2S)-1,2-Dichloro-1,2,3,3,4,4-hexafluorocyclobutane",
+      "DTXSID001037349"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/10889802/synonyms/JSON"
+  }
+}

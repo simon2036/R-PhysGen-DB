@@ -1,0 +1,53 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_151771_08_3",
+    "r_number": "",
+    "family": "HCFC",
+    "query_name": "151771-08-3",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=HCFC-243ea"
+  },
+  "pubchem_record": {
+    "cid": "18356507",
+    "query": "151771-08-3",
+    "query_type": "name",
+    "molecular_formula": "C3H3Cl2F3",
+    "molecular_weight": 166.95,
+    "canonical_smiles": "C(C(F)Cl)(C(F)Cl)F",
+    "isomeric_smiles": "C(C(F)Cl)(C(F)Cl)F",
+    "inchi": "InChI=1S/C3H3Cl2F3/c4-2(7)1(6)3(5)8/h1-3H",
+    "inchikey": "GOPWDGSRSNYABC-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 18356507,
+      "MolecularFormula": "C3H3Cl2F3",
+      "MolecularWeight": "166.95",
+      "SMILES": "C(C(F)Cl)(C(F)Cl)F",
+      "ConnectivitySMILES": "C(C(F)Cl)(C(F)Cl)F",
+      "InChI": "InChI=1S/C3H3Cl2F3/c4-2(7)1(6)3(5)8/h1-3H",
+      "InChIKey": "GOPWDGSRSNYABC-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/151771-08-3/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "18356507",
+    "synonyms": [
+      "1,3-DICHLORO-1,2,3-TRIFLUOROPROPANE",
+      "151771-08-3",
+      "HCFC-243ea",
+      "SCHEMBL1988694",
+      "DTXSID00593068"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/18356507/synonyms/JSON"
+  }
+}

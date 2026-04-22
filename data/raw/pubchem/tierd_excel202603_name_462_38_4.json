@@ -1,0 +1,65 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_462_38_4",
+    "r_number": "",
+    "family": "HCFC",
+    "query_name": "462-38-4",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=HCFC-271fa"
+  },
+  "pubchem_record": {
+    "cid": "11829371",
+    "query": "462-38-4",
+    "query_type": "name",
+    "molecular_formula": "C3H6ClF",
+    "molecular_weight": 96.53,
+    "canonical_smiles": "C(CF)CCl",
+    "isomeric_smiles": "C(CF)CCl",
+    "inchi": "InChI=1S/C3H6ClF/c4-2-1-3-5/h1-3H2",
+    "inchikey": "PFDZQZAOZNELDX-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 11829371,
+      "MolecularFormula": "C3H6ClF",
+      "MolecularWeight": "96.53",
+      "SMILES": "C(CF)CCl",
+      "ConnectivitySMILES": "C(CF)CCl",
+      "InChI": "InChI=1S/C3H6ClF/c4-2-1-3-5/h1-3H2",
+      "InChIKey": "PFDZQZAOZNELDX-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/462-38-4/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "11829371",
+    "synonyms": [
+      "1-chloro-3-fluoropropane",
+      "462-38-4",
+      "DTXSID40870542",
+      "RefChem:1055248",
+      "DTXCID10818259",
+      "1-Fluoro-3-chloropropane",
+      "1-chloro-3-fluoro-propane",
+      "C3H6ClF",
+      "HCFC-271fa",
+      "SCHEMBL365697",
+      "SCHEMBL407258",
+      "SCHEMBL1294254",
+      "PFDZQZAOZNELDX-UHFFFAOYSA-N",
+      "MFCD19232081",
+      "AKOS006385699",
+      "DB-226219",
+      "F88015"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/11829371/synonyms/JSON"
+  }
+}

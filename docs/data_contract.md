@@ -33,11 +33,39 @@ Interpretation:
 - `Tier A/B/C` rows with `model_inclusion=yes` are the promoted subset
 - `Tier D` rows with `model_inclusion=no` remain inventory-only until promoted
 - `source_bundle=pubchem_bulk` is reserved for generated `Tier D` candidate rows sourced from the PubChem FTP bulk intake
+- `source_bundle=excel_202603_structured` is reserved for generated `Tier D` candidate rows sourced from the workbook `methods/制冷剂数据库202603.xlsx`
+
+## Excel 202603 Intake Artifacts
+
+The curated workbook intake writes four contract-level artifacts:
+
+- `data/raw/manual/observations/excel_202603_observations.csv`
+  Workbook-derived supplement observations merged automatically through `data/raw/manual/observations/*.csv`. This file may contain both exact-matched existing molecules and workbook-generated candidate seeds.
+- `data/raw/generated/excel_202603_tierd_candidates.csv`
+  Generated `seed_catalog`-compatible `Tier D` candidate supplement for workbook-only structured rows.
+- `data/raw/generated/excel_202603_name_only_staging.csv`
+  Name-only staging table from `2-热物性参考`; it is explicitly excluded from `seed_catalog` until a unique structure or external identifier is resolved.
+- `docs/excel_202603_brief_report.md`
+  Human-readable brief report summarizing workbook usability, supplement coverage, new-dimension decisions, and expansion/staging counts.
+
+Rules:
+
+- `data/raw/manual/observations/excel_202603_observations.csv` may populate `boiling_point_c`, `critical_temp_c`, `critical_pressure_mpa`, `acentric_factor`, `vaporization_enthalpy_kjmol`, `odp`, and `critical_compressibility_factor`.
+- The same workbook observation batch may backfill generated `source_bundle=excel_202603_structured` candidates after they enter `seed_catalog`, so the Excel intake supports both "existing DB supplement" and "new candidate property backfill".
+- `2-热物性参考` may additionally backfill generated Excel candidates through exact alias matches on resolved `molecule_alias` entries, but only for `boiling_point_c`, `critical_temp_c`, `critical_pressure_mpa`, and `acentric_factor`, and only when the matched value is unique for that candidate-property pair.
+- Workbook `ODP` values outside the conservative `[0, 1]` import range are treated as outliers and excluded from the main observation tables.
+- Bare `GWP` values from the workbook are report-only until a time horizon is confirmed.
+- `Hv[298K]` values from `2-热物性参考` are report-only and staging-only in this phase; they do not map directly into `vaporization_enthalpy_kjmol`.
+- `data/raw/generated/excel_202603_name_only_staging.csv` is an analysis artifact, not an inventory source.
 
 ## Bulk Candidate Artifacts
 
-Bulk PubChem acquisition writes three contract-level artifacts:
+Bulk PubChem acquisition writes five contract-level artifacts:
 
+- `data/bronze/coarse_filter_summary.parquet`
+  Full `CID-Mass.gz` coarse-filter aggregate cube grouped by `coarse_filter_reason`, `element_pattern`, `carbon_bucket`, and `mass_bucket`.
+- `data/bronze/coarse_filter_summary.json`
+  Compact human-readable rollup for the same coarse-filter pass, with metadata, reason totals, bucket totals, and top element-pattern / combination slices.
 - `data/bronze/pubchem_candidate_pool.parquet`
   Filtered, RDKit-standardized candidate pool with structural annotations, de-duplication flags, and `volatility_status`.
 - `data/bronze/pubchem_candidate_filter_audit.parquet`
@@ -54,9 +82,13 @@ Rules:
 
 Audit semantics:
 
+- `coarse_filter_summary.parquet` is the project-default replacement for a full `123,857,780`-row coarse-failure ledger.
+- The parquet summary is a grouped aggregate over the full PubChem `CID-Mass.gz` universe. It is not row-level, but it does cover both coarse-filter passes and coarse-filter failures.
+- `coarse_filter_summary.json` intentionally stays small. It is a digest of the parquet summary rather than a second copy of all grouped rows.
 - The current `pubchem_candidate_filter_audit.parquet` is not a full `123,857,780`-row PubChem negative ledger.
 - It covers the coarse-survivor universe produced by the cheap DuckDB prefilter on `CID-Mass.gz`, then records why a surviving CID was excluded by later stages such as `multi_component`, `non_neutral`, `disallowed_elements`, `screening_error:*`, or `missing_smiles`.
 - This keeps the audit table operationally small enough to inspect and regenerate while still explaining why a near-candidate failed to become part of `pubchem_candidate_pool.parquet`.
+- In `coarse_filter_summary.*`, `passed_coarse_filter` is mutually exclusive, but failure-reason counts are reason-hit counts. A single CID may contribute to multiple coarse failure reasons.
 - If the project later needs a full coarse-filter failure ledger for all PubChem mass rows, that should be treated as a separate artifact with a different storage and retention expectation.
 
 ## Core Tables
@@ -137,6 +169,8 @@ Required fields:
 - `uncertainty`
 - `quality_level`
 
+Excel 202603 supplement rows enter here with `source_type=derived_harmonized` and keep workbook sheet provenance in `source_name` / `notes`.
+
 ### `property_recommended`
 
 One selected recommended value per `mol_id` and `property_name`, plus conflict metadata.
@@ -181,3 +215,5 @@ Each physical file is registered in `source_manifest` and mapped into `property_
 - GWP/ODP: `dimensionless`
 - COP: `dimensionless`
 - volumetric cooling: `MJ/m3`
+
+The newly added `critical_compressibility_factor` (`Zc`) also uses `dimensionless`.

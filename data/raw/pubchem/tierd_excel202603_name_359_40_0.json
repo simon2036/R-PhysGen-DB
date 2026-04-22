@@ -1,0 +1,70 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_359_40_0",
+    "r_number": "",
+    "family": "HFC",
+    "query_name": "359-40-0",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=Oxalyl fluoride"
+  },
+  "pubchem_record": {
+    "cid": "9668",
+    "query": "359-40-0",
+    "query_type": "name",
+    "molecular_formula": "C2F2O2",
+    "molecular_weight": 94.02,
+    "canonical_smiles": "C(=O)(C(=O)F)F",
+    "isomeric_smiles": "C(=O)(C(=O)F)F",
+    "inchi": "InChI=1S/C2F2O2/c3-1(5)2(4)6",
+    "inchikey": "HXQOOYKLTKQCRR-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 9668,
+      "MolecularFormula": "C2F2O2",
+      "MolecularWeight": "94.02",
+      "SMILES": "C(=O)(C(=O)F)F",
+      "ConnectivitySMILES": "C(=O)(C(=O)F)F",
+      "InChI": "InChI=1S/C2F2O2/c3-1(5)2(4)6",
+      "InChIKey": "HXQOOYKLTKQCRR-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/359-40-0/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "9668",
+    "synonyms": [
+      "Ethanedioyl difluoride",
+      "359-40-0",
+      "Difluorid kyseliny stavelove",
+      "Difluorid kyseliny stavelove [Czech]",
+      "EINECS 206-630-4",
+      "TL 108",
+      "BRN 1743349",
+      "DTXSID9059888",
+      "4-02-00-01853 (Beilstein Handbook Reference)",
+      "RefChem:138152",
+      "DTXCID8039110",
+      "OXALYL FLUORIDE",
+      "Oxalyl difluoride",
+      "2L7RR7QFL9",
+      "FCOCOF",
+      "UNII-2L7RR7QFL9",
+      "SCHEMBL2672289",
+      "HXQOOYKLTKQCRR-UHFFFAOYSA-N",
+      "AKOS006228573",
+      "DB-255895",
+      "NS00029950",
+      "Q7115087"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/9668/synonyms/JSON"
+  }
+}

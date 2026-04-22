@@ -1,0 +1,54 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_85358_65_2",
+    "r_number": "",
+    "family": "HFC",
+    "query_name": "85358-65-2",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=Trifluoromethyl formate"
+  },
+  "pubchem_record": {
+    "cid": "12723117",
+    "query": "85358-65-2",
+    "query_type": "name",
+    "molecular_formula": "C2HF3O2",
+    "molecular_weight": 114.02,
+    "canonical_smiles": "C(=O)OC(F)(F)F",
+    "isomeric_smiles": "C(=O)OC(F)(F)F",
+    "inchi": "InChI=1S/C2HF3O2/c3-2(4,5)7-1-6/h1H",
+    "inchikey": "XZHNVYDCJNNJEQ-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 12723117,
+      "MolecularFormula": "C2HF3O2",
+      "MolecularWeight": "114.02",
+      "SMILES": "C(=O)OC(F)(F)F",
+      "ConnectivitySMILES": "C(=O)OC(F)(F)F",
+      "InChI": "InChI=1S/C2HF3O2/c3-2(4,5)7-1-6/h1H",
+      "InChIKey": "XZHNVYDCJNNJEQ-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/85358-65-2/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "12723117",
+    "synonyms": [
+      "trifluoromethyl formate",
+      "85358-65-2",
+      "SCHEMBL95825",
+      "SCHEMBL95826",
+      "DTXSID30833742",
+      "XZHNVYDCJNNJEQ-UHFFFAOYSA-N"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/12723117/synonyms/JSON"
+  }
+}

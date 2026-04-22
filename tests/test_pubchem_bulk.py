@@ -11,6 +11,7 @@ from r_physgen_db import pipeline
 from r_physgen_db.chemistry import standardize_smiles
 from r_physgen_db.sources import pubchem_bulk as pubchem_bulk_module
 from r_physgen_db.sources.pubchem_bulk import (
+    build_pubchem_coarse_filter_summary,
     build_pubchem_candidate_pool,
     build_pubchem_candidate_pool_streaming,
     export_tierd_seed_rows,
@@ -248,6 +249,53 @@ def test_build_pubchem_candidate_pool_streaming_prefilters_with_duckdb(tmp_path:
     assert "1005" not in failures.index
     assert bool(failures.loc["1004", "passed_hard_filters"]) is False
     assert failures.loc["1004", "failure_reasons"] == "multi_component"
+
+
+def test_build_pubchem_coarse_filter_summary_aggregates_full_mass_space(tmp_path: Path) -> None:
+    mass_path = tmp_path / "CID-Mass.gz"
+    _write_gzip_lines(
+        mass_path,
+        [
+            "1001\tC2H2F2\t64.000000\t64.000000",
+            "1002\tH2O\t18.000000\t18.000000",
+            "1003\tC8H18\t114.000000\t114.000000",
+            "1004\tC\t12.000000\t12.000000",
+            "1005\tC2H4O\t44.000000\t44.000000",
+        ],
+    )
+
+    summary, metadata = build_pubchem_coarse_filter_summary(mass_path)
+
+    assert metadata["total_mass_records"] == 5
+    assert metadata["passed_coarse_filter_count"] == 2
+    assert metadata["failed_coarse_filter_count"] == 3
+
+    totals = summary.groupby("coarse_filter_reason", as_index=False)["cid_count"].sum().set_index("coarse_filter_reason")
+    assert int(totals.loc["passed_coarse_filter", "cid_count"]) == 2
+    assert int(totals.loc["disallowed_formula_pattern", "cid_count"]) == 1
+    assert int(totals.loc["carbon_count_lt_1", "cid_count"]) == 1
+    assert int(totals.loc["molecular_weight_lt_16", "cid_count"]) == 1
+    assert int(totals.loc["carbon_count_gt_6", "cid_count"]) == 1
+    assert int(totals.loc["total_atom_count_gt_18", "cid_count"]) == 1
+
+    pass_row = summary.loc[
+        (summary["coarse_filter_reason"] == "passed_coarse_filter")
+        & (summary["element_pattern"] == "CHF")
+        & (summary["carbon_bucket"] == "C2")
+        & (summary["mass_bucket"] == "50-99.999")
+    ]
+    assert len(pass_row) == 1
+    assert int(pass_row.iloc[0]["cid_count"]) == 1
+    assert pass_row.iloc[0]["sample_formula"] == "C2H2F2"
+
+    disallowed_row = summary.loc[
+        (summary["coarse_filter_reason"] == "disallowed_formula_pattern")
+        & (summary["element_pattern"] == "HO")
+        & (summary["carbon_bucket"] == "C0")
+        & (summary["mass_bucket"] == "16-49.999")
+    ]
+    assert len(disallowed_row) == 1
+    assert int(disallowed_row.iloc[0]["cid_count"]) == 1
 
 
 def test_export_tierd_seed_rows_uses_inventory_defaults_and_skips_full_duplicates() -> None:

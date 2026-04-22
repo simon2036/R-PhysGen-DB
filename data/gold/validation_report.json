@@ -2,7 +2,7 @@
   "schema_checks": [
     {
       "table": "source_manifest",
-      "row_count": 277
+      "row_count": 5849
     },
     {
       "table": "pending_sources",
@@ -10,27 +10,27 @@
     },
     {
       "table": "molecule_core",
-      "row_count": 128
+      "row_count": 5591
     },
     {
       "table": "molecule_alias",
-      "row_count": 2432
+      "row_count": 27648
     },
     {
       "table": "property_observation",
-      "row_count": 1859
+      "row_count": 3060
     },
     {
       "table": "regulatory_status",
-      "row_count": 95
+      "row_count": 96
     },
     {
       "table": "property_recommended",
-      "row_count": 1132
+      "row_count": 2330
     },
     {
       "table": "structure_features",
-      "row_count": 128
+      "row_count": 5591
     },
     {
       "table": "model_dataset_index",
@@ -199,7 +199,7 @@
     "Tier A: boiling_point_c coverage 1.000 >= 0.950",
     "Tier A: critical_temp_c coverage 1.000 >= 0.950",
     "Tier A: critical_pressure_mpa coverage 1.000 >= 0.950",
-    "Tier A: odp coverage 0.938 >= 0.900",
+    "Tier A: odp coverage 0.969 >= 0.900",
     "Tier A: gwp_100yr coverage 0.969 >= 0.900",
     "Tier A: ashrae_safety coverage 0.906 >= 0.900",
     "Tier B: boiling_point_c coverage 1.000 >= 0.800",
@@ -209,7 +209,7 @@
   "inventory_checks": [
     {
       "refrigerant_count": 70,
-      "candidate_count": 62,
+      "candidate_count": 5630,
       "resolved_refrigerant_count": 70,
       "unresolved_refrigerant_count": 0
     }
@@ -220,9 +220,10 @@
     "A": {
       "acentric_factor": 1.0,
       "ashrae_safety": 0.90625,
-      "atmospheric_lifetime_yr": 0.25,
+      "atmospheric_lifetime_yr": 0.21875,
       "boiling_point_c": 1.0,
       "cop_standard_cycle": 0.90625,
+      "critical_compressibility_factor": 0.78125,
       "critical_density_kgm3": 1.0,
       "critical_pressure_mpa": 1.0,
       "critical_temp_c": 1.0,
@@ -230,7 +231,7 @@
       "gwp_20yr": 0.1875,
       "gwp_ar4_100yr": 0.21875,
       "gwp_ar5_100yr": 0.21875,
-      "odp": 0.9375,
+      "odp": 0.96875,
       "toxicity_class": 0.90625,
       "vaporization_enthalpy_kjmol": 1.0,
       "volumetric_cooling_mjm3": 0.90625,
@@ -242,46 +243,54 @@
       "atmospheric_lifetime_yr": 0.0625,
       "boiling_point_c": 1.0,
       "cop_standard_cycle": 0.8125,
+      "critical_compressibility_factor": 0.3333333333333333,
       "critical_density_kgm3": 1.0,
       "critical_pressure_mpa": 1.0,
       "critical_temp_c": 1.0,
       "gwp_100yr": 0.5416666666666666,
       "gwp_ar4_100yr": 0.0625,
       "gwp_ar5_100yr": 0.0625,
-      "odp": 0.5416666666666666,
+      "odp": 0.5833333333333334,
       "toxicity_class": 0.3125,
       "vaporization_enthalpy_kjmol": 1.0,
       "volumetric_cooling_mjm3": 0.8125,
       "molecule_count": 48
     },
     "C": {
-      "acentric_factor": 0.75,
+      "acentric_factor": 0.875,
       "ashrae_safety": 0.025,
-      "boiling_point_c": 0.775,
+      "boiling_point_c": 0.925,
       "cop_standard_cycle": 0.525,
+      "critical_compressibility_factor": 0.05,
       "critical_density_kgm3": 0.75,
-      "critical_pressure_mpa": 0.775,
-      "critical_temp_c": 0.775,
+      "critical_pressure_mpa": 0.925,
+      "critical_temp_c": 0.925,
       "gwp_100yr": 0.6,
-      "odp": 0.225,
+      "odp": 0.425,
       "toxicity_class": 0.025,
       "vaporization_enthalpy_kjmol": 0.85,
       "volumetric_cooling_mjm3": 0.525,
       "molecule_count": 40
     },
     "D": {
-      "ashrae_safety": 0.0,
-      "boiling_point_c": 0.5,
-      "critical_pressure_mpa": 0.375,
-      "critical_temp_c": 0.5,
-      "gwp_100yr": 0.125,
-      "odp": 0.0,
-      "vaporization_enthalpy_kjmol": 0.25,
-      "molecule_count": 8
+      "acentric_factor": 0.02028879546700786,
+      "ashrae_safety": 0.0003655638822884299,
+      "atmospheric_lifetime_yr": 0.0010966916468652897,
+      "boiling_point_c": 0.040394808992871505,
+      "critical_compressibility_factor": 0.015353683056114056,
+      "critical_pressure_mpa": 0.023030524584171083,
+      "critical_temp_c": 0.023030524584171083,
+      "gwp_100yr": 0.0027417291171632245,
+      "gwp_ar4_100yr": 0.0010966916468652897,
+      "gwp_ar5_100yr": 0.0012794735880095047,
+      "odp": 0.07658563333942607,
+      "toxicity_class": 0.0003655638822884299,
+      "vaporization_enthalpy_kjmol": 0.0020106013525863645,
+      "molecule_count": 5471
     }
   },
   "refrigerant_count": 70,
-  "candidate_count": 62,
+  "candidate_count": 5630,
   "unresolved_refrigerants": [],
   "inventory_property_gaps": {
     "candidate": {
@@ -292,8 +301,8 @@
           "total_count": 21
         },
         "odp": {
-          "present_count": 4,
-          "missing_count": 17,
+          "present_count": 6,
+          "missing_count": 15,
           "total_count": 21
         },
         "ashrae_safety": {
@@ -314,8 +323,8 @@
           "total_count": 34
         },
         "odp": {
-          "present_count": 8,
-          "missing_count": 26,
+          "present_count": 16,
+          "missing_count": 18,
           "total_count": 34
         },
         "ashrae_safety": {
@@ -331,24 +340,24 @@
       },
       "D": {
         "gwp_100yr": {
-          "present_count": 0,
-          "missing_count": 7,
-          "total_count": 7
+          "present_count": 14,
+          "missing_count": 5561,
+          "total_count": 5575
         },
         "odp": {
-          "present_count": 0,
-          "missing_count": 7,
-          "total_count": 7
+          "present_count": 414,
+          "missing_count": 5161,
+          "total_count": 5575
         },
         "ashrae_safety": {
-          "present_count": 0,
-          "missing_count": 7,
-          "total_count": 7
+          "present_count": 2,
+          "missing_count": 5573,
+          "total_count": 5575
         },
         "toxicity_class": {
-          "present_count": 0,
-          "missing_count": 7,
-          "total_count": 7
+          "present_count": 2,
+          "missing_count": 5573,
+          "total_count": 5575
         }
       }
     },
@@ -360,8 +369,8 @@
           "total_count": 32
         },
         "odp": {
-          "present_count": 30,
-          "missing_count": 2,
+          "present_count": 31,
+          "missing_count": 1,
           "total_count": 32
         },
         "ashrae_safety": {
@@ -426,8 +435,8 @@
           "total_count": 5
         },
         "odp": {
-          "present_count": 0,
-          "missing_count": 5,
+          "present_count": 5,
+          "missing_count": 0,
           "total_count": 5
         },
         "ashrae_safety": {
@@ -445,7 +454,7 @@
   },
   "inventory_convergence": {
     "refrigerant_count": 70,
-    "candidate_count": 62,
+    "candidate_count": 5630,
     "inventory_property_gaps": {
       "candidate": {
         "B": {
@@ -455,8 +464,8 @@
             "total_count": 21
           },
           "odp": {
-            "present_count": 4,
-            "missing_count": 17,
+            "present_count": 6,
+            "missing_count": 15,
             "total_count": 21
           },
           "ashrae_safety": {
@@ -477,8 +486,8 @@
             "total_count": 34
           },
           "odp": {
-            "present_count": 8,
-            "missing_count": 26,
+            "present_count": 16,
+            "missing_count": 18,
             "total_count": 34
           },
           "ashrae_safety": {
@@ -494,24 +503,24 @@
         },
         "D": {
           "gwp_100yr": {
-            "present_count": 0,
-            "missing_count": 7,
-            "total_count": 7
+            "present_count": 14,
+            "missing_count": 5561,
+            "total_count": 5575
           },
           "odp": {
-            "present_count": 0,
-            "missing_count": 7,
-            "total_count": 7
+            "present_count": 414,
+            "missing_count": 5161,
+            "total_count": 5575
           },
           "ashrae_safety": {
-            "present_count": 0,
-            "missing_count": 7,
-            "total_count": 7
+            "present_count": 2,
+            "missing_count": 5573,
+            "total_count": 5575
           },
           "toxicity_class": {
-            "present_count": 0,
-            "missing_count": 7,
-            "total_count": 7
+            "present_count": 2,
+            "missing_count": 5573,
+            "total_count": 5575
           }
         }
       },
@@ -523,8 +532,8 @@
             "total_count": 32
           },
           "odp": {
-            "present_count": 30,
-            "missing_count": 2,
+            "present_count": 31,
+            "missing_count": 1,
             "total_count": 32
           },
           "ashrae_safety": {
@@ -589,8 +598,8 @@
             "total_count": 5
           },
           "odp": {
-            "present_count": 0,
-            "missing_count": 5,
+            "present_count": 5,
+            "missing_count": 0,
             "total_count": 5
           },
           "ashrae_safety": {

@@ -1,0 +1,67 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_662_01_1",
+    "r_number": "",
+    "family": "CFC",
+    "query_name": "662-01-1",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=CFC-216ca"
+  },
+  "pubchem_record": {
+    "cid": "69580",
+    "query": "662-01-1",
+    "query_type": "name",
+    "molecular_formula": "C3Cl2F6",
+    "molecular_weight": 220.93,
+    "canonical_smiles": "C(C(F)(F)Cl)(C(F)(F)Cl)(F)F",
+    "isomeric_smiles": "C(C(F)(F)Cl)(C(F)(F)Cl)(F)F",
+    "inchi": "InChI=1S/C3Cl2F6/c4-2(8,9)1(6,7)3(5,10)11",
+    "inchikey": "JETINLPZEWINFD-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 69580,
+      "MolecularFormula": "C3Cl2F6",
+      "MolecularWeight": "220.93",
+      "SMILES": "C(C(F)(F)Cl)(C(F)(F)Cl)(F)F",
+      "ConnectivitySMILES": "C(C(F)(F)Cl)(C(F)(F)Cl)(F)F",
+      "InChI": "InChI=1S/C3Cl2F6/c4-2(8,9)1(6,7)3(5,10)11",
+      "InChIKey": "JETINLPZEWINFD-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/662-01-1/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "69580",
+    "synonyms": [
+      "662-01-1",
+      "1,3-Dichloro-1,1,2,2,3,3-hexafluoropropane",
+      "EINECS 211-552-9",
+      "DTXSID90216375",
+      "RefChem:72611",
+      "DTXCID90138866",
+      "211-552-9",
+      "1,3-DICHLOROHEXAFLUOROPROPANE",
+      "Propane,1,3-dichloro-1,1,2,2,3,3-hexafluoro-",
+      "MFCD00018815",
+      "1,3-dichloro-1,1,2,2,3,3-hexafluoro-propane",
+      "CFC-216ca",
+      "VJK25J4FCJ",
+      "Propane, 1,3-dichloro-1,1,2,2,3,3-hexafluoro-",
+      "SCHEMBL1990770",
+      "SBB096068",
+      "AKOS015848747",
+      "DB-054882",
+      "NS00019186"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/69580/synonyms/JSON"
+  }
+}

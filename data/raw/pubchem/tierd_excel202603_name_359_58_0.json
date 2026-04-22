@@ -1,0 +1,60 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_359_58_0",
+    "r_number": "",
+    "family": "HCFC",
+    "query_name": "359-58-0",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=HCFC-226ea"
+  },
+  "pubchem_record": {
+    "cid": "2783403",
+    "query": "359-58-0",
+    "query_type": "name",
+    "molecular_formula": "C3HClF6",
+    "molecular_weight": 186.48,
+    "canonical_smiles": "C(C(F)(F)F)(C(F)(F)Cl)F",
+    "isomeric_smiles": "C(C(F)(F)F)(C(F)(F)Cl)F",
+    "inchi": "InChI=1S/C3HClF6/c4-2(6,7)1(5)3(8,9)10/h1H",
+    "inchikey": "JODPGPKOJGDHSV-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 2783403,
+      "MolecularFormula": "C3HClF6",
+      "MolecularWeight": "186.48",
+      "SMILES": "C(C(F)(F)F)(C(F)(F)Cl)F",
+      "ConnectivitySMILES": "C(C(F)(F)F)(C(F)(F)Cl)F",
+      "InChI": "InChI=1S/C3HClF6/c4-2(6,7)1(5)3(8,9)10/h1H",
+      "InChIKey": "JODPGPKOJGDHSV-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/359-58-0/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "2783403",
+    "synonyms": [
+      "1-Chloro-1,1,2,3,3,3-hexafluoropropane",
+      "359-58-0",
+      "HCFC-226ea",
+      "SCHEMBL404186",
+      "SCHEMBL404187",
+      "SCHEMBL1803311",
+      "DTXSID10957319",
+      "JODPGPKOJGDHSV-UHFFFAOYSA-N",
+      "MFCD04038865",
+      "AKOS006228039",
+      "FC84075",
+      "DB-238227"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/2783403/synonyms/JSON"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_422_44_6",
+    "r_number": "",
+    "family": "HCFC",
+    "query_name": "422-44-6",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=HCFC-225bb"
+  },
+  "pubchem_record": {
+    "cid": "61110",
+    "query": "422-44-6",
+    "query_type": "name",
+    "molecular_formula": "C3HCl2F5",
+    "molecular_weight": 202.93,
+    "canonical_smiles": "C(C(C(F)(F)Cl)(F)Cl)(F)F",
+    "isomeric_smiles": "C(C(C(F)(F)Cl)(F)Cl)(F)F",
+    "inchi": "InChI=1S/C3HCl2F5/c4-2(8,1(6)7)3(5,9)10/h1H",
+    "inchikey": "GDSQRBLILFKERU-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 61110,
+      "MolecularFormula": "C3HCl2F5",
+      "MolecularWeight": "202.93",
+      "SMILES": "C(C(C(F)(F)Cl)(F)Cl)(F)F",
+      "ConnectivitySMILES": "C(C(C(F)(F)Cl)(F)Cl)(F)F",
+      "InChI": "InChI=1S/C3HCl2F5/c4-2(8,1(6)7)3(5,9)10/h1H",
+      "InChIKey": "GDSQRBLILFKERU-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/422-44-6/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "61110",
+    "synonyms": [
+      "1,2-DICHLORO-1,1,2,3,3-PENTAFLUOROPROPANE",
+      "HCFC-225bb",
+      "UNII-PV9W4A71T4",
+      "PV9W4A71T4",
+      "DTXSID6042026",
+      "R-225BA",
+      "RefChem:71839",
+      "DTXCID4022026",
+      "422-44-6",
+      "1,2-DICHLORO-1,1,2,3,3-PENTAFLUORO-PROPANE",
+      "Propane, 1,2-dichloro-1,1,2,3,3-pentafluoro-",
+      "SCHEMBL94227",
+      "SCHEMBL537407",
+      "GDSQRBLILFKERU-UHFFFAOYSA-N",
+      "FD86805",
+      "NS00121570",
+      "Q27286774"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/61110/synonyms/JSON"
+  }
+}

@@ -16,10 +16,59 @@ if str(SRC) not in sys.path:
 
 from r_physgen_db.sources.pubchem_bulk import (  # noqa: E402
     DEFAULT_EXTRAS_FILES,
+    build_pubchem_coarse_filter_summary,
     build_pubchem_candidate_pool,
     build_pubchem_candidate_pool_streaming,
     download_pubchem_extras,
 )
+
+
+def _build_coarse_summary_payload(summary: pd.DataFrame, metadata: dict[str, object]) -> dict[str, object]:
+    reason_totals = (
+        summary.groupby(["coarse_filter_reason", "reason_order"], as_index=False)["cid_count"]
+        .sum()
+        .sort_values(["reason_order", "cid_count"], ascending=[True, False])
+    )
+    carbon_bucket_totals = (
+        summary.groupby(
+            ["coarse_filter_reason", "reason_order", "carbon_bucket", "carbon_bucket_order"],
+            as_index=False,
+        )["cid_count"]
+        .sum()
+        .sort_values(["reason_order", "carbon_bucket_order"])
+    )
+    mass_bucket_totals = (
+        summary.groupby(
+            ["coarse_filter_reason", "reason_order", "mass_bucket", "mass_bucket_order"],
+            as_index=False,
+        )["cid_count"]
+        .sum()
+        .sort_values(["reason_order", "mass_bucket_order"])
+    )
+    element_pattern_totals = (
+        summary.groupby(["coarse_filter_reason", "reason_order", "element_pattern"], as_index=False)["cid_count"]
+        .sum()
+        .sort_values(["reason_order", "cid_count", "element_pattern"], ascending=[True, False, True])
+    )
+    top_element_patterns = (
+        element_pattern_totals.groupby("coarse_filter_reason", group_keys=False)
+        .head(25)
+        .reset_index(drop=True)
+    )
+    top_combination_rows = (
+        summary.sort_values(["cid_count", "reason_order", "element_pattern"], ascending=[False, True, True])
+        .head(250)
+        .reset_index(drop=True)
+    )
+    return {
+        **metadata,
+        "summary_row_count": int(len(summary)),
+        "reason_totals": json.loads(reason_totals.to_json(orient="records")),
+        "carbon_bucket_totals": json.loads(carbon_bucket_totals.to_json(orient="records")),
+        "mass_bucket_totals": json.loads(mass_bucket_totals.to_json(orient="records")),
+        "top_element_patterns": json.loads(top_element_patterns.to_json(orient="records")),
+        "top_combination_rows": json.loads(top_combination_rows.to_json(orient="records")),
+    }
 
 
 def main() -> None:
@@ -28,6 +77,7 @@ def main() -> None:
     parser.add_argument("--refresh-remote", action="store_true")
     parser.add_argument("--skip-download", action="store_true")
     parser.add_argument("--download-only", action="store_true", help="Download PubChem Extras files without building the candidate pool.")
+    parser.add_argument("--summary-only", action="store_true", help="Build only the DuckDB coarse-filter aggregate summary from CID-Mass.gz.")
     parser.add_argument("--cid-limit", type=int, default=None, help="Optional cap for local trial runs.")
     parser.add_argument("--timeout", type=int, default=180)
     parser.add_argument("--chunk-size", type=int, default=1024 * 1024, help="Per-request streaming chunk size in bytes.")
@@ -66,6 +116,30 @@ def main() -> None:
         print(json.dumps(payload, indent=2, ensure_ascii=False))
         return
 
+    coarse_summary_path = ROOT / "data" / "bronze" / "coarse_filter_summary.parquet"
+    coarse_summary_json_path = ROOT / "data" / "bronze" / "coarse_filter_summary.json"
+    coarse_summary_path.parent.mkdir(parents=True, exist_ok=True)
+
+    coarse_summary, coarse_summary_metadata = build_pubchem_coarse_filter_summary(
+        extras_paths["mass"],
+        cid_limit=args.cid_limit,
+    )
+    coarse_summary.to_parquet(coarse_summary_path, index=False)
+    coarse_summary_json_path.write_text(
+        json.dumps(_build_coarse_summary_payload(coarse_summary, coarse_summary_metadata), indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    if args.summary_only:
+        payload = {
+            "coarse_filter_summary_path": str(coarse_summary_path),
+            "coarse_filter_summary_json_path": str(coarse_summary_json_path),
+            **coarse_summary_metadata,
+            "summary_row_count": int(len(coarse_summary)),
+        }
+        print(json.dumps(payload, indent=2, ensure_ascii=False))
+        return
+
     existing_molecule_core_path = ROOT / "data" / "silver" / "molecule_core.parquet"
     existing_molecule_core = pd.read_parquet(existing_molecule_core_path) if existing_molecule_core_path.exists() else pd.DataFrame()
 
@@ -89,6 +163,10 @@ def main() -> None:
     print(
         json.dumps(
             {
+                "coarse_filter_summary_path": str(coarse_summary_path),
+                "coarse_filter_summary_json_path": str(coarse_summary_json_path),
+                "coarse_filter_summary_count": int(len(coarse_summary)),
+                **coarse_summary_metadata,
                 "candidate_pool_path": str(candidate_pool_path),
                 "candidate_pool_count": int(len(candidate_pool)),
                 "audit_path": str(audit_path),

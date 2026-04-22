@@ -1,0 +1,67 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_380_34_7",
+    "r_number": "",
+    "family": "HFC",
+    "query_name": "380-34-7",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=1-ethoxy-1,1,2,3,3,3-hexafluoro- propane"
+  },
+  "pubchem_record": {
+    "cid": "2775036",
+    "query": "380-34-7",
+    "query_type": "name",
+    "molecular_formula": "C5H6F6O",
+    "molecular_weight": 196.09,
+    "canonical_smiles": "CCOC(C(C(F)(F)F)F)(F)F",
+    "isomeric_smiles": "CCOC(C(C(F)(F)F)F)(F)F",
+    "inchi": "InChI=1S/C5H6F6O/c1-2-12-5(10,11)3(6)4(7,8)9/h3H,2H2,1H3",
+    "inchikey": "DMECHFLLAQSVAD-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 2775036,
+      "MolecularFormula": "C5H6F6O",
+      "MolecularWeight": "196.09",
+      "SMILES": "CCOC(C(C(F)(F)F)F)(F)F",
+      "ConnectivitySMILES": "CCOC(C(C(F)(F)F)F)(F)F",
+      "InChI": "InChI=1S/C5H6F6O/c1-2-12-5(10,11)3(6)4(7,8)9/h3H,2H2,1H3",
+      "InChIKey": "DMECHFLLAQSVAD-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/380-34-7/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "2775036",
+    "synonyms": [
+      "Ethyl 1,1,2,3,3,3-Hexafluoropropyl Ether",
+      "RefChem:593182",
+      "808-061-2",
+      "380-34-7",
+      "1,1,2,3,3,3-Hexafluoropropyl ethyl ether",
+      "1-ethoxy-1,1,2,3,3,3-hexafluoropropane",
+      "MFCD00236122",
+      "1,1,2,3,3,3-Hexafluoropropylethylether",
+      "1,1,1,2,3,3-HEXAFLUOROPROPYL ETHYL ETHER",
+      "Ethyl 2H-perfluoropropyl ether",
+      "SCHEMBL1260725",
+      "SCHEMBL5171801",
+      "DTXSID20695972",
+      "DMECHFLLAQSVAD-UHFFFAOYSA-N",
+      "SBB091952",
+      "AKOS006228193",
+      "DB-049228",
+      "E1020",
+      "D90584"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/2775036/synonyms/JSON"
+  }
+}

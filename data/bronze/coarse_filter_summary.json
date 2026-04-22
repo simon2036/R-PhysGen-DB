@@ -1,0 +1,5021 @@
+{
+  "total_mass_records": 123857780,
+  "passed_coarse_filter_count": 612908,
+  "failed_coarse_filter_count": 123244872,
+  "cid_limit": null,
+  "reason_count_semantics": "`passed_coarse_filter` is mutually exclusive; failure reasons are reason-hit counts, so one CID may contribute to multiple failure reasons.",
+  "summary_row_count": 471756,
+  "reason_totals": [
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "cid_count": 612908
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "cid_count": 9581512
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_lt_16",
+      "reason_order": 2,
+      "cid_count": 216
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "cid_count": 84399954
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "cid_count": 159115
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "cid_count": 121817820
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "cid_count": 122294222
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "cid_count": 18095
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "cid_count": 111446969
+    }
+  ],
+  "carbon_bucket_totals": [
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "carbon_bucket": "C1",
+      "carbon_bucket_order": 1,
+      "cid_count": 12613
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "carbon_bucket": "C2",
+      "carbon_bucket_order": 2,
+      "cid_count": 32766
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "carbon_bucket": "C3",
+      "carbon_bucket_order": 3,
+      "cid_count": 68712
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "carbon_bucket": "C4",
+      "carbon_bucket_order": 4,
+      "cid_count": 133982
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "carbon_bucket": "C5",
+      "carbon_bucket_order": 5,
+      "cid_count": 175993
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "carbon_bucket": "C6",
+      "carbon_bucket_order": 6,
+      "cid_count": 188842
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "carbon_bucket": "C0",
+      "carbon_bucket_order": 0,
+      "cid_count": 159115
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "carbon_bucket": "C1",
+      "carbon_bucket_order": 1,
+      "cid_count": 96886
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "carbon_bucket": "C2",
+      "carbon_bucket_order": 2,
+      "cid_count": 62791
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "carbon_bucket": "C3",
+      "carbon_bucket_order": 3,
+      "cid_count": 74019
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "carbon_bucket": "C4",
+      "carbon_bucket_order": 4,
+      "cid_count": 108616
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "carbon_bucket": "C5",
+      "carbon_bucket_order": 5,
+      "cid_count": 112836
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "carbon_bucket": "C6",
+      "carbon_bucket_order": 6,
+      "cid_count": 193615
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "cid_count": 8773634
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_lt_16",
+      "reason_order": 2,
+      "carbon_bucket": "C0",
+      "carbon_bucket_order": 0,
+      "cid_count": 193
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_lt_16",
+      "reason_order": 2,
+      "carbon_bucket": "C1",
+      "carbon_bucket_order": 1,
+      "cid_count": 23
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "carbon_bucket": "C0",
+      "carbon_bucket_order": 0,
+      "cid_count": 57558
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "carbon_bucket": "C1",
+      "carbon_bucket_order": 1,
+      "cid_count": 24511
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "carbon_bucket": "C2",
+      "carbon_bucket_order": 2,
+      "cid_count": 9530
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "carbon_bucket": "C3",
+      "carbon_bucket_order": 3,
+      "cid_count": 10766
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "carbon_bucket": "C4",
+      "carbon_bucket_order": 4,
+      "cid_count": 20726
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "carbon_bucket": "C5",
+      "carbon_bucket_order": 5,
+      "cid_count": 20080
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "carbon_bucket": "C6",
+      "carbon_bucket_order": 6,
+      "cid_count": 63207
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "cid_count": 84193576
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "carbon_bucket": "C0",
+      "carbon_bucket_order": 0,
+      "cid_count": 159115
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "cid_count": 121817820
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "carbon_bucket": "C0",
+      "carbon_bucket_order": 0,
+      "cid_count": 7131
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "carbon_bucket": "C1",
+      "carbon_bucket_order": 1,
+      "cid_count": 5260
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "carbon_bucket": "C2",
+      "carbon_bucket_order": 2,
+      "cid_count": 7567
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "carbon_bucket": "C3",
+      "carbon_bucket_order": 3,
+      "cid_count": 16880
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "carbon_bucket": "C4",
+      "carbon_bucket_order": 4,
+      "cid_count": 68025
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "carbon_bucket": "C5",
+      "carbon_bucket_order": 5,
+      "cid_count": 191274
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "carbon_bucket": "C6",
+      "carbon_bucket_order": 6,
+      "cid_count": 554129
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "cid_count": 121443956
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "carbon_bucket": "C0",
+      "carbon_bucket_order": 0,
+      "cid_count": 18095
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "carbon_bucket": "C0",
+      "carbon_bucket_order": 0,
+      "cid_count": 10389
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "carbon_bucket": "C1",
+      "carbon_bucket_order": 1,
+      "cid_count": 4203
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "carbon_bucket": "C2",
+      "carbon_bucket_order": 2,
+      "cid_count": 2067
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "carbon_bucket": "C3",
+      "carbon_bucket_order": 3,
+      "cid_count": 2878
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "carbon_bucket": "C4",
+      "carbon_bucket_order": 4,
+      "cid_count": 8258
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "carbon_bucket": "C5",
+      "carbon_bucket_order": 5,
+      "cid_count": 9661
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "carbon_bucket": "C6",
+      "carbon_bucket_order": 6,
+      "cid_count": 42729
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "cid_count": 111366784
+    }
+  ],
+  "mass_bucket_totals": [
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "mass_bucket": "16-49.999",
+      "mass_bucket_order": 1,
+      "cid_count": 1257
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "mass_bucket": "50-99.999",
+      "mass_bucket_order": 2,
+      "cid_count": 49749
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "mass_bucket": "100-149.999",
+      "mass_bucket_order": 3,
+      "cid_count": 259845
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "mass_bucket": "150-199.999",
+      "mass_bucket_order": 4,
+      "cid_count": 184674
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 84596
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 32787
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "mass_bucket": "<16",
+      "mass_bucket_order": 0,
+      "cid_count": 201
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "mass_bucket": "16-49.999",
+      "mass_bucket_order": 1,
+      "cid_count": 3763
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "mass_bucket": "50-99.999",
+      "mass_bucket_order": 2,
+      "cid_count": 48524
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "mass_bucket": "100-149.999",
+      "mass_bucket_order": 3,
+      "cid_count": 210724
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "mass_bucket": "150-199.999",
+      "mass_bucket_order": 4,
+      "cid_count": 466337
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 683363
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 829953
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 7338647
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_lt_16",
+      "reason_order": 2,
+      "mass_bucket": "<16",
+      "mass_bucket_order": 0,
+      "cid_count": 216
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 84399954
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "mass_bucket": "<16",
+      "mass_bucket_order": 0,
+      "cid_count": 193
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "mass_bucket": "16-49.999",
+      "mass_bucket_order": 1,
+      "cid_count": 2425
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "mass_bucket": "50-99.999",
+      "mass_bucket_order": 2,
+      "cid_count": 12366
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "mass_bucket": "100-149.999",
+      "mass_bucket_order": 3,
+      "cid_count": 21131
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "mass_bucket": "150-199.999",
+      "mass_bucket_order": 4,
+      "cid_count": 24315
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 22519
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 18608
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 57558
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "mass_bucket": "50-99.999",
+      "mass_bucket_order": 2,
+      "cid_count": 2949
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "mass_bucket": "100-149.999",
+      "mass_bucket_order": 3,
+      "cid_count": 503947
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "mass_bucket": "150-199.999",
+      "mass_bucket_order": 4,
+      "cid_count": 4264538
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 12079928
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 20772882
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 84193576
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "mass_bucket": "16-49.999",
+      "mass_bucket_order": 1,
+      "cid_count": 2
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "mass_bucket": "50-99.999",
+      "mass_bucket_order": 2,
+      "cid_count": 3910
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "mass_bucket": "100-149.999",
+      "mass_bucket_order": 3,
+      "cid_count": 650633
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "mass_bucket": "150-199.999",
+      "mass_bucket_order": 4,
+      "cid_count": 4456430
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 12154345
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 20792799
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 84236103
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "mass_bucket": "<16",
+      "mass_bucket_order": 0,
+      "cid_count": 172
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "mass_bucket": "16-49.999",
+      "mass_bucket_order": 1,
+      "cid_count": 680
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "mass_bucket": "50-99.999",
+      "mass_bucket_order": 2,
+      "cid_count": 1669
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "mass_bucket": "100-149.999",
+      "mass_bucket_order": 3,
+      "cid_count": 2058
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "mass_bucket": "150-199.999",
+      "mass_bucket_order": 4,
+      "cid_count": 2283
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 2260
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 1777
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 7196
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "mass_bucket": "150-199.999",
+      "mass_bucket_order": 4,
+      "cid_count": 30
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 7601693
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 19929147
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 83916099
+    }
+  ],
+  "top_element_patterns": [
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHNO",
+      "cid_count": 125339
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHNOS",
+      "cid_count": 58386
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHN",
+      "cid_count": 35986
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHO",
+      "cid_count": 34100
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHClNO",
+      "cid_count": 31867
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHNS",
+      "cid_count": 26410
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHFNO",
+      "cid_count": 22359
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHOS",
+      "cid_count": 20871
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHClN",
+      "cid_count": 17502
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHFO",
+      "cid_count": 17325
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHClO",
+      "cid_count": 16667
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHBrNO",
+      "cid_count": 14702
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHFN",
+      "cid_count": 13602
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHClNOS",
+      "cid_count": 11772
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHBrN",
+      "cid_count": 8531
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHBrO",
+      "cid_count": 7771
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHINO",
+      "cid_count": 7311
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHFNOS",
+      "cid_count": 7026
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHClNS",
+      "cid_count": 6748
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHFOS",
+      "cid_count": 6475
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHClOS",
+      "cid_count": 6212
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHF",
+      "cid_count": 5533
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHIN",
+      "cid_count": 5519
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHClFN",
+      "cid_count": 5240
+    },
+    {
+      "coarse_filter_reason": "passed_coarse_filter",
+      "reason_order": 0,
+      "element_pattern": "CHS",
+      "cid_count": 5110
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHNOP",
+      "cid_count": 800729
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHNO",
+      "cid_count": 774650
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHOP",
+      "cid_count": 476525
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHOSi",
+      "cid_count": 429457
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHNOSi",
+      "cid_count": 409483
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHNOS",
+      "cid_count": 375192
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHBNO",
+      "cid_count": 342951
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHN",
+      "cid_count": 206667
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHNOPS",
+      "cid_count": 172217
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHClNO",
+      "cid_count": 130180
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHFNO",
+      "cid_count": 122991
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHFNOP",
+      "cid_count": 118577
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHBN",
+      "cid_count": 115992
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHNSi",
+      "cid_count": 100976
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHBO",
+      "cid_count": 100842
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHBFNO",
+      "cid_count": 92584
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHNOSSi",
+      "cid_count": 89009
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHNNaOS",
+      "cid_count": 84935
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHClNOP",
+      "cid_count": 77491
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHBNOS",
+      "cid_count": 75655
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHFNOSi",
+      "cid_count": 73235
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHFNOS",
+      "cid_count": 71328
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHClNOS",
+      "cid_count": 68756
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHNOPt",
+      "cid_count": 66140
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHSi",
+      "cid_count": 61333
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_lt_16",
+      "reason_order": 2,
+      "element_pattern": "H",
+      "cid_count": 53
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_lt_16",
+      "reason_order": 2,
+      "element_pattern": "HLi",
+      "cid_count": 33
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_lt_16",
+      "reason_order": 2,
+      "element_pattern": "BH",
+      "cid_count": 28
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_lt_16",
+      "reason_order": 2,
+      "element_pattern": "CH",
+      "cid_count": 15
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_lt_16",
+      "reason_order": 2,
+      "element_pattern": "B",
+      "cid_count": 11
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_lt_16",
+      "reason_order": 2,
+      "element_pattern": "BeH",
+      "cid_count": 11
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_lt_16",
+      "reason_order": 2,
+      "element_pattern": "Li",
+      "cid_count": 11
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_lt_16",
+      "reason_order": 2,
+      "element_pattern": "Be",
+      "cid_count": 8
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_lt_16",
+      "reason_order": 2,
+      "element_pattern": "C",
+      "cid_count": 8
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_lt_16",
+      "reason_order": 2,
+      "element_pattern": "He",
+      "cid_count": 8
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_lt_16",
+      "reason_order": 2,
+      "element_pattern": "O",
+      "cid_count": 8
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_lt_16",
+      "reason_order": 2,
+      "element_pattern": "N",
+      "cid_count": 7
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_lt_16",
+      "reason_order": 2,
+      "element_pattern": "HN",
+      "cid_count": 5
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_lt_16",
+      "reason_order": 2,
+      "element_pattern": "HHe",
+      "cid_count": 3
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_lt_16",
+      "reason_order": 2,
+      "element_pattern": "HHeLi",
+      "cid_count": 2
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_lt_16",
+      "reason_order": 2,
+      "element_pattern": "HeLi",
+      "cid_count": 2
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_lt_16",
+      "reason_order": 2,
+      "element_pattern": "BHe",
+      "cid_count": 1
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_lt_16",
+      "reason_order": 2,
+      "element_pattern": "BeHe",
+      "cid_count": 1
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_lt_16",
+      "reason_order": 2,
+      "element_pattern": "HO",
+      "cid_count": 1
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHNO",
+      "cid_count": 22150926
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHNOS",
+      "cid_count": 13572846
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHFNO",
+      "cid_count": 7611404
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHClNO",
+      "cid_count": 6070797
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHFNOS",
+      "cid_count": 3957146
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHClNOS",
+      "cid_count": 3908047
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHO",
+      "cid_count": 3008827
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHBrNO",
+      "cid_count": 2260465
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHClFNO",
+      "cid_count": 2109061
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHN",
+      "cid_count": 1991453
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHBrNOS",
+      "cid_count": 1153203
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHClFNOS",
+      "cid_count": 1054511
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHINO",
+      "cid_count": 815370
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHNS",
+      "cid_count": 765801
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHNOP",
+      "cid_count": 694089
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHBrFNO",
+      "cid_count": 608430
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHBrClNO",
+      "cid_count": 537601
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHFN",
+      "cid_count": 515607
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHOS",
+      "cid_count": 492135
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHFO",
+      "cid_count": 472681
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHClN",
+      "cid_count": 388459
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHOP",
+      "cid_count": 369354
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHNOSi",
+      "cid_count": 328545
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHBrN",
+      "cid_count": 304799
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHINOS",
+      "cid_count": 290376
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "HNOS",
+      "cid_count": 1787
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "HNO",
+      "cid_count": 1339
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "HNOP",
+      "cid_count": 1314
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "HOP",
+      "cid_count": 1105
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "HNaOP",
+      "cid_count": 1035
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "HNaOS",
+      "cid_count": 950
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "HOS",
+      "cid_count": 862
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "HOSi",
+      "cid_count": 810
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "HP",
+      "cid_count": 736
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "HOPS",
+      "cid_count": 727
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "B",
+      "cid_count": 636
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "HN",
+      "cid_count": 620
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "BHNaO",
+      "cid_count": 498
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "HKOP",
+      "cid_count": 498
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "HNOPS",
+      "cid_count": 442
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "HKOS",
+      "cid_count": 398
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "BHO",
+      "cid_count": 397
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "HO",
+      "cid_count": 372
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "HNP",
+      "cid_count": 362
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "HSi",
+      "cid_count": 353
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "HNOSi",
+      "cid_count": 351
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "AlHOSi",
+      "cid_count": 347
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "AlHO",
+      "cid_count": 333
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "AlHOP",
+      "cid_count": 333
+    },
+    {
+      "coarse_filter_reason": "carbon_count_lt_1",
+      "reason_order": 4,
+      "element_pattern": "BHNO",
+      "cid_count": 332
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHNO",
+      "cid_count": 36908168
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHNOS",
+      "cid_count": 17487569
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHFNO",
+      "cid_count": 10112137
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHClNO",
+      "cid_count": 8114264
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHO",
+      "cid_count": 5388706
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHN",
+      "cid_count": 5175066
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHFNOS",
+      "cid_count": 4358136
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHClNOS",
+      "cid_count": 4310459
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHBrNO",
+      "cid_count": 2725147
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHClFNO",
+      "cid_count": 2458059
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHNS",
+      "cid_count": 1846925
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHFN",
+      "cid_count": 1337562
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHBrNOS",
+      "cid_count": 1218174
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHClFNOS",
+      "cid_count": 1088020
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHClN",
+      "cid_count": 1050413
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHOS",
+      "cid_count": 943041
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHFO",
+      "cid_count": 895276
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHINO",
+      "cid_count": 839574
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHNOP",
+      "cid_count": 766607
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHBrFNO",
+      "cid_count": 686770
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CH",
+      "cid_count": 571513
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHBrClNO",
+      "cid_count": 569929
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHClO",
+      "cid_count": 553620
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHBrN",
+      "cid_count": 503327
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHOP",
+      "cid_count": 445666
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHNO",
+      "cid_count": 37061966
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHNOS",
+      "cid_count": 17581797
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHFNO",
+      "cid_count": 10122003
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHClNO",
+      "cid_count": 8129737
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHO",
+      "cid_count": 5409620
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHN",
+      "cid_count": 5196786
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHFNOS",
+      "cid_count": 4370034
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHClNOS",
+      "cid_count": 4321229
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHBrNO",
+      "cid_count": 2721190
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHClFNO",
+      "cid_count": 2453544
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHNS",
+      "cid_count": 1858785
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHFN",
+      "cid_count": 1339243
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHBrNOS",
+      "cid_count": 1219584
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHClFNOS",
+      "cid_count": 1089689
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHClN",
+      "cid_count": 1052595
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHOS",
+      "cid_count": 966404
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHFO",
+      "cid_count": 901768
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHINO",
+      "cid_count": 841066
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHNOP",
+      "cid_count": 789482
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHBrFNO",
+      "cid_count": 680673
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CH",
+      "cid_count": 567228
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHBrClNO",
+      "cid_count": 566579
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHClO",
+      "cid_count": 555563
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHBrN",
+      "cid_count": 499839
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHOP",
+      "cid_count": 464353
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "HP",
+      "cid_count": 736
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "B",
+      "cid_count": 636
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "BH",
+      "cid_count": 265
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "Y",
+      "cid_count": 228
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "BHP",
+      "cid_count": 201
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "V",
+      "cid_count": 186
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "W",
+      "cid_count": 179
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "BP",
+      "cid_count": 137
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "Tb",
+      "cid_count": 134
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "U",
+      "cid_count": 113
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "H",
+      "cid_count": 105
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "La",
+      "cid_count": 99
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "Pt",
+      "cid_count": 90
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "AlHLi",
+      "cid_count": 79
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "HK",
+      "cid_count": 79
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "Rf",
+      "cid_count": 75
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "GeH",
+      "cid_count": 71
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "Ag",
+      "cid_count": 68
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "AlH",
+      "cid_count": 67
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "Zn",
+      "cid_count": 66
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "Ru",
+      "cid_count": 64
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "Pb",
+      "cid_count": 60
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "Pd",
+      "cid_count": 60
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "Hg",
+      "cid_count": 58
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_lt_1",
+      "reason_order": 7,
+      "element_pattern": "K",
+      "cid_count": 58
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHNO",
+      "cid_count": 33938745
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHNOS",
+      "cid_count": 16722354
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHFNO",
+      "cid_count": 9787654
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHClNO",
+      "cid_count": 7701708
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHO",
+      "cid_count": 4421943
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHFNOS",
+      "cid_count": 4319628
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHClNOS",
+      "cid_count": 4214976
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHN",
+      "cid_count": 4104829
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHBrNO",
+      "cid_count": 2480069
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHClFNO",
+      "cid_count": 2397701
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHNS",
+      "cid_count": 1482756
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHBrNOS",
+      "cid_count": 1156084
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHFN",
+      "cid_count": 1142422
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHClFNOS",
+      "cid_count": 1083614
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHClN",
+      "cid_count": 833035
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHINO",
+      "cid_count": 781864
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHFO",
+      "cid_count": 759404
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHOS",
+      "cid_count": 738500
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHNOP",
+      "cid_count": 730999
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHBrFNO",
+      "cid_count": 642681
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHBrClNO",
+      "cid_count": 538473
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHClO",
+      "cid_count": 418787
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CH",
+      "cid_count": 404233
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHOP",
+      "cid_count": 400962
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHBrN",
+      "cid_count": 380958
+    }
+  ],
+  "top_combination_rows": [
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 22149610,
+      "formula_count": 773146,
+      "sample_formula": "C100H100N11O3+5"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 22149610,
+      "formula_count": 773146,
+      "sample_formula": "C100H100N11O3+5"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 22149610,
+      "formula_count": 773146,
+      "sample_formula": "C100H100N11O3+5"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 22149609,
+      "formula_count": 773145,
+      "sample_formula": "C100H100N11O3+5"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 13571046,
+      "formula_count": 701117,
+      "sample_formula": "C100H100N10O14S3"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 13571046,
+      "formula_count": 701117,
+      "sample_formula": "C100H100N10O14S3"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 13571046,
+      "formula_count": 701117,
+      "sample_formula": "C100H100N10O14S3"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 13571041,
+      "formula_count": 701114,
+      "sample_formula": "C100H100N10O14S3"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 7890604,
+      "formula_count": 9236,
+      "sample_formula": "C10H10N10O"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 7890604,
+      "formula_count": 9236,
+      "sample_formula": "C10H10N10O"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 7890602,
+      "formula_count": 9234,
+      "sample_formula": "C10H10N10O"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHFNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 7610976,
+      "formula_count": 470184,
+      "sample_formula": "C100H100F10N10O23"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHFNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 7610976,
+      "formula_count": 470184,
+      "sample_formula": "C100H100F10N10O23"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHFNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 7610976,
+      "formula_count": 470184,
+      "sample_formula": "C100H100F10N10O23"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHFNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 7610976,
+      "formula_count": 470184,
+      "sample_formula": "C100H100F10N10O23"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHClNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 6070294,
+      "formula_count": 280982,
+      "sample_formula": "C100H100Cl2N24O21"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHClNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 6070294,
+      "formula_count": 280982,
+      "sample_formula": "C100H100Cl2N24O21"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHClNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 6070244,
+      "formula_count": 280961,
+      "sample_formula": "C100H100Cl2N24O21"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHClNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 6070203,
+      "formula_count": 280954,
+      "sample_formula": "C100H100Cl2N24O21"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 5034275,
+      "formula_count": 5619,
+      "sample_formula": "C10H10N2O3"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 5034011,
+      "formula_count": 5563,
+      "sample_formula": "C10H10N2O3"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHFNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 3955415,
+      "formula_count": 391420,
+      "sample_formula": "C100H100F10N14O16S5"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHFNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 3955415,
+      "formula_count": 391420,
+      "sample_formula": "C100H100F10N14O16S5"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHFNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 3955415,
+      "formula_count": 391420,
+      "sample_formula": "C100H100F10N14O16S5"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHFNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 3955415,
+      "formula_count": 391420,
+      "sample_formula": "C100H100F10N14O16S5"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHClNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 3907204,
+      "formula_count": 252291,
+      "sample_formula": "C100H100Cl10N20O15S15"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHClNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 3907204,
+      "formula_count": 252291,
+      "sample_formula": "C100H100Cl10N20O15S15"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHClNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 3907180,
+      "formula_count": 252277,
+      "sample_formula": "C100H100Cl10N20O15S15"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHClNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 3907112,
+      "formula_count": 252258,
+      "sample_formula": "C100H100Cl10N20O15S15"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 3892449,
+      "formula_count": 3881,
+      "sample_formula": "C10H10N2O4"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 3008671,
+      "formula_count": 130771,
+      "sample_formula": "C100H100O10"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 3008671,
+      "formula_count": 130771,
+      "sample_formula": "C100H100O10"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 3008671,
+      "formula_count": 130771,
+      "sample_formula": "C100H100O10"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 3008671,
+      "formula_count": 130771,
+      "sample_formula": "C100H100O10"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 2714545,
+      "formula_count": 7369,
+      "sample_formula": "C10H10N2O2S2"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 2714530,
+      "formula_count": 7357,
+      "sample_formula": "C10H10N2O2S2"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 2706631,
+      "formula_count": 7020,
+      "sample_formula": "C10H10N2O2S2"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHBrNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 2259200,
+      "formula_count": 98847,
+      "sample_formula": "C100H100Br4N16O16"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHBrNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 2259200,
+      "formula_count": 98847,
+      "sample_formula": "C100H100Br4N16O16"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHBrNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 2258102,
+      "formula_count": 98751,
+      "sample_formula": "C100H100Br4N16O16"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHBrNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 2244783,
+      "formula_count": 98278,
+      "sample_formula": "C100H100Br4N16O16"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHClFNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 2108977,
+      "formula_count": 266007,
+      "sample_formula": "C100H100Cl2F10N4O21"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHClFNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 2108977,
+      "formula_count": 266007,
+      "sample_formula": "C100H100Cl2F10N4O21"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHClFNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 2108976,
+      "formula_count": 266006,
+      "sample_formula": "C100H100Cl2F10N4O21"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHClFNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 2108969,
+      "formula_count": 266002,
+      "sample_formula": "C100H100Cl2F10N4O21"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 1991193,
+      "formula_count": 136122,
+      "sample_formula": "C100H100N12"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 1991193,
+      "formula_count": 136122,
+      "sample_formula": "C100H100N12"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 1991193,
+      "formula_count": 136122,
+      "sample_formula": "C100H100N12"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 1991193,
+      "formula_count": 136122,
+      "sample_formula": "C100H100N12"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "150-199.999",
+      "mass_bucket_order": 4,
+      "cid_count": 1700812,
+      "formula_count": 2251,
+      "sample_formula": "C10H10N2O"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "150-199.999",
+      "mass_bucket_order": 4,
+      "cid_count": 1684631,
+      "formula_count": 1995,
+      "sample_formula": "C10H10N2O"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHFNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 1671359,
+      "formula_count": 7201,
+      "sample_formula": "C10H10F2N2O4"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHFNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 1671359,
+      "formula_count": 7201,
+      "sample_formula": "C10H10F2N2O4"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHFNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 1671340,
+      "formula_count": 7192,
+      "sample_formula": "C10H10F2N2O4"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHClNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 1424514,
+      "formula_count": 5283,
+      "sample_formula": "C10H10Cl2N2O2"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHClNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 1423977,
+      "formula_count": 5215,
+      "sample_formula": "C10H10Cl2N2O2"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHClNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 1414522,
+      "formula_count": 4799,
+      "sample_formula": "C10H10Cl2N2O2"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 1240772,
+      "formula_count": 1959,
+      "sample_formula": "C10H10N5+"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 1240746,
+      "formula_count": 1950,
+      "sample_formula": "C10H10N5+"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHBrNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 1151864,
+      "formula_count": 69878,
+      "sample_formula": "C100H100BrN11O15S"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHBrNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 1151864,
+      "formula_count": 69878,
+      "sample_formula": "C100H100BrN11O15S"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHBrNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 1151518,
+      "formula_count": 69828,
+      "sample_formula": "C100H100BrN11O15S"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHBrNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 1145767,
+      "formula_count": 69505,
+      "sample_formula": "C100H100BrN11O15S"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 1121796,
+      "formula_count": 2370,
+      "sample_formula": "C10H10N10"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 1121796,
+      "formula_count": 2370,
+      "sample_formula": "C10H10N10"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 1121793,
+      "formula_count": 2367,
+      "sample_formula": "C10H10N10"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHClFNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 1054107,
+      "formula_count": 204870,
+      "sample_formula": "C100H100Cl2F7N11O23S5"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHClFNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 1054107,
+      "formula_count": 204870,
+      "sample_formula": "C100H100Cl2F7N11O23S5"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHClFNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 1054107,
+      "formula_count": 204870,
+      "sample_formula": "C100H100Cl2F7N11O23S5"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHClFNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 1054106,
+      "formula_count": 204869,
+      "sample_formula": "C100H100Cl2F7N11O23S5"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 1033005,
+      "formula_count": 3070,
+      "sample_formula": "C10H10N2O2S"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 1031781,
+      "formula_count": 2952,
+      "sample_formula": "C10H10N2O2S"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 991145,
+      "formula_count": 1485,
+      "sample_formula": "C10H10N6"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 871946,
+      "formula_count": 1640,
+      "sample_formula": "C10H10O4"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 871912,
+      "formula_count": 1626,
+      "sample_formula": "C10H10O4"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHINO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 813420,
+      "formula_count": 56793,
+      "sample_formula": "C100H102I4N2O18"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHINO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 813420,
+      "formula_count": 56793,
+      "sample_formula": "C100H102I4N2O18"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 813082,
+      "formula_count": 2104,
+      "sample_formula": "C10H10O10"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 813082,
+      "formula_count": 2104,
+      "sample_formula": "C10H10O10"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 813082,
+      "formula_count": 2104,
+      "sample_formula": "C10H10O10"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHINO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 812837,
+      "formula_count": 56703,
+      "sample_formula": "C100H102I4N2O18"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHINO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 781739,
+      "formula_count": 55582,
+      "sample_formula": "C100H102I4N2O18"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHNS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 765640,
+      "formula_count": 75302,
+      "sample_formula": "C100H100N9S3+3"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHNS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 765640,
+      "formula_count": 75302,
+      "sample_formula": "C100H100N9S3+3"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHNS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 765639,
+      "formula_count": 75301,
+      "sample_formula": "C100H100N9S3+3"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHNS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 765613,
+      "formula_count": 75288,
+      "sample_formula": "C100H100N9S3+3"
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHNOP",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 691931,
+      "formula_count": 165334,
+      "sample_formula": "C100H100N13O21P"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHNOP",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 691931,
+      "formula_count": 165334,
+      "sample_formula": "C100H100N13O21P"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHNOP",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 691931,
+      "formula_count": 165334,
+      "sample_formula": "C100H100N13O21P"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHNOP",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 691931,
+      "formula_count": 165334,
+      "sample_formula": "C100H100N13O21P"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHNOP",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 691659,
+      "formula_count": 165165,
+      "sample_formula": "C100H100N13O21P"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHFNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 687511,
+      "formula_count": 3357,
+      "sample_formula": "C10H10F2N2O"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHFNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 684702,
+      "formula_count": 3206,
+      "sample_formula": "C10H10F2N2O"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "150-199.999",
+      "mass_bucket_order": 4,
+      "cid_count": 677833,
+      "formula_count": 1312,
+      "sample_formula": "C10H10N2"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "150-199.999",
+      "mass_bucket_order": 4,
+      "cid_count": 675151,
+      "formula_count": 1220,
+      "sample_formula": "C10H10N2"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHBrFNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 608123,
+      "formula_count": 62805,
+      "sample_formula": "C100H100Br6F9N12O13+3"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHBrFNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 608123,
+      "formula_count": 62805,
+      "sample_formula": "C100H100Br6F9N12O13+3"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHBrFNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 607374,
+      "formula_count": 62739,
+      "sample_formula": "C100H100Br6F9N12O13+3"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHBrFNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 606372,
+      "formula_count": 62666,
+      "sample_formula": "C100H100Br6F9N12O13+3"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 599760,
+      "formula_count": 1043,
+      "sample_formula": "C10H10O6"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "150-199.999",
+      "mass_bucket_order": 4,
+      "cid_count": 582814,
+      "formula_count": 1034,
+      "sample_formula": "C10H10O"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "150-199.999",
+      "mass_bucket_order": 4,
+      "cid_count": 579683,
+      "formula_count": 927,
+      "sample_formula": "C10H10O"
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 550049,
+      "formula_count": 104481,
+      "sample_formula": "C100H100N11O3+5"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHNS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 537585,
+      "formula_count": 2256,
+      "sample_formula": "C10H10N2S3"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHNS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 537558,
+      "formula_count": 2244,
+      "sample_formula": "C10H10N2S3"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHBrClNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 537306,
+      "formula_count": 50261,
+      "sample_formula": "C100H100Br3Cl2N17O12"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHBrClNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 537306,
+      "formula_count": 50261,
+      "sample_formula": "C100H100Br3Cl2N17O12"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHBrClNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 536930,
+      "formula_count": 50187,
+      "sample_formula": "C100H100Br3Cl2N17O12"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHNS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 535715,
+      "formula_count": 2038,
+      "sample_formula": "C10H10N2S4"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHBrClNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 534688,
+      "formula_count": 50003,
+      "sample_formula": "C100H100Br3Cl2N17O12"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHClNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 527665,
+      "formula_count": 2347,
+      "sample_formula": "C10H10Cl2N2O"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHClNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 522715,
+      "formula_count": 2168,
+      "sample_formula": "C10H10Cl2N2O"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHFN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 515495,
+      "formula_count": 60465,
+      "sample_formula": "C100H100F6N4"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHFN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 515495,
+      "formula_count": 60465,
+      "sample_formula": "C100H100F6N4"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHFN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 515495,
+      "formula_count": 60465,
+      "sample_formula": "C100H100F6N4"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHFN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 515495,
+      "formula_count": 60465,
+      "sample_formula": "C100H100F6N4"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHFNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 503630,
+      "formula_count": 2100,
+      "sample_formula": "C10H10F2N2O2"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 490810,
+      "formula_count": 75876,
+      "sample_formula": "C100H100O13S4+4"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 490810,
+      "formula_count": 75876,
+      "sample_formula": "C100H100O13S4+4"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 490808,
+      "formula_count": 75874,
+      "sample_formula": "C100H100O13S4+4"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 490749,
+      "formula_count": 75850,
+      "sample_formula": "C100H100O13S4+4"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHFO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 472179,
+      "formula_count": 77455,
+      "sample_formula": "C100H100F10O10"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHFO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 472179,
+      "formula_count": 77455,
+      "sample_formula": "C100H100F10O10"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHFO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 472179,
+      "formula_count": 77455,
+      "sample_formula": "C100H100F10O10"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHFO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 472179,
+      "formula_count": 77455,
+      "sample_formula": "C100H100F10O10"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 438888,
+      "formula_count": 864,
+      "sample_formula": "C10H10N2O3S"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHFN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 413219,
+      "formula_count": 2705,
+      "sample_formula": "C10H10F2N6"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHFN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 413219,
+      "formula_count": 2705,
+      "sample_formula": "C10H10F2N6"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHFN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 413205,
+      "formula_count": 2702,
+      "sample_formula": "C10H10F2N6"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHNS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 401234,
+      "formula_count": 1467,
+      "sample_formula": "C10H10N2S2"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHNS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 400652,
+      "formula_count": 1407,
+      "sample_formula": "C10H10N2S2"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHBrNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 391267,
+      "formula_count": 1448,
+      "sample_formula": "C10H10BrN2O+"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHBrNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 389936,
+      "formula_count": 1391,
+      "sample_formula": "C10H10BrN2O+"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHClN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 388153,
+      "formula_count": 28693,
+      "sample_formula": "C100H100Cl4N24"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHClN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 388153,
+      "formula_count": 28693,
+      "sample_formula": "C100H100Cl4N24"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHClN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 388075,
+      "formula_count": 28676,
+      "sample_formula": "C100H100Cl4N24"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHClN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 387990,
+      "formula_count": 28647,
+      "sample_formula": "C100H100Cl4N24"
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHOP",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 366175,
+      "formula_count": 46631,
+      "sample_formula": "C100H100O16P4"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHOP",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 366175,
+      "formula_count": 46631,
+      "sample_formula": "C100H100O16P4"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHOP",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 366175,
+      "formula_count": 46631,
+      "sample_formula": "C100H100O16P4"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHOP",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 366175,
+      "formula_count": 46631,
+      "sample_formula": "C100H100O16P4"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHOP",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 365959,
+      "formula_count": 46466,
+      "sample_formula": "C100H100O16P4"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHClN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 357773,
+      "formula_count": 2082,
+      "sample_formula": "C10H10Cl2N4"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHClN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 357479,
+      "formula_count": 2045,
+      "sample_formula": "C10H10Cl2N4"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHClN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 352739,
+      "formula_count": 1775,
+      "sample_formula": "C10H10Cl2N4"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHFNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 334695,
+      "formula_count": 4484,
+      "sample_formula": "C10H10F2N2O2S"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHFNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 334656,
+      "formula_count": 4472,
+      "sample_formula": "C10H10F2N2O2S"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHFNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 334223,
+      "formula_count": 4387,
+      "sample_formula": "C10H10F2N2O2S"
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHNOSi",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 328442,
+      "formula_count": 90732,
+      "sample_formula": "C100H100N12O4Si4"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHNOSi",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 328442,
+      "formula_count": 90732,
+      "sample_formula": "C100H100N12O4Si4"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHNOSi",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 328442,
+      "formula_count": 90732,
+      "sample_formula": "C100H100N12O4Si4"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHNOSi",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 328441,
+      "formula_count": 90731,
+      "sample_formula": "C100H100N12O4Si4"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHNOSi",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 328310,
+      "formula_count": 90657,
+      "sample_formula": "C100H100N12O4Si4"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHClNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 325495,
+      "formula_count": 3003,
+      "sample_formula": "C10H10Cl2N2O2S"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHClNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 325083,
+      "formula_count": 2943,
+      "sample_formula": "C10H10Cl2N2O2S"
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 315492,
+      "formula_count": 96261,
+      "sample_formula": "C100H100N17O15S+"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHClNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 306035,
+      "formula_count": 2335,
+      "sample_formula": "C10H10Cl2N2O2S"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHBrN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 303965,
+      "formula_count": 19370,
+      "sample_formula": "C100H102Br2N2"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHBrN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 303965,
+      "formula_count": 19370,
+      "sample_formula": "C100H102Br2N2"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHBrN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 303406,
+      "formula_count": 19308,
+      "sample_formula": "C100H102Br2N2"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHBrN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 294878,
+      "formula_count": 18850,
+      "sample_formula": "C100H102Br2N2"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHFN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 293296,
+      "formula_count": 1755,
+      "sample_formula": "C10H10F2N3+"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHFN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 292492,
+      "formula_count": 1698,
+      "sample_formula": "C10H10F2N3+"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHINOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 289349,
+      "formula_count": 34963,
+      "sample_formula": "C100H101I3N16O10S4"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHINOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 289349,
+      "formula_count": 34963,
+      "sample_formula": "C100H101I3N16O10S4"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHINOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 288847,
+      "formula_count": 34913,
+      "sample_formula": "C100H101I3N16O10S4"
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHOSi",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 282326,
+      "formula_count": 51930,
+      "sample_formula": "C100H100O6Si2"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHOSi",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 282326,
+      "formula_count": 51930,
+      "sample_formula": "C100H100O6Si2"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHOSi",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 282326,
+      "formula_count": 51930,
+      "sample_formula": "C100H100O6Si2"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHOSi",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 282326,
+      "formula_count": 51930,
+      "sample_formula": "C100H100O6Si2"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHOSi",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 281253,
+      "formula_count": 51575,
+      "sample_formula": "C100H100O6Si2"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHINOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 280659,
+      "formula_count": 34307,
+      "sample_formula": "C100H101I3N16O10S4"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CH",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 266700,
+      "formula_count": 20965,
+      "sample_formula": "C100H100"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CH",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 266700,
+      "formula_count": 20965,
+      "sample_formula": "C100H100"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CH",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 266700,
+      "formula_count": 20965,
+      "sample_formula": "C100H100"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CH",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 266691,
+      "formula_count": 20956,
+      "sample_formula": "C100H100"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHClFNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 264201,
+      "formula_count": 3153,
+      "sample_formula": "C10H10Cl2F2N2O"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHClFNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 263648,
+      "formula_count": 3076,
+      "sample_formula": "C10H10Cl2F2N2O"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHClFNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 262201,
+      "formula_count": 2985,
+      "sample_formula": "C10H10Cl2F2N2O"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHBrClNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 254613,
+      "formula_count": 35423,
+      "sample_formula": "C100H100Br3Cl3N12O10S3"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHBrClNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 254613,
+      "formula_count": 35423,
+      "sample_formula": "C100H100Br3Cl3N12O10S3"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHBrClNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 254386,
+      "formula_count": 35393,
+      "sample_formula": "C100H100Br3Cl3N12O10S3"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHClO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 252041,
+      "formula_count": 27205,
+      "sample_formula": "C100H101Cl297O"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHClO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 252041,
+      "formula_count": 27205,
+      "sample_formula": "C100H101Cl297O"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHClO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 251893,
+      "formula_count": 27181,
+      "sample_formula": "C100H101Cl297O"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHClO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 251747,
+      "formula_count": 27144,
+      "sample_formula": "C100H101Cl297O"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHBrClNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 251262,
+      "formula_count": 35251,
+      "sample_formula": "C100H100Br3Cl3N12O10S3"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHBrO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 246700,
+      "formula_count": 21319,
+      "sample_formula": "C100H100Br12O24"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHBrO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 246700,
+      "formula_count": 21319,
+      "sample_formula": "C100H100Br12O24"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHBrO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 246036,
+      "formula_count": 21229,
+      "sample_formula": "C100H100Br12O24"
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHBNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 245421,
+      "formula_count": 72728,
+      "sample_formula": "C100H101BN2O"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHBNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 245421,
+      "formula_count": 72728,
+      "sample_formula": "C100H101BN2O"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHBNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 245421,
+      "formula_count": 72728,
+      "sample_formula": "C100H101BN2O"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHBNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 245417,
+      "formula_count": 72724,
+      "sample_formula": "C100H101BN2O"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHBNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 245356,
+      "formula_count": 72673,
+      "sample_formula": "C100H101BN2O"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHBrNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 235094,
+      "formula_count": 663,
+      "sample_formula": "C10H10BrN2O3+"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHBrO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 233967,
+      "formula_count": 20877,
+      "sample_formula": "C100H100Br12O24"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHClN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 229723,
+      "formula_count": 1291,
+      "sample_formula": "C10H10Cl2N+"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHClN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 227905,
+      "formula_count": 1214,
+      "sample_formula": "C10H10Cl2N+"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHBrFNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 226839,
+      "formula_count": 41132,
+      "sample_formula": "C100H100Br6F6N8O12S6"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHBrFNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 226839,
+      "formula_count": 41132,
+      "sample_formula": "C100H100Br6F6N8O12S6"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHBrFNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 226781,
+      "formula_count": 41118,
+      "sample_formula": "C100H100Br6F6N8O12S6"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHBrFNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 226493,
+      "formula_count": 41068,
+      "sample_formula": "C100H100Br6F6N8O12S6"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHClNO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 216133,
+      "formula_count": 573,
+      "sample_formula": "C10H10ClN2O3+"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHFN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 213275,
+      "formula_count": 1073,
+      "sample_formula": "C10H10F2N4"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHFINO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 203590,
+      "formula_count": 31860,
+      "sample_formula": "C100H104F3IN20O16"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHFINO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 203590,
+      "formula_count": 31860,
+      "sample_formula": "C100H104F3IN20O16"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHFINO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 202045,
+      "formula_count": 31796,
+      "sample_formula": "C100H104F3IN20O16"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHClNS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 200558,
+      "formula_count": 16943,
+      "sample_formula": "C100H100Cl8N36S8"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHClNS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 200558,
+      "formula_count": 16943,
+      "sample_formula": "C100H100Cl8N36S8"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHClNS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 200542,
+      "formula_count": 16931,
+      "sample_formula": "C100H100Cl8N36S8"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHClNS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 200479,
+      "formula_count": 16896,
+      "sample_formula": "C100H100Cl8N36S8"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHFINO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 195631,
+      "formula_count": 31474,
+      "sample_formula": "C100H104F3IN20O16"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 194109,
+      "formula_count": 2288,
+      "sample_formula": "C10H10O2S3"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 194091,
+      "formula_count": 2277,
+      "sample_formula": "C10H10O2S3"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 190534,
+      "formula_count": 2007,
+      "sample_formula": "C10H10O2S4"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHFNS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 186724,
+      "formula_count": 27224,
+      "sample_formula": "C100H100F12N24S4"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHFNS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 186724,
+      "formula_count": 27224,
+      "sample_formula": "C100H100F12N24S4"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHFNS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 186724,
+      "formula_count": 27224,
+      "sample_formula": "C100H100F12N24S4"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHFNS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 186724,
+      "formula_count": 27224,
+      "sample_formula": "C100H100F12N24S4"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHClFN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 185565,
+      "formula_count": 23476,
+      "sample_formula": "C100H100Cl4F4N12"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHClFN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 185565,
+      "formula_count": 23476,
+      "sample_formula": "C100H100Cl4F4N12"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHClFN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 185563,
+      "formula_count": 23474,
+      "sample_formula": "C100H100Cl4F4N12"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHClFN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 185545,
+      "formula_count": 23466,
+      "sample_formula": "C100H100Cl4F4N12"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHFO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 183755,
+      "formula_count": 2269,
+      "sample_formula": "C10H10F2O6"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHFO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 183755,
+      "formula_count": 2269,
+      "sample_formula": "C10H10F2O6"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHFO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 183727,
+      "formula_count": 2262,
+      "sample_formula": "C10H10F2O6"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHNS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 181238,
+      "formula_count": 411,
+      "sample_formula": "C10H10N5S+"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 179747,
+      "formula_count": 1360,
+      "sample_formula": "C10H10O2S2"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 179467,
+      "formula_count": 1300,
+      "sample_formula": "C10H10O2S2"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "150-199.999",
+      "mass_bucket_order": 4,
+      "cid_count": 168965,
+      "formula_count": 550,
+      "sample_formula": "C10H10NOS"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHFO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 166392,
+      "formula_count": 1325,
+      "sample_formula": "C10H10F2O2"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHFO",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "200-249.999",
+      "mass_bucket_order": 5,
+      "cid_count": 165466,
+      "formula_count": 1252,
+      "sample_formula": "C10H10F2O2"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHFOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 163775,
+      "formula_count": 56078,
+      "sample_formula": "C100H101F3O10S4+4"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHFOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 163775,
+      "formula_count": 56078,
+      "sample_formula": "C100H101F3O10S4+4"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHFOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 163775,
+      "formula_count": 56078,
+      "sample_formula": "C100H101F3O10S4+4"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHFOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 163775,
+      "formula_count": 56078,
+      "sample_formula": "C100H101F3O10S4+4"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHNOS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "150-199.999",
+      "mass_bucket_order": 4,
+      "cid_count": 158821,
+      "formula_count": 408,
+      "sample_formula": "C10H10NOS"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHBrNS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 156667,
+      "formula_count": 9436,
+      "sample_formula": "C100H150Br2N2S10"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHBrNS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 156667,
+      "formula_count": 9436,
+      "sample_formula": "C100H150Br2N2S10"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHBrNS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 156162,
+      "formula_count": 9372,
+      "sample_formula": "C100H150Br2N2S10"
+    },
+    {
+      "coarse_filter_reason": "disallowed_formula_pattern",
+      "reason_order": 1,
+      "element_pattern": "CHNOPS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 154633,
+      "formula_count": 78656,
+      "sample_formula": "C100H100N18O35P2S3"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHNOPS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 154633,
+      "formula_count": 78656,
+      "sample_formula": "C100H100N18O35P2S3"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHNOPS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 154633,
+      "formula_count": 78656,
+      "sample_formula": "C100H100N18O35P2S3"
+    },
+    {
+      "coarse_filter_reason": "total_atom_count_gt_18",
+      "reason_order": 6,
+      "element_pattern": "CHNOPS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 154633,
+      "formula_count": 78656,
+      "sample_formula": "C100H100N18O35P2S3"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHNOPS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 154472,
+      "formula_count": 78573,
+      "sample_formula": "C100H100N18O35P2S3"
+    },
+    {
+      "coarse_filter_reason": "heavy_atom_count_gt_15",
+      "reason_order": 8,
+      "element_pattern": "CHBrNS",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 151733,
+      "formula_count": 9105,
+      "sample_formula": "C100H150Br2N2S10"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHBrN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": "250-300",
+      "mass_bucket_order": 6,
+      "cid_count": 147306,
+      "formula_count": 706,
+      "sample_formula": "C10H10BrN3"
+    },
+    {
+      "coarse_filter_reason": "molecular_weight_gt_300",
+      "reason_order": 3,
+      "element_pattern": "CHIN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 147254,
+      "formula_count": 10632,
+      "sample_formula": "C100H107I3N4"
+    },
+    {
+      "coarse_filter_reason": "carbon_count_gt_6",
+      "reason_order": 5,
+      "element_pattern": "CHIN",
+      "carbon_bucket": "C7+",
+      "carbon_bucket_order": 7,
+      "mass_bucket": ">300",
+      "mass_bucket_order": 7,
+      "cid_count": 147254,
+      "formula_count": 10632,
+      "sample_formula": "C100H107I3N4"
+    }
+  ]
+}

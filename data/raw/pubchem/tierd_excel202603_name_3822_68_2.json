@@ -1,0 +1,62 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_3822_68_2",
+    "r_number": "",
+    "family": "HFC",
+    "query_name": "3822-68-2",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=HFE-125"
+  },
+  "pubchem_record": {
+    "cid": "77443",
+    "query": "3822-68-2",
+    "query_type": "name",
+    "molecular_formula": "C2HF5O",
+    "molecular_weight": 136.02,
+    "canonical_smiles": "C(OC(F)(F)F)(F)F",
+    "isomeric_smiles": "C(OC(F)(F)F)(F)F",
+    "inchi": "InChI=1S/C2HF5O/c3-1(4)8-2(5,6)7/h1H",
+    "inchikey": "ACYQYBAHTSKBLM-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 77443,
+      "MolecularFormula": "C2HF5O",
+      "MolecularWeight": "136.02",
+      "SMILES": "C(OC(F)(F)F)(F)F",
+      "ConnectivitySMILES": "C(OC(F)(F)F)(F)F",
+      "InChI": "InChI=1S/C2HF5O/c3-1(4)8-2(5,6)7/h1H",
+      "InChIKey": "ACYQYBAHTSKBLM-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/3822-68-2/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "77443",
+    "synonyms": [
+      "3822-68-2",
+      "Pentafluorodimethyl ether",
+      "Methane, (difluoromethoxy)trifluoro-",
+      "difluoromethoxy(trifluoro)methane",
+      "(difluoromethoxy)trifluoromethane",
+      "Ether, difluoromethyl trifluoromethyl",
+      "SCHEMBL498949",
+      "SCHEMBL4089746",
+      "DTXSID4073968",
+      "SCHEMBL14722317",
+      "(difluoromethoxy)-trifluoromethane",
+      "ACYQYBAHTSKBLM-UHFFFAOYSA-N",
+      "(Difluoromethoxy)tri(fluoro)methane",
+      "SBB085912"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/77443/synonyms/JSON"
+  }
+}

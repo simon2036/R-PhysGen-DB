@@ -1,0 +1,54 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_461_63_2",
+    "r_number": "",
+    "family": "HFC",
+    "query_name": "461-63-2",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=Difluoro(fluoromethoxy)methane"
+  },
+  "pubchem_record": {
+    "cid": "12713326",
+    "query": "461-63-2",
+    "query_type": "name",
+    "molecular_formula": "C2H3F3O",
+    "molecular_weight": 100.04,
+    "canonical_smiles": "C(OC(F)F)F",
+    "isomeric_smiles": "C(OC(F)F)F",
+    "inchi": "InChI=1S/C2H3F3O/c3-1-6-2(4)5/h2H,1H2",
+    "inchikey": "CHRXLMMVJKAYGJ-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 12713326,
+      "MolecularFormula": "C2H3F3O",
+      "MolecularWeight": "100.04",
+      "SMILES": "C(OC(F)F)F",
+      "ConnectivitySMILES": "C(OC(F)F)F",
+      "InChI": "InChI=1S/C2H3F3O/c3-1-6-2(4)5/h2H,1H2",
+      "InChIKey": "CHRXLMMVJKAYGJ-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/461-63-2/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "12713326",
+    "synonyms": [
+      "Difluoro(fluoromethoxy)methane",
+      "461-63-2",
+      "SCHEMBL499009",
+      "SCHEMBL29085901",
+      "DTXSID20507723",
+      "CHRXLMMVJKAYGJ-UHFFFAOYSA-N"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/12713326/synonyms/JSON"
+  }
+}

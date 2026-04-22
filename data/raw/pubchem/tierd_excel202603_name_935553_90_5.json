@@ -1,0 +1,55 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_935553_90_5",
+    "r_number": "",
+    "family": "HFO",
+    "query_name": "935553-90-5",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=(E)-HFO-1438mzz"
+  },
+  "pubchem_record": {
+    "cid": "18520951",
+    "query": "935553-90-5",
+    "query_type": "name",
+    "molecular_formula": "C5H2F8",
+    "molecular_weight": 214.06,
+    "canonical_smiles": "C(=CC(F)(F)F)C(C(F)(F)F)(F)F",
+    "isomeric_smiles": "C(=C/C(F)(F)F)\\C(C(F)(F)F)(F)F",
+    "inchi": "InChI=1S/C5H2F8/c6-3(7,5(11,12)13)1-2-4(8,9)10/h1-2H/b2-1+",
+    "inchikey": "CVMVAHSMKGITAV-OWOJBTEDSA-N",
+    "raw": {
+      "CID": 18520951,
+      "MolecularFormula": "C5H2F8",
+      "MolecularWeight": "214.06",
+      "SMILES": "C(=C/C(F)(F)F)\\C(C(F)(F)F)(F)F",
+      "ConnectivitySMILES": "C(=CC(F)(F)F)C(C(F)(F)F)(F)F",
+      "InChI": "InChI=1S/C5H2F8/c6-3(7,5(11,12)13)1-2-4(8,9)10/h1-2H/b2-1+",
+      "InChIKey": "CVMVAHSMKGITAV-OWOJBTEDSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/935553-90-5/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "18520951",
+    "synonyms": [
+      "935553-90-5",
+      "(2E)-1,1,1,4,4,5,5,5-octafluoropent-2-ene",
+      "2H,3H-Octafluoropent-2-ene",
+      "SCHEMBL147853",
+      "CVMVAHSMKGITAV-OWOJBTEDSA-N",
+      "SBB094900",
+      "(E)-1,1,1,4,4,5,5,5-octafluoropent-2-ene"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/18520951/synonyms/JSON"
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_372_90_7",
+    "r_number": "",
+    "family": "HFC",
+    "query_name": "372-90-7",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=HFC-392qff"
+  },
+  "pubchem_record": {
+    "cid": "9753",
+    "query": "372-90-7",
+    "query_type": "name",
+    "molecular_formula": "C4H8F2",
+    "molecular_weight": 94.1,
+    "canonical_smiles": "C(CCF)CF",
+    "isomeric_smiles": "C(CCF)CF",
+    "inchi": "InChI=1S/C4H8F2/c5-3-1-2-4-6/h1-4H2",
+    "inchikey": "CXHPKSYTQFAXIN-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 9753,
+      "MolecularFormula": "C4H8F2",
+      "MolecularWeight": "94.10",
+      "SMILES": "C(CCF)CF",
+      "ConnectivitySMILES": "C(CCF)CF",
+      "InChI": "InChI=1S/C4H8F2/c5-3-1-2-4-6/h1-4H2",
+      "InChIKey": "CXHPKSYTQFAXIN-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/372-90-7/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "9753",
+    "synonyms": [
+      "1,4-Difluorobutane",
+      "BUTANE, 1,4-DIFLUORO-",
+      "BRN 1731406",
+      "DTXSID40190696",
+      "3-01-00-00273 (Beilstein Handbook Reference)",
+      "RefChem:122001",
+      "DTXCID80113187",
+      "CXHPKSYTQFAXIN-UHFFFAOYSA-N",
+      "372-90-7",
+      "MFCD01740905",
+      "SCHEMBL45376",
+      "SCHEMBL1470430",
+      "SCHEMBL8131855",
+      "AKOS006227792",
+      "SY506532"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/9753/synonyms/JSON"
+  }
+}

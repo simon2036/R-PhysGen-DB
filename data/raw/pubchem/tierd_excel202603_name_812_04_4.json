@@ -1,0 +1,70 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_812_04_4",
+    "r_number": "",
+    "family": "HCFC",
+    "query_name": "812-04-4",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=HCFC-123b"
+  },
+  "pubchem_record": {
+    "cid": "13132",
+    "query": "812-04-4",
+    "query_type": "name",
+    "molecular_formula": "C2HCl2F3",
+    "molecular_weight": 152.93,
+    "canonical_smiles": "C(C(F)(Cl)Cl)(F)F",
+    "isomeric_smiles": "C(C(F)(Cl)Cl)(F)F",
+    "inchi": "InChI=1S/C2HCl2F3/c3-2(4,7)1(5)6/h1H",
+    "inchikey": "AFTSHZRGGNMLHC-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 13132,
+      "MolecularFormula": "C2HCl2F3",
+      "MolecularWeight": "152.93",
+      "SMILES": "C(C(F)(Cl)Cl)(F)F",
+      "ConnectivitySMILES": "C(C(F)(Cl)Cl)(F)F",
+      "InChI": "InChI=1S/C2HCl2F3/c3-2(4,7)1(5)6/h1H",
+      "InChIKey": "AFTSHZRGGNMLHC-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/812-04-4/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "13132",
+    "synonyms": [
+      "1,1-Dichloro-1,2,2-trifluoroethane",
+      "HCFC-123B",
+      "HSDB 6873",
+      "UNII-6NR3OZL5ZZ",
+      "6NR3OZL5ZZ",
+      "R-123B",
+      "HCFC-123B [HSDB]",
+      "DTXSID6042022",
+      "1,1-DICHLORO-1,2,2-TRIFLUORO-",
+      "Hcfc123b",
+      "RefChem:71023",
+      "DTXCID4022022",
+      "Ethane, 1,1dichloro1,2,2trifluoro",
+      "812-04-4",
+      "Ethane, 1,1-dichloro-1,2,2-trifluoro-",
+      "1,1-DICHLORO-1,2,2-TRIFLUORO-ETHANE",
+      "SCHEMBL166827",
+      "SCHEMBL2816011",
+      "SCHEMBL7628169",
+      "AKOS006276137",
+      "NS00120057",
+      "Q27265203"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/13132/synonyms/JSON"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_353_81_1",
+    "r_number": "",
+    "family": "HFC",
+    "query_name": "353-81-1",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=HFC-392scf"
+  },
+  "pubchem_record": {
+    "cid": "520729",
+    "query": "353-81-1",
+    "query_type": "name",
+    "molecular_formula": "C4H8F2",
+    "molecular_weight": 94.1,
+    "canonical_smiles": "CCC(C)(F)F",
+    "isomeric_smiles": "CCC(C)(F)F",
+    "inchi": "InChI=1S/C4H8F2/c1-3-4(2,5)6/h3H2,1-2H3",
+    "inchikey": "IIADOUMJKYSCPM-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 520729,
+      "MolecularFormula": "C4H8F2",
+      "MolecularWeight": "94.10",
+      "SMILES": "CCC(C)(F)F",
+      "ConnectivitySMILES": "CCC(C)(F)F",
+      "InChI": "InChI=1S/C4H8F2/c1-3-4(2,5)6/h3H2,1-2H3",
+      "InChIKey": "IIADOUMJKYSCPM-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/353-81-1/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "520729",
+    "synonyms": [
+      "2,2-difluorobutane",
+      "353-81-1",
+      "DTXSID70334440",
+      "RefChem:441121",
+      "DTXCID80285530",
+      "813-728-6",
+      "butane, 2,2-difluoro-",
+      "MFCD20489351",
+      "Butane, 2,2-difluoro",
+      "SCHEMBL14204",
+      "SCHEMBL72963",
+      "SCHEMBL250794",
+      "SCHEMBL477968",
+      "SCHEMBL5397762",
+      "IRYLDWBMZRIVFQ-UHFFFAOYSA-N",
+      "AKOS004904116",
+      "FD77184"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/520729/synonyms/JSON"
+  }
+}

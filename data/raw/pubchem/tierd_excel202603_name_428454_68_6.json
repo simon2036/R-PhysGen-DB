@@ -1,0 +1,55 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_428454_68_6",
+    "r_number": "",
+    "family": "HFC",
+    "query_name": "428454-68-6",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=HFE-329me3"
+  },
+  "pubchem_record": {
+    "cid": "11857384",
+    "query": "428454-68-6",
+    "query_type": "name",
+    "molecular_formula": "C4HF9O",
+    "molecular_weight": 236.04,
+    "canonical_smiles": "C(C(OC(F)(F)F)(F)F)(C(F)(F)F)F",
+    "isomeric_smiles": "C(C(OC(F)(F)F)(F)F)(C(F)(F)F)F",
+    "inchi": "InChI=1S/C4HF9O/c5-1(2(6,7)8)3(9,10)14-4(11,12)13/h1H",
+    "inchikey": "XDHKPUUGCABIMF-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 11857384,
+      "MolecularFormula": "C4HF9O",
+      "MolecularWeight": "236.04",
+      "SMILES": "C(C(OC(F)(F)F)(F)F)(C(F)(F)F)F",
+      "ConnectivitySMILES": "C(C(OC(F)(F)F)(F)F)(C(F)(F)F)F",
+      "InChI": "InChI=1S/C4HF9O/c5-1(2(6,7)8)3(9,10)14-4(11,12)13/h1H",
+      "InChIKey": "XDHKPUUGCABIMF-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/428454-68-6/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "11857384",
+    "synonyms": [
+      "Trifluoromethyl perfluoropropyl ether",
+      "428454-68-6",
+      "1,1,1,2,3,3-hexafluoro-3-(trifluoromethoxy)propane",
+      "HFE-329me3",
+      "SCHEMBL2517592",
+      "DTXSID40474448",
+      "XDHKPUUGCABIMF-UHFFFAOYSA-N"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/11857384/synonyms/JSON"
+  }
+}

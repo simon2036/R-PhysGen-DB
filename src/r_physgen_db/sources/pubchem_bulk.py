@@ -308,6 +308,116 @@ def build_pubchem_candidate_pool_streaming(
     return candidate_pool, audit
 
 
+def build_pubchem_coarse_filter_summary(
+    mass_path: Path,
+    *,
+    cid_limit: int | None = None,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    con = duckdb.connect()
+    try:
+        summary = con.execute(
+            f"""
+            {_build_mass_screen_cte_sql(mass_path, cid_limit=cid_limit)},
+            reason_hits AS (
+                SELECT
+                    cid,
+                    formula,
+                    element_pattern,
+                    carbon_bucket,
+                    carbon_bucket_order,
+                    mass_bucket,
+                    mass_bucket_order,
+                    0 AS reason_order,
+                    'passed_coarse_filter' AS coarse_filter_reason
+                FROM mass_scored
+                WHERE passed_coarse_filter
+                UNION ALL
+                SELECT cid, formula, element_pattern, carbon_bucket, carbon_bucket_order, mass_bucket, mass_bucket_order, 1, 'disallowed_formula_pattern'
+                FROM mass_scored
+                WHERE fail_disallowed_formula_pattern
+                UNION ALL
+                SELECT cid, formula, element_pattern, carbon_bucket, carbon_bucket_order, mass_bucket, mass_bucket_order, 2, 'molecular_weight_lt_16'
+                FROM mass_scored
+                WHERE fail_molecular_weight_lt_16
+                UNION ALL
+                SELECT cid, formula, element_pattern, carbon_bucket, carbon_bucket_order, mass_bucket, mass_bucket_order, 3, 'molecular_weight_gt_300'
+                FROM mass_scored
+                WHERE fail_molecular_weight_gt_300
+                UNION ALL
+                SELECT cid, formula, element_pattern, carbon_bucket, carbon_bucket_order, mass_bucket, mass_bucket_order, 4, 'carbon_count_lt_1'
+                FROM mass_scored
+                WHERE fail_carbon_count_lt_1
+                UNION ALL
+                SELECT cid, formula, element_pattern, carbon_bucket, carbon_bucket_order, mass_bucket, mass_bucket_order, 5, 'carbon_count_gt_6'
+                FROM mass_scored
+                WHERE fail_carbon_count_gt_6
+                UNION ALL
+                SELECT cid, formula, element_pattern, carbon_bucket, carbon_bucket_order, mass_bucket, mass_bucket_order, 6, 'total_atom_count_gt_18'
+                FROM mass_scored
+                WHERE fail_total_atom_count_gt_18
+                UNION ALL
+                SELECT cid, formula, element_pattern, carbon_bucket, carbon_bucket_order, mass_bucket, mass_bucket_order, 7, 'heavy_atom_count_lt_1'
+                FROM mass_scored
+                WHERE fail_heavy_atom_count_lt_1
+                UNION ALL
+                SELECT cid, formula, element_pattern, carbon_bucket, carbon_bucket_order, mass_bucket, mass_bucket_order, 8, 'heavy_atom_count_gt_15'
+                FROM mass_scored
+                WHERE fail_heavy_atom_count_gt_15
+            )
+            SELECT
+                coarse_filter_reason,
+                reason_order,
+                element_pattern,
+                carbon_bucket,
+                carbon_bucket_order,
+                mass_bucket,
+                mass_bucket_order,
+                COUNT(*) AS cid_count,
+                COUNT(DISTINCT formula) AS formula_count,
+                MIN(formula) AS sample_formula
+            FROM reason_hits
+            GROUP BY
+                coarse_filter_reason,
+                reason_order,
+                element_pattern,
+                carbon_bucket,
+                carbon_bucket_order,
+                mass_bucket,
+                mass_bucket_order
+            ORDER BY
+                reason_order,
+                cid_count DESC,
+                element_pattern,
+                carbon_bucket_order,
+                mass_bucket_order
+            """
+        ).fetchdf()
+        totals = con.execute(
+            f"""
+            {_build_mass_screen_cte_sql(mass_path, cid_limit=cid_limit)}
+            SELECT
+                COUNT(*) AS total_mass_records,
+                SUM(CASE WHEN passed_coarse_filter THEN 1 ELSE 0 END) AS passed_coarse_filter_count,
+                SUM(CASE WHEN NOT passed_coarse_filter THEN 1 ELSE 0 END) AS failed_coarse_filter_count
+            FROM mass_scored
+            """
+        ).fetchone()
+    finally:
+        con.close()
+
+    metadata = {
+        "total_mass_records": int(totals[0] or 0),
+        "passed_coarse_filter_count": int(totals[1] or 0),
+        "failed_coarse_filter_count": int(totals[2] or 0),
+        "cid_limit": int(cid_limit) if cid_limit is not None else None,
+        "reason_count_semantics": (
+            "`passed_coarse_filter` is mutually exclusive; failure reasons are reason-hit counts, "
+            "so one CID may contribute to multiple failure reasons."
+        ),
+    }
+    return summary, metadata
+
+
 def export_tierd_seed_rows(candidate_pool: pd.DataFrame, *, limit: int = 5000) -> list[dict[str, str]]:
     if candidate_pool.empty:
         return []
@@ -403,9 +513,9 @@ def _set_csv_field_size_limit() -> None:
             limit = limit // 10
 
 
-def _load_mass_prefilter_candidates(path: Path, *, cid_limit: int | None = None) -> pd.DataFrame:
+def _build_mass_screen_cte_sql(path: Path, *, cid_limit: int | None = None) -> str:
     limit_clause = f"LIMIT {int(cid_limit)}" if cid_limit is not None else ""
-    sql = f"""
+    return f"""
     WITH mass_raw AS (
         SELECT *
         FROM read_csv(
@@ -433,7 +543,98 @@ def _load_mass_prefilter_candidates(path: Path, *, cid_limit: int | None = None)
             CASE WHEN regexp_matches(formula, 'S') THEN COALESCE(TRY_CAST(NULLIF(regexp_extract(formula, 'S([0-9]*)', 1), '') AS INTEGER), 1) ELSE 0 END AS atom_count_s,
             regexp_matches(formula, '^C[0-9]*(H[0-9]*)?(Br[0-9]*)?(Cl[0-9]*)?(F[0-9]*)?(I[0-9]*)?(N[0-9]*)?(O[0-9]*)?(S[0-9]*)?$') AS allowed_formula
         FROM mass_raw
+    ),
+    mass_scored AS (
+        SELECT
+            cid,
+            formula,
+            molecular_weight,
+            carbon_count,
+            atom_count_h,
+            atom_count_f,
+            atom_count_cl,
+            atom_count_br,
+            atom_count_i,
+            atom_count_n,
+            atom_count_o,
+            atom_count_s,
+            carbon_count + atom_count_h + atom_count_f + atom_count_cl + atom_count_br + atom_count_i + atom_count_n + atom_count_o + atom_count_s AS total_atom_count,
+            carbon_count + atom_count_f + atom_count_cl + atom_count_br + atom_count_i + atom_count_n + atom_count_o + atom_count_s AS heavy_atom_count,
+            COALESCE(
+                NULLIF(
+                    regexp_replace(
+                        regexp_replace(formula, '[0-9]+', '', 'g'),
+                        '[^A-Za-z]',
+                        '',
+                        'g'
+                    ),
+                    ''
+                ),
+                'UNKNOWN'
+            ) AS element_pattern,
+            CASE
+                WHEN carbon_count <= 0 THEN 'C0'
+                WHEN carbon_count = 1 THEN 'C1'
+                WHEN carbon_count = 2 THEN 'C2'
+                WHEN carbon_count = 3 THEN 'C3'
+                WHEN carbon_count = 4 THEN 'C4'
+                WHEN carbon_count = 5 THEN 'C5'
+                WHEN carbon_count = 6 THEN 'C6'
+                ELSE 'C7+'
+            END AS carbon_bucket,
+            CASE
+                WHEN carbon_count <= 0 THEN 0
+                WHEN carbon_count = 1 THEN 1
+                WHEN carbon_count = 2 THEN 2
+                WHEN carbon_count = 3 THEN 3
+                WHEN carbon_count = 4 THEN 4
+                WHEN carbon_count = 5 THEN 5
+                WHEN carbon_count = 6 THEN 6
+                ELSE 7
+            END AS carbon_bucket_order,
+            CASE
+                WHEN molecular_weight < 16 THEN '<16'
+                WHEN molecular_weight < 50 THEN '16-49.999'
+                WHEN molecular_weight < 100 THEN '50-99.999'
+                WHEN molecular_weight < 150 THEN '100-149.999'
+                WHEN molecular_weight < 200 THEN '150-199.999'
+                WHEN molecular_weight < 250 THEN '200-249.999'
+                WHEN molecular_weight <= 300 THEN '250-300'
+                ELSE '>300'
+            END AS mass_bucket,
+            CASE
+                WHEN molecular_weight < 16 THEN 0
+                WHEN molecular_weight < 50 THEN 1
+                WHEN molecular_weight < 100 THEN 2
+                WHEN molecular_weight < 150 THEN 3
+                WHEN molecular_weight < 200 THEN 4
+                WHEN molecular_weight < 250 THEN 5
+                WHEN molecular_weight <= 300 THEN 6
+                ELSE 7
+            END AS mass_bucket_order,
+            NOT allowed_formula AS fail_disallowed_formula_pattern,
+            molecular_weight < 16 AS fail_molecular_weight_lt_16,
+            molecular_weight > 300 AS fail_molecular_weight_gt_300,
+            carbon_count < 1 AS fail_carbon_count_lt_1,
+            carbon_count > 6 AS fail_carbon_count_gt_6,
+            carbon_count + atom_count_h + atom_count_f + atom_count_cl + atom_count_br + atom_count_i + atom_count_n + atom_count_o + atom_count_s > 18 AS fail_total_atom_count_gt_18,
+            carbon_count + atom_count_f + atom_count_cl + atom_count_br + atom_count_i + atom_count_n + atom_count_o + atom_count_s < 1 AS fail_heavy_atom_count_lt_1,
+            carbon_count + atom_count_f + atom_count_cl + atom_count_br + atom_count_i + atom_count_n + atom_count_o + atom_count_s > 15 AS fail_heavy_atom_count_gt_15,
+            (
+                allowed_formula
+                AND molecular_weight BETWEEN 16 AND 300
+                AND carbon_count BETWEEN 1 AND 6
+                AND carbon_count + atom_count_h + atom_count_f + atom_count_cl + atom_count_br + atom_count_i + atom_count_n + atom_count_o + atom_count_s <= 18
+                AND carbon_count + atom_count_f + atom_count_cl + atom_count_br + atom_count_i + atom_count_n + atom_count_o + atom_count_s BETWEEN 1 AND 15
+            ) AS passed_coarse_filter
+        FROM mass_counts
     )
+    """
+
+
+def _load_mass_prefilter_candidates(path: Path, *, cid_limit: int | None = None) -> pd.DataFrame:
+    sql = f"""
+    {_build_mass_screen_cte_sql(path, cid_limit=cid_limit)}
     SELECT
         cid,
         formula,
@@ -447,14 +648,10 @@ def _load_mass_prefilter_candidates(path: Path, *, cid_limit: int | None = None)
         atom_count_n,
         atom_count_o,
         atom_count_s,
-        carbon_count + atom_count_h + atom_count_f + atom_count_cl + atom_count_br + atom_count_i + atom_count_n + atom_count_o + atom_count_s AS total_atom_count,
-        carbon_count + atom_count_f + atom_count_cl + atom_count_br + atom_count_i + atom_count_n + atom_count_o + atom_count_s AS heavy_atom_count
-    FROM mass_counts
-    WHERE allowed_formula
-      AND molecular_weight BETWEEN 16 AND 300
-      AND carbon_count BETWEEN 1 AND 6
-      AND carbon_count + atom_count_h + atom_count_f + atom_count_cl + atom_count_br + atom_count_i + atom_count_n + atom_count_o + atom_count_s <= 18
-      AND carbon_count + atom_count_f + atom_count_cl + atom_count_br + atom_count_i + atom_count_n + atom_count_o + atom_count_s BETWEEN 1 AND 15
+        total_atom_count,
+        heavy_atom_count
+    FROM mass_scored
+    WHERE passed_coarse_filter
     ORDER BY cid
     """
     con = duckdb.connect()

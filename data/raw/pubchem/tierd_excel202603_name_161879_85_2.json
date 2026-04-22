@@ -1,0 +1,59 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_161879_85_2",
+    "r_number": "",
+    "family": "HFC",
+    "query_name": "161879-85-2",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=HFC-365mff"
+  },
+  "pubchem_record": {
+    "cid": "21922298",
+    "query": "161879-85-2",
+    "query_type": "name",
+    "molecular_formula": "C4H5F5",
+    "molecular_weight": 148.07,
+    "canonical_smiles": "C(CC(F)(F)F)C(F)F",
+    "isomeric_smiles": "C(CC(F)(F)F)C(F)F",
+    "inchi": "InChI=1S/C4H5F5/c5-3(6)1-2-4(7,8)9/h3H,1-2H2",
+    "inchikey": "VWCRVILSEXWIIL-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 21922298,
+      "MolecularFormula": "C4H5F5",
+      "MolecularWeight": "148.07",
+      "SMILES": "C(CC(F)(F)F)C(F)F",
+      "ConnectivitySMILES": "C(CC(F)(F)F)C(F)F",
+      "InChI": "InChI=1S/C4H5F5/c5-3(6)1-2-4(7,8)9/h3H,1-2H2",
+      "InChIKey": "VWCRVILSEXWIIL-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/161879-85-2/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "21922298",
+    "synonyms": [
+      "1,1,1,4,4-pentafluorobutane",
+      "161879-85-2",
+      "DTXSID70620133",
+      "RefChem:212911",
+      "DTXCID30570887",
+      "SCHEMBL679693",
+      "SCHEMBL5170111",
+      "SCHEMBL8990638",
+      "SCHEMBL13858143",
+      "VWCRVILSEXWIIL-UHFFFAOYSA-N",
+      "ZMIGAMLGBSWFHJ-UHFFFAOYSA-N"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/21922298/synonyms/JSON"
+  }
+}

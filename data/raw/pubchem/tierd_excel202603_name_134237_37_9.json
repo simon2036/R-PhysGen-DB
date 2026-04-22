@@ -1,0 +1,60 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_134237_37_9",
+    "r_number": "",
+    "family": "HCFC",
+    "query_name": "134237-37-9",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=HCFC-223aa"
+  },
+  "pubchem_record": {
+    "cid": "23237202",
+    "query": "134237-37-9",
+    "query_type": "name",
+    "molecular_formula": "C3HCl4F3",
+    "molecular_weight": 235.8,
+    "canonical_smiles": "C(C(C(F)(F)F)(Cl)Cl)(Cl)Cl",
+    "isomeric_smiles": "C(C(C(F)(F)F)(Cl)Cl)(Cl)Cl",
+    "inchi": "InChI=1S/C3HCl4F3/c4-1(5)2(6,7)3(8,9)10/h1H",
+    "inchikey": "RRDMWFLSGDXVQI-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 23237202,
+      "MolecularFormula": "C3HCl4F3",
+      "MolecularWeight": "235.8",
+      "SMILES": "C(C(C(F)(F)F)(Cl)Cl)(Cl)Cl",
+      "ConnectivitySMILES": "C(C(C(F)(F)F)(Cl)Cl)(Cl)Cl",
+      "InChI": "InChI=1S/C3HCl4F3/c4-1(5)2(6,7)3(8,9)10/h1H",
+      "InChIKey": "RRDMWFLSGDXVQI-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/134237-37-9/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "23237202",
+    "synonyms": [
+      "Propane, tetrachlorotrifluoro-",
+      "2,2,3,3-tetrachloro-1,1,1-trifluoropropane",
+      "Tetrachlorotrifluoropropane",
+      "134237-37-9",
+      "422-35-5",
+      "HCFC-223aa",
+      "29470-95-9",
+      "SCHEMBL1993226",
+      "SCHEMBL2811785",
+      "RRDMWFLSGDXVQI-UHFFFAOYSA-N",
+      "DTXSID801358240",
+      "1,1,2,2-tetrachloro-3,3,3-trifluoropropane"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/23237202/synonyms/JSON"
+  }
+}

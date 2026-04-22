@@ -1,0 +1,57 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_119450_72_5",
+    "r_number": "",
+    "family": "HFC",
+    "query_name": "119450-72-5",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=HFC-365qcc"
+  },
+  "pubchem_record": {
+    "cid": "15722429",
+    "query": "119450-72-5",
+    "query_type": "name",
+    "molecular_formula": "C4H5F5",
+    "molecular_weight": 148.07,
+    "canonical_smiles": "CC(C(CF)(F)F)(F)F",
+    "isomeric_smiles": "CC(C(CF)(F)F)(F)F",
+    "inchi": "InChI=1S/C4H5F5/c1-3(6,7)4(8,9)2-5/h2H2,1H3",
+    "inchikey": "BBWCPOKXYNIGCI-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 15722429,
+      "MolecularFormula": "C4H5F5",
+      "MolecularWeight": "148.07",
+      "SMILES": "CC(C(CF)(F)F)(F)F",
+      "ConnectivitySMILES": "CC(C(CF)(F)F)(F)F",
+      "InChI": "InChI=1S/C4H5F5/c1-3(6,7)4(8,9)2-5/h2H2,1H3",
+      "InChIKey": "BBWCPOKXYNIGCI-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/119450-72-5/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "15722429",
+    "synonyms": [
+      "1,2,2,3,3-pentafluorobutane",
+      "DTXSID201026677",
+      "119450-72-5",
+      "RefChem:906603",
+      "DTXCID501510827",
+      "SCHEMBL106389",
+      "SCHEMBL15402510",
+      "SCHEMBL15403566",
+      "BBWCPOKXYNIGCI-UHFFFAOYSA-N"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/15722429/synonyms/JSON"
+  }
+}

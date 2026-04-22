@@ -73,6 +73,7 @@ The formal machine-readable vocabularies live in `schemas/controlled_vocabularie
 - `boiling_point_c`
 - `critical_temp_c`
 - `critical_pressure_mpa`
+- `critical_compressibility_factor`
 - `critical_density_kgm3`
 - `acentric_factor`
 - `vaporization_enthalpy_kjmol`

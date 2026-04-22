@@ -1,0 +1,63 @@
+{
+  "seed": {
+    "seed_id": "tierd_excel202603_name_359_15_9",
+    "r_number": "",
+    "family": "HFC",
+    "query_name": "359-15-9",
+    "pubchem_query_type": "name",
+    "nist_query": "",
+    "nist_query_type": "name",
+    "coolprop_fluid": "",
+    "priority_tier": 4,
+    "selection_role": "inventory",
+    "coverage_tier": "D",
+    "source_bundle": "excel_202603_structured",
+    "coolprop_support_expected": "no",
+    "regulatory_priority": "low",
+    "entity_scope": "candidate",
+    "model_inclusion": "no",
+    "notes": "generated from 制冷剂数据库202603.xlsx structured sheets=1-1-NIST热物性实验数据-Aspen,1-2-NIST热物性实验数据-蒸发潜热,1-ODS八维数据库,2-GWP和ODP; primary_name=HFE-152a"
+  },
+  "pubchem_record": {
+    "cid": "10975404",
+    "query": "359-15-9",
+    "query_type": "name",
+    "molecular_formula": "C2H4F2O",
+    "molecular_weight": 82.05,
+    "canonical_smiles": "COC(F)F",
+    "isomeric_smiles": "COC(F)F",
+    "inchi": "InChI=1S/C2H4F2O/c1-5-2(3)4/h2H,1H3",
+    "inchikey": "CGZAMBNIGLUBRY-UHFFFAOYSA-N",
+    "raw": {
+      "CID": 10975404,
+      "MolecularFormula": "C2H4F2O",
+      "MolecularWeight": "82.05",
+      "SMILES": "COC(F)F",
+      "ConnectivitySMILES": "COC(F)F",
+      "InChI": "InChI=1S/C2H4F2O/c1-5-2(3)4/h2H,1H3",
+      "InChIKey": "CGZAMBNIGLUBRY-UHFFFAOYSA-N"
+    },
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/359-15-9/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+  },
+  "synonyms": {
+    "cid": "10975404",
+    "synonyms": [
+      "359-15-9",
+      "Methane, difluoromethoxy-",
+      "RefChem:1089049",
+      "difluoro(methoxy)methane",
+      "Difluoromethyl methyl ether",
+      "1,1-difluorodimethyl ether",
+      "MFCD07784223",
+      "1,1-Difluorodimethylether",
+      "SCHEMBL9805",
+      "SCHEMBL9806",
+      "SCHEMBL9807",
+      "DTXSID30957316",
+      "CGZAMBNIGLUBRY-UHFFFAOYSA-N",
+      "AKOS006345487",
+      "DB-297183"
+    ],
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/10975404/synonyms/JSON"
+  }
+}
