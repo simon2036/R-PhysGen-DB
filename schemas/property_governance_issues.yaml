@@ -1,0 +1,11 @@
+table_name: property_governance_issues
+layer: gold
+path: data/gold/property_governance_issues.parquet
+primary_key:
+  - issue_id
+columns:
+  - {name: issue_id, dtype: string, required: true}
+  - {name: issue_type, dtype: string, required: true}
+  - {name: severity, dtype: string, required: true}
+  - {name: affected_record_count, dtype: int, required: true}
+  - {name: recommended_action, dtype: string, required: true}

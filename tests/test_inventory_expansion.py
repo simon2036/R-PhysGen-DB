@@ -209,3 +209,43 @@ def test_quality_report_includes_inventory_metrics() -> None:
     assert report["candidate_count"] == 1
     assert report["unresolved_refrigerants"] == [{"seed_id": "seed_gap", "stage": "pubchem", "detail": "not found"}]
     assert report["inventory_property_gaps"]["refrigerant"]["D"]["gwp_100yr"]["missing_count"] == 1
+
+
+def test_select_recommended_prefers_non_proxy_rows_even_when_proxy_rank_is_higher() -> None:
+    df = pd.DataFrame(
+        [
+            {
+                "mol_id": "mol_a",
+                "property_name": "gwp_100yr",
+                "value": "1200",
+                "value_num": 1200.0,
+                "unit": "dimensionless",
+                "source_type": "manual_curated_reference",
+                "source_name": "Proxy",
+                "source_id": "source_proxy",
+                "quality_level": "manual_curated_reference",
+                "source_priority_rank": 1,
+                "data_quality_score_100": 99,
+                "is_proxy_or_screening": 1,
+            },
+            {
+                "mol_id": "mol_a",
+                "property_name": "gwp_100yr",
+                "value": "550",
+                "value_num": 550.0,
+                "unit": "dimensionless",
+                "source_type": "derived_harmonized",
+                "source_name": "Authoritative",
+                "source_id": "source_auth",
+                "quality_level": "derived_harmonized",
+                "source_priority_rank": 3,
+                "data_quality_score_100": 90,
+                "is_proxy_or_screening": 0,
+            },
+        ]
+    )
+
+    selected = pipeline._select_recommended(df)
+
+    assert selected.iloc[0]["selected_source_id"] == "source_auth"
+    assert selected.iloc[0]["value_num"] == 550.0

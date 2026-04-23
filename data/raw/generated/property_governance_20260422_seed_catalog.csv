@@ -1,0 +1,8 @@
+seed_id,r_number,family,query_name,pubchem_query_type,nist_query,nist_query_type,coolprop_fluid,priority_tier,selection_role,coverage_tier,source_bundle,coolprop_support_expected,regulatory_priority,entity_scope,model_inclusion,notes
+tierd_pgov20260422_sub058,R-630,Candidate,74-89-5,name,74-89-5,name,,4,inventory,D,property_governance_20260422,no,low,refrigerant,no,generated_from_property_governance_bundle:SUB058
+tierd_pgov20260422_sub059,R-631,Candidate,75-04-7,name,75-04-7,name,,4,inventory,D,property_governance_20260422,no,low,refrigerant,no,generated_from_property_governance_bundle:SUB059
+tierd_pgov20260422_sub087,R-132,HCFC,431-06-1,name,431-06-1,name,,4,inventory,D,property_governance_20260422,no,low,refrigerant,no,generated_from_property_governance_bundle:SUB087
+tierd_pgov20260422_sub092,R-C316,Candidate,356-18-3,name,356-18-3,name,,4,inventory,D,property_governance_20260422,no,low,refrigerant,no,generated_from_property_governance_bundle:SUB092
+tierd_pgov20260422_sub098,R-E245ca1,HFE,69948-24-9,name,69948-24-9,name,,4,inventory,D,property_governance_20260422,no,low,refrigerant,no,generated_from_property_governance_bundle:SUB098
+tierd_pgov20260422_sub107,R-120,Candidate,76-01-7,name,76-01-7,name,,4,inventory,D,property_governance_20260422,no,low,refrigerant,no,generated_from_property_governance_bundle:SUB107
+tierd_pgov20260422_sub108,R-111,CFC,354-56-3,name,354-56-3,name,,4,inventory,D,property_governance_20260422,no,low,refrigerant,no,generated_from_property_governance_bundle:SUB108

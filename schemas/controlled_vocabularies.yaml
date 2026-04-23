@@ -13,6 +13,9 @@ families:
   - Inorganic
   - Siloxane
   - Aromatic
+  - Halon
+  - PFC
+  - HFE
 
 source_types:
   - manual_catalog

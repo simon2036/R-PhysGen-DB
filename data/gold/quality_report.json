@@ -1,29 +1,29 @@
 {
-  "seed_catalog_count": 5700,
-  "refrigerant_count": 70,
+  "seed_catalog_count": 5707,
+  "refrigerant_count": 77,
   "candidate_count": 5630,
-  "resolved_molecule_count": 5591,
-  "observation_count": 3060,
-  "recommended_count": 2330,
+  "resolved_molecule_count": 5598,
+  "observation_count": 4315,
+  "recommended_count": 2643,
   "regulatory_status_count": 96,
   "pending_source_count": 47,
-  "qc_issue_count": 6,
+  "qc_issue_count": 10,
   "recommended_property_coverage": {
-    "acentric_factor": 226,
-    "ashrae_safety": 47,
-    "atmospheric_lifetime_yr": 16,
-    "boiling_point_c": 338,
+    "acentric_factor": 227,
+    "ashrae_safety": 56,
+    "atmospheric_lifetime_yr": 121,
+    "boiling_point_c": 357,
     "cop_standard_cycle": 89,
     "critical_compressibility_factor": 127,
-    "critical_density_kgm3": 110,
-    "critical_pressure_mpa": 243,
-    "critical_temp_c": 243,
-    "gwp_100yr": 96,
+    "critical_density_kgm3": 182,
+    "critical_pressure_mpa": 262,
+    "critical_temp_c": 262,
+    "gwp_100yr": 146,
     "gwp_20yr": 6,
     "gwp_ar4_100yr": 16,
     "gwp_ar5_100yr": 17,
-    "odp": 495,
-    "toxicity_class": 47,
+    "odp": 506,
+    "toxicity_class": 55,
     "vaporization_enthalpy_kjmol": 125,
     "volumetric_cooling_mjm3": 89
   },
@@ -33,7 +33,7 @@
       "property_coverage": {
         "acentric_factor": 1.0,
         "ashrae_safety": 0.90625,
-        "atmospheric_lifetime_yr": 0.21875,
+        "atmospheric_lifetime_yr": 0.9375,
         "boiling_point_c": 1.0,
         "cop_standard_cycle": 0.90625,
         "critical_compressibility_factor": 0.78125,
@@ -44,7 +44,7 @@
         "gwp_20yr": 0.1875,
         "gwp_ar4_100yr": 0.21875,
         "gwp_ar5_100yr": 0.21875,
-        "odp": 0.96875,
+        "odp": 1.0,
         "toxicity_class": 0.90625,
         "vaporization_enthalpy_kjmol": 1.0,
         "volumetric_cooling_mjm3": 0.90625
@@ -54,19 +54,19 @@
       "molecule_count": 48,
       "property_coverage": {
         "acentric_factor": 1.0,
-        "ashrae_safety": 0.3125,
-        "atmospheric_lifetime_yr": 0.0625,
+        "ashrae_safety": 0.3541666666666667,
+        "atmospheric_lifetime_yr": 0.4375,
         "boiling_point_c": 1.0,
         "cop_standard_cycle": 0.8125,
         "critical_compressibility_factor": 0.3333333333333333,
         "critical_density_kgm3": 1.0,
         "critical_pressure_mpa": 1.0,
         "critical_temp_c": 1.0,
-        "gwp_100yr": 0.5416666666666666,
+        "gwp_100yr": 0.5625,
         "gwp_ar4_100yr": 0.0625,
         "gwp_ar5_100yr": 0.0625,
         "odp": 0.5833333333333334,
-        "toxicity_class": 0.3125,
+        "toxicity_class": 0.3333333333333333,
         "vaporization_enthalpy_kjmol": 1.0,
         "volumetric_cooling_mjm3": 0.8125
       }
@@ -75,36 +75,38 @@
       "molecule_count": 40,
       "property_coverage": {
         "acentric_factor": 0.875,
-        "ashrae_safety": 0.025,
+        "ashrae_safety": 0.15,
+        "atmospheric_lifetime_yr": 0.1,
         "boiling_point_c": 0.925,
         "cop_standard_cycle": 0.525,
         "critical_compressibility_factor": 0.05,
-        "critical_density_kgm3": 0.75,
+        "critical_density_kgm3": 0.825,
         "critical_pressure_mpa": 0.925,
         "critical_temp_c": 0.925,
-        "gwp_100yr": 0.6,
+        "gwp_100yr": 0.675,
         "odp": 0.425,
-        "toxicity_class": 0.025,
+        "toxicity_class": 0.15,
         "vaporization_enthalpy_kjmol": 0.85,
         "volumetric_cooling_mjm3": 0.525
       }
     },
     "D": {
-      "molecule_count": 5471,
+      "molecule_count": 5478,
       "property_coverage": {
-        "acentric_factor": 0.02028879546700786,
-        "ashrae_safety": 0.0003655638822884299,
-        "atmospheric_lifetime_yr": 0.0010966916468652897,
-        "boiling_point_c": 0.040394808992871505,
-        "critical_compressibility_factor": 0.015353683056114056,
-        "critical_pressure_mpa": 0.023030524584171083,
-        "critical_temp_c": 0.023030524584171083,
-        "gwp_100yr": 0.0027417291171632245,
-        "gwp_ar4_100yr": 0.0010966916468652897,
-        "gwp_ar5_100yr": 0.0012794735880095047,
-        "odp": 0.07658563333942607,
-        "toxicity_class": 0.0003655638822884299,
-        "vaporization_enthalpy_kjmol": 0.0020106013525863645
+        "acentric_factor": 0.02044541803577948,
+        "ashrae_safety": 0.0007301935012778386,
+        "atmospheric_lifetime_yr": 0.012048192771084338,
+        "boiling_point_c": 0.04381161007667032,
+        "critical_compressibility_factor": 0.01533406352683461,
+        "critical_density_kgm3": 0.012595837897042717,
+        "critical_pressure_mpa": 0.02646951442132165,
+        "critical_temp_c": 0.02646951442132165,
+        "gwp_100yr": 0.01113545089448704,
+        "gwp_ar4_100yr": 0.001095290251916758,
+        "gwp_ar5_100yr": 0.0012778386272362175,
+        "odp": 0.0783132530120482,
+        "toxicity_class": 0.0007301935012778386,
+        "vaporization_enthalpy_kjmol": 0.002008032128514056
       }
     }
   },
@@ -112,8 +114,8 @@
     "candidate": {
       "B": {
         "gwp_100yr": {
-          "present_count": 5,
-          "missing_count": 16,
+          "present_count": 6,
+          "missing_count": 15,
           "total_count": 21
         },
         "odp": {
@@ -122,20 +124,20 @@
           "total_count": 21
         },
         "ashrae_safety": {
-          "present_count": 1,
-          "missing_count": 20,
+          "present_count": 2,
+          "missing_count": 19,
           "total_count": 21
         },
         "toxicity_class": {
-          "present_count": 1,
-          "missing_count": 20,
+          "present_count": 2,
+          "missing_count": 19,
           "total_count": 21
         }
       },
       "C": {
         "gwp_100yr": {
-          "present_count": 23,
-          "missing_count": 11,
+          "present_count": 26,
+          "missing_count": 8,
           "total_count": 34
         },
         "odp": {
@@ -144,35 +146,35 @@
           "total_count": 34
         },
         "ashrae_safety": {
-          "present_count": 0,
-          "missing_count": 34,
+          "present_count": 1,
+          "missing_count": 33,
           "total_count": 34
         },
         "toxicity_class": {
-          "present_count": 0,
-          "missing_count": 34,
+          "present_count": 1,
+          "missing_count": 33,
           "total_count": 34
         }
       },
       "D": {
         "gwp_100yr": {
-          "present_count": 14,
-          "missing_count": 5561,
+          "present_count": 55,
+          "missing_count": 5520,
           "total_count": 5575
         },
         "odp": {
-          "present_count": 414,
-          "missing_count": 5161,
+          "present_count": 422,
+          "missing_count": 5153,
           "total_count": 5575
         },
         "ashrae_safety": {
-          "present_count": 2,
-          "missing_count": 5573,
+          "present_count": 4,
+          "missing_count": 5571,
           "total_count": 5575
         },
         "toxicity_class": {
-          "present_count": 2,
-          "missing_count": 5573,
+          "present_count": 4,
+          "missing_count": 5571,
           "total_count": 5575
         }
       }
@@ -185,8 +187,8 @@
           "total_count": 32
         },
         "odp": {
-          "present_count": 31,
-          "missing_count": 1,
+          "present_count": 32,
+          "missing_count": 0,
           "total_count": 32
         },
         "ashrae_safety": {
@@ -212,8 +214,8 @@
           "total_count": 27
         },
         "ashrae_safety": {
-          "present_count": 14,
-          "missing_count": 13,
+          "present_count": 15,
+          "missing_count": 12,
           "total_count": 27
         },
         "toxicity_class": {
@@ -234,36 +236,36 @@
           "total_count": 6
         },
         "ashrae_safety": {
-          "present_count": 1,
-          "missing_count": 5,
+          "present_count": 5,
+          "missing_count": 1,
           "total_count": 6
         },
         "toxicity_class": {
-          "present_count": 1,
-          "missing_count": 5,
+          "present_count": 5,
+          "missing_count": 1,
           "total_count": 6
         }
       },
       "D": {
         "gwp_100yr": {
-          "present_count": 1,
-          "missing_count": 4,
-          "total_count": 5
+          "present_count": 6,
+          "missing_count": 6,
+          "total_count": 12
         },
         "odp": {
-          "present_count": 5,
-          "missing_count": 0,
-          "total_count": 5
+          "present_count": 7,
+          "missing_count": 5,
+          "total_count": 12
         },
         "ashrae_safety": {
           "present_count": 0,
-          "missing_count": 5,
-          "total_count": 5
+          "missing_count": 12,
+          "total_count": 12
         },
         "toxicity_class": {
           "present_count": 0,
-          "missing_count": 5,
-          "total_count": 5
+          "missing_count": 12,
+          "total_count": 12
         }
       }
     }
@@ -343,12 +345,12 @@
     {
       "seed_id": "tierc_candidate_1224ydz",
       "stage": "pubchem",
-      "detail": "400 Client Error: PUGREST.BadRequest for url: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/smiles/F/C%28Cl%29%3DC%28%5CF%29C%28F%29F/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+      "detail": "HTTPSConnectionPool(host='pubchem.ncbi.nlm.nih.gov', port=443): Max retries exceeded with url: /rest/pug/compound/smiles/F/C%28Cl%29%3DC%28%5CF%29C%28F%29F/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)')))"
     },
     {
       "seed_id": "tierc_candidate_1336mzzz",
       "stage": "pubchem",
-      "detail": "400 Client Error: PUGREST.BadRequest for url: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/smiles/FC%28F%29%28F%29/C%3DC%5CC%28F%29%28F%29F/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+      "detail": "HTTPSConnectionPool(host='pubchem.ncbi.nlm.nih.gov', port=443): Max retries exceeded with url: /rest/pug/compound/smiles/FC%28F%29%28F%29/C%3DC%5CC%28F%29%28F%29F/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)')))"
     },
     {
       "seed_id": "tierd_excel202603_name_0e467cbe4304",
@@ -423,7 +425,7 @@
     {
       "seed_id": "tierd_excel202603_name_1943659_46_8",
       "stage": "pubchem",
-      "detail": "HTTPSConnectionPool(host='pubchem.ncbi.nlm.nih.gov', port=443): Max retries exceeded with url: /rest/pug/compound/name/1943659-46-8/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))"
+      "detail": "404 Client Error: PUGREST.NotFound for url: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/1943659-46-8/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
     },
     {
       "seed_id": "tierd_excel202603_name_313696_57_0",
@@ -558,7 +560,7 @@
     {
       "seed_id": "tierd_excel202603_name_154193_88_1",
       "stage": "pubchem",
-      "detail": "404 Client Error: PUGREST.NotFound for url: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/154193-88-1/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
+      "detail": "HTTPSConnectionPool(host='pubchem.ncbi.nlm.nih.gov', port=443): Max retries exceeded with url: /rest/pug/compound/name/154193-88-1/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)')))"
     },
     {
       "seed_id": "tierd_excel202603_name_2410754_09_3",
@@ -865,5 +867,108 @@
       "stage": "pubchem",
       "detail": "404 Client Error: PUGREST.NotFound for url: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/74123-20-9/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
     }
-  ]
+  ],
+  "canonical_metrics": {
+    "canonical_observation_count": 1687,
+    "canonical_recommended_count": 1389,
+    "canonical_recommended_strict_count": 1304,
+    "canonical_review_queue_count": 0,
+    "canonical_proxy_selected_count": 466,
+    "canonical_proxy_only_count": 466,
+    "canonical_conflict_count": 1,
+    "canonical_source_divergence_count": 35,
+    "canonical_conflict_open_count": 0,
+    "canonical_source_divergence_open_count": 0,
+    "canonical_review_decision_count": 120,
+    "canonical_proxy_policy_count": 13,
+    "canonical_strict_proxy_accept_count": 396,
+    "canonical_feature_key_count": 30,
+    "canonical_strict_feature_key_count": 24,
+    "canonical_review_reason_counts": {},
+    "canonical_review_decision_reason_counts": {
+      "below_minimum_quality": 80,
+      "source_divergence": 34,
+      "non_numeric_selected_value": 4,
+      "not_ml_relevant": 1,
+      "top_rank_conflict": 1
+    },
+    "canonical_review_decision_action_counts": {
+      "accept_out_of_strict": 85,
+      "accept_selected_source": 35
+    },
+    "canonical_proxy_policy_feature_counts": {
+      "identifier.molecular_weight": 5,
+      "environmental.atmospheric_lifetime": 1,
+      "molecular_descriptor.acentric_factor": 1,
+      "safety.safety_group": 1,
+      "thermodynamic.critical_density": 1,
+      "thermodynamic.critical_pressure": 1,
+      "thermodynamic.critical_temperature": 1,
+      "thermodynamic.triple_pressure": 1,
+      "thermodynamic.triple_temperature": 1
+    },
+    "unresolved_bundle_substance_count": 0,
+    "external_resolution_count": 2,
+    "row_count_audit_status": "ok"
+  },
+  "property_governance_bundle": {
+    "bundle_file": "D:/BaiduSyncdisk/ZJUwork/制冷剂/0_R-PhysGen-DB/methods/refrigerant_seed_database_20260422_property_governance_bundle.zip",
+    "bundle_sha256": "c6a13391b8c01dff4acf2ff4d68eaca7fccde6b779f476a288a8e083d5d81743",
+    "bundle_table_count": 218,
+    "extension_table_count": 218,
+    "crosswalk": {
+      "matched_existing": 128,
+      "generated_new_seed": 7,
+      "unresolved": 0,
+      "inchikey_matches": 126,
+      "cas_matches": 2,
+      "r_number_matches": 0,
+      "canonical_smiles_matches": 0,
+      "external_resolution_count": 2
+    },
+    "canonical_observation_count": 1687,
+    "canonical_recommended_count": 1389,
+    "canonical_recommended_strict_count": 1304,
+    "canonical_review_queue_count": 0,
+    "canonical_proxy_selected_count": 466,
+    "canonical_proxy_only_count": 466,
+    "canonical_conflict_count": 1,
+    "canonical_source_divergence_count": 35,
+    "canonical_conflict_open_count": 0,
+    "canonical_source_divergence_open_count": 0,
+    "canonical_review_decision_count": 120,
+    "canonical_proxy_policy_count": 13,
+    "canonical_strict_proxy_accept_count": 396,
+    "canonical_review_reason_counts": {},
+    "canonical_review_decision_reason_counts": {
+      "below_minimum_quality": 80,
+      "source_divergence": 34,
+      "non_numeric_selected_value": 4,
+      "not_ml_relevant": 1,
+      "top_rank_conflict": 1
+    },
+    "canonical_review_decision_action_counts": {
+      "accept_out_of_strict": 85,
+      "accept_selected_source": 35
+    },
+    "canonical_proxy_policy_feature_counts": {
+      "identifier.molecular_weight": 5,
+      "environmental.atmospheric_lifetime": 1,
+      "molecular_descriptor.acentric_factor": 1,
+      "safety.safety_group": 1,
+      "thermodynamic.critical_density": 1,
+      "thermodynamic.critical_pressure": 1,
+      "thermodynamic.critical_temperature": 1,
+      "thermodynamic.triple_pressure": 1,
+      "thermodynamic.triple_temperature": 1
+    },
+    "row_count_audit": {
+      "status": "ok",
+      "expected_table_count": 218,
+      "actual_table_count": 218,
+      "missing_tables": [],
+      "extra_tables": [],
+      "row_mismatch_tables": []
+    }
+  }
 }

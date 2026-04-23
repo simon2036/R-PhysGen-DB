@@ -25,3 +25,10 @@ columns:
   - {name: notes, dtype: string, required: false}
   - {name: qc_status, dtype: string, required: true}
   - {name: qc_flags, dtype: string, required: false}
+  - {name: canonical_feature_key, dtype: string, required: false}
+  - {name: standard_unit, dtype: string, required: false}
+  - {name: bundle_record_id, dtype: string, required: false}
+  - {name: source_priority_rank, dtype: float, required: false}
+  - {name: data_quality_score_100, dtype: float, required: false}
+  - {name: is_proxy_or_screening, dtype: int, required: false}
+  - {name: ml_use_status, dtype: string, required: false}

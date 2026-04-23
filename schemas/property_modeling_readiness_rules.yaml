@@ -1,0 +1,12 @@
+table_name: property_modeling_readiness_rules
+layer: gold
+path: data/gold/property_modeling_readiness_rules.parquet
+primary_key:
+  - readiness_rule_id
+columns:
+  - {name: readiness_rule_id, dtype: string, required: true}
+  - {name: canonical_property_id, dtype: string, required: true}
+  - {name: canonical_feature_key, dtype: string, required: true}
+  - {name: use_as_ml_feature, dtype: int, required: true}
+  - {name: use_as_ml_target, dtype: int, required: true}
+  - {name: minimum_quality_score, dtype: float, required: true}

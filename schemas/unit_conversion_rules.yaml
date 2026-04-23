@@ -1,0 +1,8 @@
+table_name: unit_conversion_rules
+layer: gold
+path: data/gold/unit_conversion_rules.parquet
+primary_key:
+  - unit_conversion_rule_id
+columns:
+  - {name: unit_conversion_rule_id, dtype: string, required: true}
+  - {name: standard_unit, dtype: string, required: true}
