@@ -34,6 +34,7 @@ from r_physgen_db.sources.epa_snap_parser import EPASNAPParser
 from r_physgen_db.sources.http_utils import build_retry_session, is_transient_request_exception
 from r_physgen_db.sources.nist_thermo_parser import NISTThermoParser
 from r_physgen_db.sources.nist_webbook import NISTWebBookClient
+from r_physgen_db.sources.property_governance_bundle import default_bundle_path, integrate_property_governance_bundle
 from r_physgen_db.sources.pubchem import PubChemClient
 from r_physgen_db.utils import ensure_directory, load_yaml, now_iso, sha256_file, slugify, write_json, write_text
 
@@ -342,29 +343,48 @@ def build_dataset(refresh_remote: bool = False) -> dict[str, Any]:
 
     molecule_core = _ensure_columns(
         pd.DataFrame(sorted(molecule_rows.values(), key=lambda item: item["mol_id"])),
-        [
-            "mol_id",
-            "seed_id",
-            "family",
-            "canonical_smiles",
-            "isomeric_smiles",
-            "inchi",
-            "inchikey",
-            "inchikey_first_block",
-            "formula",
-            "molecular_weight",
-            "charge",
-            "heavy_atom_count",
-            "stereo_flag",
-            "ez_isomer",
-            "pubchem_cid",
-            "pubchem_query",
-            "entity_scope",
-            "model_inclusion",
-            "status",
-        ],
+        _molecule_core_columns(),
     )
-    alias_df = _ensure_columns(pd.DataFrame(alias_rows).drop_duplicates(), ["mol_id", "alias_type", "alias_value", "is_primary", "source_name"])
+    alias_df = _ensure_columns(pd.DataFrame(alias_rows).drop_duplicates(), _molecule_alias_columns())
+
+    bundle_integration = integrate_property_governance_bundle(
+        bundle_path=_property_governance_bundle_path(paths),
+        output_root=_output_root_from_paths(paths),
+        seed_catalog=seed_catalog,
+        molecule_core=molecule_core,
+        alias_df=alias_df,
+        parser_version=PARSER_VERSION,
+        retrieved_at=now_iso(),
+    )
+    if bundle_integration["bundle_present"]:
+        generated_seed_rows = bundle_integration["generated_seed_rows"]
+        if isinstance(generated_seed_rows, pd.DataFrame) and not generated_seed_rows.empty:
+            seed_catalog = (
+                pd.concat([seed_catalog, generated_seed_rows], ignore_index=True)
+                .drop_duplicates(subset=["seed_id"], keep="first")
+                .reset_index(drop=True)
+            )
+        for row in bundle_integration["generated_molecule_rows"]:
+            existing_row = molecule_rows.get(row["mol_id"])
+            if existing_row is None or _prefer_seed_catalog_entry(row, existing_row):
+                molecule_rows[row["mol_id"]] = row
+            seed_to_mol_id[row["seed_id"]] = row["mol_id"]
+        alias_rows.extend(bundle_integration["generated_alias_rows"])
+        property_rows.extend(bundle_integration["legacy_property_rows"])
+        source_manifest_rows.extend(bundle_integration["source_manifest_rows"])
+        resolution_rows.extend(bundle_integration["resolution_rows"])
+
+        molecule_core = _ensure_columns(
+            pd.DataFrame(sorted(molecule_rows.values(), key=lambda item: item["mol_id"])),
+            _molecule_core_columns(),
+        )
+        alias_df = _ensure_columns(pd.DataFrame(alias_rows).drop_duplicates(), _molecule_alias_columns())
+
+    canonical_observation = bundle_integration.get("canonical_observation", pd.DataFrame())
+    canonical_recommended = bundle_integration.get("canonical_recommended", pd.DataFrame())
+    canonical_recommended_strict = bundle_integration.get("canonical_recommended_strict", pd.DataFrame())
+    canonical_review_queue = bundle_integration.get("canonical_review_queue", pd.DataFrame())
+    property_governance_audit = bundle_integration.get("audit", {})
 
     molecule_context = _build_molecule_source_context(molecule_core, seed_catalog)
     alias_lookup = _build_alias_lookup(alias_df)
@@ -437,6 +457,11 @@ def build_dataset(refresh_remote: bool = False) -> dict[str, Any]:
         resolution_df=resolution_df,
         regulatory_status=regulatory_status,
         pending_sources=pending_sources,
+        property_observation_canonical=canonical_observation,
+        property_recommended_canonical=canonical_recommended,
+        property_recommended_canonical_strict=canonical_recommended_strict,
+        property_recommended_canonical_review_queue=canonical_review_queue,
+        property_governance_audit=property_governance_audit,
     )
     write_json(paths["gold_quality_report"], report)
     _build_duckdb_index(paths)
@@ -451,6 +476,7 @@ def _paths() -> dict[str, Path]:
         "raw_epa": DATA_DIR / "raw" / "epa",
         "raw_coolprop_meta": DATA_DIR / "raw" / "coolprop" / "session_metadata.json",
         "seed_catalog": DATA_DIR / "raw" / "manual" / "seed_catalog.csv",
+        "property_governance_bundle": default_bundle_path(PROJECT_ROOT),
         "refrigerant_inventory": DATA_DIR / "raw" / "manual" / "refrigerant_inventory.csv",
         "manual_observations": DATA_DIR / "raw" / "manual" / "manual_property_observations.csv",
         "manual_observations_dir": DATA_DIR / "raw" / "manual" / "observations",
@@ -472,9 +498,29 @@ def _paths() -> dict[str, Path]:
         "gold_property_matrix": DATA_DIR / "gold" / "property_matrix.parquet",
         "gold_model_index": DATA_DIR / "gold" / "model_dataset_index.parquet",
         "gold_model_ready": DATA_DIR / "gold" / "model_ready.parquet",
+        "gold_property_recommended_canonical_strict": DATA_DIR / "gold" / "property_recommended_canonical_strict.parquet",
+        "gold_property_recommended_canonical_review_queue": DATA_DIR / "gold" / "property_recommended_canonical_review_queue.parquet",
         "gold_quality_report": DATA_DIR / "gold" / "quality_report.json",
         "duckdb_path": DATA_DIR / "index" / "r_physgen_v2.duckdb",
     }
+
+
+def _property_governance_bundle_path(paths: dict[str, Path]) -> Path:
+    bundle_path = paths.get("property_governance_bundle")
+    if isinstance(bundle_path, Path):
+        return bundle_path
+    raw_root = paths.get("raw_root", DATA_DIR / "raw")
+    return raw_root / "__missing_property_governance_bundle__.zip"
+
+
+def _output_root_from_paths(paths: dict[str, Path]) -> Path:
+    raw_root = paths.get("raw_root")
+    if isinstance(raw_root, Path):
+        try:
+            return raw_root.parents[1]
+        except IndexError:
+            pass
+    return PROJECT_ROOT
 
 
 def _fetch_global_sources(
@@ -1720,6 +1766,11 @@ def _select_recommended(df: pd.DataFrame) -> pd.DataFrame:
 
     working["source_priority"] = working["source_type"].map(SOURCE_PRIORITY).fillna(0).astype(int)
     working["quality_score"] = working["quality_level"].map(QUALITY_SCORES).fillna(0.0)
+    working["source_priority_rank_value"] = pd.to_numeric(working.get("source_priority_rank"), errors="coerce")
+    working["data_quality_score_value"] = pd.to_numeric(working.get("data_quality_score_100"), errors="coerce")
+    working["proxy_sort"] = pd.to_numeric(working.get("is_proxy_or_screening"), errors="coerce").fillna(0).astype(int)
+    working["source_priority_effective"] = working.apply(_effective_source_priority, axis=1)
+    working["quality_score_effective"] = working.apply(_effective_quality_score, axis=1)
 
     rows: list[dict[str, Any]] = []
     for (mol_id, property_name), group in working.groupby(["mol_id", "property_name"], sort=True):
@@ -1769,7 +1820,11 @@ def _select_recommended(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def _select_group_recommended(mol_id: str, property_name: str, group: pd.DataFrame) -> dict[str, Any]:
-    group = group.sort_values(by=["source_priority", "quality_score"], ascending=[False, False], kind="stable")
+    group = group.sort_values(
+        by=["proxy_sort", "source_priority_effective", "quality_score_effective"],
+        ascending=[True, False, False],
+        kind="stable",
+    )
     selected = group.iloc[0]
     conflict_flag = False
     conflict_detail = ""
@@ -1797,11 +1852,25 @@ def _select_group_recommended(mol_id: str, property_name: str, group: pd.DataFra
         "selected_source_id": selected["source_id"],
         "selected_source_name": selected["source_name"],
         "selected_quality_level": selected["quality_level"],
-        "source_priority": int(selected["source_priority"]),
+        "source_priority": int(selected["source_priority_effective"]),
         "source_count": int(len(group)),
         "conflict_flag": bool(conflict_flag),
         "conflict_detail": conflict_detail,
     }
+
+
+def _effective_source_priority(row: pd.Series) -> int:
+    rank = row.get("source_priority_rank_value")
+    if pd.notna(rank):
+        return max(0, 10000 - int(rank))
+    return int(row.get("source_priority", 0) or 0)
+
+
+def _effective_quality_score(row: pd.Series) -> float:
+    score = row.get("data_quality_score_value")
+    if pd.notna(score):
+        return float(score) / 100.0
+    return float(row.get("quality_score", 0.0) or 0.0)
 
 
 def _build_structure_features(molecule_core: pd.DataFrame) -> pd.DataFrame:
@@ -1945,13 +2014,36 @@ def _build_quality_report(
     resolution_df: pd.DataFrame,
     regulatory_status: pd.DataFrame,
     pending_sources: pd.DataFrame,
+    property_observation_canonical: pd.DataFrame | None = None,
+    property_recommended_canonical: pd.DataFrame | None = None,
+    property_recommended_canonical_strict: pd.DataFrame | None = None,
+    property_recommended_canonical_review_queue: pd.DataFrame | None = None,
+    property_governance_audit: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
+    property_observation_canonical = property_observation_canonical if property_observation_canonical is not None else pd.DataFrame()
+    property_recommended_canonical = property_recommended_canonical if property_recommended_canonical is not None else pd.DataFrame()
+    property_recommended_canonical_strict = (
+        property_recommended_canonical_strict if property_recommended_canonical_strict is not None else pd.DataFrame()
+    )
+    property_recommended_canonical_review_queue = (
+        property_recommended_canonical_review_queue
+        if property_recommended_canonical_review_queue is not None
+        else pd.DataFrame()
+    )
+    property_governance_audit = property_governance_audit or {}
     recommended_props = property_recommended.groupby("property_name")["mol_id"].nunique().to_dict() if not property_recommended.empty else {}
     split_counts = model_ready["split"].value_counts(dropna=False).to_dict() if "split" in model_ready.columns else {}
     unresolved = resolution_df.loc[resolution_df["status"].isin(["failed", "warning"]), ["seed_id", "stage", "detail"]].to_dict(orient="records")
     tier_coverage = _tier_coverage(seed_catalog, molecule_core, property_recommended)
     unresolved_refrigerants = _unresolved_refrigerants(seed_catalog, resolution_df, molecule_core)
     inventory_property_gaps = _inventory_property_gaps(seed_catalog, molecule_core, property_recommended)
+    canonical_metrics = _build_canonical_metrics(
+        property_observation_canonical=property_observation_canonical,
+        property_recommended_canonical=property_recommended_canonical,
+        property_recommended_canonical_strict=property_recommended_canonical_strict,
+        property_recommended_canonical_review_queue=property_recommended_canonical_review_queue,
+        property_governance_audit=property_governance_audit,
+    )
     return {
         "seed_catalog_count": int(len(seed_catalog)),
         "refrigerant_count": int((seed_catalog["entity_scope"].astype(str) == "refrigerant").sum()) if "entity_scope" in seed_catalog.columns else 0,
@@ -1968,6 +2060,66 @@ def _build_quality_report(
         "split_counts": split_counts,
         "unresolved_refrigerants": unresolved_refrigerants,
         "unresolved_events": unresolved,
+        "canonical_metrics": canonical_metrics,
+        "property_governance_bundle": property_governance_audit,
+    }
+
+
+def _build_canonical_metrics(
+    *,
+    property_observation_canonical: pd.DataFrame,
+    property_recommended_canonical: pd.DataFrame,
+    property_recommended_canonical_strict: pd.DataFrame,
+    property_recommended_canonical_review_queue: pd.DataFrame,
+    property_governance_audit: dict[str, Any],
+) -> dict[str, Any]:
+    crosswalk_audit = property_governance_audit.get("crosswalk", {}) if isinstance(property_governance_audit, dict) else {}
+    review_reason_counts = (
+        property_recommended_canonical_review_queue["review_reason"].astype(str).value_counts().to_dict()
+        if not property_recommended_canonical_review_queue.empty
+        else {}
+    )
+    return {
+        "canonical_observation_count": int(len(property_observation_canonical)),
+        "canonical_recommended_count": int(len(property_recommended_canonical)),
+        "canonical_recommended_strict_count": int(len(property_recommended_canonical_strict)),
+        "canonical_review_queue_count": int(len(property_recommended_canonical_review_queue)),
+        "canonical_proxy_selected_count": int(property_recommended_canonical["is_proxy_or_screening"].fillna(False).astype(bool).sum())
+        if not property_recommended_canonical.empty
+        else 0,
+        "canonical_proxy_only_count": int(property_recommended_canonical["proxy_only_flag"].fillna(False).astype(bool).sum())
+        if not property_recommended_canonical.empty
+        else 0,
+        "canonical_conflict_count": int(property_recommended_canonical["conflict_flag"].fillna(False).astype(bool).sum())
+        if not property_recommended_canonical.empty
+        else 0,
+        "canonical_source_divergence_count": int(property_recommended_canonical["source_divergence_flag"].fillna(False).astype(bool).sum())
+        if not property_recommended_canonical.empty
+        else 0,
+        "canonical_conflict_open_count": int(
+            property_governance_audit.get("canonical_conflict_open_count", review_reason_counts.get("top_rank_conflict", 0))
+            or 0
+        ),
+        "canonical_source_divergence_open_count": int(
+            property_governance_audit.get("canonical_source_divergence_open_count", review_reason_counts.get("source_divergence", 0))
+            or 0
+        ),
+        "canonical_review_decision_count": int(property_governance_audit.get("canonical_review_decision_count", 0) or 0),
+        "canonical_proxy_policy_count": int(property_governance_audit.get("canonical_proxy_policy_count", 0) or 0),
+        "canonical_strict_proxy_accept_count": int(property_governance_audit.get("canonical_strict_proxy_accept_count", 0) or 0),
+        "canonical_feature_key_count": int(property_recommended_canonical["canonical_feature_key"].nunique())
+        if not property_recommended_canonical.empty
+        else 0,
+        "canonical_strict_feature_key_count": int(property_recommended_canonical_strict["canonical_feature_key"].nunique())
+        if not property_recommended_canonical_strict.empty
+        else 0,
+        "canonical_review_reason_counts": review_reason_counts,
+        "canonical_review_decision_reason_counts": property_governance_audit.get("canonical_review_decision_reason_counts", {}),
+        "canonical_review_decision_action_counts": property_governance_audit.get("canonical_review_decision_action_counts", {}),
+        "canonical_proxy_policy_feature_counts": property_governance_audit.get("canonical_proxy_policy_feature_counts", {}),
+        "unresolved_bundle_substance_count": int(crosswalk_audit.get("unresolved", 0) or 0),
+        "external_resolution_count": int(crosswalk_audit.get("external_resolution_count", 0) or 0),
+        "row_count_audit_status": property_governance_audit.get("row_count_audit", {}).get("status", ""),
     }
 
 
@@ -2089,6 +2241,49 @@ def _build_duckdb_index(paths: dict[str, Path]) -> None:
     for table_name in DUCKDB_TABLES:
         parquet_path = parquet_map[table_name].resolve().as_posix()
         con.execute(f"CREATE TABLE {table_name} AS SELECT * FROM read_parquet('{parquet_path}')")
+
+    supplemental_tables = {
+        "property_dictionary": PROJECT_ROOT / "data" / "gold" / "property_dictionary.parquet",
+        "property_canonical_map": PROJECT_ROOT / "data" / "gold" / "property_canonical_map.parquet",
+        "unit_conversion_rules": PROJECT_ROOT / "data" / "gold" / "unit_conversion_rules.parquet",
+        "property_source_priority_rules": PROJECT_ROOT / "data" / "gold" / "property_source_priority_rules.parquet",
+        "property_modeling_readiness_rules": PROJECT_ROOT / "data" / "gold" / "property_modeling_readiness_rules.parquet",
+        "property_governance_issues": PROJECT_ROOT / "data" / "gold" / "property_governance_issues.parquet",
+        "property_observation_canonical": PROJECT_ROOT / "data" / "silver" / "property_observation_canonical.parquet",
+        "property_recommended_canonical": PROJECT_ROOT / "data" / "gold" / "property_recommended_canonical.parquet",
+        "property_recommended_canonical_strict": PROJECT_ROOT / "data" / "gold" / "property_recommended_canonical_strict.parquet",
+        "property_recommended_canonical_review_queue": PROJECT_ROOT / "data" / "gold" / "property_recommended_canonical_review_queue.parquet",
+    }
+    for table_name, parquet_path in supplemental_tables.items():
+        if parquet_path.exists():
+            con.execute(f"CREATE TABLE {table_name} AS SELECT * FROM read_parquet('{parquet_path.resolve().as_posix()}')")
+
+    extension_manifest = PROJECT_ROOT / "data" / "extensions" / "property_governance_20260422" / "extension_manifest.parquet"
+    extension_root = PROJECT_ROOT / "data" / "extensions" / "property_governance_20260422" / "tables"
+    if extension_manifest.exists():
+        con.execute("CREATE SCHEMA IF NOT EXISTS property_governance_ext")
+        manifest_df = pd.read_parquet(extension_manifest).fillna("")
+        for row in manifest_df.to_dict(orient="records"):
+            table_name = _clean_str(row.get("table_name"))
+            if not table_name:
+                continue
+            parquet_path = extension_root / f"{table_name}.parquet"
+            if parquet_path.exists():
+                con.execute(
+                    f"CREATE TABLE property_governance_ext.{table_name} AS SELECT * FROM read_parquet('{parquet_path.resolve().as_posix()}')"
+                )
+
+    normalized_extension_tables = {
+        "mixture_core": PROJECT_ROOT / "data" / "extensions" / "property_governance_20260422" / "mixture_core.parquet",
+        "mixture_component": PROJECT_ROOT / "data" / "extensions" / "property_governance_20260422" / "mixture_component.parquet",
+    }
+    if any(path.exists() for path in normalized_extension_tables.values()):
+        con.execute("CREATE SCHEMA IF NOT EXISTS extensions")
+        for table_name, parquet_path in normalized_extension_tables.items():
+            if parquet_path.exists():
+                con.execute(
+                    f"CREATE TABLE extensions.{table_name} AS SELECT * FROM read_parquet('{parquet_path.resolve().as_posix()}')"
+                )
     con.close()
 
 
@@ -2122,6 +2317,13 @@ def _property_observation_columns() -> list[str]:
         "notes",
         "qc_status",
         "qc_flags",
+        "canonical_feature_key",
+        "standard_unit",
+        "bundle_record_id",
+        "source_priority_rank",
+        "data_quality_score_100",
+        "is_proxy_or_screening",
+        "ml_use_status",
     ]
 
 
@@ -2187,3 +2389,31 @@ def _property_recommended_columns() -> list[str]:
         "conflict_flag",
         "conflict_detail",
     ]
+
+
+def _molecule_core_columns() -> list[str]:
+    return [
+        "mol_id",
+        "seed_id",
+        "family",
+        "canonical_smiles",
+        "isomeric_smiles",
+        "inchi",
+        "inchikey",
+        "inchikey_first_block",
+        "formula",
+        "molecular_weight",
+        "charge",
+        "heavy_atom_count",
+        "stereo_flag",
+        "ez_isomer",
+        "pubchem_cid",
+        "pubchem_query",
+        "entity_scope",
+        "model_inclusion",
+        "status",
+    ]
+
+
+def _molecule_alias_columns() -> list[str]:
+    return ["mol_id", "alias_type", "alias_value", "is_primary", "source_name"]

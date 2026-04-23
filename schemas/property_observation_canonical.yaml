@@ -1,0 +1,20 @@
+table_name: property_observation_canonical
+layer: silver
+path: data/silver/property_observation_canonical.parquet
+primary_key:
+  - observation_id
+columns:
+  - {name: observation_id, dtype: string, required: true}
+  - {name: mol_id, dtype: string, required: true}
+  - {name: canonical_property_id, dtype: string, required: true}
+  - {name: canonical_feature_key, dtype: string, required: true}
+  - {name: value, dtype: string, required: true}
+  - {name: unit, dtype: string, required: true}
+  - {name: source_id, dtype: string, required: true}
+  - {name: source_name, dtype: string, required: true}
+  - {name: standard_unit, dtype: string, required: true}
+  - {name: source_priority_rank, dtype: float, required: true}
+  - {name: data_quality_score_100, dtype: float, required: false}
+  - {name: is_proxy_or_screening, dtype: int, required: true}
+  - {name: ml_use_status, dtype: string, required: false}
+  - {name: bundle_record_id, dtype: string, required: true}

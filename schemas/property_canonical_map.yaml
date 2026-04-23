@@ -1,0 +1,12 @@
+table_name: property_canonical_map
+layer: gold
+path: data/gold/property_canonical_map.parquet
+primary_key:
+  - canonical_map_id
+columns:
+  - {name: canonical_map_id, dtype: string, required: true}
+  - {name: raw_table_name, dtype: string, required: true}
+  - {name: raw_property_group, dtype: string, required: true}
+  - {name: raw_property_name, dtype: string, required: true}
+  - {name: canonical_property_id, dtype: string, required: true}
+  - {name: canonical_feature_key, dtype: string, required: true}

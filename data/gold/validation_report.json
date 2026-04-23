@@ -2,7 +2,7 @@
   "schema_checks": [
     {
       "table": "source_manifest",
-      "row_count": 5849
+      "row_count": 6197
     },
     {
       "table": "pending_sources",
@@ -10,15 +10,19 @@
     },
     {
       "table": "molecule_core",
-      "row_count": 5591
+      "row_count": 5598
     },
     {
       "table": "molecule_alias",
-      "row_count": 27648
+      "row_count": 28188
     },
     {
       "table": "property_observation",
-      "row_count": 3060
+      "row_count": 4315
+    },
+    {
+      "table": "property_observation_canonical",
+      "row_count": 1687
     },
     {
       "table": "regulatory_status",
@@ -26,11 +30,47 @@
     },
     {
       "table": "property_recommended",
-      "row_count": 2330
+      "row_count": 2643
+    },
+    {
+      "table": "property_recommended_canonical",
+      "row_count": 1389
+    },
+    {
+      "table": "property_recommended_canonical_strict",
+      "row_count": 1304
+    },
+    {
+      "table": "property_recommended_canonical_review_queue",
+      "row_count": 0
+    },
+    {
+      "table": "property_dictionary",
+      "row_count": 43
+    },
+    {
+      "table": "property_canonical_map",
+      "row_count": 56
+    },
+    {
+      "table": "unit_conversion_rules",
+      "row_count": 25
+    },
+    {
+      "table": "property_source_priority_rules",
+      "row_count": 17
+    },
+    {
+      "table": "property_modeling_readiness_rules",
+      "row_count": 43
+    },
+    {
+      "table": "property_governance_issues",
+      "row_count": 8
     },
     {
       "table": "structure_features",
-      "row_count": 5591
+      "row_count": 5598
     },
     {
       "table": "model_dataset_index",
@@ -86,6 +126,19 @@
     "property_observation: has required column method",
     "property_observation: has required column quality_level",
     "property_observation: has required column qc_status",
+    "property_observation_canonical: table exists",
+    "property_observation_canonical: has required column observation_id",
+    "property_observation_canonical: has required column mol_id",
+    "property_observation_canonical: has required column canonical_property_id",
+    "property_observation_canonical: has required column canonical_feature_key",
+    "property_observation_canonical: has required column value",
+    "property_observation_canonical: has required column unit",
+    "property_observation_canonical: has required column source_id",
+    "property_observation_canonical: has required column source_name",
+    "property_observation_canonical: has required column standard_unit",
+    "property_observation_canonical: has required column source_priority_rank",
+    "property_observation_canonical: has required column is_proxy_or_screening",
+    "property_observation_canonical: has required column bundle_record_id",
     "regulatory_status: table exists",
     "regulatory_status: has required column regulatory_status_id",
     "regulatory_status: has required column mol_id",
@@ -108,6 +161,104 @@
     "property_recommended: has required column source_priority",
     "property_recommended: has required column source_count",
     "property_recommended: has required column conflict_flag",
+    "property_recommended_canonical: table exists",
+    "property_recommended_canonical: has required column mol_id",
+    "property_recommended_canonical: has required column canonical_feature_key",
+    "property_recommended_canonical: has required column canonical_property_id",
+    "property_recommended_canonical: has required column value",
+    "property_recommended_canonical: has required column unit",
+    "property_recommended_canonical: has required column selected_source_id",
+    "property_recommended_canonical: has required column selected_source_name",
+    "property_recommended_canonical: has required column source_priority_rank",
+    "property_recommended_canonical: has required column is_proxy_or_screening",
+    "property_recommended_canonical: has required column proxy_only_flag",
+    "property_recommended_canonical: has required column nonproxy_candidate_count",
+    "property_recommended_canonical: has required column top_rank_source_count",
+    "property_recommended_canonical: has required column source_divergence_flag",
+    "property_recommended_canonical: has required column source_count",
+    "property_recommended_canonical: has required column conflict_flag",
+    "property_recommended_canonical_strict: table exists",
+    "property_recommended_canonical_strict: has required column mol_id",
+    "property_recommended_canonical_strict: has required column canonical_feature_key",
+    "property_recommended_canonical_strict: has required column canonical_property_id",
+    "property_recommended_canonical_strict: has required column value",
+    "property_recommended_canonical_strict: has required column value_num",
+    "property_recommended_canonical_strict: has required column unit",
+    "property_recommended_canonical_strict: has required column selected_source_id",
+    "property_recommended_canonical_strict: has required column selected_source_name",
+    "property_recommended_canonical_strict: has required column source_priority_rank",
+    "property_recommended_canonical_strict: has required column data_quality_score_100",
+    "property_recommended_canonical_strict: has required column is_proxy_or_screening",
+    "property_recommended_canonical_strict: has required column proxy_only_flag",
+    "property_recommended_canonical_strict: has required column nonproxy_candidate_count",
+    "property_recommended_canonical_strict: has required column top_rank_source_count",
+    "property_recommended_canonical_strict: has required column source_divergence_flag",
+    "property_recommended_canonical_strict: has required column source_count",
+    "property_recommended_canonical_strict: has required column conflict_flag",
+    "property_recommended_canonical_strict: has required column readiness_rule_id",
+    "property_recommended_canonical_strict: has required column use_as_ml_feature",
+    "property_recommended_canonical_strict: has required column use_as_ml_target",
+    "property_recommended_canonical_strict: has required column minimum_quality_score",
+    "property_recommended_canonical_strict: has required column exclude_if_proxy_or_screening",
+    "property_recommended_canonical_strict: has required column strict_accept",
+    "property_recommended_canonical_strict: has required column strict_accept_basis",
+    "property_recommended_canonical_review_queue: table exists",
+    "property_recommended_canonical_review_queue: has required column mol_id",
+    "property_recommended_canonical_review_queue: has required column canonical_feature_key",
+    "property_recommended_canonical_review_queue: has required column canonical_property_id",
+    "property_recommended_canonical_review_queue: has required column value",
+    "property_recommended_canonical_review_queue: has required column unit",
+    "property_recommended_canonical_review_queue: has required column selected_source_id",
+    "property_recommended_canonical_review_queue: has required column selected_source_name",
+    "property_recommended_canonical_review_queue: has required column source_priority_rank",
+    "property_recommended_canonical_review_queue: has required column is_proxy_or_screening",
+    "property_recommended_canonical_review_queue: has required column proxy_only_flag",
+    "property_recommended_canonical_review_queue: has required column nonproxy_candidate_count",
+    "property_recommended_canonical_review_queue: has required column top_rank_source_count",
+    "property_recommended_canonical_review_queue: has required column source_divergence_flag",
+    "property_recommended_canonical_review_queue: has required column source_count",
+    "property_recommended_canonical_review_queue: has required column conflict_flag",
+    "property_recommended_canonical_review_queue: has required column use_as_ml_feature",
+    "property_recommended_canonical_review_queue: has required column use_as_ml_target",
+    "property_recommended_canonical_review_queue: has required column exclude_if_proxy_or_screening",
+    "property_recommended_canonical_review_queue: has required column strict_accept",
+    "property_recommended_canonical_review_queue: has required column review_reason",
+    "property_recommended_canonical_review_queue: has required column review_triggers",
+    "property_recommended_canonical_review_queue: has required column review_priority",
+    "property_dictionary: table exists",
+    "property_dictionary: has required column canonical_property_id",
+    "property_dictionary: has required column canonical_property_group",
+    "property_dictionary: has required column canonical_property_name",
+    "property_dictionary: has required column canonical_feature_key",
+    "property_dictionary: has required column standard_unit",
+    "property_canonical_map: table exists",
+    "property_canonical_map: has required column canonical_map_id",
+    "property_canonical_map: has required column raw_table_name",
+    "property_canonical_map: has required column raw_property_group",
+    "property_canonical_map: has required column raw_property_name",
+    "property_canonical_map: has required column canonical_property_id",
+    "property_canonical_map: has required column canonical_feature_key",
+    "unit_conversion_rules: table exists",
+    "unit_conversion_rules: has required column unit_conversion_rule_id",
+    "unit_conversion_rules: has required column standard_unit",
+    "property_source_priority_rules: table exists",
+    "property_source_priority_rules: has required column priority_rule_id",
+    "property_source_priority_rules: has required column property_scope",
+    "property_source_priority_rules: has required column source_priority_rank",
+    "property_source_priority_rules: has required column source_class",
+    "property_modeling_readiness_rules: table exists",
+    "property_modeling_readiness_rules: has required column readiness_rule_id",
+    "property_modeling_readiness_rules: has required column canonical_property_id",
+    "property_modeling_readiness_rules: has required column canonical_feature_key",
+    "property_modeling_readiness_rules: has required column use_as_ml_feature",
+    "property_modeling_readiness_rules: has required column use_as_ml_target",
+    "property_modeling_readiness_rules: has required column minimum_quality_score",
+    "property_governance_issues: table exists",
+    "property_governance_issues: has required column issue_id",
+    "property_governance_issues: has required column issue_type",
+    "property_governance_issues: has required column severity",
+    "property_governance_issues: has required column affected_record_count",
+    "property_governance_issues: has required column recommended_action",
     "structure_features: table exists",
     "structure_features: has required column mol_id",
     "structure_features: has required column formula",
@@ -196,10 +347,13 @@
     "Wave 2C entity pool: at least 120 molecules",
     "Curated refrigerant inventory: every refrigerant seed resolves to a molecule",
     "model_ready: aligned with model_dataset_index eligibility",
+    "property_recommended_canonical_strict: strict filtering rules satisfied",
+    "property_recommended_canonical_review_queue: review triggers are well formed",
+    "Property governance extension mirror: row manifest aligned",
     "Tier A: boiling_point_c coverage 1.000 >= 0.950",
     "Tier A: critical_temp_c coverage 1.000 >= 0.950",
     "Tier A: critical_pressure_mpa coverage 1.000 >= 0.950",
-    "Tier A: odp coverage 0.969 >= 0.900",
+    "Tier A: odp coverage 1.000 >= 0.900",
     "Tier A: gwp_100yr coverage 0.969 >= 0.900",
     "Tier A: ashrae_safety coverage 0.906 >= 0.900",
     "Tier B: boiling_point_c coverage 1.000 >= 0.800",
@@ -220,7 +374,7 @@
     "A": {
       "acentric_factor": 1.0,
       "ashrae_safety": 0.90625,
-      "atmospheric_lifetime_yr": 0.21875,
+      "atmospheric_lifetime_yr": 0.9375,
       "boiling_point_c": 1.0,
       "cop_standard_cycle": 0.90625,
       "critical_compressibility_factor": 0.78125,
@@ -231,7 +385,7 @@
       "gwp_20yr": 0.1875,
       "gwp_ar4_100yr": 0.21875,
       "gwp_ar5_100yr": 0.21875,
-      "odp": 0.96875,
+      "odp": 1.0,
       "toxicity_class": 0.90625,
       "vaporization_enthalpy_kjmol": 1.0,
       "volumetric_cooling_mjm3": 0.90625,
@@ -239,52 +393,54 @@
     },
     "B": {
       "acentric_factor": 1.0,
-      "ashrae_safety": 0.3125,
-      "atmospheric_lifetime_yr": 0.0625,
+      "ashrae_safety": 0.3541666666666667,
+      "atmospheric_lifetime_yr": 0.4375,
       "boiling_point_c": 1.0,
       "cop_standard_cycle": 0.8125,
       "critical_compressibility_factor": 0.3333333333333333,
       "critical_density_kgm3": 1.0,
       "critical_pressure_mpa": 1.0,
       "critical_temp_c": 1.0,
-      "gwp_100yr": 0.5416666666666666,
+      "gwp_100yr": 0.5625,
       "gwp_ar4_100yr": 0.0625,
       "gwp_ar5_100yr": 0.0625,
       "odp": 0.5833333333333334,
-      "toxicity_class": 0.3125,
+      "toxicity_class": 0.3333333333333333,
       "vaporization_enthalpy_kjmol": 1.0,
       "volumetric_cooling_mjm3": 0.8125,
       "molecule_count": 48
     },
     "C": {
       "acentric_factor": 0.875,
-      "ashrae_safety": 0.025,
+      "ashrae_safety": 0.15,
+      "atmospheric_lifetime_yr": 0.1,
       "boiling_point_c": 0.925,
       "cop_standard_cycle": 0.525,
       "critical_compressibility_factor": 0.05,
-      "critical_density_kgm3": 0.75,
+      "critical_density_kgm3": 0.825,
       "critical_pressure_mpa": 0.925,
       "critical_temp_c": 0.925,
-      "gwp_100yr": 0.6,
+      "gwp_100yr": 0.675,
       "odp": 0.425,
-      "toxicity_class": 0.025,
+      "toxicity_class": 0.15,
       "vaporization_enthalpy_kjmol": 0.85,
       "volumetric_cooling_mjm3": 0.525,
       "molecule_count": 40
     },
     "D": {
-      "acentric_factor": 0.02028879546700786,
-      "ashrae_safety": 0.0003655638822884299,
-      "atmospheric_lifetime_yr": 0.0010966916468652897,
-      "boiling_point_c": 0.040394808992871505,
+      "acentric_factor": 0.020471577408152076,
+      "ashrae_safety": 0.0007311277645768598,
+      "atmospheric_lifetime_yr": 0.011880826174373972,
+      "boiling_point_c": 0.042588192286602086,
       "critical_compressibility_factor": 0.015353683056114056,
-      "critical_pressure_mpa": 0.023030524584171083,
-      "critical_temp_c": 0.023030524584171083,
-      "gwp_100yr": 0.0027417291171632245,
+      "critical_density_kgm3": 0.011332480350941327,
+      "critical_pressure_mpa": 0.025223907877901665,
+      "critical_temp_c": 0.025223907877901665,
+      "gwp_100yr": 0.010966916468652898,
       "gwp_ar4_100yr": 0.0010966916468652897,
       "gwp_ar5_100yr": 0.0012794735880095047,
-      "odp": 0.07658563333942607,
-      "toxicity_class": 0.0003655638822884299,
+      "odp": 0.07804788886857979,
+      "toxicity_class": 0.0007311277645768598,
       "vaporization_enthalpy_kjmol": 0.0020106013525863645,
       "molecule_count": 5471
     }
@@ -296,8 +452,8 @@
     "candidate": {
       "B": {
         "gwp_100yr": {
-          "present_count": 5,
-          "missing_count": 16,
+          "present_count": 6,
+          "missing_count": 15,
           "total_count": 21
         },
         "odp": {
@@ -306,20 +462,20 @@
           "total_count": 21
         },
         "ashrae_safety": {
-          "present_count": 1,
-          "missing_count": 20,
+          "present_count": 2,
+          "missing_count": 19,
           "total_count": 21
         },
         "toxicity_class": {
-          "present_count": 1,
-          "missing_count": 20,
+          "present_count": 2,
+          "missing_count": 19,
           "total_count": 21
         }
       },
       "C": {
         "gwp_100yr": {
-          "present_count": 23,
-          "missing_count": 11,
+          "present_count": 26,
+          "missing_count": 8,
           "total_count": 34
         },
         "odp": {
@@ -328,35 +484,35 @@
           "total_count": 34
         },
         "ashrae_safety": {
-          "present_count": 0,
-          "missing_count": 34,
+          "present_count": 1,
+          "missing_count": 33,
           "total_count": 34
         },
         "toxicity_class": {
-          "present_count": 0,
-          "missing_count": 34,
+          "present_count": 1,
+          "missing_count": 33,
           "total_count": 34
         }
       },
       "D": {
         "gwp_100yr": {
-          "present_count": 14,
-          "missing_count": 5561,
+          "present_count": 55,
+          "missing_count": 5520,
           "total_count": 5575
         },
         "odp": {
-          "present_count": 414,
-          "missing_count": 5161,
+          "present_count": 422,
+          "missing_count": 5153,
           "total_count": 5575
         },
         "ashrae_safety": {
-          "present_count": 2,
-          "missing_count": 5573,
+          "present_count": 4,
+          "missing_count": 5571,
           "total_count": 5575
         },
         "toxicity_class": {
-          "present_count": 2,
-          "missing_count": 5573,
+          "present_count": 4,
+          "missing_count": 5571,
           "total_count": 5575
         }
       }
@@ -369,8 +525,8 @@
           "total_count": 32
         },
         "odp": {
-          "present_count": 31,
-          "missing_count": 1,
+          "present_count": 32,
+          "missing_count": 0,
           "total_count": 32
         },
         "ashrae_safety": {
@@ -396,8 +552,8 @@
           "total_count": 27
         },
         "ashrae_safety": {
-          "present_count": 14,
-          "missing_count": 13,
+          "present_count": 15,
+          "missing_count": 12,
           "total_count": 27
         },
         "toxicity_class": {
@@ -418,20 +574,20 @@
           "total_count": 6
         },
         "ashrae_safety": {
-          "present_count": 1,
-          "missing_count": 5,
+          "present_count": 5,
+          "missing_count": 1,
           "total_count": 6
         },
         "toxicity_class": {
-          "present_count": 1,
-          "missing_count": 5,
+          "present_count": 5,
+          "missing_count": 1,
           "total_count": 6
         }
       },
       "D": {
         "gwp_100yr": {
-          "present_count": 1,
-          "missing_count": 4,
+          "present_count": 5,
+          "missing_count": 0,
           "total_count": 5
         },
         "odp": {
@@ -459,8 +615,8 @@
       "candidate": {
         "B": {
           "gwp_100yr": {
-            "present_count": 5,
-            "missing_count": 16,
+            "present_count": 6,
+            "missing_count": 15,
             "total_count": 21
           },
           "odp": {
@@ -469,20 +625,20 @@
             "total_count": 21
           },
           "ashrae_safety": {
-            "present_count": 1,
-            "missing_count": 20,
+            "present_count": 2,
+            "missing_count": 19,
             "total_count": 21
           },
           "toxicity_class": {
-            "present_count": 1,
-            "missing_count": 20,
+            "present_count": 2,
+            "missing_count": 19,
             "total_count": 21
           }
         },
         "C": {
           "gwp_100yr": {
-            "present_count": 23,
-            "missing_count": 11,
+            "present_count": 26,
+            "missing_count": 8,
             "total_count": 34
           },
           "odp": {
@@ -491,35 +647,35 @@
             "total_count": 34
           },
           "ashrae_safety": {
-            "present_count": 0,
-            "missing_count": 34,
+            "present_count": 1,
+            "missing_count": 33,
             "total_count": 34
           },
           "toxicity_class": {
-            "present_count": 0,
-            "missing_count": 34,
+            "present_count": 1,
+            "missing_count": 33,
             "total_count": 34
           }
         },
         "D": {
           "gwp_100yr": {
-            "present_count": 14,
-            "missing_count": 5561,
+            "present_count": 55,
+            "missing_count": 5520,
             "total_count": 5575
           },
           "odp": {
-            "present_count": 414,
-            "missing_count": 5161,
+            "present_count": 422,
+            "missing_count": 5153,
             "total_count": 5575
           },
           "ashrae_safety": {
-            "present_count": 2,
-            "missing_count": 5573,
+            "present_count": 4,
+            "missing_count": 5571,
             "total_count": 5575
           },
           "toxicity_class": {
-            "present_count": 2,
-            "missing_count": 5573,
+            "present_count": 4,
+            "missing_count": 5571,
             "total_count": 5575
           }
         }
@@ -532,8 +688,8 @@
             "total_count": 32
           },
           "odp": {
-            "present_count": 31,
-            "missing_count": 1,
+            "present_count": 32,
+            "missing_count": 0,
             "total_count": 32
           },
           "ashrae_safety": {
@@ -559,8 +715,8 @@
             "total_count": 27
           },
           "ashrae_safety": {
-            "present_count": 14,
-            "missing_count": 13,
+            "present_count": 15,
+            "missing_count": 12,
             "total_count": 27
           },
           "toxicity_class": {
@@ -581,20 +737,20 @@
             "total_count": 6
           },
           "ashrae_safety": {
-            "present_count": 1,
-            "missing_count": 5,
+            "present_count": 5,
+            "missing_count": 1,
             "total_count": 6
           },
           "toxicity_class": {
-            "present_count": 1,
-            "missing_count": 5,
+            "present_count": 5,
+            "missing_count": 1,
             "total_count": 6
           }
         },
         "D": {
           "gwp_100yr": {
-            "present_count": 1,
-            "missing_count": 4,
+            "present_count": 5,
+            "missing_count": 0,
             "total_count": 5
           },
           "odp": {
@@ -614,6 +770,125 @@
           }
         }
       }
+    }
+  },
+  "canonical_metrics": {
+    "canonical_observation_count": 1687,
+    "canonical_recommended_count": 1389,
+    "canonical_recommended_strict_count": 1304,
+    "canonical_review_queue_count": 0,
+    "canonical_proxy_selected_count": 466,
+    "canonical_proxy_only_count": 466,
+    "canonical_conflict_count": 1,
+    "canonical_source_divergence_count": 35,
+    "canonical_conflict_open_count": 0,
+    "canonical_source_divergence_open_count": 0,
+    "canonical_review_decision_count": 120,
+    "canonical_proxy_policy_count": 13,
+    "canonical_strict_proxy_accept_count": 396,
+    "canonical_review_reason_counts": {},
+    "canonical_review_decision_reason_counts": {
+      "below_minimum_quality": 80,
+      "source_divergence": 34,
+      "non_numeric_selected_value": 4,
+      "not_ml_relevant": 1,
+      "top_rank_conflict": 1
+    },
+    "canonical_review_decision_action_counts": {
+      "accept_out_of_strict": 85,
+      "accept_selected_source": 35
+    },
+    "canonical_proxy_policy_feature_counts": {
+      "identifier.molecular_weight": 5,
+      "environmental.atmospheric_lifetime": 1,
+      "molecular_descriptor.acentric_factor": 1,
+      "safety.safety_group": 1,
+      "thermodynamic.critical_density": 1,
+      "thermodynamic.critical_pressure": 1,
+      "thermodynamic.critical_temperature": 1,
+      "thermodynamic.triple_pressure": 1,
+      "thermodynamic.triple_temperature": 1
+    },
+    "bundle_unresolved_count": 0,
+    "bundle_external_resolution_count": 2,
+    "row_count_audit_status": "ok"
+  },
+  "property_governance_bundle": {
+    "audit": {
+      "bundle_file": "D:/BaiduSyncdisk/ZJUwork/制冷剂/0_R-PhysGen-DB/methods/refrigerant_seed_database_20260422_property_governance_bundle.zip",
+      "bundle_sha256": "c6a13391b8c01dff4acf2ff4d68eaca7fccde6b779f476a288a8e083d5d81743",
+      "bundle_table_count": 218,
+      "extension_table_count": 218,
+      "crosswalk": {
+        "matched_existing": 128,
+        "generated_new_seed": 7,
+        "unresolved": 0,
+        "inchikey_matches": 126,
+        "cas_matches": 2,
+        "r_number_matches": 0,
+        "canonical_smiles_matches": 0,
+        "external_resolution_count": 2
+      },
+      "canonical_observation_count": 1687,
+      "canonical_recommended_count": 1389,
+      "canonical_recommended_strict_count": 1304,
+      "canonical_review_queue_count": 0,
+      "canonical_proxy_selected_count": 466,
+      "canonical_proxy_only_count": 466,
+      "canonical_conflict_count": 1,
+      "canonical_source_divergence_count": 35,
+      "canonical_conflict_open_count": 0,
+      "canonical_source_divergence_open_count": 0,
+      "canonical_review_decision_count": 120,
+      "canonical_proxy_policy_count": 13,
+      "canonical_strict_proxy_accept_count": 396,
+      "canonical_review_reason_counts": {},
+      "canonical_review_decision_reason_counts": {
+        "below_minimum_quality": 80,
+        "source_divergence": 34,
+        "non_numeric_selected_value": 4,
+        "not_ml_relevant": 1,
+        "top_rank_conflict": 1
+      },
+      "canonical_review_decision_action_counts": {
+        "accept_out_of_strict": 85,
+        "accept_selected_source": 35
+      },
+      "canonical_proxy_policy_feature_counts": {
+        "identifier.molecular_weight": 5,
+        "environmental.atmospheric_lifetime": 1,
+        "molecular_descriptor.acentric_factor": 1,
+        "safety.safety_group": 1,
+        "thermodynamic.critical_density": 1,
+        "thermodynamic.critical_pressure": 1,
+        "thermodynamic.critical_temperature": 1,
+        "thermodynamic.triple_pressure": 1,
+        "thermodynamic.triple_temperature": 1
+      },
+      "row_count_audit": {
+        "status": "ok",
+        "expected_table_count": 218,
+        "actual_table_count": 218,
+        "missing_tables": [],
+        "extra_tables": [],
+        "row_mismatch_tables": []
+      }
+    },
+    "extension_mirror_validation": {
+      "status": "ok",
+      "expected_table_count": 218,
+      "actual_table_count": 218,
+      "missing_tables": [],
+      "extra_tables": [],
+      "row_mismatch_tables": []
+    },
+    "strict_validation": {
+      "all_rules_satisfied": true,
+      "violations": []
+    },
+    "review_queue_validation": {
+      "all_rules_satisfied": true,
+      "violations": []
     }
   }
 }

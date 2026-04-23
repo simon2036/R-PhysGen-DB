@@ -1,0 +1,26 @@
+table_name: property_recommended_canonical
+layer: gold
+path: data/gold/property_recommended_canonical.parquet
+primary_key:
+  - mol_id
+  - canonical_feature_key
+columns:
+  - {name: mol_id, dtype: string, required: true}
+  - {name: canonical_feature_key, dtype: string, required: true}
+  - {name: canonical_property_id, dtype: string, required: true}
+  - {name: value, dtype: string, required: true}
+  - {name: unit, dtype: string, required: true}
+  - {name: selected_source_id, dtype: string, required: true}
+  - {name: selected_source_name, dtype: string, required: true}
+  - {name: source_priority_rank, dtype: int, required: true}
+  - {name: data_quality_score_100, dtype: float, required: false}
+  - {name: is_proxy_or_screening, dtype: bool, required: true}
+  - {name: ml_use_status, dtype: string, required: false}
+  - {name: proxy_only_flag, dtype: bool, required: true}
+  - {name: nonproxy_candidate_count, dtype: int, required: true}
+  - {name: top_rank_source_count, dtype: int, required: true}
+  - {name: source_divergence_flag, dtype: bool, required: true}
+  - {name: source_divergence_detail, dtype: string, required: false}
+  - {name: source_count, dtype: int, required: true}
+  - {name: conflict_flag, dtype: bool, required: true}
+  - {name: conflict_detail, dtype: string, required: false}

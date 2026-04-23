@@ -1,0 +1,10 @@
+table_name: property_source_priority_rules
+layer: gold
+path: data/gold/property_source_priority_rules.parquet
+primary_key:
+  - priority_rule_id
+columns:
+  - {name: priority_rule_id, dtype: string, required: true}
+  - {name: property_scope, dtype: string, required: true}
+  - {name: source_priority_rank, dtype: int, required: true}
+  - {name: source_class, dtype: string, required: true}
