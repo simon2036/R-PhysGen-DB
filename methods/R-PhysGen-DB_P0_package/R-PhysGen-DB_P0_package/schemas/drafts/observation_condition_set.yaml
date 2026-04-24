@@ -1,0 +1,55 @@
+table_name: observation_condition_set
+layer: silver
+status: draft_for_p0
+path: data/silver/observation_condition_set.parquet
+primary_key:
+  - condition_set_id
+columns:
+  - {name: condition_set_id, dtype: string, required: true}
+  - {name: condition_role, dtype: string, required: true}
+  - {name: temperature_value, dtype: float, required: false}
+  - {name: temperature_unit, dtype: string, required: false}
+  - {name: pressure_value, dtype: float, required: false}
+  - {name: pressure_unit, dtype: string, required: false}
+  - {name: phase, dtype: string, required: false}
+  - {name: vapor_quality_value, dtype: float, required: false}
+  - {name: vapor_quality_basis, dtype: string, required: false}
+  - {name: composition_basis, dtype: string, required: false}
+  - {name: composition_value, dtype: float, required: false}
+  - {name: mixture_composition_json, dtype: string, required: false}
+  - {name: cycle_case_id, dtype: string, required: false}
+  - {name: reference_state, dtype: string, required: false}
+  - {name: source_condition_text, dtype: string, required: false}
+  - {name: normalization_status, dtype: string, required: true}
+  - {name: notes, dtype: string, required: false}
+description: >
+  规范化的 observation 条件集合表。用于替代 property_observation 中自由文本的
+  temperature / pressure 条件表达，使多工况、多来源 observation 可以可靠聚合和过滤。
+condition_role_vocabulary:
+  - normal_boiling_point       # 1 atm 沸点
+  - saturation_liquid          # 饱和液态
+  - saturation_vapor           # 饱和气态
+  - critical_point             # 临界点
+  - supercritical              # 超临界
+  - gas_phase_298k             # 298 K 气相（DFT 参考态）
+  - cycle_operating_point      # 循环工况点
+  - standard_reference_state   # NIST 标准参考态
+  - unspecified                # 来源未说明工况
+design_rules:
+  - >
+    condition_set_id is generated deterministically using SHA256 content hash of condition dimensions:
+    condition_set_id = sha256(condition_role + "|" + str(temperature_value) + temperature_unit + "|" + str(pressure_value) + pressure_unit + "|" + phase).hex[:16]
+    For unknown/missing dimensions, use empty string in the hash input.
+  - condition_role must be one of the values from condition_role_vocabulary and describe the semantic role of the condition.
+  - temperature_value and temperature_unit must appear together when temperature is known.
+  - pressure_value and pressure_unit must appear together when pressure is known.
+  - source_condition_text preserves the original free-text condition from upstream sources.
+  - normalization_status should be one of normalized, partially_normalized, unresolved_text.
+  - >
+    mixture_composition_json captures multi-component mixture composition as JSON mapping {mol_id: mole_fraction}.
+    Pure substance observations should leave this field null. Mixture observations must populate this field.
+    Example: '{"R32": 0.5, "R125": 0.5}' for R410A blend.
+compatibility_notes:
+  - Existing property_observation.temperature and property_observation.pressure may be preserved during transition.
+  - New writes should prefer condition_set_id over free-text condition fields.
+  - The mixture_composition_json field is new in P0 and enables proper handling of multi-component systems.

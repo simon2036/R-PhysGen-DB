@@ -1,0 +1,276 @@
+table_name: canonical_feature_registry
+layer: config
+status: draft_for_p0
+path: schemas/canonical_feature_registry.yaml
+description: >
+  canonical_feature_key 的权威定义表。所有 readiness 规则、property_observation 的
+  canonical_feature_key 字段、以及 governance bundle 的 crosswalk 均应引用本表中定义的 key。
+  本表是配置文件（非数据产物），由 validate.py 直接读取，变更应走 Git review。
+
+primary_key:
+  - canonical_feature_key
+
+columns:
+  - {name: canonical_feature_key, dtype: string, required: true}
+  - {name: display_name, dtype: string, required: true}
+  - {name: display_name_zh, dtype: string, required: false}
+  - {name: category, dtype: string, required: true}
+  - {name: standard_unit, dtype: string, required: true}
+  - {name: value_type, dtype: string, required: true}
+  - {name: is_condition_sensitive, dtype: int, required: true}
+  - {name: typical_source_types, dtype: string, required: false}
+  - {name: notes, dtype: string, required: false}
+
+category_vocabulary:
+  - thermodynamic         # 热力学属性
+  - transport             # 输运性质
+  - environmental         # 环境指标
+  - safety                # 安全指标
+  - molecular_identity    # 分子标识
+  - quantum_electronic    # 量子/电子结构
+  - cycle_performance     # 循环性能
+  - structural_descriptor # 结构描述符
+
+value_type_vocabulary:
+  - numeric               # 连续数值
+  - categorical           # 离散分类
+  - boolean               # 布尔标记
+  - text                  # 自由文本（不可直接用于 ML）
+
+registry:
+  # ─── 热力学属性 ───
+  - canonical_feature_key: boiling_point
+    display_name: Normal Boiling Point
+    display_name_zh: 标准沸点
+    category: thermodynamic
+    standard_unit: celsius
+    value_type: numeric
+    is_condition_sensitive: 0
+    notes: 1 atm 下沸点
+
+  - canonical_feature_key: critical_temperature
+    display_name: Critical Temperature
+    display_name_zh: 临界温度
+    category: thermodynamic
+    standard_unit: kelvin
+    value_type: numeric
+    is_condition_sensitive: 0
+
+  - canonical_feature_key: critical_pressure
+    display_name: Critical Pressure
+    display_name_zh: 临界压力
+    category: thermodynamic
+    standard_unit: MPa
+    value_type: numeric
+    is_condition_sensitive: 0
+
+  - canonical_feature_key: critical_density
+    display_name: Critical Density
+    display_name_zh: 临界密度
+    category: thermodynamic
+    standard_unit: kg/m3
+    value_type: numeric
+    is_condition_sensitive: 0
+
+  - canonical_feature_key: acentric_factor
+    display_name: Acentric Factor
+    display_name_zh: 偏心因子
+    category: thermodynamic
+    standard_unit: dimensionless
+    value_type: numeric
+    is_condition_sensitive: 0
+
+  - canonical_feature_key: heat_capacity_liquid
+    display_name: Liquid Heat Capacity
+    display_name_zh: 液态比热容
+    category: thermodynamic
+    standard_unit: J/(mol*K)
+    value_type: numeric
+    is_condition_sensitive: 1
+    notes: 条件敏感，需关联 condition_set_id
+
+  - canonical_feature_key: heat_capacity_vapor
+    display_name: Vapor Heat Capacity
+    display_name_zh: 气态比热容
+    category: thermodynamic
+    standard_unit: J/(mol*K)
+    value_type: numeric
+    is_condition_sensitive: 1
+
+  - canonical_feature_key: enthalpy_vaporization
+    display_name: Enthalpy of Vaporization
+    display_name_zh: 汽化焓
+    category: thermodynamic
+    standard_unit: kJ/mol
+    value_type: numeric
+    is_condition_sensitive: 1
+
+  - canonical_feature_key: liquid_density
+    display_name: Liquid Density
+    display_name_zh: 液态密度
+    category: thermodynamic
+    standard_unit: kg/m3
+    value_type: numeric
+    is_condition_sensitive: 1
+
+  - canonical_feature_key: vapor_pressure
+    display_name: Vapor Pressure
+    display_name_zh: 饱和蒸汽压
+    category: thermodynamic
+    standard_unit: kPa
+    value_type: numeric
+    is_condition_sensitive: 1
+
+  # ─── 输运性质 ───
+  - canonical_feature_key: viscosity_liquid
+    display_name: Liquid Viscosity
+    display_name_zh: 液态粘度
+    category: transport
+    standard_unit: Pa*s
+    value_type: numeric
+    is_condition_sensitive: 1
+
+  - canonical_feature_key: thermal_conductivity_liquid
+    display_name: Liquid Thermal Conductivity
+    display_name_zh: 液态导热系数
+    category: transport
+    standard_unit: W/(m*K)
+    value_type: numeric
+    is_condition_sensitive: 1
+
+  # ─── 环境指标 ───
+  - canonical_feature_key: gwp_100yr
+    display_name: Global Warming Potential (100-yr)
+    display_name_zh: 全球变暖潜势（100年）
+    category: environmental
+    standard_unit: dimensionless
+    value_type: numeric
+    is_condition_sensitive: 0
+    typical_source_types: EPA, IPCC AR6
+    notes: 相对于 CO2
+
+  - canonical_feature_key: odp
+    display_name: Ozone Depletion Potential
+    display_name_zh: 臭氧消耗潜势
+    category: environmental
+    standard_unit: dimensionless
+    value_type: numeric
+    is_condition_sensitive: 0
+    typical_source_types: EPA, Montreal Protocol
+
+  - canonical_feature_key: atmospheric_lifetime
+    display_name: Atmospheric Lifetime
+    display_name_zh: 大气寿命
+    category: environmental
+    standard_unit: years
+    value_type: numeric
+    is_condition_sensitive: 0
+
+  # ─── 安全指标 ───
+  - canonical_feature_key: ashrae_safety_class
+    display_name: ASHRAE Safety Classification
+    display_name_zh: ASHRAE 安全分类
+    category: safety
+    standard_unit: categorical
+    value_type: categorical
+    is_condition_sensitive: 0
+    notes: "A1, A2L, A2, A3, B1, B2L, B2, B3"
+
+  - canonical_feature_key: flammability_class
+    display_name: Flammability Class
+    display_name_zh: 可燃性等级
+    category: safety
+    standard_unit: categorical
+    value_type: categorical
+    is_condition_sensitive: 0
+
+  - canonical_feature_key: toxicity_class
+    display_name: Toxicity Class
+    display_name_zh: 毒性等级
+    category: safety
+    standard_unit: categorical
+    value_type: categorical
+    is_condition_sensitive: 0
+
+  # ─── 量子/电子结构 ───
+  - canonical_feature_key: homo_energy
+    display_name: HOMO Energy
+    display_name_zh: HOMO 能量
+    category: quantum_electronic
+    standard_unit: eV
+    value_type: numeric
+    is_condition_sensitive: 0
+
+  - canonical_feature_key: lumo_energy
+    display_name: LUMO Energy
+    display_name_zh: LUMO 能量
+    category: quantum_electronic
+    standard_unit: eV
+    value_type: numeric
+    is_condition_sensitive: 0
+
+  - canonical_feature_key: homo_lumo_gap
+    display_name: HOMO-LUMO Gap
+    display_name_zh: HOMO-LUMO 带隙
+    category: quantum_electronic
+    standard_unit: eV
+    value_type: numeric
+    is_condition_sensitive: 0
+
+  - canonical_feature_key: dipole_moment
+    display_name: Dipole Moment
+    display_name_zh: 偶极矩
+    category: quantum_electronic
+    standard_unit: debye
+    value_type: numeric
+    is_condition_sensitive: 0
+
+  - canonical_feature_key: polarizability
+    display_name: Polarizability
+    display_name_zh: 极化率
+    category: quantum_electronic
+    standard_unit: angstrom3
+    value_type: numeric
+    is_condition_sensitive: 0
+
+  # ─── 循环性能 ───
+  - canonical_feature_key: cop
+    display_name: Coefficient of Performance
+    display_name_zh: 性能系数
+    category: cycle_performance
+    standard_unit: dimensionless
+    value_type: numeric
+    is_condition_sensitive: 1
+    notes: 需关联 cycle_case_id 和 operating_point
+
+  - canonical_feature_key: volumetric_cooling_capacity
+    display_name: Volumetric Cooling Capacity
+    display_name_zh: 容积制冷量
+    category: cycle_performance
+    standard_unit: kJ/m3
+    value_type: numeric
+    is_condition_sensitive: 1
+
+  - canonical_feature_key: pressure_ratio
+    display_name: Pressure Ratio
+    display_name_zh: 压比
+    category: cycle_performance
+    standard_unit: dimensionless
+    value_type: numeric
+    is_condition_sensitive: 1
+
+  - canonical_feature_key: discharge_temperature
+    display_name: Discharge Temperature
+    display_name_zh: 排气温度
+    category: cycle_performance
+    standard_unit: celsius
+    value_type: numeric
+    is_condition_sensitive: 1
+
+design_rules:
+  - 所有 readiness 规则、property_observation.canonical_feature_key、governance crosswalk
+    均必须引用本注册表中定义的 key。
+  - 新增属性需先在此注册表中登记，经 review 后方可在 pipeline 中使用。
+  - is_condition_sensitive=1 的属性在写入 property_observation 时必须关联 condition_set_id。
+  - value_type 决定了 ML 层的消费方式：numeric 可直接训练，categorical 需编码，text 默认排除。
+  - 本文件为配置源（config layer），变更须走 Git review，不应由 pipeline 自动修改。

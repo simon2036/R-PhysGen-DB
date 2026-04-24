@@ -7,7 +7,45 @@ from typing import Any
 
 import pandas as pd
 
+from r_physgen_db.active_learning import (
+    ACQUISITION_STRATEGIES,
+    ACTIVE_LEARNING_SOURCE_ID,
+    DECISION_ACTIONS,
+    DECISION_STATUSES,
+    HARD_CONSTRAINT_STATUSES,
+    QUEUE_STATUSES,
+    RECOMMENDED_NEXT_ACTIONS,
+    active_learning_summary,
+)
 from r_physgen_db.constants import DATA_DIR, PROJECT_ROOT, SCHEMA_DIR
+from r_physgen_db.mixtures import (
+    MIXTURE_COMPOSITION_BASIS,
+    MIXTURE_FORBIDDEN_WIDE_COLUMNS,
+    fraction_sum_audit,
+    mixture_summary,
+)
+from r_physgen_db.proxy_features import (
+    PROXY_CANONICAL_FEATURE_KEYS,
+    PROXY_DATA_QUALITY_SCORE,
+    PROXY_ML_USE_STATUS,
+    PROXY_PROPERTIES,
+    PROXY_SOURCE_ID,
+    SYNTHETIC_ACCESSIBILITY_PROPERTY,
+    TFA_RISK_PROPERTY,
+    TFA_RISK_SCORE,
+    TFA_RISK_VOCABULARY,
+    proxy_feature_summary,
+)
+from r_physgen_db.quantum_pilot import (
+    QUANTUM_CANONICAL_FEATURE_KEYS,
+    QUANTUM_FEATURES,
+    QUANTUM_FORBIDDEN_WIDE_COLUMNS,
+    QUANTUM_PROPERTY_NAMES,
+    QUANTUM_QUALITY_LEVELS,
+    QUANTUM_SOURCE_ID,
+    quantum_pilot_summary,
+)
+from r_physgen_db.readiness import evaluate_research_task_readiness_from_paths, validate_readiness_rule_references
 from r_physgen_db.sources.property_governance_bundle import default_bundle_path, load_property_governance_bundle
 from r_physgen_db.utils import load_yaml, write_json
 
@@ -27,6 +65,15 @@ def validate_dataset() -> dict[str, Any]:
         SCHEMA_DIR / "molecule_core.yaml",
         SCHEMA_DIR / "molecule_alias.yaml",
         SCHEMA_DIR / "property_observation.yaml",
+        SCHEMA_DIR / "observation_condition_set.yaml",
+        SCHEMA_DIR / "cycle_case.yaml",
+        SCHEMA_DIR / "cycle_operating_point.yaml",
+        SCHEMA_DIR / "quantum_job.yaml",
+        SCHEMA_DIR / "quantum_artifact.yaml",
+        SCHEMA_DIR / "mixture_core.yaml",
+        SCHEMA_DIR / "mixture_composition.yaml",
+        SCHEMA_DIR / "active_learning_queue.yaml",
+        SCHEMA_DIR / "active_learning_decision_log.yaml",
         SCHEMA_DIR / "property_observation_canonical.yaml",
         SCHEMA_DIR / "regulatory_status.yaml",
         SCHEMA_DIR / "property_recommended.yaml",
@@ -75,7 +122,18 @@ def validate_dataset() -> dict[str, Any]:
     master_df = pd.read_parquet(DATA_DIR / "gold" / "molecule_master.parquet")
     model_index_df = pd.read_parquet(DATA_DIR / "gold" / "model_dataset_index.parquet")
     model_ready_df = pd.read_parquet(DATA_DIR / "gold" / "model_ready.parquet")
+    property_matrix_df = pd.read_parquet(DATA_DIR / "gold" / "property_matrix.parquet")
     recommended_df = pd.read_parquet(DATA_DIR / "gold" / "property_recommended.parquet")
+    property_observation_df = pd.read_parquet(DATA_DIR / "silver" / "property_observation.parquet")
+    observation_condition_set_df = pd.read_parquet(DATA_DIR / "silver" / "observation_condition_set.parquet")
+    cycle_case_df = pd.read_parquet(DATA_DIR / "silver" / "cycle_case.parquet")
+    cycle_operating_point_df = pd.read_parquet(DATA_DIR / "silver" / "cycle_operating_point.parquet")
+    quantum_job_df = pd.read_parquet(DATA_DIR / "silver" / "quantum_job.parquet")
+    quantum_artifact_df = pd.read_parquet(DATA_DIR / "silver" / "quantum_artifact.parquet")
+    mixture_core_df = pd.read_parquet(DATA_DIR / "silver" / "mixture_core.parquet")
+    mixture_composition_df = pd.read_parquet(DATA_DIR / "silver" / "mixture_composition.parquet")
+    active_learning_queue_df = pd.read_parquet(DATA_DIR / "gold" / "active_learning_queue.parquet")
+    active_learning_decision_log_df = pd.read_parquet(DATA_DIR / "gold" / "active_learning_decision_log.parquet")
     canonical_observation_df = pd.read_parquet(DATA_DIR / "silver" / "property_observation_canonical.parquet")
     canonical_recommended_df = pd.read_parquet(DATA_DIR / "gold" / "property_recommended_canonical.parquet")
     canonical_recommended_strict_df = pd.read_parquet(DATA_DIR / "gold" / "property_recommended_canonical_strict.parquet")
@@ -85,6 +143,7 @@ def validate_dataset() -> dict[str, Any]:
     molecule_core_df = pd.read_parquet(DATA_DIR / "silver" / "molecule_core.parquet")
     seed_catalog_df = pd.read_csv(DATA_DIR / "raw" / "manual" / "seed_catalog.csv").fillna("")
     quality_report = _build_inventory_convergence(seed_catalog_df, molecule_core_df, recommended_df)
+    quality_report_payload = _load_quality_report()
     bundle_audit = _load_property_governance_audit()
 
     for r_number in ["R-32", "R-134a", "R-1234yf", "R-744", "R-717"]:
@@ -175,6 +234,61 @@ def validate_dataset() -> dict[str, Any]:
             f"Property governance extension mirror mismatch: {mirror_audit}",
         )
 
+    _validate_condition_sets(results, property_observation_df, observation_condition_set_df)
+    _validate_cycle_operating_points(results, property_observation_df, observation_condition_set_df, cycle_case_df, cycle_operating_point_df)
+    _validate_mixtures(
+        results,
+        mixture_core_df,
+        mixture_composition_df,
+        molecule_core_df,
+        property_matrix_df,
+        model_ready_df,
+        model_index_df,
+    )
+    _validate_active_learning(
+        results,
+        active_learning_queue_df,
+        active_learning_decision_log_df,
+        molecule_core_df,
+        source_manifest_df,
+    )
+    _validate_dataset_version(results, quality_report_payload)
+    _validate_quantum_pilot(
+        results,
+        property_observation_df,
+        recommended_df,
+        source_manifest_df,
+        observation_condition_set_df,
+        quantum_job_df,
+        quantum_artifact_df,
+        property_matrix_df,
+        model_ready_df,
+        model_index_df,
+    )
+    _validate_proxy_features(
+        results,
+        property_observation_df,
+        recommended_df,
+        source_manifest_df,
+        property_matrix_df,
+        model_ready_df,
+        model_index_df,
+    )
+
+    readiness_reference_validation = validate_readiness_rule_references(schema_dir=SCHEMA_DIR)
+    _check(
+        results,
+        readiness_reference_validation["valid"],
+        "Research task readiness rules: canonical feature references resolve",
+        (
+            "Research task readiness rules invalid: "
+            f"missing={readiness_reference_validation['missing_references']}; "
+            f"invalid_filters={readiness_reference_validation.get('invalid_filters', [])}"
+        ),
+    )
+    readiness_report_df, readiness_summary = evaluate_research_task_readiness_from_paths(data_dir=DATA_DIR, schema_dir=SCHEMA_DIR)
+    readiness_report_df.to_parquet(DATA_DIR / "gold" / "research_task_readiness_report.parquet", index=False)
+
     coverage = _coverage_by_tier(seed_catalog_df, molecule_core_df, recommended_df)
     _check_threshold(results, coverage, "A", "boiling_point_c", 0.95)
     _check_threshold(results, coverage, "A", "critical_temp_c", 0.95)
@@ -206,6 +320,32 @@ def validate_dataset() -> dict[str, Any]:
         "extension_mirror_validation": mirror_audit,
         "strict_validation": strict_validation,
         "review_queue_validation": review_queue_validation,
+    }
+    results["condition_migration_progress"] = _condition_migration_progress(property_observation_df, observation_condition_set_df)
+    results["cycle_operating_point_summary"] = _cycle_operating_point_summary(property_observation_df, cycle_case_df, cycle_operating_point_df)
+    results["mixture_summary"] = mixture_summary(mixture_composition_df, mixture_core_df, molecule_core_df)
+    results["active_learning_summary"] = active_learning_summary(
+        active_learning_queue_df,
+        active_learning_decision_log_df,
+        input_exists=not active_learning_queue_df.empty or not active_learning_decision_log_df.empty,
+        input_path=DATA_DIR / "raw" / "manual" / "active_learning_queue.csv",
+        input_row_count=int(len(active_learning_queue_df)),
+        decision_log_path=DATA_DIR / "raw" / "manual" / "active_learning_decision_log.csv",
+        decision_input_row_count=int(len(active_learning_decision_log_df)),
+        queue_input_exists=not active_learning_queue_df.empty,
+        decision_input_exists=not active_learning_decision_log_df.empty,
+    )
+    results["proxy_feature_summary"] = proxy_feature_summary(property_observation_df)
+    results["quantum_pilot_summary"] = quantum_pilot_summary(
+        input_exists=not quantum_job_df.empty or not quantum_artifact_df.empty or not _quantum_observation_rows(property_observation_df).empty,
+        property_rows=_quantum_observation_rows(property_observation_df).to_dict(orient="records"),
+        quantum_job=quantum_job_df,
+        quantum_artifact=quantum_artifact_df,
+    )
+    results["research_task_readiness"] = {
+        "summary": readiness_summary,
+        "rule_reference_validation": readiness_reference_validation,
+        "rules": readiness_report_df.to_dict(orient="records"),
     }
     write_json(report_path, results)
     return results
@@ -303,6 +443,13 @@ def _load_property_governance_audit() -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _load_quality_report() -> dict[str, Any]:
+    path = DATA_DIR / "gold" / "quality_report.json"
+    if not path.exists():
+        return {}
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
 def _validate_property_governance_extension_mirror() -> dict[str, Any] | None:
     bundle_path = default_bundle_path(PROJECT_ROOT)
     extension_manifest_path = PROJECT_ROOT / "data" / "extensions" / "property_governance_20260422" / "extension_manifest.parquet"
@@ -327,6 +474,621 @@ def _validate_property_governance_extension_mirror() -> dict[str, Any] | None:
         "missing_tables": missing_tables,
         "extra_tables": extra_tables,
         "row_mismatch_tables": row_mismatch_tables,
+    }
+
+
+def _validate_dataset_version(results: dict[str, Any], quality_report_payload: dict[str, Any]) -> None:
+    version_path = DATA_DIR / "gold" / "VERSION"
+    _check(results, version_path.exists(), "dataset VERSION: file exists", f"Missing dataset version file: {version_path}")
+    if not version_path.exists():
+        return
+    version = version_path.read_text(encoding="utf-8").strip()
+    report_version = str(quality_report_payload.get("dataset_version", "")).strip()
+    _check(results, bool(version), "dataset VERSION: non-empty", "Dataset VERSION file is empty")
+    if report_version:
+        _check(
+            results,
+            version == report_version,
+            "dataset VERSION: matches quality_report dataset_version",
+            f"Dataset VERSION {version!r} does not match quality_report dataset_version {report_version!r}",
+        )
+
+
+def _validate_mixtures(
+    results: dict[str, Any],
+    mixture_core_df: pd.DataFrame,
+    mixture_composition_df: pd.DataFrame,
+    molecule_core_df: pd.DataFrame,
+    property_matrix_df: pd.DataFrame,
+    model_ready_df: pd.DataFrame,
+    model_index_df: pd.DataFrame,
+) -> None:
+    mixture_ids = mixture_core_df.get("mixture_id", pd.Series(dtype="object")).fillna("").astype(str)
+    duplicate_mixtures = sorted(mixture_ids.loc[mixture_ids.duplicated() & mixture_ids.str.len().gt(0)].unique().tolist())
+    _check(results, not duplicate_mixtures, "mixture_core: mixture_id unique", f"Duplicate mixture_id values: {duplicate_mixtures[:10]}")
+
+    composition_ids = mixture_composition_df.get("mixture_id", pd.Series(dtype="object")).fillna("").astype(str)
+    known_mixtures = set(mixture_ids.tolist())
+    known_mixtures.discard("")
+    observed_mixtures = set(composition_ids.tolist())
+    observed_mixtures.discard("")
+    dangling_mixtures = sorted(observed_mixtures - known_mixtures)
+    _check(results, not dangling_mixtures, "mixture_composition: mixture_id references resolve", f"Dangling mixture_id values: {dangling_mixtures[:10]}")
+
+    component_ids = mixture_composition_df.get("component_mol_id", pd.Series(dtype="object")).fillna("").astype(str)
+    known_mol_ids = set(molecule_core_df.get("mol_id", pd.Series(dtype="object")).fillna("").astype(str).tolist())
+    known_mol_ids.discard("")
+    observed_components = set(component_ids.tolist())
+    observed_components.discard("")
+    dangling_components = sorted(observed_components - known_mol_ids)
+    _check(
+        results,
+        not dangling_components,
+        "mixture_composition: component_mol_id references molecule_core",
+        f"Dangling mixture component_mol_id values: {dangling_components[:10]}",
+    )
+
+    basis = mixture_composition_df.get("composition_basis", pd.Series(dtype="object")).fillna("").astype(str)
+    invalid_basis = sorted(set(basis.tolist()) - MIXTURE_COMPOSITION_BASIS)
+    _check(results, not invalid_basis, "mixture_composition: composition_basis vocabulary valid", f"Invalid mixture composition_basis values: {invalid_basis}")
+
+    fractions = pd.to_numeric(mixture_composition_df.get("fraction_value", pd.Series(dtype="float64")), errors="coerce")
+    populated_fraction_mask = fractions.notna()
+    _check(
+        results,
+        bool(fractions.loc[populated_fraction_mask].between(0.0, 1.0).all()),
+        "mixture_composition: populated fraction values are in [0, 1]",
+        "Mixture fraction_value must be in [0, 1] when populated",
+    )
+    audit = fraction_sum_audit(mixture_composition_df)
+    _check(
+        results,
+        not audit["error_groups"],
+        "mixture_composition: complete fraction groups sum to 1",
+        f"Mixture fraction groups do not sum to 1: {audit['error_groups'][:10]}",
+    )
+    _check(
+        results,
+        True,
+        f"mixture_composition: unresolved fraction groups recorded ({len(audit['unresolved_groups'])})",
+        "",
+    )
+
+    wide_violations = {
+        "property_matrix": sorted(MIXTURE_FORBIDDEN_WIDE_COLUMNS & set(property_matrix_df.columns)),
+        "model_ready": sorted(MIXTURE_FORBIDDEN_WIDE_COLUMNS & set(model_ready_df.columns)),
+        "model_dataset_index": sorted(MIXTURE_FORBIDDEN_WIDE_COLUMNS & set(model_index_df.columns)),
+    }
+    _check(
+        results,
+        not any(wide_violations.values()),
+        "mixture tables: wide ML outputs remain unchanged",
+        f"Mixture columns leaked into wide ML outputs: {wide_violations}",
+    )
+
+
+def _validate_active_learning(
+    results: dict[str, Any],
+    queue_df: pd.DataFrame,
+    decision_log_df: pd.DataFrame,
+    molecule_core_df: pd.DataFrame,
+    source_manifest_df: pd.DataFrame,
+) -> None:
+    if queue_df.empty and decision_log_df.empty:
+        _check(results, True, "active learning: no manual queue configured", "")
+        return
+
+    manifest_sources = set(source_manifest_df.get("source_id", pd.Series(dtype="object")).fillna("").astype(str).tolist())
+    _check(
+        results,
+        ACTIVE_LEARNING_SOURCE_ID in manifest_sources,
+        "active learning: source manifest row exists when configured",
+        f"Missing source manifest row for {ACTIVE_LEARNING_SOURCE_ID}",
+    )
+
+    entry_ids = queue_df.get("queue_entry_id", pd.Series(dtype="object")).fillna("").astype(str)
+    duplicate_entries = sorted(entry_ids.loc[entry_ids.duplicated() & entry_ids.str.len().gt(0)].unique().tolist())
+    _check(results, not duplicate_entries, "active_learning_queue: queue_entry_id unique", f"Duplicate queue_entry_id values: {duplicate_entries[:10]}")
+    _check(results, bool(entry_ids.str.len().gt(0).all()), "active_learning_queue: queue_entry_id non-empty", "active_learning_queue contains blank queue_entry_id")
+
+    mol_ids = queue_df.get("mol_id", pd.Series(dtype="object")).fillna("").astype(str)
+    known_mol_ids = set(molecule_core_df.get("mol_id", pd.Series(dtype="object")).fillna("").astype(str).tolist())
+    known_mol_ids.discard("")
+    observed_mol_ids = set(mol_ids.tolist())
+    observed_mol_ids.discard("")
+    _check(results, not sorted(observed_mol_ids - known_mol_ids), "active_learning_queue: mol_id references resolve", f"Active learning queue references missing mol_ids: {sorted(observed_mol_ids - known_mol_ids)[:10]}")
+
+    for column in ["priority_score", "uncertainty_score", "novelty_score", "feasibility_score"]:
+        scores = pd.to_numeric(queue_df.get(column, pd.Series(dtype="float64")), errors="coerce")
+        _check(
+            results,
+            bool(scores.notna().all() and scores.between(0.0, 1.0).all()),
+            f"active_learning_queue: {column} in [0, 1]",
+            f"active_learning_queue {column} must be numeric and in [0, 1]",
+        )
+
+    _check_vocab(results, queue_df, "acquisition_strategy", ACQUISITION_STRATEGIES, "active_learning_queue")
+    _check_vocab(results, queue_df, "hard_constraint_status", HARD_CONSTRAINT_STATUSES, "active_learning_queue")
+    _check_vocab(results, queue_df, "recommended_next_action", RECOMMENDED_NEXT_ACTIONS, "active_learning_queue")
+    _check_vocab(results, queue_df, "status", QUEUE_STATUSES, "active_learning_queue")
+
+    decision_ids = decision_log_df.get("decision_id", pd.Series(dtype="object")).fillna("").astype(str)
+    if not decision_log_df.empty:
+        duplicate_decisions = sorted(decision_ids.loc[decision_ids.duplicated() & decision_ids.str.len().gt(0)].unique().tolist())
+        _check(results, not duplicate_decisions, "active_learning_decision_log: decision_id unique", f"Duplicate decision_id values: {duplicate_decisions[:10]}")
+        _check(results, bool(decision_ids.str.len().gt(0).all()), "active_learning_decision_log: decision_id non-empty", "active_learning_decision_log contains blank decision_id")
+        log_entries = set(decision_log_df.get("queue_entry_id", pd.Series(dtype="object")).fillna("").astype(str).tolist())
+        log_entries.discard("")
+        known_entries = set(entry_ids.tolist())
+        known_entries.discard("")
+        _check(results, not sorted(log_entries - known_entries), "active_learning_decision_log: queue_entry_id references resolve", f"Active learning decision log references missing queue entries: {sorted(log_entries - known_entries)[:10]}")
+        _check_vocab(results, decision_log_df, "decision_action", DECISION_ACTIONS, "active_learning_decision_log")
+        _check_vocab(results, decision_log_df, "decision_status", DECISION_STATUSES, "active_learning_decision_log")
+
+
+def _check_vocab(
+    results: dict[str, Any],
+    frame: pd.DataFrame,
+    column: str,
+    vocabulary: set[str],
+    table_name: str,
+) -> None:
+    values = set(frame.get(column, pd.Series(dtype="object")).fillna("").astype(str).tolist())
+    invalid = sorted(values - vocabulary)
+    _check(results, not invalid, f"{table_name}: {column} vocabulary valid", f"{table_name} {column} contains invalid values: {invalid}")
+
+
+def _validate_condition_sets(
+    results: dict[str, Any],
+    property_observation_df: pd.DataFrame,
+    observation_condition_set_df: pd.DataFrame,
+) -> None:
+    condition_ids = observation_condition_set_df["condition_set_id"].fillna("").astype(str) if "condition_set_id" in observation_condition_set_df.columns else pd.Series([], dtype="object")
+    duplicate_ids = sorted(condition_ids.loc[condition_ids.duplicated() & condition_ids.str.len().gt(0)].unique().tolist())
+    _check(results, not duplicate_ids, "observation_condition_set: condition_set_id unique", f"Duplicate condition_set_id values: {duplicate_ids[:10]}")
+
+    if "condition_set_id" not in property_observation_df.columns:
+        _check(results, False, "property_observation: condition_set_id column present", "property_observation missing condition_set_id")
+        return
+
+    observed_ids = set(property_observation_df["condition_set_id"].fillna("").astype(str))
+    observed_ids.discard("")
+    known_ids = set(condition_ids.tolist())
+    known_ids.discard("")
+    dangling = sorted(observed_ids - known_ids)
+    _check(results, not dangling, "property_observation: condition_set_id references resolve", f"Dangling condition_set_id values: {dangling[:10]}")
+    progress = _condition_migration_progress(property_observation_df, observation_condition_set_df)
+    _check(
+        results,
+        True,
+        f"condition migration: manual review rows recorded ({progress['needs_manual_review']})",
+        "",
+    )
+
+
+def _validate_cycle_operating_points(
+    results: dict[str, Any],
+    property_observation_df: pd.DataFrame,
+    observation_condition_set_df: pd.DataFrame,
+    cycle_case_df: pd.DataFrame,
+    cycle_operating_point_df: pd.DataFrame,
+) -> None:
+    cycle_case_ids = cycle_case_df["cycle_case_id"].fillna("").astype(str) if "cycle_case_id" in cycle_case_df.columns else pd.Series([], dtype="object")
+    duplicate_cases = sorted(cycle_case_ids.loc[cycle_case_ids.duplicated() & cycle_case_ids.str.len().gt(0)].unique().tolist())
+    _check(results, not duplicate_cases, "cycle_case: cycle_case_id unique", f"Duplicate cycle_case_id values: {duplicate_cases[:10]}")
+
+    operating_hashes = (
+        cycle_operating_point_df["operating_point_hash"].fillna("").astype(str)
+        if "operating_point_hash" in cycle_operating_point_df.columns
+        else pd.Series([], dtype="object")
+    )
+    duplicate_hashes = sorted(operating_hashes.loc[operating_hashes.duplicated() & operating_hashes.str.len().gt(0)].unique().tolist())
+    _check(results, not duplicate_hashes, "cycle_operating_point: operating_point_hash unique", f"Duplicate operating_point_hash values: {duplicate_hashes[:10]}")
+
+    case_operating_hashes = set(cycle_case_df.get("operating_point_hash", pd.Series(dtype="object")).fillna("").astype(str).tolist())
+    point_hashes = set(operating_hashes.tolist())
+    case_operating_hashes.discard("")
+    point_hashes.discard("")
+    missing_points = sorted(case_operating_hashes - point_hashes)
+    _check(results, not missing_points, "cycle_case: operating_point_hash references resolve", f"cycle_case rows reference missing operating points: {missing_points[:10]}")
+
+    cycle_rows = _cycle_observation_rows(property_observation_df)
+    flags = cycle_rows.get("qc_flags", pd.Series("", index=cycle_rows.index)).fillna("").astype(str)
+    resolved_rows = cycle_rows.loc[~flags.str.contains("cycle_unresolved", na=False)]
+    if resolved_rows.empty:
+        _check(results, True, "cycle observations: no resolved rows requiring references", "")
+        return
+
+    missing_required = resolved_rows.loc[
+        resolved_rows["cycle_case_id"].fillna("").astype(str).eq("")
+        | resolved_rows["operating_point_hash"].fillna("").astype(str).eq("")
+        | resolved_rows["condition_set_id"].fillna("").astype(str).eq("")
+    ]
+    _check(
+        results,
+        missing_required.empty,
+        "cycle observations: resolved rows carry cycle_case_id, operating_point_hash, and condition_set_id",
+        f"Resolved cycle rows missing structured references: {missing_required['observation_id'].head(10).tolist()}",
+    )
+
+    known_cases = set(cycle_case_ids.tolist())
+    known_cases.discard("")
+    known_conditions = set(observation_condition_set_df["condition_set_id"].fillna("").astype(str).tolist())
+    known_conditions.discard("")
+    observed_cases = set(resolved_rows["cycle_case_id"].fillna("").astype(str).tolist())
+    observed_hashes = set(resolved_rows["operating_point_hash"].fillna("").astype(str).tolist())
+    observed_conditions = set(resolved_rows["condition_set_id"].fillna("").astype(str).tolist())
+    observed_cases.discard("")
+    observed_hashes.discard("")
+    observed_conditions.discard("")
+    _check(results, not sorted(observed_cases - known_cases), "cycle observations: cycle_case_id references resolve", f"Dangling cycle_case_id values: {sorted(observed_cases - known_cases)[:10]}")
+    _check(results, not sorted(observed_hashes - point_hashes), "cycle observations: operating_point_hash references resolve", f"Dangling operating_point_hash values: {sorted(observed_hashes - point_hashes)[:10]}")
+    _check(results, not sorted(observed_conditions - known_conditions), "cycle observations: condition_set_id references resolve", f"Dangling cycle condition_set_id values: {sorted(observed_conditions - known_conditions)[:10]}")
+
+
+def _cycle_observation_rows(property_observation_df: pd.DataFrame) -> pd.DataFrame:
+    if property_observation_df.empty:
+        return property_observation_df.copy()
+    cycle_props = {"cop_standard_cycle", "volumetric_cooling_mjm3", "pressure_ratio", "discharge_temperature_c"}
+    return property_observation_df.loc[
+        property_observation_df["property_name"].astype(str).isin(cycle_props)
+        | property_observation_df["phase"].fillna("").astype(str).str.lower().eq("cycle")
+    ].copy()
+
+
+def _cycle_operating_point_summary(
+    property_observation_df: pd.DataFrame,
+    cycle_case_df: pd.DataFrame,
+    cycle_operating_point_df: pd.DataFrame,
+) -> dict[str, Any]:
+    cycle_rows = _cycle_observation_rows(property_observation_df)
+    if cycle_rows.empty:
+        return {
+            "cycle_observation_count": 0,
+            "resolved_cycle_observation_count": 0,
+            "unresolved_cycle_observation_count": 0,
+            "cycle_case_count": int(len(cycle_case_df)),
+            "cycle_operating_point_count": int(len(cycle_operating_point_df)),
+        }
+    flags = cycle_rows.get("qc_flags", pd.Series("", index=cycle_rows.index)).fillna("").astype(str)
+    unresolved = int(flags.str.contains("cycle_unresolved", na=False).sum())
+    return {
+        "cycle_observation_count": int(len(cycle_rows)),
+        "resolved_cycle_observation_count": int(len(cycle_rows) - unresolved),
+        "unresolved_cycle_observation_count": unresolved,
+        "cycle_case_count": int(len(cycle_case_df)),
+        "cycle_operating_point_count": int(len(cycle_operating_point_df)),
+    }
+
+
+def _validate_quantum_pilot(
+    results: dict[str, Any],
+    property_observation_df: pd.DataFrame,
+    recommended_df: pd.DataFrame,
+    source_manifest_df: pd.DataFrame,
+    observation_condition_set_df: pd.DataFrame,
+    quantum_job_df: pd.DataFrame,
+    quantum_artifact_df: pd.DataFrame,
+    property_matrix_df: pd.DataFrame,
+    model_ready_df: pd.DataFrame,
+    model_index_df: pd.DataFrame,
+) -> None:
+    quantum_rows = _quantum_observation_rows(property_observation_df)
+    configured = not quantum_rows.empty or not quantum_job_df.empty or not quantum_artifact_df.empty
+    if not configured:
+        _check(results, True, "quantum pilot: no offline rows configured", "")
+        _validate_quantum_wide_boundary(results, property_matrix_df, model_ready_df, model_index_df)
+        return
+
+    manifest_sources = set(source_manifest_df.get("source_id", pd.Series(dtype="object")).fillna("").astype(str).tolist())
+    _check(
+        results,
+        QUANTUM_SOURCE_ID in manifest_sources,
+        "quantum pilot: source manifest row exists when configured",
+        f"Missing source manifest row for {QUANTUM_SOURCE_ID}",
+    )
+
+    if not quantum_job_df.empty:
+        request_ids = quantum_job_df.get("request_id", pd.Series(dtype="object")).fillna("").astype(str)
+        duplicate_request_ids = sorted(request_ids.loc[request_ids.duplicated() & request_ids.str.len().gt(0)].unique().tolist())
+        _check(results, not duplicate_request_ids, "quantum_job: request_id unique", f"Duplicate quantum request_id values: {duplicate_request_ids[:10]}")
+        _check(results, bool(request_ids.str.len().gt(0).all()), "quantum_job: request_id non-empty", "quantum_job contains blank request_id")
+        _check(
+            results,
+            set(quantum_job_df.get("source_id", pd.Series(dtype="object")).fillna("").astype(str).tolist()) <= {QUANTUM_SOURCE_ID},
+            "quantum_job: source_id is quantum pilot source",
+            "quantum_job contains unexpected source_id values",
+        )
+        statuses = set(quantum_job_df.get("status", pd.Series(dtype="object")).fillna("").astype(str).tolist())
+        _check(results, statuses <= {"succeeded", "failed"}, "quantum_job: status vocabulary valid", f"Unexpected quantum_job statuses: {sorted(statuses)}")
+        qualities = set(quantum_job_df.get("quality_level", pd.Series(dtype="object")).fillna("").astype(str).tolist())
+        _check(results, qualities <= QUANTUM_QUALITY_LEVELS, "quantum_job: quality level vocabulary valid", f"Unexpected quantum_job quality levels: {sorted(qualities - QUANTUM_QUALITY_LEVELS)}")
+        succeeded = quantum_job_df.loc[quantum_job_df.get("status", pd.Series(dtype="object")).fillna("").astype(str).eq("succeeded")]
+        if not succeeded.empty:
+            converged = pd.to_numeric(succeeded.get("converged", pd.Series(dtype="float64")), errors="coerce").fillna(0).astype(int)
+            imag = pd.to_numeric(succeeded.get("imaginary_frequency_count", pd.Series(dtype="float64")), errors="coerce").fillna(-1).astype(int)
+            derived = pd.to_numeric(succeeded.get("derived_observation_count", pd.Series(dtype="float64")), errors="coerce").fillna(0).astype(int)
+            _check(
+                results,
+                bool(converged.eq(1).all() and imag.eq(0).all() and derived.gt(0).all()),
+                "quantum_job: succeeded jobs are converged and produce observations",
+                "Succeeded quantum jobs must be converged, have zero imaginary frequencies, and produce observations",
+            )
+
+    if not quantum_artifact_df.empty:
+        artifact_ids = quantum_artifact_df.get("artifact_id", pd.Series(dtype="object")).fillna("").astype(str)
+        duplicate_artifact_ids = sorted(artifact_ids.loc[artifact_ids.duplicated() & artifact_ids.str.len().gt(0)].unique().tolist())
+        _check(results, not duplicate_artifact_ids, "quantum_artifact: artifact_id unique", f"Duplicate quantum artifact_id values: {duplicate_artifact_ids[:10]}")
+        _check(results, bool(artifact_ids.str.len().gt(0).all()), "quantum_artifact: artifact_id non-empty", "quantum_artifact contains blank artifact_id")
+        artifact_hashes = quantum_artifact_df.get("artifact_sha256", pd.Series(dtype="object")).fillna("").astype(str)
+        _check(results, bool(artifact_hashes.str.len().gt(0).all()), "quantum_artifact: artifact hashes present", "quantum_artifact contains blank artifact_sha256")
+        known_requests = set(quantum_job_df.get("request_id", pd.Series(dtype="object")).fillna("").astype(str).tolist())
+        artifact_requests = set(quantum_artifact_df.get("request_id", pd.Series(dtype="object")).fillna("").astype(str).tolist())
+        known_requests.discard("")
+        artifact_requests.discard("")
+        _check(results, not sorted(artifact_requests - known_requests), "quantum_artifact: request references resolve", f"Dangling quantum artifact request_id values: {sorted(artifact_requests - known_requests)[:10]}")
+
+    if quantum_rows.empty:
+        _check(results, True, "quantum pilot: no converged observations selected", "")
+        _validate_quantum_wide_boundary(results, property_matrix_df, model_ready_df, model_index_df)
+        return
+
+    source_ids = set(quantum_rows.get("source_id", pd.Series("", index=quantum_rows.index)).fillna("").astype(str).tolist())
+    _check(results, source_ids == {QUANTUM_SOURCE_ID}, "quantum observations: source_id is quantum pilot source", f"Unexpected quantum source_id values: {sorted(source_ids)}")
+
+    canonical_keys = quantum_rows.get("canonical_feature_key", pd.Series("", index=quantum_rows.index)).fillna("").astype(str)
+    _check(
+        results,
+        set(canonical_keys.tolist()) <= QUANTUM_CANONICAL_FEATURE_KEYS,
+        "quantum observations: canonical feature keys valid",
+        f"Unexpected quantum canonical feature keys: {sorted(set(canonical_keys.tolist()) - QUANTUM_CANONICAL_FEATURE_KEYS)}",
+    )
+    expected_property_names = canonical_keys.map({key: value["property_name"] for key, value in QUANTUM_FEATURES.items()}).fillna("")
+    property_names = quantum_rows.get("property_name", pd.Series("", index=quantum_rows.index)).fillna("").astype(str)
+    _check(
+        results,
+        bool(property_names.reset_index(drop=True).eq(expected_property_names.reset_index(drop=True)).all()),
+        "quantum observations: legacy property names match canonical keys",
+        "Quantum observation property_name does not match canonical_feature_key mapping",
+    )
+
+    qualities = quantum_rows.get("quality_level", pd.Series("", index=quantum_rows.index)).fillna("").astype(str)
+    _check(
+        results,
+        bool(qualities.isin(QUANTUM_QUALITY_LEVELS).all()),
+        "quantum observations: quality level vocabulary valid",
+        f"Unexpected quantum observation quality levels: {sorted(set(qualities.tolist()) - QUANTUM_QUALITY_LEVELS)}",
+    )
+    convergence = pd.to_numeric(quantum_rows.get("convergence_flag", pd.Series(0, index=quantum_rows.index)), errors="coerce").fillna(0).astype(int)
+    _check(
+        results,
+        bool(convergence.eq(1).all()),
+        "quantum observations: rows are converged",
+        "Quantum observations must have convergence_flag=1",
+    )
+
+    condition_ids = quantum_rows.get("condition_set_id", pd.Series("", index=quantum_rows.index)).fillna("").astype(str)
+    _check(results, bool(condition_ids.str.len().gt(0).all()), "quantum observations: condition_set_id present", "Quantum observations missing condition_set_id")
+    conditions = observation_condition_set_df.set_index("condition_set_id") if "condition_set_id" in observation_condition_set_df.columns else pd.DataFrame()
+    known_condition_ids = set(conditions.index.astype(str).tolist()) if not conditions.empty else set()
+    observed_condition_ids = set(condition_ids.tolist())
+    observed_condition_ids.discard("")
+    _check(results, not sorted(observed_condition_ids - known_condition_ids), "quantum observations: condition references resolve", f"Dangling quantum condition_set_id values: {sorted(observed_condition_ids - known_condition_ids)[:10]}")
+    if observed_condition_ids and not conditions.empty:
+        roles = conditions.loc[list(observed_condition_ids & known_condition_ids), "condition_role"].fillna("").astype(str)
+        _check(
+            results,
+            bool(roles.eq("gas_phase_298k").all()),
+            "quantum observations: condition role is gas_phase_298k",
+            "Quantum observations must link to gas_phase_298k condition sets",
+        )
+
+    observation_request_ids = _quantum_request_ids_from_observations(quantum_rows)
+    known_requests = set(quantum_job_df.get("request_id", pd.Series(dtype="object")).fillna("").astype(str).tolist())
+    known_requests.discard("")
+    _check(results, not sorted(observation_request_ids - known_requests), "quantum observations: job references resolve", f"Quantum observations reference missing jobs: {sorted(observation_request_ids - known_requests)[:10]}")
+
+    artifact_requests = set(quantum_artifact_df.get("request_id", pd.Series(dtype="object")).fillna("").astype(str).tolist())
+    artifact_requests.discard("")
+    _check(results, not sorted(observation_request_ids - artifact_requests), "quantum observations: artifact references resolve", f"Quantum observations missing artifact rows: {sorted(observation_request_ids - artifact_requests)[:10]}")
+
+    recommended_quantum = recommended_df.loc[recommended_df["property_name"].astype(str).isin(QUANTUM_PROPERTY_NAMES)] if not recommended_df.empty else pd.DataFrame()
+    _check(
+        results,
+        set(recommended_quantum.get("property_name", pd.Series(dtype="object")).astype(str).unique().tolist()) == set(property_names.unique().tolist()),
+        "quantum observations: property_recommended includes selected quantum properties",
+        "property_recommended missing one or more PR-F quantum properties",
+    )
+    _validate_quantum_wide_boundary(results, property_matrix_df, model_ready_df, model_index_df)
+
+
+def _validate_quantum_wide_boundary(
+    results: dict[str, Any],
+    property_matrix_df: pd.DataFrame,
+    model_ready_df: pd.DataFrame,
+    model_index_df: pd.DataFrame,
+) -> None:
+    wide_violations = {
+        "property_matrix": sorted(QUANTUM_FORBIDDEN_WIDE_COLUMNS & set(property_matrix_df.columns)),
+        "model_ready": sorted(QUANTUM_FORBIDDEN_WIDE_COLUMNS & set(model_ready_df.columns)),
+        "model_dataset_index": sorted(QUANTUM_FORBIDDEN_WIDE_COLUMNS & set(model_index_df.columns)),
+    }
+    _check(
+        results,
+        not any(wide_violations.values()),
+        "quantum pilot: wide ML outputs remain unchanged",
+        f"Quantum columns leaked into wide ML outputs: {wide_violations}",
+    )
+
+
+def _quantum_observation_rows(property_observation_df: pd.DataFrame) -> pd.DataFrame:
+    if property_observation_df.empty or "property_name" not in property_observation_df.columns:
+        return pd.DataFrame()
+    names = property_observation_df["property_name"].fillna("").astype(str)
+    keys = property_observation_df.get("canonical_feature_key", pd.Series("", index=property_observation_df.index)).fillna("").astype(str)
+    return property_observation_df.loc[names.isin(QUANTUM_PROPERTY_NAMES) | keys.isin(QUANTUM_CANONICAL_FEATURE_KEYS)].copy()
+
+
+def _quantum_request_ids_from_observations(quantum_rows: pd.DataFrame) -> set[str]:
+    records = quantum_rows.get("source_record_id", pd.Series("", index=quantum_rows.index)).fillna("").astype(str)
+    return {record.split(":", 1)[0] for record in records.tolist() if record.split(":", 1)[0]}
+
+
+def _validate_proxy_features(
+    results: dict[str, Any],
+    property_observation_df: pd.DataFrame,
+    recommended_df: pd.DataFrame,
+    source_manifest_df: pd.DataFrame,
+    property_matrix_df: pd.DataFrame,
+    model_ready_df: pd.DataFrame,
+    model_index_df: pd.DataFrame,
+) -> None:
+    proxy_rows = _proxy_observation_rows(property_observation_df)
+    _check(results, not proxy_rows.empty, "proxy features: observation rows exist", "Missing PR-E proxy feature observations")
+
+    manifest_sources = set(source_manifest_df.get("source_id", pd.Series(dtype="object")).fillna("").astype(str).tolist())
+    _check(
+        results,
+        PROXY_SOURCE_ID in manifest_sources,
+        "proxy features: source manifest row exists",
+        f"Missing source manifest row for {PROXY_SOURCE_ID}",
+    )
+    if proxy_rows.empty:
+        return
+
+    source_ids = set(proxy_rows.get("source_id", pd.Series("", index=proxy_rows.index)).fillna("").astype(str).tolist())
+    _check(
+        results,
+        source_ids == {PROXY_SOURCE_ID},
+        "proxy features: source_id is deterministic heuristic source",
+        f"Unexpected proxy source_id values: {sorted(source_ids)}",
+    )
+
+    expected_keys = proxy_rows["property_name"].astype(str).map(PROXY_CANONICAL_FEATURE_KEYS).fillna("")
+    actual_keys = proxy_rows.get("canonical_feature_key", pd.Series("", index=proxy_rows.index)).fillna("").astype(str)
+    _check(
+        results,
+        bool(actual_keys.eq(expected_keys).all()),
+        "proxy features: canonical feature keys match registry",
+        "Proxy feature rows have unexpected canonical_feature_key values",
+    )
+
+    proxy_flags = pd.to_numeric(proxy_rows.get("is_proxy_or_screening", pd.Series(0, index=proxy_rows.index)), errors="coerce").fillna(0).astype(int)
+    _check(
+        results,
+        bool(proxy_flags.eq(1).all()),
+        "proxy features: rows marked as proxy screening",
+        "Proxy feature rows are not all marked is_proxy_or_screening=1",
+    )
+    ml_status = proxy_rows.get("ml_use_status", pd.Series("", index=proxy_rows.index)).fillna("").astype(str)
+    _check(
+        results,
+        bool(ml_status.eq(PROXY_ML_USE_STATUS).all()),
+        "proxy features: ml_use_status marks screening-only use",
+        f"Proxy feature rows must use ml_use_status={PROXY_ML_USE_STATUS}",
+    )
+    quality_scores = pd.to_numeric(proxy_rows.get("data_quality_score_100", pd.Series(dtype="float64")), errors="coerce")
+    _check(
+        results,
+        bool(quality_scores.eq(PROXY_DATA_QUALITY_SCORE).all()),
+        "proxy features: data quality score is fixed",
+        f"Proxy feature rows must use data_quality_score_100={PROXY_DATA_QUALITY_SCORE}",
+    )
+
+    tfa_rows = proxy_rows.loc[proxy_rows["property_name"].astype(str).eq(TFA_RISK_PROPERTY)]
+    tfa_values = tfa_rows.get("value", pd.Series("", index=tfa_rows.index)).fillna("unknown").astype(str)
+    _check(
+        results,
+        bool(tfa_values.isin(TFA_RISK_VOCABULARY).all()),
+        "proxy features: TFA risk vocabulary valid",
+        f"TFA risk proxy values outside vocabulary: {sorted(set(tfa_values) - TFA_RISK_VOCABULARY)}",
+    )
+    if not tfa_rows.empty:
+        expected_scores = tfa_values.map(TFA_RISK_SCORE).astype("float64")
+        observed_scores = pd.to_numeric(tfa_rows.get("value_num", pd.Series(dtype="float64")), errors="coerce")
+        score_match = observed_scores.fillna(-1).reset_index(drop=True).eq(expected_scores.fillna(-1).reset_index(drop=True)).all()
+        _check(results, bool(score_match), "proxy features: TFA numeric helper scores match labels", "TFA risk proxy value_num does not match label")
+
+    synthetic_rows = proxy_rows.loc[proxy_rows["property_name"].astype(str).eq(SYNTHETIC_ACCESSIBILITY_PROPERTY)]
+    synthetic_values = pd.to_numeric(synthetic_rows.get("value_num", pd.Series(dtype="float64")), errors="coerce")
+    _check(
+        results,
+        bool(synthetic_values.notna().all() and synthetic_values.between(1.0, 10.0).all()),
+        "proxy features: synthetic accessibility scores in range",
+        "Synthetic accessibility proxy scores must be numeric and within [1, 10]",
+    )
+
+    recommended_proxy = recommended_df.loc[recommended_df["property_name"].astype(str).isin(PROXY_PROPERTIES)] if not recommended_df.empty else pd.DataFrame()
+    _check(
+        results,
+        set(recommended_proxy.get("property_name", pd.Series(dtype="object")).astype(str).unique().tolist()) == PROXY_PROPERTIES,
+        "proxy features: property_recommended includes both proxy properties",
+        "property_recommended missing one or more PR-E proxy properties",
+    )
+
+    forbidden_columns = set(PROXY_PROPERTIES) | {f"has_{name}" for name in PROXY_PROPERTIES}
+    wide_violations = {
+        "property_matrix": sorted(forbidden_columns & set(property_matrix_df.columns)),
+        "model_ready": sorted(forbidden_columns & set(model_ready_df.columns)),
+        "model_dataset_index": sorted(forbidden_columns & set(model_index_df.columns)),
+    }
+    _check(
+        results,
+        not any(wide_violations.values()),
+        "proxy features: wide ML outputs remain unchanged",
+        f"Proxy columns leaked into wide ML outputs: {wide_violations}",
+    )
+
+
+def _proxy_observation_rows(property_observation_df: pd.DataFrame) -> pd.DataFrame:
+    if property_observation_df.empty or "property_name" not in property_observation_df.columns:
+        return pd.DataFrame()
+    return property_observation_df.loc[property_observation_df["property_name"].fillna("").astype(str).isin(PROXY_PROPERTIES)].copy()
+
+
+def _condition_migration_progress(property_observation_df: pd.DataFrame, observation_condition_set_df: pd.DataFrame) -> dict[str, Any]:
+    total = int(len(property_observation_df))
+    with_condition = (
+        int(property_observation_df["condition_set_id"].fillna("").astype(str).str.len().gt(0).sum())
+        if total and "condition_set_id" in property_observation_df.columns
+        else 0
+    )
+    unresolved = 0
+    status_counts: dict[str, int] = {}
+    manual_review_condition_ids: list[str] = []
+    if "condition_set_id" in property_observation_df.columns and {"condition_set_id", "normalization_status"}.issubset(observation_condition_set_df.columns):
+        status_by_condition = observation_condition_set_df.set_index("condition_set_id")["normalization_status"].fillna("").astype(str).to_dict()
+        statuses = (
+            property_observation_df["condition_set_id"]
+            .fillna("")
+            .astype(str)
+            .map(status_by_condition)
+            .fillna("")
+        )
+        unresolved = int(
+            statuses.eq("unresolved_text").sum()
+        )
+        status_counts = {str(key): int(value) for key, value in statuses.value_counts().sort_index().to_dict().items()}
+        manual_review_condition_ids = (
+            observation_condition_set_df.loc[
+                observation_condition_set_df["normalization_status"].fillna("").astype(str).eq("unresolved_text"),
+                "condition_set_id",
+            ]
+            .fillna("")
+            .astype(str)
+            .tolist()
+        )
+    return {
+        "total": total,
+        "with_condition_set_id": with_condition,
+        "auto_backfilled": max(with_condition - unresolved, 0),
+        "needs_manual_review": unresolved,
+        "condition_set_count": int(len(observation_condition_set_df)),
+        "manual_review_condition_set_count": int(len(manual_review_condition_ids)),
+        "manual_review_condition_set_ids_sample": manual_review_condition_ids[:10],
+        "normalization_status_counts": status_counts,
+        "coverage_fraction": with_condition / total if total else 0.0,
+        "auto_backfill_fraction": max(with_condition - unresolved, 0) / total if total else 0.0,
     }
 
 

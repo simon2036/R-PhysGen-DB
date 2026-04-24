@@ -1,0 +1,41 @@
+table_name: stage_run_manifest
+layer: bronze
+status: draft_for_p0
+path: data/bronze/stage_run_manifest.parquet
+primary_key:
+  - run_id
+  - stage_id
+columns:
+  - {name: run_id, dtype: string, required: true}
+  - {name: stage_id, dtype: string, required: true}
+  - {name: stage_name, dtype: string, required: true}
+  - {name: stage_order, dtype: int, required: true}
+  - {name: status, dtype: string, required: true}
+  - {name: started_at, dtype: "timestamp[us, UTC]", required: true}
+  - {name: finished_at, dtype: "timestamp[us, UTC]", required: false}
+  - {name: refresh_remote, dtype: int, required: true}
+  - {name: code_version, dtype: string, required: false}
+  - {name: parser_version, dtype: string, required: false}
+  - {name: input_artifacts_json, dtype: string, required: false}
+  - {name: output_artifacts_json, dtype: string, required: false}
+  - {name: row_count_summary_json, dtype: string, required: false}
+  - {name: warning_count, dtype: int, required: false}
+  - {name: error_message, dtype: string, required: false}
+  - {name: notes, dtype: string, required: false}
+  - {name: parent_run_id, dtype: string, required: false}
+  - {name: dataset_version, dtype: string, required: false}
+description: >
+  用于 stage 化 pipeline 的运行记录表。支持断点续跑、失败定位、artifact 追踪和阶段级质量汇总。
+status_vocabulary:
+  - pending
+  - running
+  - succeeded
+  - failed
+  - skipped
+design_rules:
+  - One run_id may have multiple stage rows.
+  - A stage is considered complete only when status=succeeded and finished_at is populated.
+  - input_artifacts_json and output_artifacts_json should store machine-readable artifact paths or IDs.
+  - Timestamp fields (started_at, finished_at) use UTC with microsecond precision. started_at records pipeline start time or resume time; finished_at is populated only upon stage completion.
+  - Resume semantics: full rebuild gets a new run_id; resume from a stage continues with the original run_id but updates started_at to record resume time; parent_run_id links to the original run being resumed (null for new builds).
+  - dataset_version format is semantic versioning with date suffix (e.g. v1.5.0-20260423). Governance bundle updates trigger minor version bump; seed catalog updates trigger patch version bump.

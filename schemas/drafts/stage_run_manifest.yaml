@@ -1,0 +1,65 @@
+table_name: stage_run_manifest
+layer: bronze
+status: p0_draft_ready
+path: data/bronze/stage_run_manifest.parquet
+primary_key:
+  - run_id
+  - stage_id
+  - attempt_id
+columns:
+  - {name: run_id, dtype: string, required: true}
+  - {name: parent_run_id, dtype: string, required: false}
+  - {name: attempt_id, dtype: string, required: true}
+  - {name: attempt_number, dtype: int, required: true}
+  - {name: stage_id, dtype: string, required: true}
+  - {name: stage_name, dtype: string, required: true}
+  - {name: stage_order, dtype: int, required: true}
+  - {name: status, dtype: string, required: true}
+  - {name: started_at, dtype: "timestamp[us, UTC]", required: true}
+  - {name: finished_at, dtype: "timestamp[us, UTC]", required: false}
+  - {name: elapsed_s, dtype: float, required: false}
+  - {name: refresh_remote, dtype: int, required: true}
+  - {name: resume_from_stage_id, dtype: string, required: false}
+  - {name: selected_stage_ids_json, dtype: string, required: false}
+  - {name: code_version, dtype: string, required: false}
+  - {name: dataset_version, dtype: string, required: false}
+  - {name: parser_version, dtype: string, required: false}
+  - {name: pipeline_args_json, dtype: string, required: false}
+  - {name: stage_config_json, dtype: string, required: false}
+  - {name: input_artifacts_json, dtype: string, required: false}
+  - {name: output_artifacts_json, dtype: string, required: false}
+  - {name: input_digest_json, dtype: string, required: false}
+  - {name: output_digest_json, dtype: string, required: false}
+  - {name: row_count_summary_json, dtype: string, required: false}
+  - {name: warning_count, dtype: int, required: false}
+  - {name: error_message, dtype: string, required: false}
+  - {name: exception_traceback, dtype: string, required: false}
+  - {name: notes, dtype: string, required: false}
+description: >
+  Stage 化 pipeline 的运行记录表。run_id 表示一次逻辑构建，attempt_id 表示某个 stage 的一次尝试。
+  因此同一个 run_id/stage_id 可以有多个 attempt，用于失败重跑、resume 和调试。
+status_vocabulary:
+  - pending
+  - running
+  - succeeded
+  - failed
+  - skipped
+  - degraded
+resume_semantics:
+  - Full rebuild creates a new run_id and parent_run_id is null.
+  - Resume within the same logical build keeps run_id and creates a new attempt_id for resumed stages.
+  - Forked rebuild from a previous run creates a new run_id and sets parent_run_id to the source run.
+  - attempt_number is monotonically increasing within run_id + stage_id.
+dataset_version_policy:
+  format: vMAJOR.MINOR.PATCH-YYYYMMDD
+  bump_rules:
+    major: incompatible schema or primary-key changes
+    minor: governance bundle refresh, canonical feature registry expansion, new source family
+    patch: seed catalog edit, parser bug fix, curation correction without schema change
+design_rules:
+  - Stage completion requires status=succeeded or degraded and finished_at populated.
+  - Production implementation should write Parquet at path; blueprint may write JSONL only as an illustrative trace.
+  - input_artifacts_json and output_artifacts_json should include artifact name, path, kind, row_count, checksum when available.
+  - Timestamps use UTC and SHOULD be emitted as timezone-aware timestamp[us, UTC].
+  - code_version should be auto-filled via git describe --tags --always or equivalent.
+  - dataset_version should be recorded in this table and in quality_report.json.

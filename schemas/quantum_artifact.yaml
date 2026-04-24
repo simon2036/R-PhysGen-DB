@@ -1,0 +1,17 @@
+table_name: quantum_artifact
+layer: silver
+path: data/silver/quantum_artifact.parquet
+primary_key:
+  - artifact_id
+columns:
+  - {name: artifact_id, dtype: string, required: true}
+  - {name: request_id, dtype: string, required: true}
+  - {name: mol_id, dtype: string, required: true}
+  - {name: artifact_uri, dtype: string, required: true}
+  - {name: artifact_sha256, dtype: string, required: true}
+  - {name: artifact_role, dtype: string, required: true}
+  - {name: source_id, dtype: string, required: true}
+  - {name: created_by_stage_id, dtype: string, required: false}
+  - {name: notes, dtype: string, required: false}
+artifact_role_vocabulary:
+  - quantum_result_bundle

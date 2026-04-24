@@ -29,6 +29,9 @@ source_types:
 quality_levels:
   - manual_curated_reference
   - primary_public_reference
+  - computed_high
+  - computed_standard
+  - estimated_group_contrib
   - derived_harmonized
   - calculated_open_source
   - snapshot_only
@@ -56,6 +59,11 @@ property_names:
   - gwp_ar6_100yr
   - odp
   - atmospheric_lifetime_yr
+  - homo_ev
+  - lumo_ev
+  - gap_ev
+  - tfa_risk_proxy
+  - synthetic_accessibility
   - ashrae_safety
   - toxicity_class
 
@@ -68,6 +76,8 @@ units:
   - dimensionless
   - class
   - yr
+  - categorical
+  - eV
 
 coverage_tiers:
   - A

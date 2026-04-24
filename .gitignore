@@ -1,6 +1,7 @@
 .venv/
 __pycache__/
 .pytest_cache/
+*.baiduyun.uploading.cfg
 data/index/*.tmp
 
 # Local-only PubChem bulk assets; see docs/local_large_artifacts.md

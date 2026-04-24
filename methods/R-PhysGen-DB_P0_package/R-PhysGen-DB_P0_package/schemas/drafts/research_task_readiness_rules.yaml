@@ -1,0 +1,45 @@
+table_name: research_task_readiness_rules
+layer: config
+status: draft_for_p0
+path: schemas/research_task_readiness_rules.yaml
+note: "This YAML file IS the configuration read directly by validate.py. Execution results are written to data/gold/research_task_readiness_report.parquet (separate output)."
+primary_key:
+  - readiness_rule_id
+columns:
+  - {name: readiness_rule_id, dtype: string, required: true}
+  - {name: task_name, dtype: string, required: true}
+  - {name: task_scope, dtype: string, required: true}
+  - {name: entity_scope_filter, dtype: string, required: false}
+  - {name: model_inclusion_filter, dtype: string, required: false}
+  - {name: must_have_properties_json, dtype: string, required: true}
+  - {name: should_have_properties_json, dtype: string, required: false}
+  - {name: required_canonical_features_json, dtype: string, required: false}
+  - {name: minimum_property_coverage, dtype: float, required: false}
+  - {name: minimum_molecule_count, dtype: int, required: false}
+  - {name: minimum_quality_score, dtype: float, required: false}
+  - {name: allow_proxy_rows, dtype: int, required: true}
+  - {name: require_numeric_values, dtype: int, required: true}
+  - {name: require_source_traceability, dtype: int, required: true}
+  - {name: require_strict_layer, dtype: int, required: true}
+  - {name: notes, dtype: string, required: false}
+description: >
+  科研任务视角的 readiness 规则。用于判断当前数据库是否真正适合某个任务，而不仅仅是表结构存在。
+  定义了任务执行前数据质量和覆盖范围的硬性约束（must_have）和优化目标（should_have）。
+example_tasks:
+  - single_component_downselection
+  - core_multitask_training
+  - canonical_strict_ml
+  - phase2_cycle_seed
+readiness_status_vocabulary:
+  - passed: "all requirements met; both must_have constraints satisfied and should_have coverage at or above minimum_property_coverage"
+  - degraded: "must_have constraints satisfied but should_have property coverage below minimum_property_coverage threshold; task may proceed with reduced feature set"
+  - failed: "must_have constraints not satisfied; task cannot proceed"
+design_rules:
+  - "must_have_properties_json should list canonical_feature_key values that are MANDATORY. Missing any one property in this set causes readiness=failed."
+  - "should_have_properties_json should list canonical_feature_key values that are OPTIMAL. Coverage of this set (as percentage) is measured against minimum_property_coverage threshold."
+  - "minimum_property_coverage applies ONLY to the should_have_properties_json set. Expressed as float (0.0-1.0) representing required percentage coverage."
+  - "All property names in must_have_properties_json and should_have_properties_json MUST bind to canonical_feature_key, not raw property_name."
+  - "required_canonical_features_json should list canonical_feature_key values when the task consumes canonical layers."
+  - "minimum_molecule_count sets a floor on molecular diversity; if molecule count < threshold, readiness=failed regardless of property coverage."
+  - "allow_proxy_rows=0 means proxy-only rows should fail readiness."
+  - "require_strict_layer=1 means the task must source from canonical strict outputs."

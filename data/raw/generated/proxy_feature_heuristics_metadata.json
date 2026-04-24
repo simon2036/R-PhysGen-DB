@@ -1,0 +1,30 @@
+{
+  "source_id": "source_r_physgen_proxy_heuristics",
+  "source_name": "R-PhysGen-DB Proxy Heuristics",
+  "assessment_version": "pr-e-heuristic-v1",
+  "method": "deterministic RDKit structural screening heuristics",
+  "disclaimer": "Screening proxy only; not an experimental, literature, OPERA, or CompTox result.",
+  "properties": [
+    "synthetic_accessibility",
+    "tfa_risk_proxy"
+  ],
+  "summary": {
+    "proxy_observation_count": 11196,
+    "proxy_molecule_count": 5598,
+    "tfa_risk_proxy_count": 5598,
+    "synthetic_accessibility_count": 5598,
+    "tfa_risk_distribution": {
+      "high": 393,
+      "low": 1785,
+      "medium": 606,
+      "none": 2801,
+      "unknown": 13
+    },
+    "synthetic_accessibility_score": {
+      "count": 5598,
+      "min": 1.0,
+      "mean": 2.1977849231868523,
+      "max": 4.75
+    }
+  }
+}

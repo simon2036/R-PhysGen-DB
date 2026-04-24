@@ -1,0 +1,140 @@
+table_name: research_task_readiness_rules
+layer: config
+status: p0_draft_ready
+path: schemas/research_task_readiness_rules.yaml
+note: >
+  This YAML file is the validator-consumed configuration. Execution results are data products and should be written to
+  data/gold/research_task_readiness_report.parquet and validation_report.json.
+primary_key:
+  - readiness_rule_id
+columns:
+  - {name: readiness_rule_id, dtype: string, required: true}
+  - {name: task_name, dtype: string, required: true}
+  - {name: task_scope, dtype: string, required: true}
+  - {name: entity_scope_filter, dtype: string, required: false}
+  - {name: model_inclusion_filter, dtype: string, required: false}
+  - {name: source_layer, dtype: string, required: true}
+  - {name: minimum_molecule_count, dtype: int, required: true}
+  - {name: minimum_should_have_coverage, dtype: float, required: true}
+  - {name: minimum_quality_score, dtype: float, required: false}
+  - {name: allow_proxy_rows, dtype: int, required: true}
+  - {name: require_numeric_values, dtype: int, required: true}
+  - {name: require_source_traceability, dtype: int, required: true}
+  - {name: require_strict_layer, dtype: int, required: true}
+  - {name: degradation_policy_json, dtype: string, required: false}
+readiness_status_vocabulary:
+  - passed
+  - degraded
+  - failed
+status_logic:
+  - failed if molecule_count < minimum_molecule_count.
+  - failed if any must_have feature coverage is below required_coverage.
+  - failed if require_source_traceability=1 and any consumed value lacks selected_source_id/source_id.
+  - failed if allow_proxy_rows=0 and required selected rows are proxy-only.
+  - degraded if all must_have rules pass but should_have coverage is below minimum_should_have_coverage.
+  - passed if molecule count, must_have, should_have, source, proxy, and numeric checks all pass.
+feature_reference_rule: >
+  Every feature key in must_have and should_have must be a canonical_feature_key in canonical_feature_registry.yaml.
+rules:
+  - readiness_rule_id: task01_single_component_downselection
+    task_name: single_component_downselection
+    task_scope: single_component_candidate_screening
+    entity_scope_filter: refrigerant_or_candidate
+    model_inclusion_filter: any
+    source_layer: property_recommended_canonical_or_legacy_recommended
+    minimum_molecule_count: 20
+    minimum_should_have_coverage: 0.70
+    minimum_quality_score: 60
+    allow_proxy_rows: 1
+    require_numeric_values: 1
+    require_source_traceability: 1
+    require_strict_layer: 0
+    must_have:
+      - {canonical_feature_key: identity.mol_id, required_coverage: 1.00, value_requirement: non_null}
+      - {canonical_feature_key: thermodynamic.normal_boiling_temperature, required_coverage: 0.95, value_requirement: numeric}
+      - {canonical_feature_key: thermodynamic.critical_temperature, required_coverage: 0.90, value_requirement: numeric}
+      - {canonical_feature_key: thermodynamic.critical_pressure, required_coverage: 0.90, value_requirement: numeric}
+      - {canonical_feature_key: environmental.gwp_100yr, required_coverage: 0.70, value_requirement: numeric}
+      - {canonical_feature_key: environmental.odp, required_coverage: 0.70, value_requirement: numeric}
+    should_have:
+      - {canonical_feature_key: safety.safety_group, target_coverage: 0.70, value_requirement: categorical}
+      - {canonical_feature_key: safety.toxicity_class, target_coverage: 0.50, value_requirement: categorical}
+      - {canonical_feature_key: molecular_descriptor.molecular_weight, target_coverage: 0.95, value_requirement: numeric}
+      - {canonical_feature_key: thermodynamic.critical_density, target_coverage: 0.50, value_requirement: numeric}
+
+  - readiness_rule_id: task02_core_multitask_training
+    task_name: core_multitask_training
+    task_scope: promoted_subset_multitask_ml
+    entity_scope_filter: refrigerant_or_candidate
+    model_inclusion_filter: yes
+    source_layer: model_ready_plus_property_recommended
+    minimum_molecule_count: 80
+    minimum_should_have_coverage: 0.75
+    minimum_quality_score: 70
+    allow_proxy_rows: 1
+    require_numeric_values: 0
+    require_source_traceability: 1
+    require_strict_layer: 0
+    must_have:
+      - {canonical_feature_key: identity.mol_id, required_coverage: 1.00, value_requirement: non_null}
+      - {canonical_feature_key: thermodynamic.normal_boiling_temperature, required_coverage: 0.90, value_requirement: numeric}
+      - {canonical_feature_key: thermodynamic.critical_temperature, required_coverage: 0.85, value_requirement: numeric}
+      - {canonical_feature_key: molecular_descriptor.molecular_weight, required_coverage: 0.95, value_requirement: numeric}
+    should_have:
+      - {canonical_feature_key: thermodynamic.critical_pressure, target_coverage: 0.80, value_requirement: numeric}
+      - {canonical_feature_key: thermodynamic.vaporization_enthalpy, target_coverage: 0.70, value_requirement: numeric}
+      - {canonical_feature_key: environmental.gwp_100yr, target_coverage: 0.60, value_requirement: numeric}
+      - {canonical_feature_key: environmental.odp, target_coverage: 0.60, value_requirement: numeric}
+      - {canonical_feature_key: safety.safety_group, target_coverage: 0.50, value_requirement: categorical}
+
+  - readiness_rule_id: task03_canonical_strict_ml
+    task_name: canonical_strict_ml
+    task_scope: canonical_strict_modeling
+    entity_scope_filter: refrigerant_or_candidate
+    model_inclusion_filter: yes
+    source_layer: property_recommended_canonical_strict
+    minimum_molecule_count: 30
+    minimum_should_have_coverage: 0.80
+    minimum_quality_score: 80
+    allow_proxy_rows: 0
+    require_numeric_values: 1
+    require_source_traceability: 1
+    require_strict_layer: 1
+    must_have:
+      - {canonical_feature_key: thermodynamic.normal_boiling_temperature, required_coverage: 0.90, value_requirement: numeric}
+      - {canonical_feature_key: thermodynamic.critical_temperature, required_coverage: 0.90, value_requirement: numeric}
+      - {canonical_feature_key: thermodynamic.critical_pressure, required_coverage: 0.90, value_requirement: numeric}
+    should_have:
+      - {canonical_feature_key: environmental.gwp_100yr, target_coverage: 0.80, value_requirement: numeric}
+      - {canonical_feature_key: environmental.odp, target_coverage: 0.80, value_requirement: numeric}
+      - {canonical_feature_key: safety.safety_group, target_coverage: 0.50, value_requirement: categorical}
+
+  - readiness_rule_id: task04_phase2_cycle_seed
+    task_name: phase2_cycle_seed
+    task_scope: phase2_cycle_simulation_seed_selection
+    entity_scope_filter: refrigerant_or_candidate
+    model_inclusion_filter: any
+    source_layer: molecule_core_plus_property_recommended
+    minimum_molecule_count: 10
+    minimum_should_have_coverage: 0.65
+    minimum_quality_score: 60
+    allow_proxy_rows: 1
+    require_numeric_values: 1
+    require_source_traceability: 1
+    require_strict_layer: 0
+    must_have:
+      - {canonical_feature_key: identity.mol_id, required_coverage: 1.00, value_requirement: non_null}
+      - {canonical_feature_key: thermodynamic.normal_boiling_temperature, required_coverage: 0.80, value_requirement: numeric}
+      - {canonical_feature_key: thermodynamic.critical_temperature, required_coverage: 0.80, value_requirement: numeric}
+      - {canonical_feature_key: molecular_descriptor.molecular_weight, required_coverage: 0.90, value_requirement: numeric}
+    should_have:
+      - {canonical_feature_key: environmental.gwp_100yr, target_coverage: 0.60, value_requirement: numeric}
+      - {canonical_feature_key: environmental.odp, target_coverage: 0.60, value_requirement: numeric}
+      - {canonical_feature_key: transport.liquid_viscosity, target_coverage: 0.30, value_requirement: numeric}
+      - {canonical_feature_key: cycle.cop, target_coverage: 0.30, value_requirement: numeric}
+design_rules:
+  - Rules are stored as YAML config, not Parquet data products.
+  - Results must include status, molecule_count, hard_failures, warnings, degradation_impact, and failed_feature_keys.
+  - Validator must check all feature keys against canonical_feature_registry before evaluating coverage.
+  - Proxy policy must be explicit: if allow_proxy_rows=0, proxy-only rows cannot satisfy must_have coverage.
+  - minimum_molecule_count is a hard gate because small strict sets are methodologically different from large strict sets.

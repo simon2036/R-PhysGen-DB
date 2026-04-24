@@ -8,6 +8,7 @@ import CoolProp
 from CoolProp.CoolProp import FluidsList, PropsSI
 
 from r_physgen_db.constants import STANDARD_CYCLE, TRANSCRITICAL_CO2_CYCLE
+from r_physgen_db.cycle_conditions import cycle_case_for_id
 
 
 class UnsupportedCoolPropFluidError(ValueError):
@@ -44,32 +45,31 @@ class CoolPropSource:
             observations.extend(self._resolution_observations(mol_id, source_id, fluid, status="unsupported"))
         else:
             cycle_label = cycle["cycle_label"]
-            observations.extend(
-                [
+            for property_name, value_num, unit in [
+                ("cop_standard_cycle", cycle["cop"], "dimensionless"),
+                ("volumetric_cooling_mjm3", cycle["qvol"], "MJ/m3"),
+                ("pressure_ratio", cycle["pressure_ratio"], "dimensionless"),
+                ("discharge_temperature_c", cycle["discharge_temperature_c"], "degC"),
+            ]:
+                observations.append(
                     self._observation(
                         mol_id=mol_id,
-                        property_name="cop_standard_cycle",
-                        value_num=cycle["cop"],
-                        unit="dimensionless",
+                        property_name=property_name,
+                        value_num=value_num,
+                        unit=unit,
                         source_id=source_id,
                         temperature=cycle_label,
                         phase="cycle",
                         method=cycle["method"],
                         notes=cycle["status"],
-                    ),
-                    self._observation(
-                        mol_id=mol_id,
-                        property_name="volumetric_cooling_mjm3",
-                        value_num=cycle["qvol"],
-                        unit="MJ/m3",
-                        source_id=source_id,
-                        temperature=cycle_label,
-                        phase="cycle",
-                        method=cycle["method"],
-                        notes=cycle["status"],
-                    ),
-                ]
-            )
+                        cycle_case_id=cycle["cycle_case_id"],
+                        operating_point_hash=cycle["operating_point_hash"],
+                        operating_point_json=cycle["operating_point_json"],
+                        cycle_model=cycle["cycle_model"],
+                        eos_source=cycle["eos_source"],
+                        convergence_flag=1,
+                    )
+                )
         return observations
 
     def _thermo_observations(self, mol_id: str, fluid: str, source_id: str) -> list[dict[str, Any]]:
@@ -155,6 +155,11 @@ class CoolPropSource:
                 "notes": f"{status}:{fluid}",
                 "qc_status": "warning",
                 "qc_flags": "cycle_unresolved",
+                "cycle_case_id": "",
+                "operating_point_hash": "",
+                "cycle_model": "",
+                "eos_source": "CoolProp",
+                "convergence_flag": 0,
             },
             {
                 "observation_id": None,
@@ -178,6 +183,11 @@ class CoolPropSource:
                 "notes": f"{status}:{fluid}",
                 "qc_status": "warning",
                 "qc_flags": "cycle_unresolved",
+                "cycle_case_id": "",
+                "operating_point_hash": "",
+                "cycle_model": "",
+                "eos_source": "CoolProp",
+                "convergence_flag": 0,
             },
         ]
 
@@ -194,8 +204,14 @@ class CoolPropSource:
         phase: str | None = None,
         method: str,
         notes: str = "",
+        cycle_case_id: str = "",
+        operating_point_hash: str = "",
+        operating_point_json: str = "",
+        cycle_model: str = "",
+        eos_source: str = "",
+        convergence_flag: int | None = None,
     ) -> dict[str, Any]:
-        return {
+        row = {
             "observation_id": None,
             "mol_id": mol_id,
             "property_name": property_name,
@@ -218,6 +234,18 @@ class CoolPropSource:
             "qc_status": "pass",
             "qc_flags": "",
         }
+        if cycle_case_id or operating_point_hash or cycle_model:
+            row.update(
+                {
+                    "cycle_case_id": cycle_case_id,
+                    "operating_point_hash": operating_point_hash,
+                    "operating_point_json": operating_point_json,
+                    "cycle_model": cycle_model,
+                    "eos_source": eos_source,
+                    "convergence_flag": convergence_flag,
+                }
+            )
+        return row
 
     def _cycle_metrics(self, fluid: str) -> dict[str, Any] | None:
         if fluid == "CarbonDioxide":
@@ -244,18 +272,28 @@ class CoolPropSource:
         h2 = h1 + (h2s - h1) / eta
         h3 = PropsSI("Hmass", "T", tc - sc, "P", pc, fluid)
         h4 = h3
+        t2 = PropsSI("T", "P", pc, "Hmass", h2, fluid)
 
         q_evap = h1 - h4
         w_comp = h2 - h1
         if q_evap <= 0 or w_comp <= 0:
             return None
 
+        case = cycle_case_for_id("standard_subcritical_cycle", source_name=f"CoolProp {self.version}")
+        assert case is not None
         return {
             "cop": q_evap / w_comp,
             "qvol": q_evap * rho1 / 1e6,
+            "pressure_ratio": pc / pe,
+            "discharge_temperature_c": t2 - 273.15,
             "cycle_label": "5 degC evap / 50 degC cond",
             "method": "CoolProp subcritical vapor-compression cycle",
             "status": "resolved:subcritical",
+            "cycle_case_id": case["cycle_case_id"],
+            "operating_point_hash": case["operating_point_hash"],
+            "operating_point_json": case["operating_point_json"],
+            "cycle_model": case["cycle_model"],
+            "eos_source": case["eos_source"],
         }
 
     def _transcritical_co2_cycle(self, fluid: str) -> dict[str, Any] | None:
@@ -273,16 +311,26 @@ class CoolPropSource:
         h2 = h1 + (h2s - h1) / eta
         h3 = PropsSI("Hmass", "T", tg, "P", ph, fluid)
         h4 = h3
+        t2 = PropsSI("T", "P", ph, "Hmass", h2, fluid)
 
         q_evap = h1 - h4
         w_comp = h2 - h1
         if q_evap <= 0 or w_comp <= 0:
             return None
 
+        case = cycle_case_for_id("transcritical_co2_cycle", source_name=f"CoolProp {self.version}")
+        assert case is not None
         return {
             "cop": q_evap / w_comp,
             "qvol": q_evap * rho1 / 1e6,
+            "pressure_ratio": ph / pe,
+            "discharge_temperature_c": t2 - 273.15,
             "cycle_label": "-5 degC evap / 35 degC gas cooler / 9 MPa high side",
             "method": "CoolProp transcritical CO2 cycle",
             "status": "resolved:transcritical_co2",
+            "cycle_case_id": case["cycle_case_id"],
+            "operating_point_hash": case["operating_point_hash"],
+            "operating_point_json": case["operating_point_json"],
+            "cycle_model": case["cycle_model"],
+            "eos_source": case["eos_source"],
         }

@@ -1,0 +1,26 @@
+table_name: mixture_composition
+layer: silver
+status: reserved_for_v1_5_but_p0_defined
+path: data/silver/mixture_composition.parquet
+primary_key:
+  - mixture_id
+  - component_mol_id
+  - composition_basis
+columns:
+  - {name: mixture_id, dtype: string, required: true}
+  - {name: mixture_name, dtype: string, required: false}
+  - {name: component_mol_id, dtype: string, required: true}
+  - {name: component_role, dtype: string, required: false}
+  - {name: composition_basis, dtype: string, required: true}
+  - {name: fraction_value, dtype: float, required: true}
+  - {name: source_id, dtype: string, required: false}
+  - {name: source_name, dtype: string, required: false}
+  - {name: notes, dtype: string, required: false}
+composition_basis_vocabulary:
+  - mole_fraction
+  - mass_fraction
+  - volume_fraction
+design_rules:
+  - Sum of fraction_value per mixture_id and composition_basis should be 1.0 within tolerance 1e-6.
+  - P0 does not activate mixtures as model-ready entities, but condition_set.mixture_composition_json should be compatible with this table.
+  - If governance bundle supplies mixture tables, a V1.5 adapter should bridge them into this contract.
