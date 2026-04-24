@@ -1,0 +1,20 @@
+table_name: cycle_operating_point
+layer: silver
+path: data/silver/cycle_operating_point.parquet
+primary_key:
+  - operating_point_hash
+columns:
+  - {name: operating_point_hash, dtype: string, required: true}
+  - {name: cycle_case_id, dtype: string, required: true}
+  - {name: evaporating_temperature_c, dtype: float, required: true}
+  - {name: condensing_temperature_c, dtype: float, required: false}
+  - {name: gas_cooler_outlet_temperature_c, dtype: float, required: false}
+  - {name: high_side_pressure_mpa, dtype: float, required: false}
+  - {name: superheat_k, dtype: float, required: true}
+  - {name: subcooling_k, dtype: float, required: false}
+  - {name: compressor_isentropic_efficiency, dtype: float, required: true}
+  - {name: operating_point_json, dtype: string, required: true}
+id_generation_rule:
+  algorithm: sha256_canonical_json_prefix
+  prefix: op_
+  digest_chars: 20

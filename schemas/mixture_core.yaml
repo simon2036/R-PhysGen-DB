@@ -1,0 +1,17 @@
+table_name: mixture_core
+layer: silver
+path: data/silver/mixture_core.parquet
+primary_key:
+  - mixture_id
+columns:
+  - {name: mixture_id, dtype: string, required: true}
+  - {name: mixture_name, dtype: string, required: true}
+  - {name: ashrae_blend_designation, dtype: string, required: false}
+  - {name: source_id, dtype: string, required: true}
+  - {name: source_name, dtype: string, required: true}
+  - {name: notes, dtype: string, required: false}
+source_id_vocabulary:
+  - source_property_governance_mixture_core
+design_rules:
+  - mixture_id must be unique.
+  - PR-G mixture rows are governed silver entities and are not model_ready subjects.

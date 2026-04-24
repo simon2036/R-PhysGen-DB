@@ -2,24 +2,36 @@
 
 ## Snapshot
 
-Status date: `2026-04-22`
+Status date: `2026-04-24`
 
-R-PhysGen-DB has a green build/validate/test baseline after aligning the `2026-04-22` property-governance bundle with the existing Wave 2 inventory, PubChem bulk intake, and Excel supplement. The governance bundle is now fully mirrored in the extension layer and fused into canonical property outputs without widening the legacy `property_name` projection surface.
+R-PhysGen-DB has a green build/validate/test baseline after PR-A through PR-H of the P0 review response. The governance bundle remains mirrored and fused into canonical property outputs, while the production build now also includes staged orchestration, condition sets, research-task readiness, structured cycle operating points, deterministic screening proxy features, offline quantum pilot ingestion, governed mixture tables, and active-learning queue outputs.
 
 Latest local rebuild summary:
 
 - curated base inventory in `data/raw/manual/seed_catalog.csv`: `5700` rows = `70` refrigerants + `5630` candidates
 - effective build inventory after appending generated governance seeds: `5707` rows = `77` refrigerants + `5630` candidates
 - `resolved_molecule_count`: `5598`
-- `property_observation`: `4315`
+- `property_observation`: `15707`
 - `property_observation_canonical`: `1687`
-- `property_recommended`: `2643`
+- `property_recommended`: `14035`
 - `property_recommended_canonical`: `1389`
 - `property_recommended_canonical_strict`: `1304`
 - `property_recommended_canonical_review_queue`: `0`
 - `regulatory_status`: `96`
 - `pending_sources`: `47`
 - `qc_issue_count`: `10`
+- `observation_condition_set`: `103`
+- `cycle_case`: `2`
+- `cycle_operating_point`: `2`
+- `mixture_core`: `123`
+- `mixture_composition`: `378`
+- `quantum_job`: `0` when `data/raw/manual/quantum_pilot_results.csv` is absent
+- `quantum_artifact`: `0` when `data/raw/manual/quantum_pilot_results.csv` is absent
+- `active_learning_queue`: `0` when `data/raw/manual/active_learning_queue.csv` is absent
+- `active_learning_decision_log`: `0` when `data/raw/manual/active_learning_decision_log.csv` is absent
+- `data/gold/VERSION`: `v1.5.0-draft`
+- `research_task_readiness_report`: `5`
+- `proxy_feature_observation`: `11196`
 - split counts: `train=84`, `validation=18`, `test=18`
 - extension mirror: `218/218` tables aligned; `mixture_core=123`; `mixture_component=378`
 - bundle crosswalk: `matched_existing=128`, `generated_new_seed=7`, `unresolved=0`, `external_resolution_count=2`
@@ -28,8 +40,19 @@ Latest validation state:
 
 - `pipelines/build_v1_dataset.py`: passes
 - `pipelines/validate_v1_dataset.py`: passes
-- `.venv\Scripts\pytest.exe -q`: `53 passed`
+- `.venv\Scripts\pytest.exe -q`: `101 passed`
 - current validation errors: none
+
+Latest P0 additions:
+
+- condition migration coverage: `15707/15707` rows with `condition_set_id`; `coverage_fraction=1.0`; `auto_backfilled=13910`; `needs_manual_review=1797`
+- cycle rows: `398` resolved observations across `2` operating points
+- proxy rows: `5598` `tfa_risk_proxy` + `5598` `synthetic_accessibility`
+- proxy TFA distribution: `none=2801`, `low=1785`, `medium=606`, `high=393`, `unknown=13`
+- readiness summary: `2 passed`, `3 failed`
+- mixture summary: `123` governed blends, `378` component rows, `1` unresolved fraction group (`MIX_511A`) retained without imputation
+- quantum pilot summary: `not_configured` unless optional offline CSV is supplied
+- active learning summary: `not_configured` unless optional manual queue or decision-log CSV input is supplied
 
 ## Completed
 
@@ -63,6 +86,18 @@ Latest validation state:
 - The PubChem bulk candidate intake remains active and still feeds the first-pass `Tier D` candidate pool.
 - The Excel 202603 supplement remains active through `data/raw/manual/observations/excel_202603_observations.csv` and its generated staging/candidate artifacts.
 - Validation now covers schema integrity, inventory completeness, quality gates, canonical strict-filtering rules, and property-governance extension mirror checks in one report.
+
+### P0 review-response production path
+
+- Stage orchestration writes `data/bronze/stage_run_manifest.parquet` and preserves `build_dataset()` as the public entrypoint.
+- `data/silver/observation_condition_set.parquet` is generated and linked from every `property_observation` row.
+- Cycle outputs write `data/silver/cycle_case.parquet` and `data/silver/cycle_operating_point.parquet`.
+- Proxy screening rows are generated from local structure heuristics, traced through `source_r_physgen_proxy_heuristics`, recommended in long form, and blocked from wide ML outputs.
+- Quantum pilot rows are loaded only from optional `data/raw/manual/quantum_pilot_results.csv`; without that file the build writes empty quantum silver tables and reports `not_configured`.
+- Mixture outputs write `data/silver/mixture_core.parquet` and `data/silver/mixture_composition.parquet` from the governance extension mirror; missing component fractions are recorded rather than imputed.
+- Active learning outputs write `data/gold/active_learning_queue.parquet` and `data/gold/active_learning_decision_log.parquet`; without optional manual queue/decision-log CSV input they are empty and do not affect recommendations.
+- `data/gold/VERSION` is written and checked against `quality_report.dataset_version`.
+- `data/gold/research_task_readiness_report.parquet` and `validation_report.json` now carry task-level readiness status.
 
 ## Current Coverage
 
@@ -109,13 +144,13 @@ Latest validation state:
 - `Tier B`
   - `gwp_100yr`: `0.5625`
   - `odp`: `0.5833`
-  - `ashrae_safety`: `0.3542`
-  - `toxicity_class`: `0.3333`
+  - `ashrae_safety`: `0.5208`
+  - `toxicity_class`: `0.5000`
 - `Tier C`
   - `gwp_100yr`: `0.6750`
   - `odp`: `0.4250`
-  - `ashrae_safety`: `0.1500`
-  - `toxicity_class`: `0.1500`
+  - `ashrae_safety`: `0.1750`
+  - `toxicity_class`: `0.1750`
 
 ## Known Issues
 
@@ -135,10 +170,10 @@ Latest validation state:
 
 ## Next Priorities
 
-1. Continue public-label completion for refrigerant rows in `Tier B` and `Tier D`, prioritizing `gwp_100yr`, `odp`, `ashrae_safety`, and `toxicity_class`.
-2. Add second-stage property enrichment for the bulk `Tier D` candidate pool using NIST, CoolProp, and literature-backed sources.
-3. Revisit the `85` `accept_out_of_strict` review decisions only when a higher-quality source or a better categorical/quantitative normalization path becomes available.
-4. Keep future governance-bundle refreshes green against the `218/218` extension-mirror audit, the canonical strict-filter validation, the review-decision closure set, and the proxy-only acceptance policy set.
+1. Coverage-driven enrichment for GWP/ODP/safety/strict/cycle readiness gaps.
+2. Traceable mixture composition enrichment for unresolved fraction rows such as `MIX_511A`.
+3. Active learning automatic nomination policy after campaign/scoring ownership is defined.
+4. Promote the new manual build/validate workflow into a regular gate after artifact storage/runtime policy is settled.
 
 ## Core Output Files
 
@@ -151,8 +186,13 @@ Latest validation state:
 - `data/raw/manual/property_governance_20260422_canonical_review_decisions.csv`
 - `data/raw/manual/property_governance_20260422_proxy_acceptance_rules.csv`
 - `data/silver/property_observation_canonical.parquet`
+- `data/silver/mixture_core.parquet`
+- `data/silver/mixture_composition.parquet`
 - `data/gold/property_recommended_canonical.parquet`
 - `data/gold/property_recommended_canonical_strict.parquet`
 - `data/gold/property_recommended_canonical_review_queue.parquet`
+- `data/gold/active_learning_queue.parquet`
+- `data/gold/active_learning_decision_log.parquet`
+- `data/gold/VERSION`
 - `data/extensions/property_governance_20260422/`
 - `data/index/r_physgen_v2.duckdb`

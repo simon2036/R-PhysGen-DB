@@ -1,0 +1,30 @@
+table_name: mixture_composition
+layer: silver
+path: data/silver/mixture_composition.parquet
+primary_key:
+  - mixture_id
+  - component_mol_id
+  - composition_basis
+columns:
+  - {name: mixture_id, dtype: string, required: true}
+  - {name: mixture_name, dtype: string, required: false}
+  - {name: component_mol_id, dtype: string, required: true}
+  - {name: component_role, dtype: string, required: false}
+  - {name: composition_basis, dtype: string, required: true}
+  - {name: fraction_value, dtype: float, required: true}
+  - {name: source_id, dtype: string, required: true}
+  - {name: source_name, dtype: string, required: true}
+  - {name: notes, dtype: string, required: false}
+composition_basis_vocabulary:
+  - mole_fraction
+  - mass_fraction
+  - volume_fraction
+source_id_vocabulary:
+  - source_property_governance_mixture_component
+  - source_manual_mixture_fraction_curations
+design_rules:
+  - Complete fraction groups must sum to 1.0 within tolerance 1e-6.
+  - Source rows with missing fractions remain traceable and are counted as unresolved, not imputed.
+  - Manual fraction curations must carry source_id and source_name metadata and may only update existing mixture/component/basis rows.
+  - component_mol_id must reference molecule_core.mol_id.
+  - PR-G does not add mixture composition columns to model_ready or property_matrix.

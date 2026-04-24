@@ -1,0 +1,27 @@
+table_name: cycle_case
+layer: silver
+path: data/silver/cycle_case.parquet
+primary_key:
+  - cycle_case_id
+columns:
+  - {name: cycle_case_id, dtype: string, required: true}
+  - {name: cycle_model, dtype: string, required: true}
+  - {name: eos_source, dtype: string, required: true}
+  - {name: case_name, dtype: string, required: true}
+  - {name: operating_point_hash, dtype: string, required: true}
+  - {name: operating_point_json, dtype: string, required: true}
+  - {name: source_id, dtype: string, required: true}
+  - {name: source_name, dtype: string, required: true}
+  - {name: created_by_stage_id, dtype: string, required: false}
+  - {name: notes, dtype: string, required: false}
+cycle_model_vocabulary:
+  - subcritical_vapor_compression
+  - transcritical_co2
+  - custom
+eos_source_vocabulary:
+  - CoolProp
+  - REFPROP
+  - PC-SAFT
+  - PR
+  - SRK
+  - custom

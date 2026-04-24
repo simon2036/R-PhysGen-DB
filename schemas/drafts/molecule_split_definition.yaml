@@ -1,0 +1,30 @@
+table_name: molecule_split_definition
+layer: gold
+status: p0_draft_ready
+path: data/gold/molecule_split_definition.parquet
+primary_key:
+  - split_run_id
+  - mol_id
+columns:
+  - {name: split_run_id, dtype: string, required: true}
+  - {name: mol_id, dtype: string, required: true}
+  - {name: split_strategy, dtype: string, required: true}
+  - {name: split, dtype: string, required: true}
+  - {name: scaffold_key, dtype: string, required: false}
+  - {name: family, dtype: string, required: false}
+  - {name: random_seed, dtype: int, required: false}
+  - {name: code_version, dtype: string, required: false}
+  - {name: dataset_version, dtype: string, required: false}
+  - {name: created_at, dtype: "timestamp[us, UTC]", required: true}
+split_strategy_vocabulary:
+  - scaffold
+  - random
+  - family_holdout
+  - time_source_holdout
+split_vocabulary:
+  - train
+  - validation
+  - test
+design_rules:
+  - Scaffold split leakage checks should read this table rather than recomputing split provenance ad hoc.
+  - Each split_run_id records one reproducible split policy and should be referenced by model_dataset_index.

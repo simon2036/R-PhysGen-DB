@@ -1,0 +1,55 @@
+table_name: active_learning_queue
+layer: gold
+path: data/gold/active_learning_queue.parquet
+primary_key:
+  - queue_entry_id
+columns:
+  - {name: queue_entry_id, dtype: string, required: true}
+  - {name: mol_id, dtype: string, required: true}
+  - {name: campaign_id, dtype: string, required: true}
+  - {name: model_version, dtype: string, required: false}
+  - {name: acquisition_strategy, dtype: string, required: true}
+  - {name: priority_score, dtype: float, required: true}
+  - {name: uncertainty_score, dtype: float, required: true}
+  - {name: novelty_score, dtype: float, required: true}
+  - {name: feasibility_score, dtype: float, required: true}
+  - {name: hard_constraint_status, dtype: string, required: true}
+  - {name: recommended_next_action, dtype: string, required: true}
+  - {name: payload_json, dtype: string, required: false}
+  - {name: status, dtype: string, required: true}
+  - {name: created_at, dtype: string, required: false}
+  - {name: updated_at, dtype: string, required: false}
+  - {name: expires_at, dtype: string, required: false}
+  - {name: source_id, dtype: string, required: true}
+  - {name: notes, dtype: string, required: false}
+acquisition_strategy_vocabulary:
+  - manual_triage
+  - coverage_gap
+  - uncertainty_sampling
+  - novelty_search
+  - expected_improvement
+  - constraint_gap
+hard_constraint_status_vocabulary:
+  - passed
+  - failed
+  - unknown
+  - not_evaluated
+recommended_next_action_vocabulary:
+  - literature_search
+  - manual_curation
+  - run_quantum
+  - run_cycle
+  - synthesize_or_purchase
+  - defer
+  - reject
+status_vocabulary:
+  - proposed
+  - approved
+  - completed
+  - rejected
+  - deferred
+design_rules:
+  - Optional CSV ingestion writes this table; missing queue CSV writes an empty table.
+  - Nullable expires_at records the queue-review expiration timestamp when a campaign provides one.
+  - Queue entries never mutate recommendations or model_ready directly.
+  - Scores must be numeric in [0, 1].

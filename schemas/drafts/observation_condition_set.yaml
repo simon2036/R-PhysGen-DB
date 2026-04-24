@@ -1,0 +1,115 @@
+table_name: observation_condition_set
+layer: silver
+status: p0_draft_ready
+path: data/silver/observation_condition_set.parquet
+primary_key:
+  - condition_set_id
+columns:
+  - {name: condition_set_id, dtype: string, required: true}
+  - {name: condition_signature_json, dtype: string, required: true}
+  - {name: condition_role, dtype: string, required: true}
+  - {name: temperature_value, dtype: float, required: false}
+  - {name: temperature_unit, dtype: string, required: false}
+  - {name: pressure_value, dtype: float, required: false}
+  - {name: pressure_unit, dtype: string, required: false}
+  - {name: phase, dtype: string, required: false}
+  - {name: vapor_quality_value, dtype: float, required: false}
+  - {name: vapor_quality_basis, dtype: string, required: false}
+  - {name: composition_basis, dtype: string, required: false}
+  - {name: composition_value, dtype: float, required: false, status: deprecated_scalar_for_single_component_only}
+  - {name: mixture_composition_json, dtype: string, required: false}
+  - {name: mixture_composition_hash, dtype: string, required: false}
+  - {name: cycle_case_id, dtype: string, required: false}
+  - {name: operating_point_hash, dtype: string, required: false}
+  - {name: reference_state, dtype: string, required: false}
+  - {name: source_condition_text, dtype: string, required: false}
+  - {name: normalization_status, dtype: string, required: true}
+  - {name: parser_version, dtype: string, required: false}
+  - {name: created_by_stage_id, dtype: string, required: false}
+  - {name: notes, dtype: string, required: false}
+description: >
+  规范化 observation 条件集合表，用于替代 property_observation 中自由文本温度、压力和相态。
+  P0 允许旧字段并存，但新写入的 condition-sensitive observation 应优先引用 condition_set_id。
+condition_role_vocabulary:
+  - normal_boiling_point
+  - saturation_liquid
+  - saturation_vapor
+  - vapor_liquid_equilibrium
+  - critical_point
+  - supercritical
+  - gas_phase_298k
+  - liquid_phase_298k
+  - cycle_operating_point
+  - standard_reference_state
+  - mixture_reference_state
+  - unspecified
+phase_vocabulary:
+  - liquid
+  - vapor
+  - gas
+  - saturated_liquid
+  - saturated_vapor
+  - vapor_liquid_equilibrium
+  - supercritical
+  - solid
+  - cycle
+  - unspecified
+temperature_unit_vocabulary:
+  - K
+  - degC
+pressure_unit_vocabulary:
+  - Pa
+  - kPa
+  - MPa
+  - bar
+composition_basis_vocabulary:
+  - pure
+  - mole_fraction
+  - mass_fraction
+  - volume_fraction
+  - unspecified
+normalization_status_vocabulary:
+  - normalized
+  - partially_normalized
+  - inferred_default
+  - unresolved_text
+  - not_applicable
+id_generation_rule:
+  algorithm: sha256_canonical_json_prefix
+  prefix: cond_
+  digest_chars: 20
+  canonicalization:
+    - Build condition_signature_json with exactly the fields listed in hash_fields.
+    - Sort JSON keys and use compact separators.
+    - Lowercase vocabulary values except units where case is semantically meaningful.
+    - Normalize numeric values with 12 significant digits; missing values become null.
+    - Normalize mixture_composition_json by sorting component keys and normalizing fractions with 12 significant digits.
+  hash_fields:
+    - condition_role
+    - temperature_value
+    - temperature_unit
+    - pressure_value
+    - pressure_unit
+    - phase
+    - vapor_quality_value
+    - vapor_quality_basis
+    - composition_basis
+    - mixture_composition_json
+    - cycle_case_id
+    - operating_point_hash
+    - reference_state
+  pseudocode: >
+    condition_set_id = "cond_" + sha256(canonical_json(hash_fields)).hexdigest()[:20]
+design_rules:
+  - condition_role must be in condition_role_vocabulary.
+  - temperature_value and temperature_unit must be populated together unless temperature is unknown.
+  - pressure_value and pressure_unit must be populated together unless pressure is unknown.
+  - condition_signature_json stores the normalized content that was actually hashed; it is the reproducibility anchor.
+  - For pure substances, composition_basis should be pure and mixture_composition_json should be null or '{}'.
+  - For mixtures, mixture_composition_json is required and must be a JSON object keyed by mol_id or mixture component identifier.
+  - composition_value is retained only for backward-compatible scalar cases; new mixture-capable writes should use mixture_composition_json.
+  - source_condition_text preserves the upstream free text and must never be used as the canonical grouping key.
+  - condition_set_id is stable across stages as long as the normalized signature is unchanged.
+compatibility_notes:
+  - Existing property_observation.temperature, pressure, and phase remain during P0.
+  - By V1.5 exit, condition-sensitive canonical features should have non-null condition_set_id.

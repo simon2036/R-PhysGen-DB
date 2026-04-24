@@ -1,0 +1,27 @@
+table_name: active_learning_decision_log
+layer: gold
+path: data/gold/active_learning_decision_log.parquet
+primary_key:
+  - decision_id
+columns:
+  - {name: decision_id, dtype: string, required: true}
+  - {name: queue_entry_id, dtype: string, required: true}
+  - {name: decision_action, dtype: string, required: true}
+  - {name: decision_status, dtype: string, required: true}
+  - {name: decided_by, dtype: string, required: false}
+  - {name: decided_at, dtype: string, required: false}
+  - {name: evidence_source_id, dtype: string, required: false}
+  - {name: notes, dtype: string, required: false}
+decision_action_vocabulary:
+  - approve
+  - reject
+  - defer
+  - complete
+  - supersede
+decision_status_vocabulary:
+  - open
+  - closed
+design_rules:
+  - queue_entry_id must reference active_learning_queue.queue_entry_id.
+  - Optional data/raw/manual/active_learning_decision_log.csv ingestion writes this table.
+  - Missing manual decision log CSV writes an empty decision log.

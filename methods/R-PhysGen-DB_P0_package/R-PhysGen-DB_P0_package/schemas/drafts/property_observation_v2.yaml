@@ -1,0 +1,85 @@
+table_name: property_observation
+layer: silver
+status: draft_for_p0
+path: data/silver/property_observation.parquet
+primary_key:
+  - observation_id
+columns:
+  - {name: observation_id, dtype: string, required: true}
+  - {name: mol_id, dtype: string, required: true}
+  - {name: property_name, dtype: string, required: true}
+  - {name: value, dtype: string, required: true}
+  - {name: value_num, dtype: float, required: false}
+  - {name: value_num_bound_type, dtype: string, required: false}
+  - {name: unit, dtype: string, required: true}
+  - {name: condition_set_id, dtype: string, required: false}
+  - {name: temperature, dtype: string, required: false}
+  - {name: pressure, dtype: string, required: false}
+  - {name: phase, dtype: string, required: false}
+  - {name: source_type, dtype: string, required: true}
+  - {name: source_name, dtype: string, required: true}
+  - {name: source_id, dtype: string, required: true}
+  - {name: method, dtype: string, required: true}
+  - {name: uncertainty, dtype: string, required: false}
+  - {name: quality_level, dtype: string, required: true}
+  - {name: assessment_version, dtype: string, required: false}
+  - {name: time_horizon, dtype: string, required: false}
+  - {name: year, dtype: string, required: false}
+  - {name: notes, dtype: string, required: false}
+  - {name: qc_status, dtype: string, required: true}
+  - {name: qc_flags, dtype: string, required: false}
+  - {name: canonical_feature_key, dtype: string, required: false}
+  - {name: standard_unit, dtype: string, required: false}
+  - {name: bundle_record_id, dtype: string, required: false}
+  - {name: source_priority_rank, dtype: float, required: false}
+  - {name: data_quality_score_100, dtype: float, required: false}
+  - {name: is_proxy_or_screening, dtype: int, required: false}
+  - {name: ml_use_status, dtype: string, required: false}
+  - {name: ingestion_stage_id, dtype: string, required: false}
+  - {name: normalization_rule_id, dtype: string, required: false, status: placeholder_for_v2}
+
+description: >
+  P0 草案版 property_observation。核心改动是引入 condition_set_id，用于将 observation
+  的条件语义与自由文本字段解耦。新增 value_num_bound_type 用于标示不等式值的方向。
+
+value_num_design_rules:
+  - value_num is required for all numeric properties consumed by ML layers.
+  - For inequality values (e.g. "<0.001"), value_num stores the numeric bound and value_num_bound_type indicates direction.
+  - If source provides text-only values (e.g. "high", "moderate"), value_num remains null and ml_use_status must be "excluded_non_numeric".
+  - value_num_bound_type vocabulary: exact, upper_bound, lower_bound.
+
+quality_level_vocabulary:
+  - experimental_primary      # 一手实验，权威来源
+  - experimental_secondary    # 文献转引实验值
+  - computed_high             # 高精度量子计算（CCSD/DFT benchmark）
+  - computed_standard         # 标准 DFT（B3LYP/6-311+G**）
+  - eos_model                 # 状态方程模型值（REFPROP/CoolProp）
+  - estimated_group_contrib   # 基团贡献法估算
+  - ml_predicted              # ML 代理模型预测
+  - unknown                   # 来源不明
+
+ml_use_status_vocabulary:
+  - included                  # 可用于 ML 训练和推理
+  - excluded_non_numeric      # 排除：非数值来源
+  - excluded_low_quality      # 排除：质量评分过低
+  - excluded_proxy            # 排除：代理/筛选值
+  - under_review              # 待审核
+
+normalization_rule_id_design_rules:
+  - status: placeholder_for_v2
+  - normalization_rule_id will NOT be validated in P0; foreign-key checks will be deferred to v2.
+  - The corresponding normalization_rules table will be drafted separately in v2.
+  - This field is reserved for future normalization pipeline integration.
+
+transition_rules:
+  - Legacy columns temperature, pressure, phase are retained for backward compatibility in P0.
+  - condition_set_id should become the preferred condition pointer for all new writes.
+  - If condition_set_id is null, legacy temperature/pressure/phase may still be used temporarily.
+  - condition-bearing properties should be progressively normalized into observation_condition_set.
+
+recommended_followup:
+  - Add foreign-key-like validation from property_observation.condition_set_id to observation_condition_set.condition_set_id.
+  - Introduce property-class-specific rules to require condition_set_id for condition-sensitive properties.
+  - Validate ml_use_status values against ml_use_status_vocabulary for all rows.
+  - Enforce quality_level values against quality_level_vocabulary for data quality audits.
+  - For v2: Implement full foreign-key validation for normalization_rule_id once normalization_rules table is available.

@@ -1,0 +1,117 @@
+table_name: property_observation
+layer: silver
+status: p0_draft_ready
+path: data/silver/property_observation.parquet
+primary_key:
+  - observation_id
+columns:
+  - {name: observation_id, dtype: string, required: true}
+  - {name: mol_id, dtype: string, required: true}
+  - {name: property_name, dtype: string, required: true, status: legacy_projection_key}
+  - {name: canonical_feature_key, dtype: string, required: false}
+  - {name: value, dtype: string, required: true}
+  - {name: value_text_normalized, dtype: string, required: false}
+  - {name: value_num, dtype: float, required: false}
+  - {name: value_num_lower, dtype: float, required: false}
+  - {name: value_num_upper, dtype: float, required: false}
+  - {name: value_num_bound_type, dtype: string, required: false}
+  - {name: value_parse_status, dtype: string, required: false}
+  - {name: unit, dtype: string, required: true}
+  - {name: standard_unit, dtype: string, required: false}
+  - {name: standard_value_num, dtype: float, required: false}
+  - {name: condition_set_id, dtype: string, required: false}
+  - {name: temperature, dtype: string, required: false, status: legacy_condition_text}
+  - {name: pressure, dtype: string, required: false, status: legacy_condition_text}
+  - {name: phase, dtype: string, required: false, status: legacy_condition_text}
+  - {name: source_type, dtype: string, required: true}
+  - {name: source_name, dtype: string, required: true}
+  - {name: source_id, dtype: string, required: true}
+  - {name: source_record_id, dtype: string, required: false}
+  - {name: method, dtype: string, required: true}
+  - {name: uncertainty, dtype: string, required: false}
+  - {name: quality_level, dtype: string, required: true}
+  - {name: assessment_version, dtype: string, required: false}
+  - {name: time_horizon, dtype: string, required: false}
+  - {name: year, dtype: string, required: false}
+  - {name: notes, dtype: string, required: false}
+  - {name: qc_status, dtype: string, required: true}
+  - {name: qc_flags, dtype: string, required: false}
+  - {name: bundle_record_id, dtype: string, required: false}
+  - {name: source_priority_rank, dtype: float, required: false}
+  - {name: data_quality_score_100, dtype: float, required: false}
+  - {name: is_proxy_or_screening, dtype: int, required: false}
+  - {name: ml_use_status, dtype: string, required: false}
+  - {name: ingestion_stage_id, dtype: string, required: false}
+  - {name: normalization_rule_id, dtype: string, required: false}
+description: >
+  P0 草案版 property_observation。保留 V1 兼容字段，同时引入 canonical_feature_key、condition_set_id、
+  standard_value_num 和更明确的 value parsing 语义。P0 目标是新增字段和验证规则，不要求一次性删除旧字段。
+foreign_keys:
+  - {column: canonical_feature_key, references: schemas/canonical_feature_registry.yaml::canonical_feature_key, required_when_populated: true}
+  - {column: condition_set_id, references: data/silver/observation_condition_set.parquet::condition_set_id, required_when_populated: true}
+  - {column: normalization_rule_id, references: schemas/normalization_rules.yaml::normalization_rule_id, required_when_populated: true}
+value_num_bound_type_vocabulary:
+  - exact
+  - upper_bound
+  - lower_bound
+  - interval
+  - text_only
+  - not_parsed
+value_parse_status_vocabulary:
+  - parsed_exact
+  - parsed_upper_bound
+  - parsed_lower_bound
+  - parsed_interval
+  - parsed_categorical
+  - text_only
+  - parse_failed
+quality_level_vocabulary:
+  - experimental_primary
+  - experimental_secondary
+  - public_reference
+  - computed_high
+  - computed_standard
+  - eos_model
+  - estimated_group_contrib
+  - ml_predicted
+  - proxy_screening
+  - unknown
+ml_use_status_vocabulary:
+  - included
+  - included_proxy_policy
+  - excluded_non_numeric
+  - excluded_low_quality
+  - excluded_proxy
+  - excluded_out_of_domain
+  - under_review
+  - not_applicable
+qc_status_vocabulary:
+  - pass
+  - warning
+  - failed
+  - not_checked
+value_design_rules:
+  - value stores the source-preserving string representation.
+  - value_num is required for numeric observations consumed by ML layers.
+  - standard_value_num stores value_num after unit normalization when a normalization_rule_id or identity conversion is available.
+  - For '<0.001', set value_num=0.001, value_num_upper=0.001, value_num_bound_type=upper_bound.
+  - For '>10', set value_num=10, value_num_lower=10, value_num_bound_type=lower_bound.
+  - For '0.1-0.2', set value_num_lower=0.1, value_num_upper=0.2, value_num_bound_type=interval. value_num may be midpoint only if downstream policy permits.
+  - Text-only categorical values keep value_num null and must set value_parse_status=parsed_categorical or text_only.
+  - If value_num is null and value_type is numeric, ml_use_status must not be included.
+canonical_rules:
+  - canonical_feature_key should be populated for all new P0 writes when a registry match exists.
+  - property_name remains for backward-compatible V1 projection and may differ from canonical_feature_key.
+  - Validators should warn when a row has property_name but no canonical_feature_key and the property_name is resolvable through canonical_feature_registry.aliases_json.
+condition_rules:
+  - For canonical features where canonical_feature_registry.is_condition_sensitive=1, new P0 rows SHOULD include condition_set_id.
+  - By V1.5 exit, condition-sensitive rows from production sources MUST include condition_set_id unless qc_status=warning and qc_flags includes condition_unresolved.
+  - Legacy temperature, pressure, phase remain during P0 but are deprecated as grouping keys.
+normalization_rules:
+  - normalization_rule_id is optional in P0 but must be valid when populated.
+  - P0 validators should check normalization_rule_id against schemas/normalization_rules.yaml only for non-empty values.
+  - Full condition-correction normalization is V1.5/V2 scope.
+transition_rules:
+  - Existing V1 rows can be read without condition_set_id.
+  - Stage 05 harmonization should backfill condition_set_id whenever deterministic parsing is possible.
+  - Stage 09 should report condition_migration_progress: total, with_condition_set_id, auto_backfilled, needs_manual_review.

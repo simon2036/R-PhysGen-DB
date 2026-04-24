@@ -1,0 +1,77 @@
+table_name: normalization_rules
+layer: config
+status: p0_draft_ready
+path: schemas/normalization_rules.yaml
+description: >
+  属性值单位归一化和轻量解析规则表。P0 不做复杂条件修正，但必须消除 normalization_rule_id
+  的悬空引用；因此本表定义基础单位换算、identity 规则和占位的条件修正策略。
+primary_key:
+  - normalization_rule_id
+columns:
+  - {name: normalization_rule_id, dtype: string, required: true}
+  - {name: target_canonical_feature_key, dtype: string, required: true}
+  - {name: source_unit, dtype: string, required: true}
+  - {name: target_unit, dtype: string, required: true}
+  - {name: conversion_type, dtype: string, required: true}
+  - {name: conversion_expression, dtype: string, required: false}
+  - {name: condition_normalization, dtype: string, required: false}
+  - {name: valid_range_min, dtype: float, required: false}
+  - {name: valid_range_max, dtype: float, required: false}
+  - {name: notes, dtype: string, required: false}
+conversion_type_vocabulary:
+  - identity
+  - affine_unit_conversion
+  - scale_unit_conversion
+  - categorical_mapping
+  - condition_correction_placeholder
+  - equation_of_state_placeholder
+rules:
+  - normalization_rule_id: norm_temperature_K_to_degC
+    target_canonical_feature_key: thermodynamic.normal_boiling_temperature
+    source_unit: K
+    target_unit: degC
+    conversion_type: affine_unit_conversion
+    conversion_expression: x - 273.15
+    valid_range_min: -273.15
+    valid_range_max: 500.0
+  - normalization_rule_id: norm_critical_temperature_K_to_degC
+    target_canonical_feature_key: thermodynamic.critical_temperature
+    source_unit: K
+    target_unit: degC
+    conversion_type: affine_unit_conversion
+    conversion_expression: x - 273.15
+    valid_range_min: -273.15
+    valid_range_max: 500.0
+  - normalization_rule_id: norm_pressure_kPa_to_MPa
+    target_canonical_feature_key: thermodynamic.critical_pressure
+    source_unit: kPa
+    target_unit: MPa
+    conversion_type: scale_unit_conversion
+    conversion_expression: x / 1000.0
+    valid_range_min: 0.0
+    valid_range_max: 100.0
+  - normalization_rule_id: norm_pressure_Pa_to_MPa
+    target_canonical_feature_key: thermodynamic.critical_pressure
+    source_unit: Pa
+    target_unit: MPa
+    conversion_type: scale_unit_conversion
+    conversion_expression: x / 1000000.0
+    valid_range_min: 0.0
+    valid_range_max: 100.0
+  - normalization_rule_id: norm_identity_dimensionless
+    target_canonical_feature_key: environmental.gwp_100yr
+    source_unit: dimensionless
+    target_unit: dimensionless
+    conversion_type: identity
+    conversion_expression: x
+  - normalization_rule_id: norm_identity_safety_group
+    target_canonical_feature_key: safety.safety_group
+    source_unit: categorical
+    target_unit: categorical
+    conversion_type: categorical_mapping
+    conversion_expression: canonicalize_ashrae_safety_group(x)
+design_rules:
+  - target_canonical_feature_key must exist in canonical_feature_registry.yaml.
+  - P0 validators should validate normalization_rule_id only when property_observation.normalization_rule_id is populated.
+  - conversion_expression is restricted to safe arithmetic or named canonicalization functions; production code must not eval arbitrary strings.
+  - condition_correction_placeholder and equation_of_state_placeholder declare intent only; they are not executable P0 rules.

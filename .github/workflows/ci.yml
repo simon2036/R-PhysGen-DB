@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  contract-tests:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Run targeted contract tests
+        run: >
+          python -m pytest -q
+          tests/test_schema_contract.py
+          tests/test_p0_draft_package.py
+          tests/test_pipeline_stages.py
+          tests/test_pr_c_condition_readiness.py
+          tests/test_pr_d_cycle_operating_points.py
+          tests/test_pr_e_proxy_features.py
+          tests/test_pr_f_quantum_pilot.py
+          tests/test_pr_g_mixtures.py
+          tests/test_pr_h_active_learning.py
+          tests/test_reproducibility_ci.py
+
+  manual-build-validate:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Build V1 dataset
+        run: python pipelines/build_v1_dataset.py
+      - name: Validate V1 dataset
+        run: python pipelines/validate_v1_dataset.py

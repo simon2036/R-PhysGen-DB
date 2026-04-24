@@ -21,15 +21,29 @@ Wave 2 extends the V1 base with:
 
 Most files in [`methods`](methods) remain reference material only. The exception is [`methods/refrigerant_seed_database_20260422_property_governance_bundle.zip`](methods/refrigerant_seed_database_20260422_property_governance_bundle.zip), which is now ingested into the extension and canonical-property layers. The random data generator in `methods/refrigerant_data_project/refrigerant_data_pipeline.py` is not treated as source-of-truth.
 
+P0 review packages in `methods`, including `R-PhysGen-DB_P0_package_v3.zip` and `R-PhysGen-DB_P0_review.md`, are treated as review inputs. Accepted P0 assets now live in `docs/p0_*`, `schemas/`, `schemas/drafts/`, `scripts/`, `src/r_physgen_db/blueprints/`, and the staged production pipeline. PR-A through PR-H have been incorporated locally: staged orchestration, condition sets, research-task readiness, structured cycle operating points, screening proxy features, offline quantum pilot ingestion, governed mixture tables, active-learning queue outputs, dataset `VERSION`, and CI contract tests are now part of the build/validate path. Remaining work is tracked in [`docs/p0_remaining_backlog.md`](docs/p0_remaining_backlog.md).
+
 Current local baseline after the `2026-04-22` governance alignment:
 
 - curated base `seed_catalog.csv`: `5700` rows (`70` refrigerants + `5630` candidates)
 - effective build inventory (`seed_catalog.csv` plus generated governance seeds): `5707` rows (`77` refrigerants + `5630` candidates)
 - `resolved_molecule_count`: `5598`
 - `model_dataset_index_count`: `120`
+- `property_observation`: `15689`
+- `property_recommended`: `14017`
 - `property_observation_canonical_count`: `1687`
 - `property_recommended_canonical_count`: `1389`
 - `property_recommended_canonical_strict_count`: `1304`
+- `observation_condition_set_count`: `103`
+- `cycle_case_count`: `2`
+- `cycle_operating_point_count`: `2`
+- `mixture_core_count`: `123`
+- `mixture_composition_count`: `378`
+- `quantum_job_count`: `0` when optional quantum CSV is absent
+- `quantum_artifact_count`: `0` when optional quantum CSV is absent
+- `active_learning_queue_count`: `0` when optional active-learning CSV is absent
+- `active_learning_decision_log_count`: `0` when optional active-learning CSV is absent
+- PR-E proxy observations: `11196` across `5598` molecules
 - `property_recommended_canonical_review_queue_count`: `0`
 - open canonical conflict/source-divergence review rows: `0`
 - proxy-only rows promoted into strict via policy: `396`
@@ -65,6 +79,13 @@ Current local baseline after the `2026-04-22` governance alignment:
 - `data/silver/molecule_alias.parquet`
 - `data/silver/property_observation.parquet`
 - `data/silver/property_observation_canonical.parquet`
+- `data/silver/observation_condition_set.parquet`
+- `data/silver/cycle_case.parquet`
+- `data/silver/cycle_operating_point.parquet`
+- `data/silver/quantum_job.parquet`
+- `data/silver/quantum_artifact.parquet`
+- `data/silver/mixture_core.parquet`
+- `data/silver/mixture_composition.parquet`
 - `data/silver/regulatory_status.parquet`
 - `data/gold/property_recommended.parquet`
 - `data/gold/property_dictionary.parquet`
@@ -76,6 +97,10 @@ Current local baseline after the `2026-04-22` governance alignment:
 - `data/gold/property_matrix.parquet`
 - `data/gold/model_dataset_index.parquet`
 - `data/gold/model_ready.parquet`
+- `data/gold/research_task_readiness_report.parquet`
+- `data/gold/active_learning_queue.parquet`
+- `data/gold/active_learning_decision_log.parquet`
+- `data/gold/VERSION`
 - `data/gold/quality_report.json`
 - `data/gold/validation_report.json`
 - `data/extensions/property_governance_20260422/`
@@ -95,3 +120,11 @@ Current local baseline after the `2026-04-22` governance alignment:
   Controlled vocabularies and enumerations used across properties, source types, quality levels, and related fields.
 - [docs/phase2_interfaces.md](docs/phase2_interfaces.md)
   Reserved Phase 2 interfaces for quantum calculations, cycle simulation, and active-learning feedback extensions.
+- [docs/p0_scope_and_exit_criteria.md](docs/p0_scope_and_exit_criteria.md)
+  P0 scope, exit criteria, condition migration strategy, and PR-A/B/C split.
+- [docs/p0_review_response_matrix.md](docs/p0_review_response_matrix.md)
+  Response matrix for the 24 P0 review findings addressed by the draft package.
+- [docs/p0_remaining_backlog.md](docs/p0_remaining_backlog.md)
+  Remaining P0/V1.5 follow-up work after PR-A through PR-H, including coverage enrichment, mixture fraction enrichment, active-learning nomination policy, and CI expansion.
+- [docs/p0_change_log_and_handoff.md](docs/p0_change_log_and_handoff.md)
+  Handoff index for current modification progress, unfinished work, plan/review files, implementation entry points, outputs, and verification commands.

@@ -1,0 +1,408 @@
+table_name: canonical_feature_registry
+layer: config
+status: p0_draft_ready
+path: schemas/canonical_feature_registry.yaml
+description: >
+  canonical_feature_key 的权威注册表。P0 之后，readiness 规则、condition-sensitive
+  校验、normalization_rules、property_observation.canonical_feature_key、以及 governance
+  crosswalk 均应引用本表。本表采用 namespaced key，优先兼容 governance bundle 中已经出现的
+  canonical_feature_key，避免把 readiness 规则绑定到 legacy property_name。
+
+primary_key:
+  - canonical_feature_key
+
+columns:
+  - {name: canonical_feature_key, dtype: string, required: true}
+  - {name: legacy_property_name, dtype: string, required: false}
+  - {name: aliases_json, dtype: string, required: false}
+  - {name: display_name, dtype: string, required: true}
+  - {name: display_name_zh, dtype: string, required: false}
+  - {name: category, dtype: string, required: true}
+  - {name: preferred_standard_unit, dtype: string, required: true}
+  - {name: value_type, dtype: string, required: true}
+  - {name: is_condition_sensitive, dtype: int, required: true}
+  - {name: default_condition_role, dtype: string, required: false}
+  - {name: ml_default_role, dtype: string, required: false}
+  - {name: notes, dtype: string, required: false}
+
+category_vocabulary:
+  - molecular_identity
+  - molecular_descriptor
+  - thermodynamic
+  - transport
+  - environmental
+  - safety
+  - quantum_electronic
+  - cycle_performance
+  - synthesis_proxy
+  - degradation_proxy
+
+value_type_vocabulary:
+  - numeric
+  - categorical
+  - boolean
+  - text
+
+ml_default_role_vocabulary:
+  - feature
+  - target
+  - feature_or_target
+  - metadata
+  - excluded
+
+registry:
+  - canonical_feature_key: identity.mol_id
+    legacy_property_name: mol_id
+    aliases_json: '["mol_id"]'
+    display_name: Molecule ID
+    display_name_zh: 分子 ID
+    category: molecular_identity
+    preferred_standard_unit: none
+    value_type: text
+    is_condition_sensitive: 0
+    ml_default_role: metadata
+
+  - canonical_feature_key: molecular_descriptor.molecular_weight
+    legacy_property_name: molecular_weight
+    aliases_json: '["mol_weight", "molecular_weight"]'
+    display_name: Molecular Weight
+    display_name_zh: 分子量
+    category: molecular_descriptor
+    preferred_standard_unit: g/mol
+    value_type: numeric
+    is_condition_sensitive: 0
+    ml_default_role: feature
+
+  - canonical_feature_key: molecular_descriptor.acentric_factor
+    legacy_property_name: acentric_factor
+    aliases_json: '["omega", "acentric_factor"]'
+    display_name: Acentric Factor
+    display_name_zh: 偏心因子
+    category: molecular_descriptor
+    preferred_standard_unit: dimensionless
+    value_type: numeric
+    is_condition_sensitive: 0
+    ml_default_role: feature_or_target
+
+  - canonical_feature_key: thermodynamic.normal_boiling_temperature
+    legacy_property_name: boiling_point_c
+    aliases_json: '["boiling_point", "normal_boiling_point", "Tb", "boiling_point_c"]'
+    display_name: Normal Boiling Temperature
+    display_name_zh: 标准沸点
+    category: thermodynamic
+    preferred_standard_unit: degC
+    value_type: numeric
+    is_condition_sensitive: 0
+    default_condition_role: normal_boiling_point
+    ml_default_role: target
+
+  - canonical_feature_key: thermodynamic.critical_temperature
+    legacy_property_name: critical_temp_c
+    aliases_json: '["critical_temperature", "Tc", "critical_temp_c"]'
+    display_name: Critical Temperature
+    display_name_zh: 临界温度
+    category: thermodynamic
+    preferred_standard_unit: degC
+    value_type: numeric
+    is_condition_sensitive: 0
+    default_condition_role: critical_point
+    ml_default_role: target
+
+  - canonical_feature_key: thermodynamic.critical_pressure
+    legacy_property_name: critical_pressure_mpa
+    aliases_json: '["critical_pressure", "Pc", "critical_pressure_mpa"]'
+    display_name: Critical Pressure
+    display_name_zh: 临界压力
+    category: thermodynamic
+    preferred_standard_unit: MPa
+    value_type: numeric
+    is_condition_sensitive: 0
+    default_condition_role: critical_point
+    ml_default_role: target
+
+  - canonical_feature_key: thermodynamic.critical_density
+    legacy_property_name: critical_density_kgm3
+    aliases_json: '["critical_density", "rhoc", "critical_density_kgm3"]'
+    display_name: Critical Density
+    display_name_zh: 临界密度
+    category: thermodynamic
+    preferred_standard_unit: kg/m3
+    value_type: numeric
+    is_condition_sensitive: 0
+    default_condition_role: critical_point
+    ml_default_role: feature_or_target
+
+  - canonical_feature_key: thermodynamic.critical_compressibility_factor
+    legacy_property_name: critical_compressibility_factor
+    aliases_json: '["Zc", "critical_compressibility_factor"]'
+    display_name: Critical Compressibility Factor
+    display_name_zh: 临界压缩因子
+    category: thermodynamic
+    preferred_standard_unit: dimensionless
+    value_type: numeric
+    is_condition_sensitive: 0
+    default_condition_role: critical_point
+    ml_default_role: feature
+
+  - canonical_feature_key: thermodynamic.vaporization_enthalpy
+    legacy_property_name: vaporization_enthalpy_kjmol
+    aliases_json: '["enthalpy_vaporization", "delta_h_vap", "vaporization_enthalpy_kjmol"]'
+    display_name: Enthalpy of Vaporization
+    display_name_zh: 汽化焓
+    category: thermodynamic
+    preferred_standard_unit: kJ/mol
+    value_type: numeric
+    is_condition_sensitive: 1
+    default_condition_role: normal_boiling_point
+    ml_default_role: target
+
+  - canonical_feature_key: thermodynamic.vapor_pressure
+    legacy_property_name: vapor_pressure_kpa
+    aliases_json: '["vapor_pressure", "psat", "vapor_pressure_kpa"]'
+    display_name: Vapor Pressure
+    display_name_zh: 饱和蒸气压
+    category: thermodynamic
+    preferred_standard_unit: kPa
+    value_type: numeric
+    is_condition_sensitive: 1
+    default_condition_role: saturation_vapor
+    ml_default_role: target
+
+  - canonical_feature_key: thermodynamic.liquid_density
+    legacy_property_name: liquid_density_kgm3
+    aliases_json: '["liquid_density", "rho_liq"]'
+    display_name: Liquid Density
+    display_name_zh: 液态密度
+    category: thermodynamic
+    preferred_standard_unit: kg/m3
+    value_type: numeric
+    is_condition_sensitive: 1
+    default_condition_role: saturation_liquid
+    ml_default_role: target
+
+  - canonical_feature_key: thermodynamic.heat_capacity_liquid
+    legacy_property_name: heat_capacity_liquid_jmolK
+    aliases_json: '["Cp_liquid", "heat_capacity_liquid"]'
+    display_name: Liquid Heat Capacity
+    display_name_zh: 液态定压热容
+    category: thermodynamic
+    preferred_standard_unit: J/(mol*K)
+    value_type: numeric
+    is_condition_sensitive: 1
+    default_condition_role: saturation_liquid
+    ml_default_role: target
+
+  - canonical_feature_key: transport.liquid_viscosity
+    legacy_property_name: viscosity_liquid_pas
+    aliases_json: '["viscosity", "liquid_viscosity"]'
+    display_name: Liquid Viscosity
+    display_name_zh: 液态黏度
+    category: transport
+    preferred_standard_unit: Pa*s
+    value_type: numeric
+    is_condition_sensitive: 1
+    default_condition_role: saturation_liquid
+    ml_default_role: target
+
+  - canonical_feature_key: transport.liquid_thermal_conductivity
+    legacy_property_name: thermal_conductivity_liquid_wmk
+    aliases_json: '["thermal_conductivity", "liquid_thermal_conductivity"]'
+    display_name: Liquid Thermal Conductivity
+    display_name_zh: 液态导热系数
+    category: transport
+    preferred_standard_unit: W/(m*K)
+    value_type: numeric
+    is_condition_sensitive: 1
+    default_condition_role: saturation_liquid
+    ml_default_role: target
+
+  - canonical_feature_key: environmental.gwp_20yr
+    legacy_property_name: gwp_20yr
+    aliases_json: '["GWP20", "gwp_20yr"]'
+    display_name: Global Warming Potential 20-yr
+    display_name_zh: 全球变暖潜势（20 年）
+    category: environmental
+    preferred_standard_unit: dimensionless
+    value_type: numeric
+    is_condition_sensitive: 0
+    ml_default_role: target
+
+  - canonical_feature_key: environmental.gwp_100yr
+    legacy_property_name: gwp_100yr
+    aliases_json: '["GWP100", "gwp_100yr", "gwp_ar4_100yr", "gwp_ar5_100yr", "gwp_ar6_100yr"]'
+    display_name: Global Warming Potential 100-yr
+    display_name_zh: 全球变暖潜势（100 年）
+    category: environmental
+    preferred_standard_unit: dimensionless
+    value_type: numeric
+    is_condition_sensitive: 0
+    ml_default_role: target
+
+  - canonical_feature_key: environmental.odp
+    legacy_property_name: odp
+    aliases_json: '["ODP", "odp"]'
+    display_name: Ozone Depletion Potential
+    display_name_zh: 臭氧消耗潜势
+    category: environmental
+    preferred_standard_unit: dimensionless
+    value_type: numeric
+    is_condition_sensitive: 0
+    ml_default_role: target
+
+  - canonical_feature_key: environmental.atmospheric_lifetime
+    legacy_property_name: atmospheric_lifetime_yr
+    aliases_json: '["atmospheric_lifetime", "lifetime_yr"]'
+    display_name: Atmospheric Lifetime
+    display_name_zh: 大气寿命
+    category: environmental
+    preferred_standard_unit: yr
+    value_type: numeric
+    is_condition_sensitive: 0
+    ml_default_role: target
+
+  - canonical_feature_key: environmental.tfa_risk_proxy
+    legacy_property_name: tfa_risk_proxy
+    aliases_json: '["tfa_proxy", "tfa_risk"]'
+    display_name: TFA Formation Risk Proxy
+    display_name_zh: TFA 生成风险代理
+    category: degradation_proxy
+    preferred_standard_unit: categorical
+    value_type: categorical
+    is_condition_sensitive: 0
+    ml_default_role: target
+
+  - canonical_feature_key: safety.safety_group
+    legacy_property_name: ashrae_safety
+    aliases_json: '["ashrae_safety", "ashrae_safety_class", "safety_group"]'
+    display_name: ASHRAE Safety Group
+    display_name_zh: ASHRAE 安全分类
+    category: safety
+    preferred_standard_unit: categorical
+    value_type: categorical
+    is_condition_sensitive: 0
+    ml_default_role: target
+
+  - canonical_feature_key: safety.toxicity_class
+    legacy_property_name: toxicity_class
+    aliases_json: '["toxicity_class", "toxicity"]'
+    display_name: Toxicity Class
+    display_name_zh: 毒性等级
+    category: safety
+    preferred_standard_unit: categorical
+    value_type: categorical
+    is_condition_sensitive: 0
+    ml_default_role: target
+
+  - canonical_feature_key: safety.lfl
+    legacy_property_name: lfl_volpct
+    aliases_json: '["LFL", "lower_flammability_limit"]'
+    display_name: Lower Flammability Limit
+    display_name_zh: 可燃下限
+    category: safety
+    preferred_standard_unit: vol%
+    value_type: numeric
+    is_condition_sensitive: 0
+    ml_default_role: target
+
+  - canonical_feature_key: cycle.cop
+    legacy_property_name: cop_standard_cycle
+    aliases_json: '["cop", "cop_standard_cycle"]'
+    display_name: Coefficient of Performance
+    display_name_zh: 性能系数
+    category: cycle_performance
+    preferred_standard_unit: dimensionless
+    value_type: numeric
+    is_condition_sensitive: 1
+    default_condition_role: cycle_operating_point
+    ml_default_role: target
+
+  - canonical_feature_key: cycle.volumetric_cooling_capacity
+    legacy_property_name: volumetric_cooling_mjm3
+    aliases_json: '["qvol", "volumetric_cooling_capacity", "volumetric_cooling_mjm3"]'
+    display_name: Volumetric Cooling Capacity
+    display_name_zh: 容积制冷量
+    category: cycle_performance
+    preferred_standard_unit: MJ/m3
+    value_type: numeric
+    is_condition_sensitive: 1
+    default_condition_role: cycle_operating_point
+    ml_default_role: target
+
+  - canonical_feature_key: cycle.pressure_ratio
+    legacy_property_name: pressure_ratio
+    aliases_json: '["pressure_ratio"]'
+    display_name: Pressure Ratio
+    display_name_zh: 压比
+    category: cycle_performance
+    preferred_standard_unit: dimensionless
+    value_type: numeric
+    is_condition_sensitive: 1
+    default_condition_role: cycle_operating_point
+    ml_default_role: target
+
+  - canonical_feature_key: cycle.discharge_temperature
+    legacy_property_name: discharge_temperature_c
+    aliases_json: '["discharge_temperature", "discharge_temperature_c"]'
+    display_name: Discharge Temperature
+    display_name_zh: 排气温度
+    category: cycle_performance
+    preferred_standard_unit: degC
+    value_type: numeric
+    is_condition_sensitive: 1
+    default_condition_role: cycle_operating_point
+    ml_default_role: target
+
+  - canonical_feature_key: quantum.homo_energy
+    legacy_property_name: homo_ev
+    aliases_json: '["HOMO", "homo_ev"]'
+    display_name: HOMO Energy
+    display_name_zh: HOMO 能量
+    category: quantum_electronic
+    preferred_standard_unit: eV
+    value_type: numeric
+    is_condition_sensitive: 0
+    default_condition_role: gas_phase_298k
+    ml_default_role: feature
+
+  - canonical_feature_key: quantum.lumo_energy
+    legacy_property_name: lumo_ev
+    aliases_json: '["LUMO", "lumo_ev"]'
+    display_name: LUMO Energy
+    display_name_zh: LUMO 能量
+    category: quantum_electronic
+    preferred_standard_unit: eV
+    value_type: numeric
+    is_condition_sensitive: 0
+    default_condition_role: gas_phase_298k
+    ml_default_role: feature
+
+  - canonical_feature_key: quantum.homo_lumo_gap
+    legacy_property_name: gap_ev
+    aliases_json: '["HOMO_LUMO_gap", "gap_ev"]'
+    display_name: HOMO-LUMO Gap
+    display_name_zh: HOMO-LUMO 间隙
+    category: quantum_electronic
+    preferred_standard_unit: eV
+    value_type: numeric
+    is_condition_sensitive: 0
+    default_condition_role: gas_phase_298k
+    ml_default_role: feature
+
+  - canonical_feature_key: synthesis.synthetic_accessibility_score
+    legacy_property_name: synthetic_accessibility
+    aliases_json: '["SAScore", "synthetic_accessibility"]'
+    display_name: Synthetic Accessibility Score
+    display_name_zh: 合成可及性评分
+    category: synthesis_proxy
+    preferred_standard_unit: dimensionless
+    value_type: numeric
+    is_condition_sensitive: 0
+    ml_default_role: feature_or_target
+
+design_rules:
+  - All task-readiness rules MUST bind to canonical_feature_key, not raw property_name.
+  - legacy_property_name records the current V1/V2 projection name and is used only for backward-compatible joins.
+  - aliases_json is informational; validators should resolve aliases through this registry before failing a task.
+  - is_condition_sensitive=1 means a new property_observation row SHOULD carry condition_set_id in P0 and MUST carry it by V1.5 exit.
+  - New canonical features must be added here before entering normalization_rules, readiness rules, or phase-2 write-back.
+  - This file is configuration; pipeline code must read it but must not mutate it during a dataset build.

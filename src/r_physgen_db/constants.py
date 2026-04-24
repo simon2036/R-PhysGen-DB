@@ -24,6 +24,9 @@ SOURCE_PRIORITY = {
 QUALITY_SCORES = {
     "manual_curated_reference": 1.00,
     "primary_public_reference": 0.95,
+    "computed_high": 0.95,
+    "computed_standard": 0.80,
+    "estimated_group_contrib": 0.65,
     "derived_harmonized": 0.85,
     "calculated_open_source": 0.80,
     "snapshot_only": 0.60,

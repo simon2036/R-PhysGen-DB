@@ -58,6 +58,12 @@ def test_wave2_schema_files_exist() -> None:
         "property_source_priority_rules.yaml",
         "property_modeling_readiness_rules.yaml",
         "property_governance_issues.yaml",
+        "quantum_job.yaml",
+        "quantum_artifact.yaml",
+        "mixture_core.yaml",
+        "mixture_composition.yaml",
+        "active_learning_queue.yaml",
+        "active_learning_decision_log.yaml",
     ]:
         assert (SCHEMA_DIR / name).exists()
 
@@ -122,3 +128,6 @@ def test_controlled_vocabularies_support_inventory_expansion() -> None:
     assert sorted(vocab["entity_scopes"]) == ["candidate", "refrigerant"]
     assert sorted(vocab["model_inclusion"]) == ["no", "yes"]
     assert {"Halon", "HFE", "PFC"}.issubset(set(vocab["families"]))
+    assert {"computed_standard", "computed_high", "estimated_group_contrib"}.issubset(set(vocab["quality_levels"]))
+    assert {"homo_ev", "lumo_ev", "gap_ev"}.issubset(set(vocab["property_names"]))
+    assert "eV" in vocab["units"]

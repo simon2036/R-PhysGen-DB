@@ -26,6 +26,8 @@ from r_physgen_db.constants import (
     SNAP_SOURCE_PAGES,
     SOURCE_PRIORITY,
 )
+from r_physgen_db.proxy_features import proxy_feature_summary
+from r_physgen_db.quantum_pilot import quantum_pilot_summary
 from r_physgen_db.sources.comptox_client import CompToxClient
 from r_physgen_db.sources.coolprop_source import CoolPropSource, UnsupportedCoolPropFluidError
 from r_physgen_db.sources.epa_gwp_reference_parser import EPATechnologyTransitionsGWPParser
@@ -41,10 +43,10 @@ from r_physgen_db.utils import ensure_directory, load_yaml, now_iso, sha256_file
 _HTTP_SESSION = build_retry_session()
 
 
-def build_dataset(refresh_remote: bool = False) -> dict[str, Any]:
+def _build_dataset_monolithic(refresh_remote: bool = False) -> dict[str, Any]:
     paths = _paths()
-    for path in paths.values():
-        ensure_directory(path.parent if path.suffix else path)
+    for key, path in paths.items():
+        ensure_directory(path.parent if key == "gold_version" or path.suffix else path)
 
     seed_catalog = pd.read_csv(paths["seed_catalog"]).fillna("")
     manual_observations = _load_manual_observations(paths)
@@ -468,6 +470,13 @@ def build_dataset(refresh_remote: bool = False) -> dict[str, Any]:
     return report
 
 
+def build_dataset(refresh_remote: bool = False) -> dict[str, Any]:
+    """Build the dataset through the stage orchestrator while preserving the public API."""
+    from r_physgen_db.pipeline_stages.orchestrator import build_dataset_staged
+
+    return build_dataset_staged(refresh_remote=refresh_remote)
+
+
 def _paths() -> dict[str, Path]:
     return {
         "raw_root": DATA_DIR / "raw",
@@ -475,6 +484,11 @@ def _paths() -> dict[str, Path]:
         "raw_nist": DATA_DIR / "raw" / "nist_webbook",
         "raw_epa": DATA_DIR / "raw" / "epa",
         "raw_coolprop_meta": DATA_DIR / "raw" / "coolprop" / "session_metadata.json",
+        "raw_proxy_feature_metadata": DATA_DIR / "raw" / "generated" / "proxy_feature_heuristics_metadata.json",
+        "raw_quantum_pilot_results": DATA_DIR / "raw" / "manual" / "quantum_pilot_results.csv",
+        "raw_active_learning_queue": DATA_DIR / "raw" / "manual" / "active_learning_queue.csv",
+        "raw_active_learning_decision_log": DATA_DIR / "raw" / "manual" / "active_learning_decision_log.csv",
+        "raw_mixture_fraction_curations": DATA_DIR / "raw" / "manual" / "mixture_fraction_curations.csv",
         "seed_catalog": DATA_DIR / "raw" / "manual" / "seed_catalog.csv",
         "property_governance_bundle": default_bundle_path(PROJECT_ROOT),
         "refrigerant_inventory": DATA_DIR / "raw" / "manual" / "refrigerant_inventory.csv",
@@ -490,6 +504,13 @@ def _paths() -> dict[str, Path]:
         "silver_molecule_core": DATA_DIR / "silver" / "molecule_core.parquet",
         "silver_molecule_alias": DATA_DIR / "silver" / "molecule_alias.parquet",
         "silver_property_observation": DATA_DIR / "silver" / "property_observation.parquet",
+        "silver_observation_condition_set": DATA_DIR / "silver" / "observation_condition_set.parquet",
+        "silver_cycle_case": DATA_DIR / "silver" / "cycle_case.parquet",
+        "silver_cycle_operating_point": DATA_DIR / "silver" / "cycle_operating_point.parquet",
+        "silver_quantum_job": DATA_DIR / "silver" / "quantum_job.parquet",
+        "silver_quantum_artifact": DATA_DIR / "silver" / "quantum_artifact.parquet",
+        "silver_mixture_core": DATA_DIR / "silver" / "mixture_core.parquet",
+        "silver_mixture_composition": DATA_DIR / "silver" / "mixture_composition.parquet",
         "silver_regulatory_status": DATA_DIR / "silver" / "regulatory_status.parquet",
         "silver_qc_issues": DATA_DIR / "silver" / "qc_issues.parquet",
         "gold_property_recommended": DATA_DIR / "gold" / "property_recommended.parquet",
@@ -498,9 +519,13 @@ def _paths() -> dict[str, Path]:
         "gold_property_matrix": DATA_DIR / "gold" / "property_matrix.parquet",
         "gold_model_index": DATA_DIR / "gold" / "model_dataset_index.parquet",
         "gold_model_ready": DATA_DIR / "gold" / "model_ready.parquet",
+        "gold_active_learning_queue": DATA_DIR / "gold" / "active_learning_queue.parquet",
+        "gold_active_learning_decision_log": DATA_DIR / "gold" / "active_learning_decision_log.parquet",
         "gold_property_recommended_canonical_strict": DATA_DIR / "gold" / "property_recommended_canonical_strict.parquet",
         "gold_property_recommended_canonical_review_queue": DATA_DIR / "gold" / "property_recommended_canonical_review_queue.parquet",
+        "gold_research_task_readiness_report": DATA_DIR / "gold" / "research_task_readiness_report.parquet",
         "gold_quality_report": DATA_DIR / "gold" / "quality_report.json",
+        "gold_version": DATA_DIR / "gold" / "VERSION",
         "duckdb_path": DATA_DIR / "index" / "r_physgen_v2.duckdb",
     }
 
@@ -2019,6 +2044,14 @@ def _build_quality_report(
     property_recommended_canonical_strict: pd.DataFrame | None = None,
     property_recommended_canonical_review_queue: pd.DataFrame | None = None,
     property_governance_audit: dict[str, Any] | None = None,
+    condition_migration_progress: dict[str, Any] | None = None,
+    research_task_readiness: dict[str, Any] | None = None,
+    cycle_summary: dict[str, Any] | None = None,
+    proxy_summary: dict[str, Any] | None = None,
+    quantum_summary: dict[str, Any] | None = None,
+    mixture_summary: dict[str, Any] | None = None,
+    active_learning_summary: dict[str, Any] | None = None,
+    dataset_version: str | None = None,
 ) -> dict[str, Any]:
     property_observation_canonical = property_observation_canonical if property_observation_canonical is not None else pd.DataFrame()
     property_recommended_canonical = property_recommended_canonical if property_recommended_canonical is not None else pd.DataFrame()
@@ -2031,6 +2064,17 @@ def _build_quality_report(
         else pd.DataFrame()
     )
     property_governance_audit = property_governance_audit or {}
+    condition_migration_progress = condition_migration_progress or _condition_migration_progress(property_observation)
+    research_task_readiness = research_task_readiness or {}
+    cycle_summary = cycle_summary or _cycle_summary(property_observation)
+    proxy_summary = proxy_summary or proxy_feature_summary(property_observation)
+    quantum_summary = quantum_summary or quantum_pilot_summary(input_exists=False)
+    mixture_summary = mixture_summary or {}
+    active_learning_summary = active_learning_summary or {
+        "input_status": "not_configured",
+        "queue_entry_count": 0,
+        "decision_count": 0,
+    }
     recommended_props = property_recommended.groupby("property_name")["mol_id"].nunique().to_dict() if not property_recommended.empty else {}
     split_counts = model_ready["split"].value_counts(dropna=False).to_dict() if "split" in model_ready.columns else {}
     unresolved = resolution_df.loc[resolution_df["status"].isin(["failed", "warning"]), ["seed_id", "stage", "detail"]].to_dict(orient="records")
@@ -2045,6 +2089,7 @@ def _build_quality_report(
         property_governance_audit=property_governance_audit,
     )
     return {
+        "dataset_version": dataset_version or "v1.5.0-draft",
         "seed_catalog_count": int(len(seed_catalog)),
         "refrigerant_count": int((seed_catalog["entity_scope"].astype(str) == "refrigerant").sum()) if "entity_scope" in seed_catalog.columns else 0,
         "candidate_count": int((seed_catalog["entity_scope"].astype(str) == "candidate").sum()) if "entity_scope" in seed_catalog.columns else 0,
@@ -2062,6 +2107,74 @@ def _build_quality_report(
         "unresolved_events": unresolved,
         "canonical_metrics": canonical_metrics,
         "property_governance_bundle": property_governance_audit,
+        "condition_migration_progress": condition_migration_progress,
+        "research_task_readiness": research_task_readiness,
+        "cycle_operating_point_summary": cycle_summary,
+        "proxy_feature_summary": proxy_summary,
+        "quantum_pilot_summary": quantum_summary,
+        "mixture_summary": mixture_summary,
+        "active_learning_summary": active_learning_summary,
+    }
+
+
+def _condition_migration_progress(property_observation: pd.DataFrame) -> dict[str, Any]:
+    total = int(len(property_observation))
+    if total and "condition_set_id" in property_observation.columns:
+        with_condition_set_id = int(property_observation["condition_set_id"].fillna("").astype(str).str.len().gt(0).sum())
+    else:
+        with_condition_set_id = 0
+    return {
+        "total": total,
+        "with_condition_set_id": with_condition_set_id,
+        "auto_backfilled": 0,
+        "needs_manual_review": total - with_condition_set_id,
+        "condition_set_count": 0,
+        "manual_review_condition_set_count": 0,
+        "manual_review_condition_set_ids_sample": [],
+        "normalization_status_counts": {},
+        "coverage_fraction": with_condition_set_id / total if total else 0.0,
+        "auto_backfill_fraction": 0.0,
+    }
+
+
+def _cycle_summary(property_observation: pd.DataFrame) -> dict[str, Any]:
+    if property_observation.empty:
+        return {
+            "cycle_observation_count": 0,
+            "resolved_cycle_observation_count": 0,
+            "unresolved_cycle_observation_count": 0,
+            "cycle_case_count": 0,
+            "cycle_operating_point_count": 0,
+        }
+    cycle_props = {"cop_standard_cycle", "volumetric_cooling_mjm3", "pressure_ratio", "discharge_temperature_c"}
+    property_names = property_observation.get("property_name", pd.Series("", index=property_observation.index))
+    phases = property_observation.get("phase", pd.Series("", index=property_observation.index))
+    cycle_rows = property_observation.loc[
+        property_names.fillna("").astype(str).isin(cycle_props)
+        | phases.fillna("").astype(str).str.lower().eq("cycle")
+    ]
+    flags = cycle_rows.get("qc_flags", pd.Series("", index=cycle_rows.index)).fillna("").astype(str)
+    unresolved = int(flags.str.contains("cycle_unresolved", na=False).sum())
+    return {
+        "cycle_observation_count": int(len(cycle_rows)),
+        "resolved_cycle_observation_count": int(len(cycle_rows) - unresolved),
+        "unresolved_cycle_observation_count": unresolved,
+        "cycle_case_count": int(
+            cycle_rows.get("cycle_case_id", pd.Series("", index=cycle_rows.index))
+            .fillna("")
+            .astype(str)
+            .replace("", pd.NA)
+            .dropna()
+            .nunique()
+        ),
+        "cycle_operating_point_count": int(
+            cycle_rows.get("operating_point_hash", pd.Series("", index=cycle_rows.index))
+            .fillna("")
+            .astype(str)
+            .replace("", pd.NA)
+            .dropna()
+            .nunique()
+        ),
     }
 
 
@@ -2229,6 +2342,13 @@ def _build_duckdb_index(paths: dict[str, Path]) -> None:
         "molecule_core": paths["silver_molecule_core"],
         "molecule_alias": paths["silver_molecule_alias"],
         "property_observation": paths["silver_property_observation"],
+        "observation_condition_set": paths["silver_observation_condition_set"],
+        "cycle_case": paths["silver_cycle_case"],
+        "cycle_operating_point": paths["silver_cycle_operating_point"],
+        "quantum_job": paths["silver_quantum_job"],
+        "quantum_artifact": paths["silver_quantum_artifact"],
+        "mixture_core": paths["silver_mixture_core"],
+        "mixture_composition": paths["silver_mixture_composition"],
         "regulatory_status": paths["silver_regulatory_status"],
         "property_recommended": paths["gold_property_recommended"],
         "structure_features": paths["gold_structure_features"],
@@ -2243,6 +2363,15 @@ def _build_duckdb_index(paths: dict[str, Path]) -> None:
         con.execute(f"CREATE TABLE {table_name} AS SELECT * FROM read_parquet('{parquet_path}')")
 
     supplemental_tables = {
+        "observation_condition_set": paths["silver_observation_condition_set"],
+        "cycle_case": paths["silver_cycle_case"],
+        "cycle_operating_point": paths["silver_cycle_operating_point"],
+        "quantum_job": paths["silver_quantum_job"],
+        "quantum_artifact": paths["silver_quantum_artifact"],
+        "mixture_core": paths["silver_mixture_core"],
+        "mixture_composition": paths["silver_mixture_composition"],
+        "active_learning_queue": paths["gold_active_learning_queue"],
+        "active_learning_decision_log": paths["gold_active_learning_decision_log"],
         "property_dictionary": PROJECT_ROOT / "data" / "gold" / "property_dictionary.parquet",
         "property_canonical_map": PROJECT_ROOT / "data" / "gold" / "property_canonical_map.parquet",
         "unit_conversion_rules": PROJECT_ROOT / "data" / "gold" / "unit_conversion_rules.parquet",
@@ -2253,6 +2382,7 @@ def _build_duckdb_index(paths: dict[str, Path]) -> None:
         "property_recommended_canonical": PROJECT_ROOT / "data" / "gold" / "property_recommended_canonical.parquet",
         "property_recommended_canonical_strict": PROJECT_ROOT / "data" / "gold" / "property_recommended_canonical_strict.parquet",
         "property_recommended_canonical_review_queue": PROJECT_ROOT / "data" / "gold" / "property_recommended_canonical_review_queue.parquet",
+        "research_task_readiness_report": paths["gold_research_task_readiness_report"],
     }
     for table_name, parquet_path in supplemental_tables.items():
         if parquet_path.exists():
@@ -2300,14 +2430,23 @@ def _property_observation_columns() -> list[str]:
         "mol_id",
         "property_name",
         "value",
+        "value_text_normalized",
         "value_num",
+        "value_num_lower",
+        "value_num_upper",
+        "value_num_bound_type",
+        "value_parse_status",
         "unit",
+        "standard_unit",
+        "standard_value_num",
+        "condition_set_id",
         "temperature",
         "pressure",
         "phase",
         "source_type",
         "source_name",
         "source_id",
+        "source_record_id",
         "method",
         "uncertainty",
         "quality_level",
@@ -2318,12 +2457,18 @@ def _property_observation_columns() -> list[str]:
         "qc_status",
         "qc_flags",
         "canonical_feature_key",
-        "standard_unit",
         "bundle_record_id",
         "source_priority_rank",
         "data_quality_score_100",
         "is_proxy_or_screening",
         "ml_use_status",
+        "ingestion_stage_id",
+        "normalization_rule_id",
+        "cycle_case_id",
+        "operating_point_hash",
+        "cycle_model",
+        "eos_source",
+        "convergence_flag",
     ]
 
 

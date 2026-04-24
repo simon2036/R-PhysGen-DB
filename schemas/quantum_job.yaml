@@ -1,0 +1,32 @@
+table_name: quantum_job
+layer: silver
+path: data/silver/quantum_job.parquet
+primary_key:
+  - request_id
+columns:
+  - {name: request_id, dtype: string, required: true}
+  - {name: mol_id, dtype: string, required: true}
+  - {name: status, dtype: string, required: true}
+  - {name: program, dtype: string, required: false}
+  - {name: program_version, dtype: string, required: false}
+  - {name: method_family, dtype: string, required: false}
+  - {name: theory_level, dtype: string, required: false}
+  - {name: basis_set, dtype: string, required: false}
+  - {name: solvation_model, dtype: string, required: false}
+  - {name: quality_level, dtype: string, required: true}
+  - {name: converged, dtype: int, required: true}
+  - {name: imaginary_frequency_count, dtype: int, required: true}
+  - {name: derived_observation_count, dtype: int, required: true}
+  - {name: artifact_count, dtype: int, required: true}
+  - {name: source_id, dtype: string, required: true}
+  - {name: source_name, dtype: string, required: true}
+  - {name: created_by_stage_id, dtype: string, required: false}
+  - {name: notes, dtype: string, required: false}
+status_vocabulary:
+  - succeeded
+  - failed
+quality_level_vocabulary:
+  - computed_standard
+  - computed_high
+  - estimated_group_contrib
+  - calculated_open_source

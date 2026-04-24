@@ -1,0 +1,74 @@
+table_name: normalization_rules
+layer: config
+status: placeholder_for_v2
+path: schemas/normalization_rules.yaml
+description: >
+  属性值归一化规则表。定义了从原始 observation 值到标准单位/标准条件的转换规则。
+  property_observation_v2 中的 normalization_rule_id 引用本表。
+  P0 阶段本表为占位草案，仅定义结构和设计意图；规则内容将在 V1.5/V2 阶段充实。
+  P0 阶段 normalization_rule_id 不参与程序化验证。
+
+primary_key:
+  - normalization_rule_id
+
+columns:
+  - {name: normalization_rule_id, dtype: string, required: true}
+  - {name: rule_name, dtype: string, required: true}
+  - {name: target_canonical_feature_key, dtype: string, required: true}
+  - {name: source_unit, dtype: string, required: true}
+  - {name: target_unit, dtype: string, required: true}
+  - {name: conversion_type, dtype: string, required: true}
+  - {name: conversion_expression, dtype: string, required: false}
+  - {name: condition_normalization, dtype: string, required: false}
+  - {name: valid_range_min, dtype: float, required: false}
+  - {name: valid_range_max, dtype: float, required: false}
+  - {name: notes, dtype: string, required: false}
+
+conversion_type_vocabulary:
+  - unit_conversion       # 纯单位换算（如 K → °C）
+  - condition_correction  # 条件修正（如从 25°C 换算到标准态）
+  - equation_of_state     # 状态方程推导值
+  - scaling               # 线性缩放
+  - identity              # 无需转换
+  - custom                # 自定义表达式
+
+design_rules:
+  - target_canonical_feature_key 必须引用 canonical_feature_registry 中已注册的 key。
+  - conversion_expression 使用 Python 表达式语法，变量 x 代表输入值。
+    例：从华氏度到摄氏度 → "(x - 32) * 5 / 9"
+  - condition_normalization 描述条件修正策略，例如 "extrapolate_to_nbp" 或 "interpolate_saturation_curve"。
+  - valid_range_min/max 用于在归一化后做合理性校验（超出范围的值标记 qc_flag）。
+  - P0 阶段本表为占位，property_observation 中的 normalization_rule_id 暂不验证外键约束。
+  - V1.5 阶段将启用规则验证，届时所有新写入的 observation 必须引用有效的 normalization_rule_id。
+
+example_rules:
+  - normalization_rule_id: "NR-001"
+    rule_name: "temperature_K_to_C"
+    target_canonical_feature_key: boiling_point
+    source_unit: kelvin
+    target_unit: celsius
+    conversion_type: unit_conversion
+    conversion_expression: "x - 273.15"
+
+  - normalization_rule_id: "NR-002"
+    rule_name: "pressure_atm_to_MPa"
+    target_canonical_feature_key: critical_pressure
+    source_unit: atm
+    target_unit: MPa
+    conversion_type: unit_conversion
+    conversion_expression: "x * 0.101325"
+
+  - normalization_rule_id: "NR-003"
+    rule_name: "gwp_identity"
+    target_canonical_feature_key: gwp_100yr
+    source_unit: dimensionless
+    target_unit: dimensionless
+    conversion_type: identity
+    notes: "GWP 为无量纲相对值，无需单位转换"
+
+p0_status_note: >
+  本文件在 P0 阶段为占位草案（placeholder_for_v2）。其存在目的是：
+  (1) 消除 property_observation_v2 中 normalization_rule_id 的悬空引用；
+  (2) 为 V1.5 阶段的规则充实提供结构模板；
+  (3) 明确归一化规则的设计意图和治理流程。
+  P0 内不要求任何 observation 填写有效的 normalization_rule_id。
