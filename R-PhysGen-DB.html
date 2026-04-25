@@ -2382,7 +2382,7 @@ const Dashboard = ({setPage, setSelectedMol, setQuery}) => {
       <div className="grid-3">
         {topMols.map(m => (
           <div key={m.mol_id} className="card" style={{cursor:"pointer"}}
-               onClick={()=>{ setSelectedMol(m.mol_id); setPage("molecule"); }}>
+               onClick={()=>setSelectedMol(m.mol_id)}>
             <div className="card-body" style={{display:"flex", gap:14}}>
               <div style={{width:72, height:72, background:"var(--bg-sunken)", border:"1px solid var(--border)",
                            borderRadius:8, display:"grid", placeItems:"center", position:"relative", overflow:"hidden", flexShrink:0}}>
@@ -2592,7 +2592,7 @@ const MoleculeBrowser = ({setPage, setSelectedMol, query, compare, toggleCompare
               {rows.map(m=>{
                 const inCmp = compare && compare.includes(m.mol_id);
                 return (
-                <tr key={m.mol_id} className={inCmp?"selected":""} onClick={()=>{setSelectedMol(m.mol_id); setPage("molecule");}}>
+                <tr key={m.mol_id} className={inCmp?"selected":""} onClick={()=>setSelectedMol(m.mol_id)}>
                   <td onClick={e=>e.stopPropagation()} style={{width:30}}>
                     <input type="checkbox" checked={!!inCmp} onChange={()=>toggleCompare(m.mol_id)} aria-label={t("molecules.addCompareAria", {name: m.r_name})}/>
                   </td>
@@ -3106,7 +3106,7 @@ const ComparePage = ({ids, setPage, setSelectedMol, toggleCompare, units, setUni
               {picked.map(m => (
                 <th key={m.mol_id}>
                   <div style={{display:"flex", alignItems:"center", gap:6}}>
-                    <a onClick={()=>{setSelectedMol(m.mol_id); setPage("molecule");}} style={{cursor:"pointer", fontFamily:"var(--font-serif)", fontSize:14, fontWeight:600, color:"var(--ink)"}}>{m.r_name}</a>
+                    <a onClick={()=>setSelectedMol(m.mol_id)} style={{cursor:"pointer", fontFamily:"var(--font-serif)", fontSize:14, fontWeight:600, color:"var(--ink)"}}>{m.r_name}</a>
                     <button className="btn sm ghost" onClick={()=>toggleCompare(m.mol_id)} aria-label="Remove" style={{padding:"2px 6px"}}>×</button>
                   </div>
                   <div className="mono subtle" style={{fontSize:11, textTransform:"none", letterSpacing:0, marginTop:2}}>{m.mol_id}</div>
@@ -3206,7 +3206,7 @@ const MixturesPage = ({setPage, setSelectedMol}) => {
                 {compsResolved.map((c,i)=>(
                   <div key={i} style={{display:"flex", alignItems:"center", gap:10, padding:"6px 0", fontSize:13}}>
                     <span style={{width:10, height:10, borderRadius:2, background:["oklch(55% 0.11 205)","oklch(60% 0.12 150)","oklch(65% 0.13 65)","oklch(60% 0.14 330)"][i%4]}}/>
-                    <a onClick={()=>{setSelectedMol(c.mol_id); setPage("molecule");}} style={{cursor:"pointer"}}>{c.r_name}</a>
+                    <a onClick={()=>setSelectedMol(c.mol_id)} style={{cursor:"pointer"}}>{c.r_name}</a>
                     <span className="mono subtle" style={{fontSize:11}}><Formula str={c.formula}/></span>
                     <span style={{marginLeft:"auto"}} className="mono">{fmt(c.pct,1)}%</span>
                   </div>
@@ -3318,7 +3318,7 @@ const CanonicalPage = ({setPage, setSelectedMol}) => {
             {rows.map((c,i)=>{
               const m = _DB.mols.find(x=>x.mol_id===c.mol_id);
               return (
-                <tr key={i} onClick={()=>{ if(m){setSelectedMol(m.mol_id); setPage("molecule");}}}>
+                <tr key={i} onClick={()=>{ if(m){setSelectedMol(m.mol_id);}}}>
                   <td>
                     <div className="strong" style={{fontFamily:"var(--font-serif)"}}>{m?m.r_name:"—"}</div>
                     <div className="col-id">{c.mol_id}</div>
@@ -3380,7 +3380,7 @@ const ReviewPage = ({setPage, setSelectedMol}) => {
           {_DB.reviewQueue.map(d=>{
             const m = _DB.mols.find(x=>x.mol_id===d.mol_id);
             return (
-              <tr key={d.decision_id} onClick={()=>{ if(m){setSelectedMol(d.mol_id); setPage("molecule");}}}>
+              <tr key={d.decision_id} onClick={()=>{ if(m){setSelectedMol(d.mol_id);}}}>
                 <td className="col-id">{d.decision_id}</td>
                 <td className="strong" style={{fontFamily:"var(--font-serif)"}}>{m?m.r_name:d.mol_id}</td>
                 <td className="mono" style={{fontSize:12}}>{d.canonical_feature_key}</td>
@@ -3432,7 +3432,7 @@ const RegulatoryPage = ({setPage, setSelectedMol}) => {
             {rows.map((r,i)=>{
               const m = _DB.mols.find(x=>x.mol_id===r.mol_id);
               return (
-                <tr key={i} onClick={()=>{ if(m){setSelectedMol(m.mol_id); setPage("molecule");}}}>
+                <tr key={i} onClick={()=>{ if(m){setSelectedMol(m.mol_id);}}}>
                   <td className="strong" style={{fontFamily:"var(--font-serif)"}}>{m?m.r_name:r.mol_id}</td>
                   <td>{r.jurisdiction}</td>
                   <td>{r.end_use}</td>
@@ -3643,12 +3643,16 @@ function App() {
   }, []);
 
   const setPage = (p) => {
-    const h = "#/" + p + (p === "molecule" && route.molId ? "/" + route.molId : "");
+    const currentRoute = parseHash();
+    const molId = p === "molecule" ? (currentRoute.molId || route.molId) : null;
+    const h = "#/" + p + (p === "molecule" && molId ? "/" + molId : "");
     if (window.location.hash !== h) window.location.hash = h;
-    else setRoute({ page: p, molId: route.molId });
+    else setRoute({ page: p, molId });
   };
   const setSelectedMol = (id) => {
-    window.location.hash = "#/molecule/" + id;
+    const h = "#/molecule/" + id;
+    if (window.location.hash !== h) window.location.hash = h;
+    else setRoute({ page: "molecule", molId: id });
   };
 
   const page = route.page;
