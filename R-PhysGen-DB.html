@@ -88,8 +88,12 @@ code, .mono { font-family: var(--font-mono); font-feature-settings: "zero"; }
 /* ------------------------------------------------------------- APP SHELL */
 .app {
   display: grid;
-  grid-template-columns: 244px 1fr;
+  grid-template-columns: 244px minmax(0, 1fr);
   min-height: 100vh;
+  transition: grid-template-columns 180ms ease;
+}
+.app.sidebar-collapsed {
+  grid-template-columns: 68px minmax(0, 1fr);
 }
 .sidebar {
   border-right: 1px solid var(--border);
@@ -98,12 +102,25 @@ code, .mono { font-family: var(--font-mono); font-feature-settings: "zero"; }
   position: sticky; top: 0; height: 100vh;
   display: flex; flex-direction: column; gap: 2px;
   overflow-y: auto;
+  overflow-x: hidden;
+  transition: padding 180ms ease;
+}
+.sidebar.collapsed {
+  padding: 18px 10px;
+  align-items: center;
+}
+.sidebar-head {
+  display: flex; align-items: flex-start; gap: 8px;
+  width: 100%;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 14px;
 }
 .brand {
   display: flex; align-items: center; gap: 10px;
-  padding: 4px 6px 18px 6px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 14px;
+  padding: 4px 0;
+  min-width: 0;
+  flex: 1;
 }
 .brand-mark {
   width: 30px; height: 30px; border-radius: 7px;
@@ -113,6 +130,12 @@ code, .mono { font-family: var(--font-mono); font-feature-settings: "zero"; }
   font-family: var(--font-serif); font-weight: 600;
   font-size: 16px; letter-spacing: -0.02em;
   box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.08), 0 1px 2px oklch(0% 0 0 / 0.18);
+  flex-shrink: 0;
+}
+.brand-copy {
+  min-width: 0;
+  opacity: 1;
+  transition: opacity 120ms ease;
 }
 .brand-name {
   font-family: var(--font-serif);
@@ -123,6 +146,42 @@ code, .mono { font-family: var(--font-mono); font-feature-settings: "zero"; }
   font-size: 11px; color: var(--ink-subtle);
   font-family: var(--font-mono);
   letter-spacing: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sidebar-toggle {
+  width: 30px; height: 30px;
+  display: grid; place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-sunken);
+  color: var(--ink-muted);
+  flex-shrink: 0;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+.sidebar-toggle:hover {
+  background: var(--bg-raised);
+  border-color: var(--border-strong);
+  color: var(--ink);
+}
+.sidebar-toggle .nav-icon { transition: transform 160ms ease; }
+.sidebar:not(.collapsed) .sidebar-toggle .nav-icon { transform: rotate(180deg); }
+.sidebar.collapsed .sidebar-head {
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.sidebar.collapsed .brand {
+  justify-content: center;
+  flex: 0 0 auto;
+}
+.sidebar.collapsed .brand-copy,
+.sidebar.collapsed .nav-section,
+.sidebar.collapsed .nav-label,
+.sidebar.collapsed .nav-badge,
+.sidebar.collapsed .sidebar-foot {
+  display: none;
 }
 .nav-section { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
   color: var(--ink-subtle); padding: 16px 10px 6px; font-weight: 600; }
@@ -145,6 +204,12 @@ code, .mono { font-family: var(--font-mono); font-feature-settings: "zero"; }
   content: ""; position: absolute; left: -14px; top: 6px; bottom: 6px;
   width: 2px; background: var(--accent); border-radius: 0 2px 2px 0;
 }
+.sidebar.collapsed .nav-item {
+  width: 42px; height: 34px;
+  justify-content: center;
+  padding: 0;
+}
+.sidebar.collapsed .nav-item.active::before { left: -10px; }
 .nav-item .nav-badge {
   margin-left: auto; font-family: var(--font-mono); font-size: 11px;
   color: var(--ink-subtle); font-weight: 400;
@@ -799,11 +864,21 @@ code, .mono { font-family: var(--font-mono); font-feature-settings: "zero"; }
   }
 }
 @media (max-width: 900px) {
-  .app { grid-template-columns: 1fr; }
+  .app, .app.sidebar-collapsed { grid-template-columns: 1fr; }
   .sidebar { position: static; height: auto; border-right: 0;
     border-bottom: 1px solid var(--border); flex-direction: row; flex-wrap: wrap;
     padding: 10px 12px; gap: 6px; overflow-x: auto; }
-  .sidebar .brand { border-bottom: 0; padding: 4px 8px; margin-bottom: 0; width: 100%; }
+  .sidebar.collapsed { align-items: stretch; padding: 10px 12px; }
+  .sidebar-head { width: 100%; padding-bottom: 0; margin-bottom: 0; border-bottom: 0; }
+  .sidebar .brand { padding: 4px 8px; margin-bottom: 0; width: 100%; }
+  .sidebar-toggle { display: none; }
+  .sidebar.collapsed .brand { justify-content: flex-start; }
+  .sidebar.collapsed .brand-copy { display: block; }
+  .sidebar.collapsed .nav-section { display: block; }
+  .sidebar.collapsed .nav-label { display: inline; }
+  .sidebar.collapsed .nav-badge { display: inline; }
+  .sidebar.collapsed .nav-item { width: auto; height: auto; justify-content: flex-start; padding: 7px 10px; }
+  .sidebar.collapsed .sidebar-foot { display: flex; }
   .sidebar .nav-section { padding: 2px 4px 0; font-size: 10px; width: 100%; }
   .sidebar .sidebar-foot { margin-top: 0; border-top: 0; width: 100%; padding-top: 6px; }
   .topbar { padding: 0 12px; gap: 10px; }
@@ -1091,6 +1166,8 @@ const { useState, useEffect, useMemo, useRef } = React;
 // ---------------------------------------------------------------- I18N
 const I18N_EN = {
   "app.primaryNav": "Primary",
+  "sidebar.collapse": "Collapse navigation",
+  "sidebar.expand": "Expand navigation",
   "brand.subtitle": "refrigerant · v1.5.0-draft",
   "meta.build": "Build",
   "meta.snapshot": "Snapshot",
@@ -1364,6 +1441,8 @@ const I18N_EN = {
 const I18N_ZH = {
   ...I18N_EN,
   "app.primaryNav": "主导航",
+  "sidebar.collapse": "收起导航",
+  "sidebar.expand": "展开导航",
   "brand.subtitle": "制冷剂 · v1.5.0-draft",
   "meta.build": "构建",
   "meta.snapshot": "快照",
@@ -1686,7 +1765,7 @@ const Brand = () => {
   return (
     <div className="brand">
       <div className="brand-mark">R</div>
-      <div>
+      <div className="brand-copy">
         <div className="brand-name">R-PhysGen-DB</div>
         <div className="brand-sub">{t("brand.subtitle")}</div>
       </div>
@@ -1751,11 +1830,24 @@ const NAV = [
   ]},
 ];
 
-const Sidebar = ({page, setPage}) => {
+const Sidebar = ({page, setPage, collapsed=false, onToggleCollapsed}) => {
   const { t } = useI18n();
+  const toggleLabel = collapsed ? t("sidebar.expand") : t("sidebar.collapse");
   return (
-    <aside className="sidebar" aria-label={t("app.primaryNav")}>
-      <Brand/>
+    <aside className={"sidebar " + (collapsed ? "collapsed" : "")} aria-label={t("app.primaryNav")}>
+      <div className="sidebar-head">
+        <Brand/>
+        <button
+          type="button"
+          className="sidebar-toggle"
+          onClick={onToggleCollapsed}
+          aria-label={toggleLabel}
+          title={toggleLabel}
+          aria-expanded={!collapsed}
+        >
+          <Icon name="chevron" size={14}/>
+        </button>
+      </div>
       {NAV.map(g => (
         <div key={g.groupKey}>
           <div className="nav-section">{t(g.groupKey)}</div>
@@ -1766,9 +1858,10 @@ const Sidebar = ({page, setPage}) => {
               className={"nav-item " + (page===it.id?"active":"")}
               onClick={()=>setPage(it.id)}
               aria-current={page===it.id ? "page" : undefined}
+              title={collapsed ? t(it.labelKey) : undefined}
             >
               <Icon name={it.icon}/>
-              <span>{t(it.labelKey)}</span>
+              <span className="nav-label">{t(it.labelKey)}</span>
               {it.badge && <span className="nav-badge">{it.badge}</span>}
             </button>
           ))}
@@ -3663,8 +3756,10 @@ function App() {
     try { return JSON.parse(localStorage.getItem("rpg-compare") || "[]"); } catch { return []; }
   });
   const [units, setUnits] = _useState(() => localStorage.getItem("rpg-units") || "SI");
+  const [sidebarCollapsed, setSidebarCollapsed] = _useState(() => localStorage.getItem("rpg-sidebar-collapsed") === "true");
   _useEffect(() => { localStorage.setItem("rpg-compare", JSON.stringify(compare)); }, [compare]);
   _useEffect(() => { localStorage.setItem("rpg-units", units); }, [units]);
+  _useEffect(() => { localStorage.setItem("rpg-sidebar-collapsed", sidebarCollapsed ? "true" : "false"); }, [sidebarCollapsed]);
   const toggleCompare = (id) => setCompare(c => c.includes(id) ? c.filter(x=>x!==id) : c.length>=6 ? c : [...c, id]);
   const clearCompare = () => setCompare([]);
 
@@ -3694,8 +3789,8 @@ function App() {
 
   return (
     <I18nContext.Provider value={i18nValue}>
-    <div className="app">
-      <Sidebar page={page} setPage={setPage}/>
+    <div className={"app " + (sidebarCollapsed ? "sidebar-collapsed" : "")}>
+      <Sidebar page={page} setPage={setPage} collapsed={sidebarCollapsed} onToggleCollapsed={()=>setSidebarCollapsed(v=>!v)}/>
       <div className="theme-corner">
         <TopControls theme={theme} setTheme={setTheme} lang={lang} setLang={setLang}/>
       </div>
