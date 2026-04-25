@@ -158,16 +158,21 @@ code, .mono { font-family: var(--font-mono); font-feature-settings: "zero"; }
   border-top: 1px solid var(--border);
   display: flex; flex-direction: column; gap: 8px;
 }
-.theme-toggle {
+.top-controls {
+  display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+}
+.theme-toggle, .language-toggle {
   display: flex; align-items: center; background: var(--bg-sunken);
   border: 1px solid var(--border); border-radius: 999px; padding: 2px; gap: 0;
+  flex-shrink: 0;
 }
-.theme-toggle button {
+.theme-toggle button, .language-toggle button {
   flex: 1; padding: 5px 10px; border: 0; background: transparent;
   border-radius: 999px; font-size: 12px; color: var(--ink-muted);
   display: flex; align-items: center; justify-content: center; gap: 6px;
+  white-space: nowrap;
 }
-.theme-toggle button.active { background: var(--bg-raised); color: var(--ink); box-shadow: var(--shadow-sm); }
+.theme-toggle button.active, .language-toggle button.active { background: var(--bg-raised); color: var(--ink); box-shadow: var(--shadow-sm); }
 
 .version-line {
   font-family: var(--font-mono); font-size: 11px; color: var(--ink-subtle);
@@ -204,6 +209,7 @@ code, .mono { font-family: var(--font-mono); font-feature-settings: "zero"; }
   letter-spacing: 0.04em; }
 .topbar-right { display: flex; align-items: center; gap: 12px; margin-left: auto;
   color: var(--ink-muted); font-size: 12px; }
+.theme-corner { display: none; }
 .status-dot { width: 6px; height: 6px; background: var(--good); border-radius: 50%;
   box-shadow: 0 0 0 3px color-mix(in oklab, var(--good) 25%, transparent); }
 
@@ -800,8 +806,18 @@ code, .mono { font-family: var(--font-mono); font-feature-settings: "zero"; }
   .sidebar .brand { border-bottom: 0; padding: 4px 8px; margin-bottom: 0; width: 100%; }
   .sidebar .nav-section { padding: 2px 4px 0; font-size: 10px; width: 100%; }
   .sidebar .sidebar-foot { margin-top: 0; border-top: 0; width: 100%; padding-top: 6px; }
-  .topbar { padding: 0 16px; }
-  .topbar-right { display: none; }
+  .topbar { padding: 0 12px; gap: 10px; }
+  .topbar-right { gap: 8px; }
+  .topbar-meta { display: none; }
+  .topbar .top-controls { display: none; }
+  .theme-corner {
+    display: block; position: fixed; top: 10px; right: 12px; z-index: 60;
+  }
+  .theme-corner .theme-toggle, .theme-corner .language-toggle { box-shadow: var(--shadow-sm); }
+  .theme-corner .top-controls { gap: 6px; }
+  .theme-toggle button { width: 32px; padding: 5px 0; }
+  .language-toggle button { min-width: 38px; padding: 5px 8px; }
+  .theme-toggle .theme-label { display: none; }
   .page { padding: 20px 16px 48px; }
   .hero-panel { grid-template-columns: 1fr; }
   .struct-box { width: 100%; }
@@ -1072,6 +1088,563 @@ window.STRUCTURE_DATA = {"MOL_R32":{"smiles":"FCF","svg2d":"<svg version='1.1' b
 
 const { useState, useEffect, useMemo, useRef } = React;
 
+// ---------------------------------------------------------------- I18N
+const I18N_EN = {
+  "app.primaryNav": "Primary",
+  "brand.subtitle": "refrigerant · v1.5.0-draft",
+  "meta.build": "Build",
+  "meta.snapshot": "Snapshot",
+  "meta.demo": "Demo snapshot · local mock data",
+  "theme.label": "Theme",
+  "theme.light": "Light",
+  "theme.dark": "Dark",
+  "theme.lightLabel": "Light theme",
+  "theme.darkLabel": "Dark theme",
+  "language.label": "Language",
+  "language.zh": "中文",
+  "language.en": "EN",
+  "language.zhLabel": "Chinese interface",
+  "language.enLabel": "English interface",
+  "nav.group.browse": "Browse",
+  "nav.group.curation": "Curation",
+  "nav.group.research": "Research",
+  "nav.dashboard": "Home",
+  "nav.molecules": "Molecules",
+  "nav.mixtures": "Mixtures",
+  "nav.compare": "Compare",
+  "nav.properties": "Property registry",
+  "nav.canonical": "Canonical layer",
+  "nav.review": "Review decisions",
+  "nav.regulatory": "Regulatory",
+  "nav.cycle": "Cycle operating points",
+  "nav.al": "Active learning queue",
+  "nav.sources": "Sources & provenance",
+  "topbar.searchPlaceholder": "Search molecule, CAS, formula, InChIKey, mixture, property key...",
+  "topbar.searchAria": "Search",
+  "topbar.prototypeTitle": "Prototype dataset; not backed by a live DuckDB instance.",
+  "topbar.prototype": "Prototype · local mock data",
+  "structure.no3d": "No 3D conformer",
+  "structure.reset": "Reset",
+  "structure.view": "Molecular structure view",
+  "common.search": "Search",
+  "common.all": "All",
+  "common.any": "Any",
+  "common.reset": "Reset",
+  "common.clear": "Clear",
+  "common.rows": "rows",
+  "common.of": "of",
+  "common.yes": "yes",
+  "common.no": "no",
+  "common.strict": "strict",
+  "common.proxy": "proxy",
+  "common.conflict": "conflict",
+  "common.diverge": "diverge",
+  "common.flagged": "flagged",
+  "common.rank": "rank",
+  "common.quality": "quality",
+  "common.source": "Source",
+  "common.type": "Type",
+  "common.notes": "Notes",
+  "common.value": "Value",
+  "common.unit": "Unit",
+  "common.flags": "Flags",
+  "common.molecule": "Molecule",
+  "common.family": "Family",
+  "common.tier": "Tier",
+  "common.name": "Name",
+  "common.formula": "Formula",
+  "common.structure": "Structure",
+  "common.group": "Group",
+  "common.status": "Status",
+  "common.priority": "Priority",
+  "common.candidate": "Candidate",
+  "common.uncertainty": "Uncertainty",
+  "common.included": "Included",
+  "common.excluded": "Excluded",
+  "common.model": "Model",
+  "common.ranges": "Ranges",
+  "common.safety": "Safety",
+  "common.toxicity": "Toxicity",
+  "common.other": "Other",
+  "common.copy": "Copy",
+  "common.downloadJson": "Download JSON",
+  "common.copyLink": "Copy link",
+  "common.backToBrowser": "Back to browser",
+  "dashboard.eyebrow": "R-PhysGen-DB · open prototype",
+  "dashboard.title": "Traceable refrigerant property database.",
+  "dashboard.subtitle": "Single-component refrigerants and candidate fifth-generation species, with every canonical value linked to its source, method, and quality score. Built for screening low-GWP refrigerants and for reproducible ML datasets.",
+  "dashboard.searchPlaceholder": "Search refrigerant, formula, CAS, InChIKey...",
+  "dashboard.searchAria": "Search database",
+  "dashboard.browseMolecules": "Browse molecules",
+  "dashboard.compareCandidates": "Compare candidates",
+  "dashboard.sources": "Sources & provenance",
+  "dashboard.propertyRegistry": "Property registry",
+  "dashboard.version": "Version",
+  "dashboard.resolvedMolecules": "Resolved molecules",
+  "dashboard.canonicalFeatures": "Canonical features",
+  "dashboard.mlReadyStrict": "ML-ready / strict",
+  "dashboard.quickLowGwp": "Low-GWP HFO candidates",
+  "dashboard.quickLowGwpSub": "Filter the browser to HFO / HCFO families with GWP < 150.",
+  "dashboard.quickCompare": "Compare refrigerants",
+  "dashboard.quickCompareSub": "Place up to 6 molecules side-by-side with best-value highlighting.",
+  "dashboard.quickCycle": "Cycle performance",
+  "dashboard.quickCycleSub": "Standard vapor-compression cycle and R-744 transcritical reference points.",
+  "dashboard.quickCanonical": "Canonical layer",
+  "dashboard.quickCanonicalSub": "Gold recommended values with strict / proxy / conflict flags.",
+  "dashboard.govEyebrow": "Governance snapshot",
+  "dashboard.govTitle": "Data governance overview",
+  "dashboard.govSubBefore": "Pipeline state for data maintainers and reviewers. Build",
+  "dashboard.govSubAfter": "PubChem, NIST WebBook, EPA SNAP, CoolProp, IPCC AR5/AR6 and ASHRAE 34 adapters; local DuckDB query layer.",
+  "dashboard.refrigerants": "refrigerants",
+  "dashboard.candidates": "candidates",
+  "dashboard.propertyObservations": "Property observations",
+  "dashboard.canonical": "canonical",
+  "dashboard.canonicalRecommended": "Canonical recommended",
+  "dashboard.strictMlReady": "strict / ML-ready",
+  "dashboard.modelDataset": "Model dataset",
+  "dashboard.inventoryTier": "Inventory by coverage tier",
+  "dashboard.tierDistribution": "Tier distribution",
+  "dashboard.promotedCoverage": "Promoted subset coverage (Tier A/B/C)",
+  "dashboard.canonicalPipeline": "Canonical property pipeline",
+  "dashboard.pipelineObservations": "Observations",
+  "dashboard.pipelineCanonical": "Canonical",
+  "dashboard.pipelineStrict": "Strict",
+  "dashboard.canonicalKeys": "Canonical feature keys",
+  "dashboard.strictKeys": "Strict feature keys",
+  "dashboard.proxyRules": "Proxy rules applied",
+  "dashboard.proxyRowsStrict": "Proxy rows → strict",
+  "dashboard.reviewDecisions": "Review decisions",
+  "dashboard.openReviewQueue": "Open review queue",
+  "dashboard.observationCount": "Observation count (last 10 pipeline runs)",
+  "dashboard.pendingReg": "Pending & regulatory tracking",
+  "dashboard.regulatoryRows": "Regulatory rows",
+  "dashboard.pendingSources": "Pending sources",
+  "dashboard.mixturesGoverned": "Mixtures (governed)",
+  "dashboard.mixtureComponents": "Mixture components",
+  "dashboard.cycleCases": "Cycle cases",
+  "dashboard.operatingPoints": "Operating points",
+  "dashboard.sourceAdapters": "Source adapters:",
+  "dashboard.featuredTierA": "Featured Tier A refrigerants",
+  "molecules.title": "Molecules",
+  "molecules.subtitle": "Resolved single-component refrigerant molecules and candidate species. The full inventory includes {total} rows; the promoted model-ready subset holds {subset} tier A/B/C molecules.",
+  "molecules.tier": "Tier",
+  "molecules.allFamilies": "All families",
+  "molecules.countTitle": "Representative demo slice; the real dataset has 5,598 molecules.",
+  "molecules.gwpMax": "GWP ≤",
+  "molecules.odpMax": "ODP ≤",
+  "molecules.nbp": "NBP / K",
+  "molecules.addCompareAria": "Add {name} to compare",
+  "molecules.noMatch": "No molecules match these filters.",
+  "detail.notFound": "Molecule not found.",
+  "detail.model": "model",
+  "detail.inCompare": "✓ In compare",
+  "detail.addCompare": "+ Add to compare",
+  "detail.molecularWeight": "Molecular weight",
+  "detail.applications": "Applications",
+  "detail.copyInchikey": "Copy InChIKey",
+  "detail.copyInchikeyAria": "Copy InChIKey to clipboard",
+  "detail.csvCanonical": "CSV (canonical)",
+  "detail.citeTitle": "Cite this record",
+  "detail.citeSub": "shareable identifier · v1.5.0-draft",
+  "detail.tabs.properties": "Canonical properties",
+  "detail.tabs.observations": "Observations",
+  "detail.tabs.regulatory": "Regulatory",
+  "detail.tabs.provenance": "Provenance & QC",
+  "detail.noCanonical": "No canonical rows · inventory-only.",
+  "detail.sourceComposition": "Source composition",
+  "detail.canonicalFlags": "Canonical selection flags",
+  "detail.strictEligible": "Strict-layer eligible",
+  "detail.proxyOnly": "Proxy-only",
+  "detail.conflictFlagged": "Conflict flagged",
+  "detail.sourceDivergence": "Source divergence",
+  "detail.noProvenance": "No provenance data.",
+  "detail.noObservations": "No observations.",
+  "detail.noRegulatory": "No regulatory records.",
+  "detail.showProvenance": "▸ provenance",
+  "detail.hideProvenance": "▾ hide provenance",
+  "table.observation": "Observation",
+  "table.property": "Property",
+  "table.temperature": "T / K",
+  "table.pressure": "P / kPa",
+  "table.phase": "Phase",
+  "table.qc": "QC",
+  "table.jurisdiction": "Jurisdiction",
+  "table.endUse": "End use",
+  "table.acceptability": "Acceptability",
+  "table.effective": "Effective",
+  "compare.trayAria": "Comparison tray",
+  "compare.trayLabel": "Compare",
+  "compare.remove": "Remove {name}",
+  "compare.sideBySide": "Compare side-by-side",
+  "compare.title": "Compare candidates",
+  "compare.emptySub": "Select molecules from the browser (the Compare checkbox) to place them side-by-side. Up to six at once. The compare set lives in your browser.",
+  "compare.empty": "Nothing selected yet.",
+  "compare.openBrowser": "Open molecule browser",
+  "compare.pageEyebrow": "compare",
+  "compare.sideTitle": "Side-by-side comparison",
+  "compare.sideSub": "Canonical values across identity, environmental, thermophysical and cycle dimensions. Best value in each row is highlighted (lower is better for GWP / ODP; higher for COP).",
+  "compare.identity": "Identity",
+  "compare.refrigerant": "Refrigerant",
+  "compare.environmental": "Environmental",
+  "compare.atmLifetime": "Atmospheric lifetime",
+  "compare.thermodynamic": "Thermodynamic",
+  "compare.cyclePerf": "Cycle performance",
+  "compare.ashraeClass": "ASHRAE class",
+  "unit.system": "Unit system",
+  "mixtures.title": "Mixtures",
+  "mixtures.subtitle": "PR-G governed blends. Mixtures are silver-layer entities and are not model_ready subjects in V1; component fractions come from the property-governance bundle.",
+  "mixtures.composition": "Composition",
+  "mixtures.unresolved": "Unresolved fraction group · retained without imputation.",
+  "properties.title": "Canonical property registry",
+  "properties.subtitle": "The canonical feature key namespace. {keys} recommended keys, of which {strict} are ML-strict.",
+  "properties.featureKey": "Canonical feature key",
+  "properties.coverage": "Coverage",
+  "canonical.title": "Canonical layer",
+  "canonical.subtitle": "The recommended canonical value per (molecule, feature) after source-priority selection and governance bundle fusion. Strict slice powers ML outputs.",
+  "canonical.key": "Canonical key",
+  "canonical.all": "All",
+  "canonical.strict": "Strict",
+  "canonical.proxyOnly": "Proxy-only",
+  "canonical.divergence": "Divergence",
+  "review.title": "Canonical review decisions",
+  "review.subtitle": "Manual adjudication log for canonical-layer conflicts and strict-rejection rows.",
+  "review.decisionsApplied": "decisions applied",
+  "review.open": "open",
+  "review.keepDivergence": "retain top-rank value despite divergence",
+  "review.excludeMl": "keep canonical; exclude from ML strict",
+  "review.proxyPolicy": "proxy-only policy",
+  "review.openQueue": "open queue",
+  "review.green": "green · nothing to adjudicate",
+  "review.decisionLog": "Decision log",
+  "review.mostRecent": "most-recent first",
+  "review.decision": "Decision",
+  "review.note": "Note",
+  "review.applied": "Applied",
+  "regulatory.title": "Regulatory status",
+  "regulatory.subtitle": "EPA SNAP, EU F-Gas, Kigali, Montreal Protocol listings scoped to end-use and jurisdiction.",
+  "cycle.title": "Cycle operating points",
+  "cycle.subtitle": "PR-D standard refrigeration cycle · R-PhysGen reference points evaluated via CoolProp 6.6.0.",
+  "cycle.standard": "Standard evaporator / condenser",
+  "cycle.evaporator": "Evaporator T",
+  "cycle.condenser": "Condenser T",
+  "cycle.superheat": "Superheat",
+  "cycle.subcooling": "Subcooling",
+  "cycle.efficiency": "Isentropic efficiency",
+  "cycle.model": "Cycle model",
+  "cycle.eos": "EOS source",
+  "cycle.evaluated": "Molecules evaluated",
+  "cycle.gasCooler": "Gas cooler outlet",
+  "cycle.highPressure": "High-side pressure",
+  "cycle.copSection": "COP at standard cycle · promoted subset",
+  "cycle.volCapacity": "Vol. capacity / kJ·m⁻³",
+  "al.title": "Active learning queue",
+  "al.subtitle": "PR-H nomination output. Not configured in current build · optional manual CSV at",
+  "al.subtitleTail": "drives real entries. Shown below is an illustrative preview.",
+  "al.illustrative": "Illustrative nominations",
+  "al.preview": "preview · not yet policy-driven",
+  "al.item": "Item",
+  "al.targetFeature": "Target feature",
+  "sources.title": "Sources & provenance",
+  "sources.subtitle": "Registered sources, ranked by source-priority rules. Lower rank = higher preference during canonical selection.",
+  "sources.priorityRank": "Priority rank",
+  "sources.obsCount": "Observation count",
+  "sources.note.nist": "Primary thermophysical source for well-characterized refrigerants.",
+  "sources.note.coolprop": "EOS-based evaluation, transcritical handling for R-744.",
+  "sources.note.ipccAr6": "GWP, atmospheric lifetime.",
+  "sources.note.ipccAr5": "Legacy GWP values retained for continuity.",
+  "sources.note.ashrae": "Safety classification · A/B and flammability tier.",
+  "sources.note.epa": "US substitute acceptability.",
+  "sources.note.eu": "EU phase-down schedule.",
+  "sources.note.montreal": "ODP reference values.",
+  "sources.note.dippr": "Compiled literature · secondary for critical constants.",
+  "sources.note.pubchem": "Structure resolution + first-pass candidate intake.",
+  "sources.note.proxy": "Local structure heuristics · screening only.",
+};
+
+const I18N_ZH = {
+  ...I18N_EN,
+  "app.primaryNav": "主导航",
+  "brand.subtitle": "制冷剂 · v1.5.0-draft",
+  "meta.build": "构建",
+  "meta.snapshot": "快照",
+  "meta.demo": "演示快照 · 本地模拟数据",
+  "theme.label": "主题",
+  "theme.light": "浅色",
+  "theme.dark": "深色",
+  "theme.lightLabel": "浅色主题",
+  "theme.darkLabel": "深色主题",
+  "language.label": "语言",
+  "language.zhLabel": "中文界面",
+  "language.enLabel": "英文界面",
+  "nav.group.browse": "浏览",
+  "nav.group.curation": "治理",
+  "nav.group.research": "研究",
+  "nav.dashboard": "首页",
+  "nav.molecules": "分子",
+  "nav.mixtures": "混合物",
+  "nav.compare": "比较",
+  "nav.properties": "属性注册表",
+  "nav.canonical": "规范层",
+  "nav.review": "审核决策",
+  "nav.regulatory": "法规",
+  "nav.cycle": "循环工况点",
+  "nav.al": "主动学习队列",
+  "nav.sources": "来源与溯源",
+  "topbar.searchPlaceholder": "搜索分子、CAS、分子式、InChIKey、混合物、属性键...",
+  "topbar.searchAria": "搜索",
+  "topbar.prototypeTitle": "原型数据集；未连接实时 DuckDB 实例。",
+  "topbar.prototype": "原型 · 本地模拟数据",
+  "structure.no3d": "无 3D 构象",
+  "structure.reset": "重置",
+  "structure.view": "分子结构视图",
+  "common.search": "搜索",
+  "common.all": "全部",
+  "common.any": "任意",
+  "common.reset": "重置",
+  "common.clear": "清空",
+  "common.rows": "行",
+  "common.of": "/",
+  "common.yes": "是",
+  "common.no": "否",
+  "common.strict": "strict",
+  "common.proxy": "proxy",
+  "common.conflict": "conflict",
+  "common.diverge": "diverge",
+  "common.flagged": "已标记",
+  "common.rank": "优先级",
+  "common.quality": "质量",
+  "common.source": "来源",
+  "common.type": "类型",
+  "common.notes": "备注",
+  "common.value": "值",
+  "common.unit": "单位",
+  "common.flags": "标记",
+  "common.molecule": "分子",
+  "common.family": "族类",
+  "common.tier": "层级",
+  "common.name": "名称",
+  "common.formula": "分子式",
+  "common.structure": "结构",
+  "common.group": "分组",
+  "common.status": "状态",
+  "common.priority": "优先级",
+  "common.candidate": "候选项",
+  "common.uncertainty": "不确定性",
+  "common.included": "已纳入",
+  "common.excluded": "已排除",
+  "common.model": "模型",
+  "common.ranges": "范围",
+  "common.safety": "安全性",
+  "common.toxicity": "毒性",
+  "common.other": "其他",
+  "common.copy": "复制",
+  "common.downloadJson": "下载 JSON",
+  "common.copyLink": "复制链接",
+  "common.backToBrowser": "返回浏览器",
+  "dashboard.eyebrow": "R-PhysGen-DB · 开放原型",
+  "dashboard.title": "可追溯的制冷剂物性数据库。",
+  "dashboard.subtitle": "覆盖单组分制冷剂和第五代候选物种；每个规范值都关联来源、方法和质量评分，用于低 GWP 制冷剂筛选和可复现的机器学习数据集。",
+  "dashboard.searchPlaceholder": "搜索制冷剂、分子式、CAS、InChIKey...",
+  "dashboard.searchAria": "搜索数据库",
+  "dashboard.browseMolecules": "浏览分子",
+  "dashboard.compareCandidates": "比较候选项",
+  "dashboard.sources": "来源与溯源",
+  "dashboard.propertyRegistry": "属性注册表",
+  "dashboard.version": "版本",
+  "dashboard.resolvedMolecules": "已解析分子",
+  "dashboard.canonicalFeatures": "规范属性",
+  "dashboard.mlReadyStrict": "ML-ready / strict",
+  "dashboard.quickLowGwp": "低 GWP HFO 候选物",
+  "dashboard.quickLowGwpSub": "筛选 HFO / HCFO 族且 GWP < 150 的候选物。",
+  "dashboard.quickCompare": "比较制冷剂",
+  "dashboard.quickCompareSub": "最多 6 个分子并排比较，并突出显示最佳值。",
+  "dashboard.quickCycle": "循环性能",
+  "dashboard.quickCycleSub": "标准蒸气压缩循环和 R-744 跨临界参考点。",
+  "dashboard.quickCanonical": "规范层",
+  "dashboard.quickCanonicalSub": "Gold 推荐值，带 strict / proxy / conflict 标记。",
+  "dashboard.govEyebrow": "治理快照",
+  "dashboard.govTitle": "数据治理概览",
+  "dashboard.govSubBefore": "面向数据维护者和审核者的管线状态。构建版本",
+  "dashboard.govSubAfter": "PubChem、NIST WebBook、EPA SNAP、CoolProp、IPCC AR5/AR6 和 ASHRAE 34 适配器；本地 DuckDB 查询层。",
+  "dashboard.refrigerants": "制冷剂",
+  "dashboard.candidates": "候选项",
+  "dashboard.propertyObservations": "属性观测",
+  "dashboard.canonical": "canonical",
+  "dashboard.canonicalRecommended": "规范推荐值",
+  "dashboard.strictMlReady": "strict / ML-ready",
+  "dashboard.modelDataset": "模型数据集",
+  "dashboard.inventoryTier": "覆盖层级库存",
+  "dashboard.tierDistribution": "层级分布",
+  "dashboard.promotedCoverage": "提升子集覆盖率 (Tier A/B/C)",
+  "dashboard.canonicalPipeline": "规范属性管线",
+  "dashboard.pipelineObservations": "观测",
+  "dashboard.pipelineCanonical": "规范值",
+  "dashboard.pipelineStrict": "Strict",
+  "dashboard.canonicalKeys": "规范属性键",
+  "dashboard.strictKeys": "Strict 属性键",
+  "dashboard.proxyRules": "已应用 proxy 规则",
+  "dashboard.proxyRowsStrict": "Proxy 行 → strict",
+  "dashboard.reviewDecisions": "审核决策",
+  "dashboard.openReviewQueue": "待审核队列",
+  "dashboard.observationCount": "观测数量（最近 10 次管线运行）",
+  "dashboard.pendingReg": "待补来源与法规跟踪",
+  "dashboard.regulatoryRows": "法规行",
+  "dashboard.pendingSources": "待补来源",
+  "dashboard.mixturesGoverned": "混合物（已治理）",
+  "dashboard.mixtureComponents": "混合物组分",
+  "dashboard.cycleCases": "循环案例",
+  "dashboard.operatingPoints": "工况点",
+  "dashboard.sourceAdapters": "来源适配器：",
+  "dashboard.featuredTierA": "精选 Tier A 制冷剂",
+  "molecules.title": "分子",
+  "molecules.subtitle": "已解析的单组分制冷剂分子和候选物种。完整库存包含 {total} 行；提升后的模型可用子集包含 {subset} 个 Tier A/B/C 分子。",
+  "molecules.tier": "层级",
+  "molecules.allFamilies": "全部族类",
+  "molecules.countTitle": "代表性演示切片；真实数据集包含 5,598 个分子。",
+  "molecules.gwpMax": "GWP ≤",
+  "molecules.odpMax": "ODP ≤",
+  "molecules.nbp": "NBP / K",
+  "molecules.addCompareAria": "将 {name} 加入比较",
+  "molecules.noMatch": "没有分子匹配这些筛选条件。",
+  "detail.notFound": "未找到分子。",
+  "detail.model": "模型",
+  "detail.inCompare": "✓ 已在比较中",
+  "detail.addCompare": "+ 加入比较",
+  "detail.molecularWeight": "分子量",
+  "detail.applications": "应用",
+  "detail.copyInchikey": "复制 InChIKey",
+  "detail.copyInchikeyAria": "复制 InChIKey 到剪贴板",
+  "detail.csvCanonical": "CSV (canonical)",
+  "detail.citeTitle": "引用此记录",
+  "detail.citeSub": "可共享标识符 · v1.5.0-draft",
+  "detail.tabs.properties": "规范属性",
+  "detail.tabs.observations": "观测",
+  "detail.tabs.regulatory": "法规",
+  "detail.tabs.provenance": "溯源与 QC",
+  "detail.noCanonical": "无规范行 · 仅库存记录。",
+  "detail.sourceComposition": "来源构成",
+  "detail.canonicalFlags": "规范选择标记",
+  "detail.strictEligible": "Strict 层可用",
+  "detail.proxyOnly": "仅 proxy",
+  "detail.conflictFlagged": "冲突标记",
+  "detail.sourceDivergence": "来源分歧",
+  "detail.noProvenance": "无溯源数据。",
+  "detail.noObservations": "无观测记录。",
+  "detail.noRegulatory": "无法规记录。",
+  "detail.showProvenance": "▸ 溯源",
+  "detail.hideProvenance": "▾ 隐藏溯源",
+  "table.observation": "观测",
+  "table.property": "属性",
+  "table.temperature": "T / K",
+  "table.pressure": "P / kPa",
+  "table.phase": "相态",
+  "table.qc": "QC",
+  "table.jurisdiction": "司法辖区",
+  "table.endUse": "终端用途",
+  "table.acceptability": "可接受性",
+  "table.effective": "生效日期",
+  "compare.trayAria": "比较托盘",
+  "compare.trayLabel": "比较",
+  "compare.remove": "移除 {name}",
+  "compare.sideBySide": "并排比较",
+  "compare.title": "比较候选项",
+  "compare.emptySub": "从分子浏览器中勾选 Compare 复选框，将分子加入并排比较。一次最多 6 个，比较集保存在当前浏览器中。",
+  "compare.empty": "尚未选择分子。",
+  "compare.openBrowser": "打开分子浏览器",
+  "compare.sideTitle": "并排比较",
+  "compare.sideSub": "跨身份、环境、热物性和循环维度比较规范值。每行会突出显示最佳值（GWP / ODP 越低越好；COP 越高越好）。",
+  "compare.identity": "身份信息",
+  "compare.refrigerant": "制冷剂",
+  "compare.environmental": "环境",
+  "compare.atmLifetime": "大气寿命",
+  "compare.thermodynamic": "热物性",
+  "compare.cyclePerf": "循环性能",
+  "compare.ashraeClass": "ASHRAE 等级",
+  "unit.system": "单位系统",
+  "mixtures.title": "混合物",
+  "mixtures.subtitle": "PR-G 治理的混合制冷剂。V1 中混合物是 silver 层实体，不作为 model_ready 主体；组分分数来自属性治理包。",
+  "mixtures.composition": "组成",
+  "mixtures.unresolved": "未解析的分数组 · 保留且不插补。",
+  "properties.title": "规范属性注册表",
+  "properties.subtitle": "规范属性键命名空间。共有 {keys} 个推荐键，其中 {strict} 个为 ML-strict。",
+  "properties.featureKey": "规范属性键",
+  "properties.coverage": "覆盖率",
+  "canonical.title": "规范层",
+  "canonical.subtitle": "按来源优先级选择并融合治理包后，每个（分子，属性）的推荐规范值。Strict 子集用于机器学习输出。",
+  "canonical.key": "规范键",
+  "canonical.all": "全部",
+  "canonical.strict": "Strict",
+  "canonical.proxyOnly": "仅 Proxy",
+  "canonical.divergence": "分歧",
+  "review.title": "规范审核决策",
+  "review.subtitle": "规范层冲突和 strict 拒绝行的人工裁决日志。",
+  "review.decisionsApplied": "个决策已应用",
+  "review.open": "个待处理",
+  "review.keepDivergence": "尽管存在分歧，仍保留最高优先级值",
+  "review.excludeMl": "保留 canonical；从 ML strict 中排除",
+  "review.proxyPolicy": "仅 proxy 策略",
+  "review.openQueue": "待审核队列",
+  "review.green": "绿色 · 无需裁决",
+  "review.decisionLog": "决策日志",
+  "review.mostRecent": "最新在前",
+  "review.decision": "决策",
+  "review.note": "备注",
+  "review.applied": "已应用",
+  "regulatory.title": "法规状态",
+  "regulatory.subtitle": "EPA SNAP、EU F-Gas、Kigali、Montreal Protocol 清单，按终端用途和司法辖区限定。",
+  "cycle.title": "循环工况点",
+  "cycle.subtitle": "PR-D 标准制冷循环 · 通过 CoolProp 6.6.0 评估的 R-PhysGen 参考点。",
+  "cycle.standard": "标准蒸发器 / 冷凝器",
+  "cycle.evaporator": "蒸发温度",
+  "cycle.condenser": "冷凝温度",
+  "cycle.superheat": "过热度",
+  "cycle.subcooling": "过冷度",
+  "cycle.efficiency": "等熵效率",
+  "cycle.model": "循环模型",
+  "cycle.eos": "EOS 来源",
+  "cycle.evaluated": "已评估分子",
+  "cycle.gasCooler": "气冷器出口",
+  "cycle.highPressure": "高压侧压力",
+  "cycle.copSection": "标准循环 COP · 提升子集",
+  "cycle.volCapacity": "容积制冷量 / kJ·m⁻³",
+  "al.title": "主动学习队列",
+  "al.subtitle": "PR-H 提名输出。当前构建尚未配置；可选手工 CSV 位于",
+  "al.subtitleTail": "用于驱动真实条目。下方为示意预览。",
+  "al.illustrative": "示意提名",
+  "al.preview": "预览 · 尚未由策略驱动",
+  "al.item": "条目",
+  "al.targetFeature": "目标属性",
+  "sources.title": "来源与溯源",
+  "sources.subtitle": "已注册来源按来源优先级规则排序。数值越低，规范选择时优先级越高。",
+  "sources.priorityRank": "优先级排序",
+  "sources.obsCount": "观测数量",
+  "sources.note.nist": "表征充分制冷剂的主要热物性来源。",
+  "sources.note.coolprop": "基于 EOS 的评估，并处理 R-744 跨临界情况。",
+  "sources.note.ipccAr6": "GWP 与大气寿命。",
+  "sources.note.ipccAr5": "保留旧版 GWP 值以保持连续性。",
+  "sources.note.ashrae": "安全分类 · A/B 类和可燃性等级。",
+  "sources.note.epa": "美国替代品可接受性。",
+  "sources.note.eu": "欧盟 F-Gas 逐步削减安排。",
+  "sources.note.montreal": "ODP 参考值。",
+  "sources.note.dippr": "汇编文献 · 临界常数的次级来源。",
+  "sources.note.pubchem": "结构解析与第一轮候选物接入。",
+  "sources.note.proxy": "本地结构启发式规则 · 仅用于筛选。",
+};
+
+const I18N = { en: I18N_EN, zh: I18N_ZH };
+const I18nContext = React.createContext({ lang: "zh", t: (key, vars) => key });
+const interpolate = (text, vars = {}) => String(text).replace(/\{(\w+)\}/g, (_, key) => vars[key] ?? "");
+const useI18n = () => React.useContext(I18nContext);
+const groupLabel = (g, t) => ({
+  Thermodynamic: langText(t, "compare.thermodynamic"),
+  Environmental: langText(t, "compare.environmental"),
+  Safety: langText(t, "common.safety"),
+  Structural: langText(t, "common.structure"),
+  Cycle: langText(t, "compare.cyclePerf"),
+  Other: langText(t, "common.other"),
+}[g] || g);
+function langText(t, key, vars) { return t ? t(key, vars) : key; }
+
 // ---------------------------------------------------------------- Icons
 const Icon = ({name, size=14}) => {
   const paths = {
@@ -1108,98 +1681,131 @@ const Icon = ({name, size=14}) => {
 };
 
 // ---------------------------------------------------------------- Brand
-const Brand = () => (
-  <div className="brand">
-    <div className="brand-mark">R</div>
-    <div>
-      <div className="brand-name">R-PhysGen-DB</div>
-      <div className="brand-sub">refrigerant · v1.5.0-draft</div>
+const Brand = () => {
+  const { t } = useI18n();
+  return (
+    <div className="brand">
+      <div className="brand-mark">R</div>
+      <div>
+        <div className="brand-name">R-PhysGen-DB</div>
+        <div className="brand-sub">{t("brand.subtitle")}</div>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
-// ---------------------------------------------------------------- Theme toggle
-const ThemeToggle = ({theme, setTheme}) => (
-  <div className="theme-toggle" role="radiogroup" aria-label="Theme">
-    <button className={theme==="light"?"active":""} onClick={()=>setTheme("light")} aria-pressed={theme==="light"}>
-      <Icon name="sun" size={12}/> Light
-    </button>
-    <button className={theme==="dark"?"active":""} onClick={()=>setTheme("dark")} aria-pressed={theme==="dark"}>
-      <Icon name="moon" size={12}/> Dark
-    </button>
+// ---------------------------------------------------------------- Theme + language toggles
+const ThemeToggle = ({theme, setTheme}) => {
+  const { t } = useI18n();
+  return (
+    <div className="theme-toggle" role="radiogroup" aria-label={t("theme.label")}>
+      <button className={theme==="light"?"active":""} onClick={()=>setTheme("light")} aria-pressed={theme==="light"} aria-label={t("theme.lightLabel")} title={t("theme.lightLabel")}>
+        <Icon name="sun" size={12}/> <span className="theme-label">{t("theme.light")}</span>
+      </button>
+      <button className={theme==="dark"?"active":""} onClick={()=>setTheme("dark")} aria-pressed={theme==="dark"} aria-label={t("theme.darkLabel")} title={t("theme.darkLabel")}>
+        <Icon name="moon" size={12}/> <span className="theme-label">{t("theme.dark")}</span>
+      </button>
+    </div>
+  );
+};
+
+const LanguageToggle = ({lang, setLang}) => {
+  const { t } = useI18n();
+  return (
+    <div className="language-toggle" role="radiogroup" aria-label={t("language.label")}>
+      <button className={lang==="zh"?"active":""} onClick={()=>setLang("zh")} aria-pressed={lang==="zh"} aria-label={t("language.zhLabel")} title={t("language.zhLabel")}>
+        {t("language.zh")}
+      </button>
+      <button className={lang==="en"?"active":""} onClick={()=>setLang("en")} aria-pressed={lang==="en"} aria-label={t("language.enLabel")} title={t("language.enLabel")}>
+        {t("language.en")}
+      </button>
+    </div>
+  );
+};
+
+const TopControls = ({theme, setTheme, lang, setLang}) => (
+  <div className="top-controls">
+    <ThemeToggle theme={theme} setTheme={setTheme}/>
+    <LanguageToggle lang={lang} setLang={setLang}/>
   </div>
 );
 
 // ---------------------------------------------------------------- Sidebar
 const NAV = [
-  {group:"Browse", items:[
-    {id:"dashboard",  label:"Home",                 icon:"dashboard"},
-    {id:"molecules",  label:"Molecules",            icon:"molecule"},
-    {id:"mixtures",   label:"Mixtures",             icon:"mixture"},
-    {id:"compare",    label:"Compare",              icon:"property"},
-    {id:"properties", label:"Property registry",    icon:"property"},
+  {groupKey:"nav.group.browse", items:[
+    {id:"dashboard",  labelKey:"nav.dashboard",     icon:"dashboard"},
+    {id:"molecules",  labelKey:"nav.molecules",     icon:"molecule"},
+    {id:"mixtures",   labelKey:"nav.mixtures",      icon:"mixture"},
+    {id:"compare",    labelKey:"nav.compare",       icon:"property"},
+    {id:"properties", labelKey:"nav.properties",    icon:"property"},
   ]},
-  {group:"Curation", items:[
-    {id:"canonical",  label:"Canonical layer",      icon:"canonical"},
-    {id:"review",     label:"Review decisions",     icon:"review"},
-    {id:"regulatory", label:"Regulatory",           icon:"regulatory"},
+  {groupKey:"nav.group.curation", items:[
+    {id:"canonical",  labelKey:"nav.canonical",     icon:"canonical"},
+    {id:"review",     labelKey:"nav.review",        icon:"review"},
+    {id:"regulatory", labelKey:"nav.regulatory",    icon:"regulatory"},
   ]},
-  {group:"Research", items:[
-    {id:"cycle",      label:"Cycle operating points", icon:"cycle"},
-    {id:"al",         label:"Active learning queue",  icon:"al"},
-    {id:"sources",    label:"Sources & provenance",   icon:"source"},
+  {groupKey:"nav.group.research", items:[
+    {id:"cycle",      labelKey:"nav.cycle",         icon:"cycle"},
+    {id:"al",         labelKey:"nav.al",            icon:"al"},
+    {id:"sources",    labelKey:"nav.sources",       icon:"source"},
   ]},
 ];
 
-const Sidebar = ({page, setPage, theme, setTheme}) => (
-  <aside className="sidebar" aria-label="Primary">
-    <Brand/>
-    {NAV.map(g => (
-      <div key={g.group}>
-        <div className="nav-section">{g.group}</div>
-        {g.items.map(it => (
-          <button
-            type="button"
-            key={it.id}
-            className={"nav-item " + (page===it.id?"active":"")}
-            onClick={()=>setPage(it.id)}
-            aria-current={page===it.id ? "page" : undefined}
-          >
-            <Icon name={it.icon}/>
-            <span>{it.label}</span>
-            {it.badge && <span className="nav-badge">{it.badge}</span>}
-          </button>
-        ))}
+const Sidebar = ({page, setPage}) => {
+  const { t } = useI18n();
+  return (
+    <aside className="sidebar" aria-label={t("app.primaryNav")}>
+      <Brand/>
+      {NAV.map(g => (
+        <div key={g.groupKey}>
+          <div className="nav-section">{t(g.groupKey)}</div>
+          {g.items.map(it => (
+            <button
+              type="button"
+              key={it.id}
+              className={"nav-item " + (page===it.id?"active":"")}
+              onClick={()=>setPage(it.id)}
+              aria-current={page===it.id ? "page" : undefined}
+            >
+              <Icon name={it.icon}/>
+              <span>{t(it.labelKey)}</span>
+              {it.badge && <span className="nav-badge">{it.badge}</span>}
+            </button>
+          ))}
+        </div>
+      ))}
+      <div className="sidebar-foot">
+        <div className="version-line">
+          {t("meta.build")} <span className="strong">v1.5.0-draft</span><br/>
+          {t("meta.snapshot")} 2026-04-24<br/>
+          <span style={{color:"var(--ink-subtle)"}}>{t("meta.demo")}</span>
+        </div>
       </div>
-    ))}
-    <div className="sidebar-foot">
-      <ThemeToggle theme={theme} setTheme={setTheme}/>
-      <div className="version-line">
-        Build <span className="strong">v1.5.0-draft</span><br/>
-        Snapshot 2026-04-24<br/>
-        <span style={{color:"var(--ink-subtle)"}}>Demo snapshot · local mock data</span>
-      </div>
-    </div>
-  </aside>
-);
+    </aside>
+  );
+};
 
 // ---------------------------------------------------------------- Topbar
-const Topbar = ({query, onQuery}) => (
-  <div className="topbar">
-    <div className="search">
-      <Icon name="search" size={14}/>
-      <input value={query} onChange={e=>onQuery(e.target.value)}
-             placeholder="Search molecule, CAS, formula, InChIKey, mixture, property key…"
-             aria-label="Search"/>
-      <span className="kbd">⌘K</span>
+const Topbar = ({query, onQuery, theme, setTheme, lang, setLang}) => {
+  const { t } = useI18n();
+  return (
+    <div className="topbar">
+      <div className="search">
+        <Icon name="search" size={14}/>
+        <input value={query} onChange={e=>onQuery(e.target.value)}
+               placeholder={t("topbar.searchPlaceholder")}
+               aria-label={t("topbar.searchAria")}/>
+        <span className="kbd">⌘K</span>
+      </div>
+      <div className="topbar-right">
+        <TopControls theme={theme} setTheme={setTheme} lang={lang} setLang={setLang}/>
+        <span className="pill ghost topbar-meta" title={t("topbar.prototypeTitle")}>
+          <span style={{width:6, height:6, background:"var(--ink-subtle)", borderRadius:"50%", display:"inline-block"}}/> {t("topbar.prototype")}
+        </span>
+      </div>
     </div>
-    <div className="topbar-right">
-      <span className="pill ghost" title="Prototype dataset; not backed by a live DuckDB instance.">
-        <span style={{width:6, height:6, background:"var(--ink-subtle)", borderRadius:"50%", display:"inline-block"}}/> Prototype · local mock data
-      </span>
-    </div>
-  </div>
-);
+  );
+};
 
 // ---------------------------------------------------------------- Downloads
 function toCsv(rows, columns) {
@@ -1362,6 +1968,7 @@ const MoleculeStructure2D = ({mol, compact=false}) => {
 };
 
 const MoleculeStructure3D = ({mol}) => {
+  const { t } = useI18n();
   const structure = getStructure(mol);
   const atoms = structure?.atoms3d || [];
   const bonds = structure?.bonds || [];
@@ -1396,7 +2003,7 @@ const MoleculeStructure3D = ({mol}) => {
   }, [atoms, rotation, zoom]);
 
   if (!atoms.length) {
-    return <div className="structure-empty">No 3D conformer</div>;
+    return <div className="structure-empty">{t("structure.no3d")}</div>;
   }
 
   const startDrag = (e) => {
@@ -1498,12 +2105,13 @@ const MoleculeStructure3D = ({mol}) => {
           );
         })}
       </svg>
-      <button className="structure-reset" onClick={resetView}>Reset</button>
+      <button className="structure-reset" onClick={resetView}>{t("structure.reset")}</button>
     </div>
   );
 };
 
 const MoleculeStructureViewer = ({mol}) => {
+  const { t } = useI18n();
   const structure = getStructure(mol);
   const has3d = !!(structure?.atoms3d?.length && structure?.bonds?.length);
   const molKey = mol?.mol_id || mol?.smiles || "";
@@ -1519,7 +2127,7 @@ const MoleculeStructureViewer = ({mol}) => {
 
   return (
     <>
-      <div className="structure-toggle" role="radiogroup" aria-label="Molecular structure view">
+      <div className="structure-toggle" role="radiogroup" aria-label={t("structure.view")}>
         <button className={mode==="2d" ? "active" : ""} onClick={()=>setMode("2d")} aria-pressed={mode==="2d"}>2D</button>
         <button className={mode==="3d" ? "active" : ""} onClick={()=>has3d && setMode("3d")} aria-pressed={mode==="3d"} disabled={!has3d}>3D</button>
       </div>
@@ -1549,6 +2157,7 @@ Object.assign(window, {
 const { stats, mols } = window.DB;
 
 const Dashboard = ({setPage, setSelectedMol, setQuery}) => {
+  const { t } = useI18n();
   const s = stats;
   const tierTotal = s.tier_a + s.tier_b + s.tier_c + s.tier_d;
   const [heroQ, setHeroQ] = useState("");
@@ -1567,91 +2176,87 @@ const Dashboard = ({setPage, setSelectedMol, setQuery}) => {
     <div className="page">
       {/* Public-facing hero */}
       <section className="landing-hero">
-        <div className="landing-eyebrow">R-PhysGen-DB · open prototype</div>
-        <h1 className="landing-title">Traceable refrigerant property database.</h1>
-        <p className="landing-sub">
-          Single-component refrigerants and candidate fifth-generation species, with every canonical value linked
-          to its source, method, and quality score. Built for screening low-GWP refrigerants and for reproducible
-          ML datasets.
-        </p>
+        <div className="landing-eyebrow">{t("dashboard.eyebrow")}</div>
+        <h1 className="landing-title">{t("dashboard.title")}</h1>
+        <p className="landing-sub">{t("dashboard.subtitle")}</p>
         <form className="landing-search" onSubmit={submitHero} role="search">
           <Icon name="search" size={16}/>
           <input value={heroQ} onChange={e=>setHeroQ(e.target.value)}
-                 placeholder="Search refrigerant, formula, CAS, InChIKey…"
-                 aria-label="Search database"/>
-          <button type="submit" className="btn primary sm">Search</button>
+                 placeholder={t("dashboard.searchPlaceholder")}
+                 aria-label={t("dashboard.searchAria")}/>
+          <button type="submit" className="btn primary sm">{t("common.search")}</button>
         </form>
         <div className="landing-actions">
-          <button className="btn" onClick={()=>setPage("molecules")}><Icon name="molecule" size={13}/> Browse molecules</button>
-          <button className="btn" onClick={()=>setPage("compare")}>Compare candidates</button>
-          <button className="btn ghost" onClick={()=>setPage("sources")}>Sources & provenance</button>
-          <button className="btn ghost" onClick={()=>setPage("properties")}>Property registry</button>
+          <button className="btn" onClick={()=>setPage("molecules")}><Icon name="molecule" size={13}/> {t("dashboard.browseMolecules")}</button>
+          <button className="btn" onClick={()=>setPage("compare")}>{t("dashboard.compareCandidates")}</button>
+          <button className="btn ghost" onClick={()=>setPage("sources")}>{t("dashboard.sources")}</button>
+          <button className="btn ghost" onClick={()=>setPage("properties")}>{t("dashboard.propertyRegistry")}</button>
         </div>
         <div className="landing-meta">
-          <div><span className="lbl">Version</span><span className="num">{s.version}</span></div>
-          <div><span className="lbl">Snapshot</span><span className="num">{s.snapshot_date}</span></div>
-          <div><span className="lbl">Resolved molecules</span><span className="num">{fmtInt(s.resolved_molecules)}</span></div>
-          <div><span className="lbl">Canonical features</span><span className="num">{fmtInt(s.property_recommended_canonical)}</span></div>
-          <div><span className="lbl">ML-ready / strict</span><span className="num">{fmtInt(s.property_recommended_canonical_strict)}</span></div>
+          <div><span className="lbl">{t("dashboard.version")}</span><span className="num">{s.version}</span></div>
+          <div><span className="lbl">{t("meta.snapshot")}</span><span className="num">{s.snapshot_date}</span></div>
+          <div><span className="lbl">{t("dashboard.resolvedMolecules")}</span><span className="num">{fmtInt(s.resolved_molecules)}</span></div>
+          <div><span className="lbl">{t("dashboard.canonicalFeatures")}</span><span className="num">{fmtInt(s.property_recommended_canonical)}</span></div>
+          <div><span className="lbl">{t("dashboard.mlReadyStrict")}</span><span className="num">{fmtInt(s.property_recommended_canonical_strict)}</span></div>
         </div>
       </section>
 
       {/* Quick entrypoints */}
       <div className="quick-links">
         <button className="quick-link" onClick={()=>{setQuery && setQuery("HFO"); setPage("molecules");}}>
-          <div className="ql-title"><Icon name="molecule" size={13}/> Low-GWP HFO candidates</div>
-          <div className="ql-sub">Filter the browser to HFO / HCFO families with GWP &lt; 150.</div>
+          <div className="ql-title"><Icon name="molecule" size={13}/> {t("dashboard.quickLowGwp")}</div>
+          <div className="ql-sub">{t("dashboard.quickLowGwpSub")}</div>
         </button>
         <button className="quick-link" onClick={()=>setPage("compare")}>
-          <div className="ql-title"><Icon name="property" size={13}/> Compare refrigerants</div>
-          <div className="ql-sub">Place up to 6 molecules side-by-side with best-value highlighting.</div>
+          <div className="ql-title"><Icon name="property" size={13}/> {t("dashboard.quickCompare")}</div>
+          <div className="ql-sub">{t("dashboard.quickCompareSub")}</div>
         </button>
         <button className="quick-link" onClick={()=>setPage("cycle")}>
-          <div className="ql-title"><Icon name="cycle" size={13}/> Cycle performance</div>
-          <div className="ql-sub">Standard vapor-compression cycle and R-744 transcritical reference points.</div>
+          <div className="ql-title"><Icon name="cycle" size={13}/> {t("dashboard.quickCycle")}</div>
+          <div className="ql-sub">{t("dashboard.quickCycleSub")}</div>
         </button>
         <button className="quick-link" onClick={()=>setPage("canonical")}>
-          <div className="ql-title"><Icon name="canonical" size={13}/> Canonical layer</div>
-          <div className="ql-sub">Gold recommended values with strict / proxy / conflict flags.</div>
+          <div className="ql-title"><Icon name="canonical" size={13}/> {t("dashboard.quickCanonical")}</div>
+          <div className="ql-sub">{t("dashboard.quickCanonicalSub")}</div>
         </button>
       </div>
 
       <div className="page-head" style={{marginTop: 8}}>
-        <div className="page-eyebrow">Governance snapshot · {s.snapshot_date}</div>
-        <h2 className="page-title" style={{fontSize:22}}>Data governance overview</h2>
+        <div className="page-eyebrow">{t("dashboard.govEyebrow")} · {s.snapshot_date}</div>
+        <h2 className="page-title" style={{fontSize:22}}>{t("dashboard.govTitle")}</h2>
         <p className="page-sub">
-          Pipeline state for data maintainers and reviewers. Build <span className="mono strong">{s.version}</span>
-          — PubChem, NIST WebBook, EPA SNAP, CoolProp, IPCC AR5/AR6 and ASHRAE 34 adapters; local DuckDB query layer.
+          {t("dashboard.govSubBefore")} <span className="mono strong">{s.version}</span>
+          {" · "}{t("dashboard.govSubAfter")}
         </p>
       </div>
 
       {/* Headline stats */}
       <div className="stat-grid" style={{marginBottom: 20}}>
         <div className="stat stat-accent">
-          <div className="stat-label">Resolved molecules</div>
+          <div className="stat-label">{t("dashboard.resolvedMolecules")}</div>
           <div className="stat-value">{fmtInt(s.resolved_molecules)}</div>
           <div className="stat-foot">
-            <span className="mono">{s.refrigerants} refrigerants</span>
+            <span className="mono">{s.refrigerants} {t("dashboard.refrigerants")}</span>
             <span className="subtle">+</span>
-            <span className="mono">{fmtInt(s.candidates)} candidates</span>
+            <span className="mono">{fmtInt(s.candidates)} {t("dashboard.candidates")}</span>
           </div>
         </div>
         <div className="stat">
-          <div className="stat-label">Property observations</div>
+          <div className="stat-label">{t("dashboard.propertyObservations")}</div>
           <div className="stat-value">{fmtInt(s.property_observation)}</div>
           <div className="stat-foot">
-            <span className="mono">{fmtInt(s.property_observation_canonical)} canonical</span>
+            <span className="mono">{fmtInt(s.property_observation_canonical)} {t("dashboard.canonical")}</span>
           </div>
         </div>
         <div className="stat">
-          <div className="stat-label">Canonical recommended</div>
+          <div className="stat-label">{t("dashboard.canonicalRecommended")}</div>
           <div className="stat-value">{fmtInt(s.property_recommended_canonical)}</div>
           <div className="stat-foot">
-            <span className="pill good">{fmtInt(s.property_recommended_canonical_strict)} strict / ML-ready</span>
+            <span className="pill good">{fmtInt(s.property_recommended_canonical_strict)} {t("dashboard.strictMlReady")}</span>
           </div>
         </div>
         <div className="stat">
-          <div className="stat-label">Model dataset</div>
+          <div className="stat-label">{t("dashboard.modelDataset")}</div>
           <div className="stat-value">{s.model_dataset_index}</div>
           <div className="stat-foot">
             <span className="mono">train {s.train}</span>
@@ -1666,11 +2271,11 @@ const Dashboard = ({setPage, setSelectedMol, setQuery}) => {
         {/* Coverage card */}
         <div className="card">
           <div className="card-head">
-            <div className="card-title">Inventory by coverage tier</div>
+            <div className="card-title">{t("dashboard.inventoryTier")}</div>
             <div className="card-sub">seed_catalog.csv + generated</div>
           </div>
           <div className="card-body">
-            <div className="stack-bar" title="Tier distribution">
+            <div className="stack-bar" title={t("dashboard.tierDistribution")}>
               <div style={{width:  s.tier_a/tierTotal*100 + "%", background: "oklch(60% 0.12 150)"}}/>
               <div style={{width:  s.tier_b/tierTotal*100 + "%", background: "oklch(60% 0.12 205)"}}/>
               <div style={{width:  s.tier_c/tierTotal*100 + "%", background: "oklch(65% 0.13 65)"}}/>
@@ -1685,13 +2290,13 @@ const Dashboard = ({setPage, setSelectedMol, setQuery}) => {
 
             <div style={{marginTop:22}}>
               <div style={{display:"flex", justifyContent:"space-between", marginBottom:8}}>
-                <span className="strong" style={{fontSize:12}}>Promoted subset coverage (Tier A/B/C)</span>
-                <span className="mono subtle" style={{fontSize:11}}>{s.model_dataset_index} rows</span>
+                <span className="strong" style={{fontSize:12}}>{t("dashboard.promotedCoverage")}</span>
+                <span className="mono subtle" style={{fontSize:11}}>{s.model_dataset_index} {t("common.rows")}</span>
               </div>
               <div className="kv-list" style={{gridTemplateColumns:"140px 1fr", rowGap:10}}>
                 <dt>GWP 100yr</dt>    <dd><CoverageBar value={76} total={120}/></dd>
                 <dt>ODP</dt>          <dd><CoverageBar value={73} total={120}/></dd>
-                <dt>ASHRAE safety</dt><dd><CoverageBar value={58} total={120} color="oklch(60% 0.12 150)"/></dd>
+                <dt>ASHRAE {t("common.safety")}</dt><dd><CoverageBar value={58} total={120} color="oklch(60% 0.12 150)"/></dd>
                 <dt>Toxicity</dt>     <dd><CoverageBar value={56} total={120} color="oklch(60% 0.12 150)"/></dd>
                 <dt>T_crit</dt>       <dd><CoverageBar value={108} total={120} color="oklch(55% 0.11 205)"/></dd>
                 <dt>COP (std cycle)</dt><dd><CoverageBar value={94} total={120} color="oklch(55% 0.11 205)"/></dd>
@@ -1703,25 +2308,25 @@ const Dashboard = ({setPage, setSelectedMol, setQuery}) => {
         {/* Canonical pipeline card */}
         <div className="card">
           <div className="card-head">
-            <div className="card-title">Canonical property pipeline</div>
+            <div className="card-title">{t("dashboard.canonicalPipeline")}</div>
             <div className="card-sub">silver → gold → strict</div>
           </div>
           <div className="card-body">
             <div style={{display:"flex", alignItems:"center", gap:12, flexWrap:"wrap"}}>
-              <PipelineNode label="Observations" value={fmtInt(s.property_observation)} sub="silver"/>
+              <PipelineNode label={t("dashboard.pipelineObservations")} value={fmtInt(s.property_observation)} sub="silver"/>
               <PipelineArrow/>
-              <PipelineNode label="Canonical" value={fmtInt(s.property_recommended_canonical)} sub="gold"/>
+              <PipelineNode label={t("dashboard.pipelineCanonical")} value={fmtInt(s.property_recommended_canonical)} sub="gold"/>
               <PipelineArrow/>
-              <PipelineNode label="Strict" value={fmtInt(s.property_recommended_canonical_strict)} sub="ML-ready" accent/>
+              <PipelineNode label={t("dashboard.pipelineStrict")} value={fmtInt(s.property_recommended_canonical_strict)} sub="ML-ready" accent/>
             </div>
 
             <div style={{marginTop:22, display:"grid", gridTemplateColumns:"1fr 1fr", gap:12}}>
-              <MiniStat label="Canonical feature keys"     value={s.canonical_keys}/>
-              <MiniStat label="Strict feature keys"        value={s.strict_keys}/>
-              <MiniStat label="Proxy rules applied"        value={s.proxy_rules_applied}/>
-              <MiniStat label="Proxy rows → strict"        value={s.proxy_rows_promoted}/>
-              <MiniStat label="Review decisions"           value={s.review_decisions_applied}/>
-              <MiniStat label="Open review queue"          value={s.review_queue_open} color={s.review_queue_open===0 ? "good":"warn"}/>
+              <MiniStat label={t("dashboard.canonicalKeys")}     value={s.canonical_keys}/>
+              <MiniStat label={t("dashboard.strictKeys")}        value={s.strict_keys}/>
+              <MiniStat label={t("dashboard.proxyRules")}        value={s.proxy_rules_applied}/>
+              <MiniStat label={t("dashboard.proxyRowsStrict")}   value={s.proxy_rows_promoted}/>
+              <MiniStat label={t("dashboard.reviewDecisions")}   value={s.review_decisions_applied}/>
+              <MiniStat label={t("dashboard.openReviewQueue")}   value={s.review_queue_open} color={s.review_queue_open===0 ? "good":"warn"}/>
             </div>
           </div>
         </div>
@@ -1731,7 +2336,7 @@ const Dashboard = ({setPage, setSelectedMol, setQuery}) => {
       <div className="grid-2" style={{marginTop: 20}}>
         <div className="card">
           <div className="card-head">
-            <div className="card-title">Observation count (last 10 pipeline runs)</div>
+            <div className="card-title">{t("dashboard.observationCount")}</div>
             <div className="card-sub">property_observation.parquet</div>
           </div>
           <div className="card-body">
@@ -1748,20 +2353,20 @@ const Dashboard = ({setPage, setSelectedMol, setQuery}) => {
 
         <div className="card">
           <div className="card-head">
-            <div className="card-title">Pending & regulatory tracking</div>
+            <div className="card-title">{t("dashboard.pendingReg")}</div>
             <div className="card-sub">auxiliary tables</div>
           </div>
           <div className="card-body">
             <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:12}}>
-              <MiniStat label="Regulatory rows"    value={s.regulatory}/>
-              <MiniStat label="Pending sources"    value={s.pending_sources} color="warn"/>
-              <MiniStat label="Mixtures (governed)"value={s.mixtures}/>
-              <MiniStat label="Mixture components" value={s.mixture_components}/>
-              <MiniStat label="Cycle cases"        value={s.cycle_cases}/>
-              <MiniStat label="Operating points"   value={s.cycle_operating_points}/>
+              <MiniStat label={t("dashboard.regulatoryRows")}    value={s.regulatory}/>
+              <MiniStat label={t("dashboard.pendingSources")}    value={s.pending_sources} color="warn"/>
+              <MiniStat label={t("dashboard.mixturesGoverned")}  value={s.mixtures}/>
+              <MiniStat label={t("dashboard.mixtureComponents")} value={s.mixture_components}/>
+              <MiniStat label={t("dashboard.cycleCases")}        value={s.cycle_cases}/>
+              <MiniStat label={t("dashboard.operatingPoints")}   value={s.cycle_operating_points}/>
             </div>
             <div style={{marginTop:18, fontSize:12, color:"var(--ink-muted)", lineHeight:1.6}}>
-              Source adapters: <span className="pill">PubChem</span>{" "}
+              {t("dashboard.sourceAdapters")} <span className="pill">PubChem</span>{" "}
               <span className="pill">NIST WebBook</span>{" "}
               <span className="pill">EPA SNAP/ODS</span>{" "}
               <span className="pill">CoolProp 6.6</span>{" "}
@@ -1773,7 +2378,7 @@ const Dashboard = ({setPage, setSelectedMol, setQuery}) => {
       </div>
 
       {/* Tier A shortcut */}
-      <div className="section-title">Featured Tier A refrigerants</div>
+      <div className="section-title">{t("dashboard.featuredTierA")}</div>
       <div className="grid-3">
         {topMols.map(m => (
           <div key={m.mol_id} className="card" style={{cursor:"pointer"}}
@@ -1840,6 +2445,7 @@ Object.assign(window, { Dashboard });
 const { mols: allMols, canonical, observations, regulatory, properties } = window.DB;
 
 const MoleculeBrowser = ({setPage, setSelectedMol, query, compare, toggleCompare, units, setUnits}) => {
+  const { t } = useI18n();
   const [tier, setTier] = useState("all");
   const [family, setFamily] = useState("all");
   const [inclusion, setInclusion] = useState("all");
@@ -1890,41 +2496,37 @@ const MoleculeBrowser = ({setPage, setSelectedMol, query, compare, toggleCompare
     <div className="page">
       <div className="page-head">
         <div className="page-eyebrow">silver · molecule_core.parquet</div>
-        <h1 className="page-title">Molecules</h1>
-        <p className="page-sub">
-          Resolved single-component refrigerant molecules and candidate species.
-          The full inventory includes {fmtInt(5598)} rows; the promoted model-ready subset
-          holds {fmtInt(120)} tier A/B/C molecules.
-        </p>
+        <h1 className="page-title">{t("molecules.title")}</h1>
+        <p className="page-sub">{t("molecules.subtitle", {total: fmtInt(5598), subset: fmtInt(120)})}</p>
       </div>
 
       <div className="card">
         <div className="filterbar">
-          <span className="filter-label">Tier</span>
+          <span className="filter-label">{t("molecules.tier")}</span>
           <div className="chip-group">
-            {["all","A","B","C","D"].map(t=>(
-              <button key={t} className={"chip "+(tier===t?"active":"")} onClick={()=>setTier(t)}>
-                {t==="all"?"All":t}
+            {["all","A","B","C","D"].map(tv=>(
+              <button key={tv} className={"chip "+(tier===tv?"active":"")} onClick={()=>setTier(tv)}>
+                {tv==="all"?t("common.all"):tv}
               </button>
             ))}
           </div>
-          <span className="filter-label" style={{marginLeft:8}}>Model</span>
+          <span className="filter-label" style={{marginLeft:8}}>{t("common.model")}</span>
           <div className="chip-group">
             {["all","yes","no"].map(v=>(
               <button key={v} className={"chip "+(inclusion===v?"active":"")} onClick={()=>setInclusion(v)}>
-                {v==="all"?"All":(v==="yes"?"Included":"Excluded")}
+                {v==="all"?t("common.all"):(v==="yes"?t("common.included"):t("common.excluded"))}
               </button>
             ))}
           </div>
-          <span className="filter-label" style={{marginLeft:8}}>Family</span>
+          <span className="filter-label" style={{marginLeft:8}}>{t("common.family")}</span>
           <select className="select" value={family} onChange={e=>setFamily(e.target.value)}>
-            <option value="all">All families</option>
+            <option value="all">{t("molecules.allFamilies")}</option>
             {families.map(f=><option key={f} value={f}>{f}</option>)}
           </select>
           <div style={{marginLeft:"auto", display:"flex", alignItems:"center", gap:8}}>
             <UnitToggle units={units} setUnits={setUnits}/>
-            <span className="mono subtle" style={{fontSize:11.5}} title="Representative demo slice; the real dataset has 5,598 molecules.">
-              {fmtInt(rows.length)} of {fmtInt(allMols.length)}
+            <span className="mono subtle" style={{fontSize:11.5}} title={t("molecules.countTitle")}>
+              {fmtInt(rows.length)} {t("common.of")} {fmtInt(allMols.length)}
             </span>
             <button className="btn sm ghost" onClick={()=>{
               downloadText("r-physgen-molecules.csv",
@@ -1939,30 +2541,30 @@ const MoleculeBrowser = ({setPage, setSelectedMol, query, compare, toggleCompare
 
         {/* Range filter row */}
         <div className="filterbar" style={{borderTop:"1px dashed var(--border)", borderRadius:0, gap:14}}>
-          <span className="filter-label">Ranges</span>
+          <span className="filter-label">{t("common.ranges")}</span>
           <div style={{display:"grid", gridTemplateColumns:"repeat(3, minmax(180px, 1fr))", gap:12, flex:1}}>
-            <div className="range-row"><span className="lbl">GWP ≤</span>
+            <div className="range-row"><span className="lbl">{t("molecules.gwpMax")}</span>
               <input type="number" placeholder="e.g. 150" value={gwpMax} onChange={e=>setGwpMax(e.target.value)}/>
               <span/>
             </div>
-            <div className="range-row"><span className="lbl">ODP ≤</span>
+            <div className="range-row"><span className="lbl">{t("molecules.odpMax")}</span>
               <input type="number" step="0.001" placeholder="e.g. 0" value={odpMax} onChange={e=>setOdpMax(e.target.value)}/>
               <span/>
             </div>
-            <div className="range-row"><span className="lbl">NBP / K</span>
+            <div className="range-row"><span className="lbl">{t("molecules.nbp")}</span>
               <input type="number" placeholder="min" value={nbpMin} onChange={e=>setNbpMin(e.target.value)}/>
               <input type="number" placeholder="max" value={nbpMax} onChange={e=>setNbpMax(e.target.value)}/>
             </div>
           </div>
-          <span className="filter-label">Safety</span>
+          <span className="filter-label">{t("common.safety")}</span>
           <select className="select" value={safety} onChange={e=>setSafety(e.target.value)}>
-            <option value="all">Any</option>
+            <option value="all">{t("common.any")}</option>
             {["A1","A2L","A2","A3","B1","B2L","B2","B3"].map(s=><option key={s} value={s}>{s}</option>)}
           </select>
           <button className="btn sm ghost" onClick={()=>{
             setTier("all"); setFamily("all"); setInclusion("all"); setSafety("all");
             setGwpMax(""); setOdpMax(""); setNbpMin(""); setNbpMax("");
-          }}>Reset</button>
+          }}>{t("common.reset")}</button>
         </div>
 
         <div style={{maxHeight:"calc(100vh - 280px)", overflowY:"auto"}}>
@@ -1970,13 +2572,13 @@ const MoleculeBrowser = ({setPage, setSelectedMol, query, compare, toggleCompare
             <thead>
               <tr>
                 <th style={{width:30}}></th>
-                <th style={{width:92}}>Structure</th>
+                <th style={{width:92}}>{t("common.structure")}</th>
                 <SortHead label="ID"       k="mol_id"   sort={sort} setSort={setSort}/>
-                <SortHead label="Name"     k="r_name"   sort={sort} setSort={setSort}/>
-                <th>Formula</th>
+                <SortHead label={t("common.name")}     k="r_name"   sort={sort} setSort={setSort}/>
+                <th>{t("common.formula")}</th>
                 <SortHead label="MW"       k="mw"       sort={sort} setSort={setSort} align="right"/>
-                <th>Family</th>
-                <th>Tier</th>
+                <th>{t("common.family")}</th>
+                <th>{t("common.tier")}</th>
                 <SortHead label={`NBP / ${U.tempLbl}`}  k="nbp"      sort={sort} setSort={setSort} align="right"/>
                 <SortHead label={`Tc / ${U.tempLbl}`}   k="tcrit"    sort={sort} setSort={setSort} align="right"/>
                 <SortHead label={`Pc / ${U.pressLbl}`}  k="pcrit"    sort={sort} setSort={setSort} align="right"/>
@@ -1992,7 +2594,7 @@ const MoleculeBrowser = ({setPage, setSelectedMol, query, compare, toggleCompare
                 return (
                 <tr key={m.mol_id} className={inCmp?"selected":""} onClick={()=>{setSelectedMol(m.mol_id); setPage("molecule");}}>
                   <td onClick={e=>e.stopPropagation()} style={{width:30}}>
-                    <input type="checkbox" checked={!!inCmp} onChange={()=>toggleCompare(m.mol_id)} aria-label={"Add "+m.r_name+" to compare"}/>
+                    <input type="checkbox" checked={!!inCmp} onChange={()=>toggleCompare(m.mol_id)} aria-label={t("molecules.addCompareAria", {name: m.r_name})}/>
                   </td>
                   <td><MoleculeStructureThumb mol={m}/></td>
                   <td className="col-id">{m.mol_id}</td>
@@ -2012,7 +2614,7 @@ const MoleculeBrowser = ({setPage, setSelectedMol, query, compare, toggleCompare
                 );
               })}
               {rows.length===0 && (
-                <tr><td colSpan="15" className="empty">No molecules match these filters.</td></tr>
+                <tr><td colSpan="15" className="empty">{t("molecules.noMatch")}</td></tr>
               )}
             </tbody>
           </table>
@@ -2039,10 +2641,11 @@ const SortHead = ({label, k, sort, setSort, align}) => {
 
 // ---------------------------------------------------------------- Detail page
 const MoleculeDetail = ({molId, setPage, units="SI", setUnits, compare=[], toggleCompare}) => {
+  const { t } = useI18n();
   const m = allMols.find(x=>x.mol_id===molId);
   const [tab, setTab] = useState("properties");
   const inCmp = compare && compare.includes(molId);
-  if (!m) return <div className="page"><div className="empty">Molecule not found.</div></div>;
+  if (!m) return <div className="page"><div className="empty">{t("detail.notFound")}</div></div>;
 
   const molCanon = canonical.filter(c=>c.mol_id===molId);
   const molObs = observations.filter(o=>o.mol_id===molId);
@@ -2059,7 +2662,7 @@ const MoleculeDetail = ({molId, setPage, units="SI", setUnits, compare=[], toggl
   return (
     <div className="page">
       <div className="crumbs">
-        <a onClick={()=>setPage("molecules")}>Molecules</a>
+        <a onClick={()=>setPage("molecules")}>{t("molecules.title")}</a>
         <span className="sep">›</span>
         <span>{m.mol_id}</span>
       </div>
@@ -2078,7 +2681,7 @@ const MoleculeDetail = ({molId, setPage, units="SI", setUnits, compare=[], toggl
             </h1>
             <TierPill tier={m.tier}/>
             <span className={"pill " + (m.model_inclusion==="yes"?"accent":"ghost")}>
-              <span className="pill-dot"/>model {m.model_inclusion}
+              <span className="pill-dot"/>{t("detail.model")} {m.model_inclusion}
             </span>
           </div>
           <div className="mono subtle" style={{fontSize:12, marginBottom:18}}>{m.mol_id} · {m.family}</div>
@@ -2086,17 +2689,17 @@ const MoleculeDetail = ({molId, setPage, units="SI", setUnits, compare=[], toggl
             {setUnits && <UnitToggle units={units} setUnits={setUnits}/>}
             {toggleCompare && (
               <button className={"btn sm " + (inCmp?"primary":"")} onClick={()=>toggleCompare(m.mol_id)}>
-                {inCmp ? "✓ In compare" : "+ Add to compare"}
+                {inCmp ? t("detail.inCompare") : t("detail.addCompare")}
               </button>
             )}
           </div>
           <dl className="kv-list" style={{gridTemplateColumns:"140px 1fr"}}>
-            <dt>Formula</dt><dd><Formula str={m.formula}/></dd>
-            <dt>Molecular weight</dt><dd>{fmt(m.mw,3)} g·mol⁻¹</dd>
+            <dt>{t("common.formula")}</dt><dd><Formula str={m.formula}/></dd>
+            <dt>{t("detail.molecularWeight")}</dt><dd>{fmt(m.mw,3)} g·mol⁻¹</dd>
             <dt>SMILES</dt><dd style={{wordBreak:"break-all"}}>{m.smiles}</dd>
             <dt>InChIKey</dt><dd>{m.inchikey}</dd>
             <dt>CAS RN</dt><dd>{m.cas}</dd>
-            <dt>Applications</dt>
+            <dt>{t("detail.applications")}</dt>
             <dd style={{fontFamily:"var(--font-sans)"}}>
               {(m.applications||[]).map((a,i)=>(
                 <span key={i} className="pill" style={{marginRight:4, marginBottom:4}}>{a}</span>
@@ -2105,8 +2708,8 @@ const MoleculeDetail = ({molId, setPage, units="SI", setUnits, compare=[], toggl
           </dl>
         </div>
         <div style={{display:"flex", flexDirection:"column", gap:8}}>
-          <button className="btn sm" onClick={()=>copyText(m.inchikey)} aria-label="Copy InChIKey to clipboard">
-            <Icon name="copy" size={12}/> Copy InChIKey
+          <button className="btn sm" onClick={()=>copyText(m.inchikey)} aria-label={t("detail.copyInchikeyAria")}>
+            <Icon name="copy" size={12}/> {t("detail.copyInchikey")}
           </button>
           <button className="btn sm" onClick={()=>window.open(`https://pubchem.ncbi.nlm.nih.gov/#query=${encodeURIComponent(m.inchikey||m.r_name)}`,"_blank","noopener")}>
             <Icon name="external" size={12}/> PubChem
@@ -2115,7 +2718,7 @@ const MoleculeDetail = ({molId, setPage, units="SI", setUnits, compare=[], toggl
             <Icon name="external" size={12}/> NIST WebBook
           </button>
           <button className="btn sm primary" onClick={()=>downloadText(`${m.mol_id}.json`, JSON.stringify({molecule:m, canonical:molCanon, observations:molObs, regulatory:molReg}, null, 2), "application/json")}>
-            <Icon name="download" size={12}/> Download JSON
+            <Icon name="download" size={12}/> {t("common.downloadJson")}
           </button>
           <button className="btn sm" onClick={()=>{
             const rows = molCanon.map(c=>({
@@ -2126,15 +2729,15 @@ const MoleculeDetail = ({molId, setPage, units="SI", setUnits, compare=[], toggl
             downloadText(`${m.mol_id}-canonical.csv`,
               toCsv(rows, ["mol_id","key","value","unit","source","rank","quality","strict","proxy","conflict"]),
               "text/csv");
-          }}><Icon name="download" size={12}/> CSV (canonical)</button>
+          }}><Icon name="download" size={12}/> {t("detail.csvCanonical")}</button>
         </div>
       </div>
 
       {/* Citation panel */}
       <div className="card" style={{marginBottom:20}}>
         <div className="card-head">
-          <div className="card-title">Cite this record</div>
-          <div className="card-sub">shareable identifier · v1.5.0-draft</div>
+          <div className="card-title">{t("detail.citeTitle")}</div>
+          <div className="card-sub">{t("detail.citeSub")}</div>
         </div>
         <div className="card-body" style={{display:"grid", gridTemplateColumns:"1fr auto", gap:14, alignItems:"flex-start"}}>
           <div>
@@ -2148,7 +2751,7 @@ const MoleculeDetail = ({molId, setPage, units="SI", setUnits, compare=[], toggl
           </div>
           <div style={{display:"flex", flexDirection:"column", gap:6}}>
             <button className="btn sm" onClick={()=>copyText(`${window.location.origin}${window.location.pathname}#/molecule/${m.mol_id}`)}>
-              <Icon name="copy" size={12}/> Copy link
+              <Icon name="copy" size={12}/> {t("common.copyLink")}
             </button>
             <button className="btn sm" onClick={()=>downloadText(`${m.mol_id}.bib`, toBibtex(m), "application/x-bibtex")}>
               <Icon name="download" size={12}/> BibTeX
@@ -2160,13 +2763,13 @@ const MoleculeDetail = ({molId, setPage, units="SI", setUnits, compare=[], toggl
       {/* Tabs */}
       <div className="tabs">
         {[
-          {id:"properties", label:"Canonical properties", badge: molCanon.length},
-          {id:"observations", label:"Observations", badge: molObs.length},
-          {id:"regulatory", label:"Regulatory", badge: molReg.length},
-          {id:"provenance", label:"Provenance & QC"},
-        ].map(t=>(
-          <button key={t.id} className={"tab "+(tab===t.id?"active":"")} onClick={()=>setTab(t.id)}>
-            {t.label}{t.badge!=null && <span className="subtle mono" style={{marginLeft:6, fontSize:11}}>{t.badge}</span>}
+          {id:"properties", label:t("detail.tabs.properties"), badge: molCanon.length},
+          {id:"observations", label:t("detail.tabs.observations"), badge: molObs.length},
+          {id:"regulatory", label:t("detail.tabs.regulatory"), badge: molReg.length},
+          {id:"provenance", label:t("detail.tabs.provenance")},
+        ].map(tabItem=>(
+          <button key={tabItem.id} className={"tab "+(tab===tabItem.id?"active":"")} onClick={()=>setTab(tabItem.id)}>
+            {tabItem.label}{tabItem.badge!=null && <span className="subtle mono" style={{marginLeft:6, fontSize:11}}>{tabItem.badge}</span>}
           </button>
         ))}
       </div>
@@ -2180,12 +2783,13 @@ const MoleculeDetail = ({molId, setPage, units="SI", setUnits, compare=[], toggl
 };
 
 const PropertiesTab = ({byGroup, units}) => {
+  const { t } = useI18n();
   const order = ["Thermodynamic","Environmental","Safety","Structural","Cycle","Other"];
   return (
     <div>
       {order.filter(g=>byGroup[g]).map(g=>(
         <div key={g}>
-          <div className="section-title">{g}</div>
+          <div className="section-title">{groupLabel(g, t)}</div>
           <div className="grid-3">
             {byGroup[g].map(c=>(
               <PropertyCard key={c.canonical_feature_key} c={c} units={units}/>
@@ -2194,13 +2798,14 @@ const PropertiesTab = ({byGroup, units}) => {
         </div>
       ))}
       {Object.keys(byGroup).length===0 && (
-        <div className="empty"><div className="icon">◌</div>No canonical rows — inventory-only.</div>
+        <div className="empty"><div className="icon">◌</div>{t("detail.noCanonical")}</div>
       )}
     </div>
   );
 };
 
 const PropertyCard = ({c, units="SI"}) => {
+  const { t } = useI18n();
   const p = c.prop;
   const cls = c.conflict_flag ? "conflict" : c.is_proxy_or_screening ? "proxy" : c.in_strict ? "strict" : "";
   const [open, setOpen] = useState(false);
@@ -2221,46 +2826,48 @@ const PropertyCard = ({c, units="SI"}) => {
         <span style={{flex:1, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap"}} title={c.selected_source_name}>
           {c.selected_source_name}
         </span>
-        <span>rank {c.source_priority_rank}</span>
+        <span>{t("common.rank")} {c.source_priority_rank}</span>
       </div>
-      <div className="quality-bar" title={"quality "+c.data_quality_score_100}>
+      <div className="quality-bar" title={t("common.quality") + " " + c.data_quality_score_100}>
         <div style={{width: (c.data_quality_score_100||0)+"%"}}/>
       </div>
       <button className="card-link" onClick={()=>setOpen(o=>!o)} aria-expanded={open} style={{marginTop:6}}>
-        {open ? "▾ hide provenance" : "▸ provenance"}
+        {open ? t("detail.hideProvenance") : t("detail.showProvenance")}
       </button>
       {open && (
         <dl className="prov-expand">
           <dt>key</dt><dd>{c.canonical_feature_key}</dd>
-          <dt>source</dt><dd>{c.selected_source_name}</dd>
-          <dt>rank</dt><dd>{c.source_priority_rank}</dd>
-          <dt>quality</dt><dd>{c.data_quality_score_100}/100</dd>
-          <dt>strict</dt><dd>{c.in_strict ? "yes" : "no"}</dd>
-          <dt>proxy</dt><dd>{c.is_proxy_or_screening ? "yes" : "no"}</dd>
-          {c.conflict_flag && (<><dt>conflict</dt><dd>flagged</dd></>)}
-          {c.source_divergence_flag && (<><dt>divergence</dt><dd>flagged</dd></>)}
+          <dt>{t("common.source").toLowerCase()}</dt><dd>{c.selected_source_name}</dd>
+          <dt>{t("common.rank")}</dt><dd>{c.source_priority_rank}</dd>
+          <dt>{t("common.quality")}</dt><dd>{c.data_quality_score_100}/100</dd>
+          <dt>{t("common.strict")}</dt><dd>{c.in_strict ? t("common.yes") : t("common.no")}</dd>
+          <dt>{t("common.proxy")}</dt><dd>{c.is_proxy_or_screening ? t("common.yes") : t("common.no")}</dd>
+          {c.conflict_flag && (<><dt>{t("common.conflict")}</dt><dd>{t("common.flagged")}</dd></>)}
+          {c.source_divergence_flag && (<><dt>divergence</dt><dd>{t("common.flagged")}</dd></>)}
         </dl>
       )}
     </div>
   );
 };
 
-const ObservationsTab = ({obs}) => (
+const ObservationsTab = ({obs}) => {
+  const { t } = useI18n();
+  return (
   <div className="card" style={{padding:0}}>
     <div className="scroll-x">
       <table className="data-table">
         <thead>
           <tr>
-            <th>Observation</th>
-            <th>Property</th>
-            <th>Value</th>
-            <th>Unit</th>
-            <th>T / K</th>
-            <th>P / kPa</th>
-            <th>Phase</th>
-            <th>Source</th>
-            <th>Type</th>
-            <th>Quality</th>
+            <th>{t("table.observation")}</th>
+            <th>{t("table.property")}</th>
+            <th>{t("common.value")}</th>
+            <th>{t("common.unit")}</th>
+            <th>{t("table.temperature")}</th>
+            <th>{t("table.pressure")}</th>
+            <th>{t("table.phase")}</th>
+            <th>{t("common.source")}</th>
+            <th>{t("common.type")}</th>
+            <th>{t("common.quality")}</th>
             <th>QC</th>
           </tr>
         </thead>
@@ -2283,18 +2890,21 @@ const ObservationsTab = ({obs}) => (
               </td>
             </tr>
           ))}
-          {obs.length===0 && <tr><td colSpan="11" className="empty">No observations.</td></tr>}
+          {obs.length===0 && <tr><td colSpan="11" className="empty">{t("detail.noObservations")}</td></tr>}
         </tbody>
       </table>
     </div>
   </div>
-);
+  );
+};
 
-const RegulatoryTab = ({reg}) => (
+const RegulatoryTab = ({reg}) => {
+  const { t } = useI18n();
+  return (
   <div className="card" style={{padding:0}}>
     <table className="data-table">
       <thead>
-        <tr><th>Jurisdiction</th><th>End use</th><th>Acceptability</th><th>Effective</th></tr>
+        <tr><th>{t("table.jurisdiction")}</th><th>{t("table.endUse")}</th><th>{t("table.acceptability")}</th><th>{t("table.effective")}</th></tr>
       </thead>
       <tbody>
         {reg.map((r,i)=>(
@@ -2313,13 +2923,15 @@ const RegulatoryTab = ({reg}) => (
             <td className="mono subtle" style={{fontSize:12}}>{r.effective}</td>
           </tr>
         ))}
-        {reg.length===0 && <tr><td colSpan="4" className="empty">No regulatory records.</td></tr>}
+        {reg.length===0 && <tr><td colSpan="4" className="empty">{t("detail.noRegulatory")}</td></tr>}
       </tbody>
     </table>
   </div>
-);
+  );
+};
 
 const ProvenanceTab = ({canon, obs}) => {
+  const { t } = useI18n();
   // source breakdown
   const bySource = {};
   obs.forEach(o=>{ bySource[o.source] = (bySource[o.source]||0) + 1; });
@@ -2328,7 +2940,7 @@ const ProvenanceTab = ({canon, obs}) => {
   return (
     <div className="grid-2">
       <div className="card">
-        <div className="card-head"><div className="card-title">Source composition</div>
+        <div className="card-head"><div className="card-title">{t("detail.sourceComposition")}</div>
           <div className="card-sub">{total} obs</div></div>
         <div className="card-body">
           {entries.map(([src,n])=>(
@@ -2342,21 +2954,21 @@ const ProvenanceTab = ({canon, obs}) => {
               </div>
             </div>
           ))}
-          {entries.length===0 && <div className="empty">No provenance data.</div>}
+          {entries.length===0 && <div className="empty">{t("detail.noProvenance")}</div>}
         </div>
       </div>
       <div className="card">
-        <div className="card-head"><div className="card-title">Canonical selection flags</div>
+        <div className="card-head"><div className="card-title">{t("detail.canonicalFlags")}</div>
           <div className="card-sub">{canon.length} features</div></div>
         <div className="card-body">
           <div className="kv-list" style={{gridTemplateColumns:"auto 1fr"}}>
-            <dt>Strict-layer eligible</dt>
-              <dd>{canon.filter(c=>c.in_strict).length} of {canon.length}</dd>
-            <dt>Proxy-only</dt>
+            <dt>{t("detail.strictEligible")}</dt>
+              <dd>{canon.filter(c=>c.in_strict).length} {t("common.of")} {canon.length}</dd>
+            <dt>{t("detail.proxyOnly")}</dt>
               <dd>{canon.filter(c=>c.is_proxy_or_screening).length}</dd>
-            <dt>Conflict flagged</dt>
+            <dt>{t("detail.conflictFlagged")}</dt>
               <dd>{canon.filter(c=>c.conflict_flag).length}</dd>
-            <dt>Source divergence</dt>
+            <dt>{t("detail.sourceDivergence")}</dt>
               <dd>{canon.filter(c=>c.source_divergence_flag).length}</dd>
           </div>
         </div>
@@ -2371,10 +2983,12 @@ Object.assign(window, { MoleculeBrowser, MoleculeDetail });
 
 const { mols: _cmpMols, canonical: _cmpCanon } = window.DB;
 
-const CompareDrawer = ({ids, toggleCompare, clearCompare, goCompare}) => (
-  <div className="compare-drawer" role="region" aria-label="Comparison tray">
+const CompareDrawer = ({ids, toggleCompare, clearCompare, goCompare}) => {
+  const { t } = useI18n();
+  return (
+  <div className="compare-drawer" role="region" aria-label={t("compare.trayAria")}>
     <span className="mono subtle" style={{fontSize:11.5, textTransform:"uppercase", letterSpacing:"0.06em"}}>
-      Compare {ids.length}/6
+      {t("compare.trayLabel")} {ids.length}/6
     </span>
     <div style={{display:"flex", gap:6, flexWrap:"wrap", flex:1, minWidth:0}}>
       {ids.map(id => {
@@ -2382,19 +2996,21 @@ const CompareDrawer = ({ids, toggleCompare, clearCompare, goCompare}) => (
         return (
           <span key={id} className="compare-chip">
             <span style={{fontFamily:"var(--font-serif)", fontWeight:600, fontSize:12.5}}>{m ? m.r_name : id}</span>
-            <button type="button" onClick={()=>toggleCompare(id)} aria-label={"Remove " + (m ? m.r_name : id)}>×</button>
+            <button type="button" onClick={()=>toggleCompare(id)} aria-label={t("compare.remove", {name: m ? m.r_name : id})}>×</button>
           </span>
         );
       })}
     </div>
-    <button className="btn sm ghost" onClick={clearCompare}>Clear</button>
+    <button className="btn sm ghost" onClick={clearCompare}>{t("common.clear")}</button>
     <button className="btn sm primary" onClick={goCompare} disabled={ids.length<2}>
-      Compare side-by-side
+      {t("compare.sideBySide")}
     </button>
   </div>
-);
+  );
+};
 
 const ComparePage = ({ids, setPage, setSelectedMol, toggleCompare, units, setUnits}) => {
+  const { t } = useI18n();
   const picked = ids.map(id => _cmpMols.find(m=>m.mol_id===id)).filter(Boolean);
 
   if (picked.length < 1) {
@@ -2402,18 +3018,15 @@ const ComparePage = ({ids, setPage, setSelectedMol, toggleCompare, units, setUni
       <div className="page">
         <div className="page-head">
           <div className="page-eyebrow">compare</div>
-          <h1 className="page-title">Compare candidates</h1>
-          <p className="page-sub">
-            Select molecules from the browser (the Compare checkbox) to place them side-by-side.
-            Up to six at once. The compare set lives in your browser.
-          </p>
+          <h1 className="page-title">{t("compare.title")}</h1>
+          <p className="page-sub">{t("compare.emptySub")}</p>
         </div>
         <div className="card"><div className="card-body" style={{padding:32}}>
           <div className="empty">
             <div className="icon">⇌</div>
-            Nothing selected yet.
+            {t("compare.empty")}
             <div style={{marginTop:14}}>
-              <button className="btn primary" onClick={()=>setPage("molecules")}>Open molecule browser</button>
+              <button className="btn primary" onClick={()=>setPage("molecules")}>{t("compare.openBrowser")}</button>
             </div>
           </div>
         </div></div>
@@ -2425,34 +3038,34 @@ const ComparePage = ({ids, setPage, setSelectedMol, toggleCompare, units, setUni
   const getCanon = (mol_id, key) => _cmpCanon.find(c => c.mol_id===mol_id && c.canonical_feature_key===key);
 
   const rows = [
-    {group:"Identity", items:[
-      {label:"Refrigerant", val: m => <span className="name">{m.r_name}</span>, raw: m => m.r_name},
-      {label:"Formula", val: m => <Formula str={m.formula}/>, raw: m => m.formula},
-      {label:"Family", val: m => m.family, raw: m => m.family},
+    {group:t("compare.identity"), items:[
+      {label:t("compare.refrigerant"), val: m => <span className="name">{m.r_name}</span>, raw: m => m.r_name},
+      {label:t("common.formula"), val: m => <Formula str={m.formula}/>, raw: m => m.formula},
+      {label:t("common.family"), val: m => m.family, raw: m => m.family},
       {label:"CAS", val: m => m.cas, raw: m => m.cas},
-      {label:"Tier", val: m => <TierPill tier={m.tier}/>, raw: m => m.tier},
+      {label:t("common.tier"), val: m => <TierPill tier={m.tier}/>, raw: m => m.tier},
     ]},
-    {group:"Environmental", items:[
+    {group:t("compare.environmental"), items:[
       {label:"GWP (100yr)", raw: m => m.gwp, val: m => fmt(m.gwp,0), better:"min"},
       {label:"ODP", raw: m => m.odp, val: m => m.odp==null?"—":fmt(m.odp,4), better:"min"},
-      {label:"Atmospheric lifetime", raw: m => { const c = getCanon(m.mol_id,"environmental.atmospheric_lifetime"); return c?Number(c.value):null; },
+      {label:t("compare.atmLifetime"), raw: m => { const c = getCanon(m.mol_id,"environmental.atmospheric_lifetime"); return c?Number(c.value):null; },
        val: m => { const c = getCanon(m.mol_id,"environmental.atmospheric_lifetime"); return c?fmt(Number(c.value),2)+" yr":"—"; }, better:"min"},
     ]},
-    {group:"Thermodynamic", items:[
+    {group:t("compare.thermodynamic"), items:[
       {label:`NBP / ${U.tempLbl}`, raw: m => m.nbp, val: m => m.nbp==null?"—":fmt(U.T(m.nbp),U.tDigits)},
       {label:`T_crit / ${U.tempLbl}`, raw: m => m.tcrit, val: m => m.tcrit==null?"—":fmt(U.T(m.tcrit),U.tDigits)},
       {label:`P_crit / ${U.pressLbl}`, raw: m => m.pcrit, val: m => m.pcrit==null?"—":fmt(U.P(m.pcrit),U.pDigits)},
       {label:"MW / g·mol⁻¹", raw: m => m.mw, val: m => m.mw==null?"—":fmt(m.mw,2)},
     ]},
-    {group:"Cycle performance", items:[
+    {group:t("compare.cyclePerf"), items:[
       {label:"COP (std cycle)", raw: m => { const c = getCanon(m.mol_id,"cycle.cop_standard"); return c?Number(c.value):null; },
        val: m => { const c = getCanon(m.mol_id,"cycle.cop_standard"); return c?fmt(Number(c.value),2):"—"; }, better:"max"},
       {label:"Vol. capacity / kJ·m⁻³", raw: m => { const c = getCanon(m.mol_id,"cycle.volumetric_capacity_kj_m3"); return c?Number(c.value):null; },
        val: m => { const c = getCanon(m.mol_id,"cycle.volumetric_capacity_kj_m3"); return c?fmt(Number(c.value),0):"—"; }, better:"max"},
     ]},
-    {group:"Safety", items:[
-      {label:"ASHRAE class", raw: m => m.ashrae, val: m => <SafetyPill cls={m.ashrae}/>},
-      {label:"Toxicity", raw: m => m.tox, val: m => m.tox||"—"},
+    {group:t("common.safety"), items:[
+      {label:t("compare.ashraeClass"), raw: m => m.ashrae, val: m => <SafetyPill cls={m.ashrae}/>},
+      {label:t("common.toxicity"), raw: m => m.tox, val: m => m.tox||"—"},
     ]},
   ];
 
@@ -2470,12 +3083,9 @@ const ComparePage = ({ids, setPage, setSelectedMol, toggleCompare, units, setUni
       <div className="page-head">
         <div style={{display:"flex", alignItems:"flex-start", gap:16, flexWrap:"wrap"}}>
           <div style={{flex:1, minWidth:0}}>
-            <div className="page-eyebrow">compare · {picked.length} of 6</div>
-            <h1 className="page-title">Side-by-side comparison</h1>
-            <p className="page-sub">
-              Canonical values across identity, environmental, thermophysical and cycle dimensions.
-              Best value in each row is highlighted (lower is better for GWP / ODP; higher for COP).
-            </p>
+            <div className="page-eyebrow">{t("compare.pageEyebrow")} · {picked.length} {t("common.of")} 6</div>
+            <h1 className="page-title">{t("compare.sideTitle")}</h1>
+            <p className="page-sub">{t("compare.sideSub")}</p>
           </div>
           <div style={{display:"flex", gap:8, alignItems:"center"}}>
             <UnitToggle units={units} setUnits={setUnits}/>
@@ -2533,18 +3143,21 @@ const ComparePage = ({ids, setPage, setSelectedMol, toggleCompare, units, setUni
       </div>
 
       <div style={{marginTop:16, display:"flex", gap:8}}>
-        <button className="btn ghost" onClick={()=>setPage("molecules")}>← Back to browser</button>
+        <button className="btn ghost" onClick={()=>setPage("molecules")}>← {t("common.backToBrowser")}</button>
       </div>
     </div>
   );
 };
 
-const UnitToggle = ({units, setUnits}) => (
-  <div className="chip-group" role="radiogroup" aria-label="Unit system">
+const UnitToggle = ({units, setUnits}) => {
+  const { t } = useI18n();
+  return (
+  <div className="chip-group" role="radiogroup" aria-label={t("unit.system")}>
     <button className={"chip "+(units==="SI"?"active":"")} onClick={()=>setUnits("SI")} aria-pressed={units==="SI"}>K · kPa</button>
     <button className={"chip "+(units==="Eng"?"active":"")} onClick={()=>setUnits("Eng")} aria-pressed={units==="Eng"}>°C · MPa</button>
   </div>
-);
+  );
+};
 
 Object.assign(window, { CompareDrawer, ComparePage, UnitToggle });
 
@@ -2554,16 +3167,14 @@ const _DB = window.DB;
 
 // ============================================================ MIXTURES
 const MixturesPage = ({setPage, setSelectedMol}) => {
+  const { t } = useI18n();
   const mixes = _DB.mixtures;
   return (
     <div className="page">
       <div className="page-head">
         <div className="page-eyebrow">silver · mixture_core.parquet</div>
-        <h1 className="page-title">Mixtures</h1>
-        <p className="page-sub">
-          PR-G governed blends. Mixtures are silver-layer entities and are not model_ready subjects in V1;
-          component fractions come from the property-governance bundle.
-        </p>
+        <h1 className="page-title">{t("mixtures.title")}</h1>
+        <p className="page-sub">{t("mixtures.subtitle")}</p>
       </div>
       <div className="grid-2">
         {mixes.map(mx => {
@@ -2585,7 +3196,7 @@ const MixturesPage = ({setPage, setSelectedMol}) => {
                   <span className="pill ghost">{mx.app}</span>
                 </div>
                 <div style={{marginBottom:8, fontSize:11.5, color:"var(--ink-subtle)", textTransform:"uppercase", letterSpacing:"0.05em"}}>
-                  Composition
+                  {t("mixtures.composition")}
                 </div>
                 <div className="stack-bar" style={{height:14, marginBottom:10}}>
                   {compsResolved.map((c,i)=>(
@@ -2604,7 +3215,7 @@ const MixturesPage = ({setPage, setSelectedMol}) => {
                   <div style={{marginTop:12, padding:"8px 10px", background:"var(--warn-soft)", borderRadius:"var(--radius)",
                                fontSize:12, color:"oklch(42% 0.12 65)", display:"flex", gap:8, alignItems:"center"}}>
                     <Icon name="warn" size={12}/>
-                    Unresolved fraction group — retained without imputation.
+                    {t("mixtures.unresolved")}
                   </div>
                 )}
               </div>
@@ -2618,6 +3229,7 @@ const MixturesPage = ({setPage, setSelectedMol}) => {
 
 // ============================================================ PROPERTIES REGISTRY
 const PropertiesPage = () => {
+  const { t } = useI18n();
   const ps = _DB.properties;
   const [group, setGroup] = useState("all");
   const groups = Array.from(new Set(ps.map(p=>p.group)));
@@ -2626,17 +3238,14 @@ const PropertiesPage = () => {
     <div className="page">
       <div className="page-head">
         <div className="page-eyebrow">gold · property_dictionary.parquet</div>
-        <h1 className="page-title">Canonical property registry</h1>
-        <p className="page-sub">
-          The canonical feature key namespace. {fmtInt(_DB.stats.canonical_keys)} recommended keys,
-          of which <span className="mono strong">{_DB.stats.strict_keys}</span> are ML-strict.
-        </p>
+        <h1 className="page-title">{t("properties.title")}</h1>
+        <p className="page-sub">{t("properties.subtitle", {keys: fmtInt(_DB.stats.canonical_keys), strict: _DB.stats.strict_keys})}</p>
       </div>
       <div className="card">
         <div className="filterbar">
-          <span className="filter-label">Group</span>
+          <span className="filter-label">{t("common.group")}</span>
           <div className="chip-group">
-            <button className={"chip "+(group==="all"?"active":"")} onClick={()=>setGroup("all")}>All</button>
+            <button className={"chip "+(group==="all"?"active":"")} onClick={()=>setGroup("all")}>{t("common.all")}</button>
             {groups.map(g=>(
               <button key={g} className={"chip "+(group===g?"active":"")} onClick={()=>setGroup(g)}>{g}</button>
             ))}
@@ -2644,7 +3253,7 @@ const PropertiesPage = () => {
         </div>
         <table className="data-table">
           <thead><tr>
-            <th>Canonical feature key</th><th>Name</th><th>Group</th><th>Unit</th><th>Strict</th><th>Coverage</th>
+            <th>{t("properties.featureKey")}</th><th>{t("common.name")}</th><th>{t("common.group")}</th><th>{t("common.unit")}</th><th>Strict</th><th>{t("properties.coverage")}</th>
           </tr></thead>
           <tbody>
             {rows.map(p=>{
@@ -2657,8 +3266,8 @@ const PropertiesPage = () => {
                   <td><span className="pill ghost">{p.group}</span></td>
                   <td className="mono subtle" style={{fontSize:12}}>{p.unit}</td>
                   <td>{p.strict
-                    ? <span className="pill good" style={{fontSize:10}}><span className="pill-dot"/>yes</span>
-                    : <span className="pill" style={{fontSize:10}}>no</span>}</td>
+                    ? <span className="pill good" style={{fontSize:10}}><span className="pill-dot"/>{t("common.yes")}</span>
+                    : <span className="pill" style={{fontSize:10}}>{t("common.no")}</span>}</td>
                   <td style={{width:220}}>
                     <CoverageBar value={strictCov} total={Math.max(cov,1)} color={p.strict?"var(--good)":"var(--accent)"}/>
                   </td>
@@ -2674,6 +3283,7 @@ const PropertiesPage = () => {
 
 // ============================================================ CANONICAL
 const CanonicalPage = ({setPage, setSelectedMol}) => {
+  const { t } = useI18n();
   const [filter, setFilter] = useState("all"); // all, strict, proxy, conflict
   const rows = useMemo(()=>{
     let rs = _DB.canonical;
@@ -2686,26 +3296,23 @@ const CanonicalPage = ({setPage, setSelectedMol}) => {
     <div className="page">
       <div className="page-head">
         <div className="page-eyebrow">gold · property_recommended_canonical</div>
-        <h1 className="page-title">Canonical layer</h1>
-        <p className="page-sub">
-          The recommended canonical value per (molecule, feature) after source-priority selection
-          and governance bundle fusion. Strict slice powers ML outputs.
-        </p>
+        <h1 className="page-title">{t("canonical.title")}</h1>
+        <p className="page-sub">{t("canonical.subtitle")}</p>
       </div>
       <div className="card">
         <div className="filterbar">
           <div className="chip-group">
-            <button className={"chip "+(filter==="all"?"active":"")} onClick={()=>setFilter("all")}>All · {_DB.stats.property_recommended_canonical}</button>
-            <button className={"chip "+(filter==="strict"?"active":"")} onClick={()=>setFilter("strict")}>Strict · {_DB.stats.property_recommended_canonical_strict}</button>
-            <button className={"chip "+(filter==="proxy"?"active":"")} onClick={()=>setFilter("proxy")}>Proxy-only · 466</button>
-            <button className={"chip "+(filter==="conflict"?"active":"")} onClick={()=>setFilter("conflict")}>Divergence · 35</button>
+            <button className={"chip "+(filter==="all"?"active":"")} onClick={()=>setFilter("all")}>{t("canonical.all")} · {_DB.stats.property_recommended_canonical}</button>
+            <button className={"chip "+(filter==="strict"?"active":"")} onClick={()=>setFilter("strict")}>{t("canonical.strict")} · {_DB.stats.property_recommended_canonical_strict}</button>
+            <button className={"chip "+(filter==="proxy"?"active":"")} onClick={()=>setFilter("proxy")}>{t("canonical.proxyOnly")} · 466</button>
+            <button className={"chip "+(filter==="conflict"?"active":"")} onClick={()=>setFilter("conflict")}>{t("canonical.divergence")} · 35</button>
           </div>
-          <span className="mono subtle" style={{marginLeft:"auto", fontSize:11.5}}>{rows.length} rows</span>
+          <span className="mono subtle" style={{marginLeft:"auto", fontSize:11.5}}>{rows.length} {t("common.rows")}</span>
         </div>
         <table className="data-table">
           <thead><tr>
-            <th>Molecule</th><th>Canonical key</th><th>Value</th><th>Unit</th><th>Source</th>
-            <th>Rank</th><th>Quality</th><th>Flags</th>
+            <th>{t("common.molecule")}</th><th>{t("canonical.key")}</th><th>{t("common.value")}</th><th>{t("common.unit")}</th><th>{t("common.source")}</th>
+            <th>{t("common.rank")}</th><th>{t("common.quality")}</th><th>{t("common.flags")}</th>
           </tr></thead>
           <tbody>
             {rows.map((c,i)=>{
@@ -2743,29 +3350,31 @@ const CanonicalPage = ({setPage, setSelectedMol}) => {
 };
 
 // ============================================================ REVIEW
-const ReviewPage = ({setPage, setSelectedMol}) => (
+const ReviewPage = ({setPage, setSelectedMol}) => {
+  const { t } = useI18n();
+  return (
   <div className="page">
     <div className="page-head">
       <div className="page-eyebrow">gold · canonical_review_decisions</div>
-      <h1 className="page-title">Canonical review decisions</h1>
+      <h1 className="page-title">{t("review.title")}</h1>
       <p className="page-sub">
-        Manual adjudication log for canonical-layer conflicts and strict-rejection rows.
-        {" "}<span className="mono strong">{_DB.stats.review_decisions_applied}</span> decisions applied,
-        {" "}<span className="mono strong">{_DB.stats.review_queue_open}</span> open.
+        {t("review.subtitle")}
+        {" "}<span className="mono strong">{_DB.stats.review_decisions_applied}</span> {t("review.decisionsApplied")},
+        {" "}<span className="mono strong">{_DB.stats.review_queue_open}</span> {t("review.open")}.
       </p>
     </div>
     <div className="stat-grid" style={{marginBottom:20}}>
-      <div className="stat"><div className="stat-label">accept_selected_source</div><div className="stat-value">35</div><div className="stat-foot">retain top-rank value despite divergence</div></div>
-      <div className="stat"><div className="stat-label">accept_out_of_strict</div><div className="stat-value">85</div><div className="stat-foot">keep canonical; exclude from ML strict</div></div>
-      <div className="stat"><div className="stat-label">proxy-only policy</div><div className="stat-value">13</div><div className="stat-foot">rules · 396 rows → strict</div></div>
-      <div className="stat stat-accent"><div className="stat-label">open queue</div><div className="stat-value" style={{color:"var(--good)"}}>0</div><div className="stat-foot">green — nothing to adjudicate</div></div>
+      <div className="stat"><div className="stat-label">accept_selected_source</div><div className="stat-value">35</div><div className="stat-foot">{t("review.keepDivergence")}</div></div>
+      <div className="stat"><div className="stat-label">accept_out_of_strict</div><div className="stat-value">85</div><div className="stat-foot">{t("review.excludeMl")}</div></div>
+      <div className="stat"><div className="stat-label">{t("review.proxyPolicy")}</div><div className="stat-value">13</div><div className="stat-foot">rules · 396 {t("common.rows")} → strict</div></div>
+      <div className="stat stat-accent"><div className="stat-label">{t("review.openQueue")}</div><div className="stat-value" style={{color:"var(--good)"}}>0</div><div className="stat-foot">{t("review.green")}</div></div>
     </div>
     <div className="card">
-      <div className="card-head"><div className="card-title">Decision log</div>
-        <div className="card-sub">most-recent first</div></div>
+      <div className="card-head"><div className="card-title">{t("review.decisionLog")}</div>
+        <div className="card-sub">{t("review.mostRecent")}</div></div>
       <table className="data-table">
         <thead><tr>
-          <th>Decision</th><th>Molecule</th><th>Canonical key</th><th>Type</th><th>Note</th><th>Applied</th>
+          <th>{t("review.decision")}</th><th>{t("common.molecule")}</th><th>{t("canonical.key")}</th><th>{t("common.type")}</th><th>{t("review.note")}</th><th>{t("review.applied")}</th>
         </tr></thead>
         <tbody>
           {_DB.reviewQueue.map(d=>{
@@ -2789,10 +3398,12 @@ const ReviewPage = ({setPage, setSelectedMol}) => (
       </table>
     </div>
   </div>
-);
+  );
+};
 
 // ============================================================ REGULATORY
 const RegulatoryPage = ({setPage, setSelectedMol}) => {
+  const { t } = useI18n();
   const [j, setJ] = useState("all");
   const js = Array.from(new Set(_DB.regulatory.map(r=>r.jurisdiction)));
   const rows = j==="all" ? _DB.regulatory : _DB.regulatory.filter(r=>r.jurisdiction===j);
@@ -2800,14 +3411,14 @@ const RegulatoryPage = ({setPage, setSelectedMol}) => {
     <div className="page">
       <div className="page-head">
         <div className="page-eyebrow">silver · regulatory_status.parquet</div>
-        <h1 className="page-title">Regulatory status</h1>
-        <p className="page-sub">EPA SNAP, EU F-Gas, Kigali, Montreal Protocol listings scoped to end-use and jurisdiction.</p>
+        <h1 className="page-title">{t("regulatory.title")}</h1>
+        <p className="page-sub">{t("regulatory.subtitle")}</p>
       </div>
       <div className="card">
         <div className="filterbar">
-          <span className="filter-label">Jurisdiction</span>
+          <span className="filter-label">{t("table.jurisdiction")}</span>
           <div className="chip-group">
-            <button className={"chip "+(j==="all"?"active":"")} onClick={()=>setJ("all")}>All</button>
+            <button className={"chip "+(j==="all"?"active":"")} onClick={()=>setJ("all")}>{t("common.all")}</button>
             {js.map(x=>(
               <button key={x} className={"chip "+(j===x?"active":"")} onClick={()=>setJ(x)}>{x}</button>
             ))}
@@ -2815,7 +3426,7 @@ const RegulatoryPage = ({setPage, setSelectedMol}) => {
         </div>
         <table className="data-table">
           <thead><tr>
-            <th>Molecule</th><th>Jurisdiction</th><th>End use</th><th>Acceptability</th><th>Effective</th>
+            <th>{t("common.molecule")}</th><th>{t("table.jurisdiction")}</th><th>{t("table.endUse")}</th><th>{t("table.acceptability")}</th><th>{t("table.effective")}</th>
           </tr></thead>
           <tbody>
             {rows.map((r,i)=>{
@@ -2846,27 +3457,29 @@ const RegulatoryPage = ({setPage, setSelectedMol}) => {
 };
 
 // ============================================================ CYCLE
-const CyclePage = () => (
+const CyclePage = () => {
+  const { t } = useI18n();
+  return (
   <div className="page">
     <div className="page-head">
       <div className="page-eyebrow">silver · cycle_operating_point.parquet</div>
-      <h1 className="page-title">Cycle operating points</h1>
-      <p className="page-sub">PR-D standard refrigeration cycle — R-PhysGen reference points evaluated via CoolProp 6.6.0.</p>
+      <h1 className="page-title">{t("cycle.title")}</h1>
+      <p className="page-sub">{t("cycle.subtitle")}</p>
     </div>
     <div className="grid-2">
       <div className="card">
-        <div className="card-head"><div className="card-title">Standard evaporator / condenser</div>
+        <div className="card-head"><div className="card-title">{t("cycle.standard")}</div>
           <div className="card-sub">CYC_REF_STD</div></div>
         <div className="card-body">
           <dl className="kv-list" style={{gridTemplateColumns:"180px 1fr"}}>
-            <dt>Evaporator T</dt><dd>278.15 K <span className="subtle">(5 °C)</span></dd>
-            <dt>Condenser T</dt><dd>318.15 K <span className="subtle">(45 °C)</span></dd>
-            <dt>Superheat</dt><dd>5 K</dd>
-            <dt>Subcooling</dt><dd>5 K</dd>
-            <dt>Isentropic efficiency</dt><dd>0.70</dd>
-            <dt>Cycle model</dt><dd>vapor compression · single stage</dd>
-            <dt>EOS source</dt><dd>CoolProp.HEOS backend</dd>
-            <dt>Molecules evaluated</dt><dd>398 observations / 120 promoted</dd>
+            <dt>{t("cycle.evaporator")}</dt><dd>278.15 K <span className="subtle">(5 °C)</span></dd>
+            <dt>{t("cycle.condenser")}</dt><dd>318.15 K <span className="subtle">(45 °C)</span></dd>
+            <dt>{t("cycle.superheat")}</dt><dd>5 K</dd>
+            <dt>{t("cycle.subcooling")}</dt><dd>5 K</dd>
+            <dt>{t("cycle.efficiency")}</dt><dd>0.70</dd>
+            <dt>{t("cycle.model")}</dt><dd>vapor compression · single stage</dd>
+            <dt>{t("cycle.eos")}</dt><dd>CoolProp.HEOS backend</dd>
+            <dt>{t("cycle.evaluated")}</dt><dd>398 observations / 120 promoted</dd>
           </dl>
         </div>
       </div>
@@ -2875,22 +3488,22 @@ const CyclePage = () => (
           <div className="card-sub">CYC_REF_CO2_TC</div></div>
         <div className="card-body">
           <dl className="kv-list" style={{gridTemplateColumns:"180px 1fr"}}>
-            <dt>Evaporator T</dt><dd>273.15 K <span className="subtle">(0 °C)</span></dd>
-            <dt>Gas cooler outlet</dt><dd>308.15 K <span className="subtle">(35 °C)</span></dd>
-            <dt>High-side pressure</dt><dd>9000 kPa</dd>
-            <dt>Superheat</dt><dd>5 K</dd>
-            <dt>Isentropic efficiency</dt><dd>0.70</dd>
-            <dt>Cycle model</dt><dd>transcritical CO₂ · single stage</dd>
-            <dt>EOS source</dt><dd>CoolProp.HEOS (Span-Wagner)</dd>
+            <dt>{t("cycle.evaporator")}</dt><dd>273.15 K <span className="subtle">(0 °C)</span></dd>
+            <dt>{t("cycle.gasCooler")}</dt><dd>308.15 K <span className="subtle">(35 °C)</span></dd>
+            <dt>{t("cycle.highPressure")}</dt><dd>9000 kPa</dd>
+            <dt>{t("cycle.superheat")}</dt><dd>5 K</dd>
+            <dt>{t("cycle.efficiency")}</dt><dd>0.70</dd>
+            <dt>{t("cycle.model")}</dt><dd>transcritical CO₂ · single stage</dd>
+            <dt>{t("cycle.eos")}</dt><dd>CoolProp.HEOS (Span-Wagner)</dd>
           </dl>
         </div>
       </div>
     </div>
 
-    <div className="section-title">COP at standard cycle — promoted subset</div>
+    <div className="section-title">{t("cycle.copSection")}</div>
     <div className="card" style={{padding:0}}>
       <table className="data-table">
-        <thead><tr><th>Molecule</th><th>Family</th><th>Tier</th><th>COP</th><th>Vol. capacity / kJ·m⁻³</th><th>Source</th></tr></thead>
+        <thead><tr><th>{t("common.molecule")}</th><th>{t("common.family")}</th><th>{t("common.tier")}</th><th>COP</th><th>{t("cycle.volCapacity")}</th><th>{t("common.source")}</th></tr></thead>
         <tbody>
           {_DB.canonical.filter(c=>c.canonical_feature_key==="cycle.cop_standard").map((c,i)=>{
             const m = _DB.mols.find(x=>x.mol_id===c.mol_id);
@@ -2910,27 +3523,30 @@ const CyclePage = () => (
       </table>
     </div>
   </div>
-);
+  );
+};
 
 // ============================================================ ACTIVE LEARNING
-const ActiveLearningPage = () => (
+const ActiveLearningPage = () => {
+  const { t } = useI18n();
+  return (
   <div className="page">
     <div className="page-head">
       <div className="page-eyebrow">gold · active_learning_queue.parquet</div>
-      <h1 className="page-title">Active learning queue</h1>
+      <h1 className="page-title">{t("al.title")}</h1>
       <p className="page-sub">
-        PR-H nomination output. Not configured in current build — optional manual CSV at
-        {" "}<span className="mono">data/raw/manual/active_learning_queue.csv</span> drives real entries. Shown below is an illustrative preview.
+        {t("al.subtitle")}
+        {" "}<span className="mono">data/raw/manual/active_learning_queue.csv</span> {t("al.subtitleTail")}
       </p>
     </div>
     <div className="card">
       <div className="card-head">
-        <div className="card-title">Illustrative nominations</div>
-        <div className="card-sub">preview · not yet policy-driven</div>
+        <div className="card-title">{t("al.illustrative")}</div>
+        <div className="card-sub">{t("al.preview")}</div>
       </div>
       <table className="data-table">
         <thead><tr>
-          <th>Item</th><th>Candidate</th><th>Target feature</th><th>Uncertainty</th><th>Priority</th><th>Status</th>
+          <th>{t("al.item")}</th><th>{t("common.candidate")}</th><th>{t("al.targetFeature")}</th><th>{t("common.uncertainty")}</th><th>{t("common.priority")}</th><th>{t("common.status")}</th>
         </tr></thead>
         <tbody>
           {_DB.activeLearning.map(a=>(
@@ -2951,36 +3567,36 @@ const ActiveLearningPage = () => (
       </table>
     </div>
   </div>
-);
+  );
+};
 
 // ============================================================ SOURCES
 const SourcesPage = () => {
+  const { t } = useI18n();
   const sources = [
-    {name:"NIST WebBook (REFPROP 10.0)", type:"standard",    rank:1, obs:4210, note:"Primary thermophysical source for well-characterized refrigerants."},
-    {name:"CoolProp 6.6.0",              type:"standard",    rank:2, obs:3894, note:"EOS-based evaluation, transcritical handling for R-744."},
-    {name:"IPCC AR6 WG1",                type:"assessment",  rank:1, obs:286,  note:"GWP, atmospheric lifetime."},
-    {name:"IPCC AR5 WG1",                type:"assessment",  rank:2, obs:312,  note:"Legacy GWP values retained for continuity."},
-    {name:"ASHRAE 34-2022",              type:"standard",    rank:1, obs:148,  note:"Safety classification — A/B and flammability tier."},
-    {name:"EPA SNAP",                    type:"regulatory",  rank:1, obs:63,   note:"US substitute acceptability."},
-    {name:"EU F-Gas",                    type:"regulatory",  rank:1, obs:19,   note:"EU phase-down schedule."},
-    {name:"Montreal Protocol Assessment 2022", type:"assessment",rank:1, obs:112, note:"ODP reference values."},
-    {name:"DIPPR 801 (2020)",            type:"compiled",    rank:3, obs:1902, note:"Compiled literature — secondary for critical constants."},
-    {name:"PubChem (bulk)",              type:"database",    rank:4, obs:5598, note:"Structure resolution + first-pass candidate intake."},
-    {name:"R-PhysGen proxy heuristics v1", type:"proxy",     rank:9, obs:11196,note:"Local structure heuristics — screening only."},
+    {name:"NIST WebBook (REFPROP 10.0)", type:"standard",    rank:1, obs:4210, noteKey:"sources.note.nist"},
+    {name:"CoolProp 6.6.0",              type:"standard",    rank:2, obs:3894, noteKey:"sources.note.coolprop"},
+    {name:"IPCC AR6 WG1",                type:"assessment",  rank:1, obs:286,  noteKey:"sources.note.ipccAr6"},
+    {name:"IPCC AR5 WG1",                type:"assessment",  rank:2, obs:312,  noteKey:"sources.note.ipccAr5"},
+    {name:"ASHRAE 34-2022",              type:"standard",    rank:1, obs:148,  noteKey:"sources.note.ashrae"},
+    {name:"EPA SNAP",                    type:"regulatory",  rank:1, obs:63,   noteKey:"sources.note.epa"},
+    {name:"EU F-Gas",                    type:"regulatory",  rank:1, obs:19,   noteKey:"sources.note.eu"},
+    {name:"Montreal Protocol Assessment 2022", type:"assessment",rank:1, obs:112, noteKey:"sources.note.montreal"},
+    {name:"DIPPR 801 (2020)",            type:"compiled",    rank:3, obs:1902, noteKey:"sources.note.dippr"},
+    {name:"PubChem (bulk)",              type:"database",    rank:4, obs:5598, noteKey:"sources.note.pubchem"},
+    {name:"R-PhysGen proxy heuristics v1", type:"proxy",     rank:9, obs:11196,noteKey:"sources.note.proxy"},
   ];
   return (
     <div className="page">
       <div className="page-head">
         <div className="page-eyebrow">bronze · source_manifest.parquet</div>
-        <h1 className="page-title">Sources & provenance</h1>
-        <p className="page-sub">
-          Registered sources, ranked by source-priority rules. Lower rank = higher preference during canonical selection.
-        </p>
+        <h1 className="page-title">{t("sources.title")}</h1>
+        <p className="page-sub">{t("sources.subtitle")}</p>
       </div>
       <div className="card">
         <table className="data-table">
           <thead><tr>
-            <th>Source</th><th>Type</th><th>Priority rank</th><th>Observation count</th><th>Notes</th>
+            <th>{t("common.source")}</th><th>{t("common.type")}</th><th>{t("sources.priorityRank")}</th><th>{t("sources.obsCount")}</th><th>{t("common.notes")}</th>
           </tr></thead>
           <tbody>
             {sources.map((s,i)=>(
@@ -2989,7 +3605,7 @@ const SourcesPage = () => {
                 <td><span className="pill ghost">{s.type}</span></td>
                 <td className="col-num mono">{s.rank}</td>
                 <td className="col-num">{fmtInt(s.obs)}</td>
-                <td style={{fontSize:12.5, color:"var(--ink-muted)", maxWidth:520}}>{s.note}</td>
+                <td style={{fontSize:12.5, color:"var(--ink-muted)", maxWidth:520}}>{t(s.noteKey)}</td>
               </tr>
             ))}
           </tbody>
@@ -3010,6 +3626,7 @@ const { useState: _useState, useEffect: _useEffect } = React;
 
 function App() {
   const [theme, setThemeState] = _useState(() => localStorage.getItem("rpg-theme") || "light");
+  const [lang, setLangState] = _useState(() => localStorage.getItem("rpg-lang") || "zh");
 
   // Hash routing: #/<page>/<molId?>
   const parseHash = () => {
@@ -3048,10 +3665,22 @@ function App() {
   const clearCompare = () => setCompare([]);
 
   const setTheme = (t) => { setThemeState(t); localStorage.setItem("rpg-theme", t); };
+  const setLang = (l) => { setLangState(l); localStorage.setItem("rpg-lang", l); };
+  const i18nValue = React.useMemo(() => {
+    const dict = I18N[lang] || I18N.zh;
+    return {
+      lang,
+      t: (key, vars) => interpolate(dict[key] ?? I18N_EN[key] ?? key, vars),
+    };
+  }, [lang]);
 
   _useEffect(() => {
     document.documentElement.dataset.theme = theme;
   }, [theme]);
+
+  _useEffect(() => {
+    document.documentElement.lang = lang === "zh" ? "zh-Hans" : "en";
+  }, [lang]);
 
   _useEffect(() => {
     if (query && query.trim() && !["molecules","molecule"].includes(page)) {
@@ -3060,10 +3689,14 @@ function App() {
   }, [query]);
 
   return (
+    <I18nContext.Provider value={i18nValue}>
     <div className="app">
-      <Sidebar page={page} setPage={setPage} theme={theme} setTheme={setTheme}/>
+      <Sidebar page={page} setPage={setPage}/>
+      <div className="theme-corner">
+        <TopControls theme={theme} setTheme={setTheme} lang={lang} setLang={setLang}/>
+      </div>
       <div className="main">
-        <Topbar query={query} onQuery={setQuery}/>
+        <Topbar query={query} onQuery={setQuery} theme={theme} setTheme={setTheme} lang={lang} setLang={setLang}/>
         {page === "dashboard"  && <Dashboard setPage={setPage} setSelectedMol={setSelectedMol} setQuery={setQuery}/>}
         {page === "molecules"  && <MoleculeBrowser setPage={setPage} setSelectedMol={setSelectedMol} query={query} compare={compare} toggleCompare={toggleCompare} units={units} setUnits={setUnits}/>}
         {page === "molecule"   && <MoleculeDetail molId={selectedMol} setPage={setPage} units={units} setUnits={setUnits} compare={compare} toggleCompare={toggleCompare}/>}
@@ -3081,6 +3714,7 @@ function App() {
         <CompareDrawer ids={compare} toggleCompare={toggleCompare} clearCompare={clearCompare} goCompare={()=>setPage("compare")}/>
       )}
     </div>
+    </I18nContext.Provider>
   );
 }
 
