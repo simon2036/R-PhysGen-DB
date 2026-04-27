@@ -13,6 +13,17 @@
 - `extensions`
   Fidelity-preserving mirrors of externally governed table bundles plus small normalized convenience tables derived from them.
 
+## Schema Evolution
+
+Dataset schema and contract changes are governed by [`dataset_migration_spec.md`](dataset_migration_spec.md).
+
+Key rules:
+
+- Parquet files are the authoritative generated table artifacts.
+- DuckDB files under `data/index/` are rebuildable query indexes, not the primary storage layer.
+- Every data-contract, output-schema, dataset-version, or validation-rule change must have a migration record in `docs/dataset_migrations/`.
+- Traditional database migrations are reserved for a future service database such as PostgreSQL; they do not apply to the current Parquet/DuckDB dataset layer.
+
 ## Inventory Catalog
 
 `data/raw/manual/seed_catalog.csv` is the authoritative curated inventory catalog.

@@ -18,6 +18,7 @@ from r_physgen_db.active_learning import (
     active_learning_summary,
 )
 from r_physgen_db.constants import DATA_DIR, PROJECT_ROOT, SCHEMA_DIR
+from r_physgen_db.dataset_migrations import validate_dataset_migrations
 from r_physgen_db.mixtures import (
     MIXTURE_COMPOSITION_BASIS,
     MIXTURE_FORBIDDEN_WIDE_COLUMNS,
@@ -56,6 +57,7 @@ def validate_dataset() -> dict[str, Any]:
         "integration_checks": [],
         "inventory_checks": [],
         "quality_gate_checks": [],
+        "migration_checks": {},
         "errors": [],
     }
 
@@ -253,6 +255,12 @@ def validate_dataset() -> dict[str, Any]:
         source_manifest_df,
     )
     _validate_dataset_version(results, quality_report_payload)
+    migration_report = validate_dataset_migrations(PROJECT_ROOT)
+    results["migration_checks"] = migration_report
+    if migration_report["errors"]:
+        results["errors"].extend(f"Dataset migration registry: {error}" for error in migration_report["errors"])
+    else:
+        results["integration_checks"].append("Dataset migration registry: current VERSION covered")
     _validate_quantum_pilot(
         results,
         property_observation_df,

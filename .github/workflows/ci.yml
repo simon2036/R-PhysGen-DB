@@ -29,6 +29,7 @@ jobs:
           tests/test_pr_f_quantum_pilot.py
           tests/test_pr_g_mixtures.py
           tests/test_pr_h_active_learning.py
+          tests/test_dataset_migrations.py
           tests/test_reproducibility_ci.py
 
   manual-build-validate:
