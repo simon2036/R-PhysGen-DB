@@ -54,7 +54,8 @@ def test_coolprop_cycle_observations_include_structured_cycle_fields() -> None:
     property_names = {row["property_name"] for row in cycle_rows}
 
     assert {"cop_standard_cycle", "volumetric_cooling_mjm3", "pressure_ratio", "discharge_temperature_c"}.issubset(property_names)
-    assert {row["cycle_case_id"] for row in cycle_rows} == {"transcritical_co2_cycle"}
+    assert len({row["cycle_case_id"] for row in cycle_rows}) >= 2
+    assert "transcritical_co2_cycle" in {row["cycle_case_id"] for row in cycle_rows}
     assert all(str(row["operating_point_hash"]).startswith("op_") for row in cycle_rows)
     assert all(row["eos_source"] == "CoolProp" for row in cycle_rows)
     assert all(row["convergence_flag"] == 1 for row in cycle_rows)

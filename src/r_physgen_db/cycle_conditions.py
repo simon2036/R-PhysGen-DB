@@ -107,6 +107,25 @@ def built_in_cycle_cases(*, source_id: str = "source_coolprop_session", source_n
         source_name=source_name,
         notes="P0 built-in CoolProp transcritical CO2 cycle",
     )
+    transcritical_generalized_point = {
+        "evaporating_temperature_c": TRANSCRITICAL_CO2_CYCLE["evaporating_temp_c"],
+        "condensing_temperature_c": None,
+        "gas_cooler_outlet_temperature_c": TRANSCRITICAL_CO2_CYCLE["gas_cooler_outlet_temp_c"],
+        "high_side_pressure_mpa": TRANSCRITICAL_CO2_CYCLE["high_side_pressure_mpa"],
+        "superheat_k": TRANSCRITICAL_CO2_CYCLE["superheat_k"],
+        "subcooling_k": None,
+        "compressor_isentropic_efficiency": TRANSCRITICAL_CO2_CYCLE["compressor_isentropic_efficiency"],
+    }
+    cases["transcritical_generalized_cycle"] = _cycle_case(
+        cycle_case_id="transcritical_generalized_cycle",
+        cycle_model="transcritical_generalized",
+        eos_source="REFPROP",
+        case_name="-5 degC evaporating / 35 degC gas cooler / 9 MPa high side",
+        operating_point=transcritical_generalized_point,
+        source_id=source_id,
+        source_name=source_name,
+        notes="Generalized REFPROP transcritical cycle for fluids without a feasible standard subcritical condenser point",
+    )
     return cases
 
 

@@ -294,6 +294,81 @@ rules:
     assert row["molecule_count"] == 1
 
 
+def test_task_rules_can_keep_tier_d_inventory_out_of_strong_label_gate(tmp_path) -> None:
+    schema_dir = tmp_path / "schemas"
+    schema_dir.mkdir()
+    (schema_dir / "canonical_feature_registry.yaml").write_text(
+        """
+table_name: canonical_feature_registry
+registry:
+  - canonical_feature_key: identity.mol_id
+    legacy_property_name: mol_id
+    aliases_json: '["mol_id"]'
+  - canonical_feature_key: thermodynamic.normal_boiling_temperature
+    legacy_property_name: boiling_point_c
+    aliases_json: '["boiling_point_c"]'
+""",
+        encoding="utf-8",
+    )
+    (schema_dir / "research_task_readiness_rules.yaml").write_text(
+        """
+table_name: research_task_readiness_rules
+rules:
+  - readiness_rule_id: promoted_only
+    task_name: promoted_only
+    task_scope: unit
+    entity_scope_filter: refrigerant_or_candidate
+    model_inclusion_filter: "yes"
+    coverage_tier_filter: [A, B, C]
+    source_layer: property_recommended_canonical_or_legacy_recommended
+    minimum_molecule_count: 1
+    minimum_should_have_coverage: 1.0
+    allow_proxy_rows: 1
+    require_numeric_values: 1
+    require_source_traceability: 1
+    require_strict_layer: 0
+    must_have:
+      - {canonical_feature_key: identity.mol_id, required_coverage: 1.00, value_requirement: non_null}
+      - {canonical_feature_key: thermodynamic.normal_boiling_temperature, required_coverage: 1.00, value_requirement: numeric}
+    should_have: []
+""",
+        encoding="utf-8",
+    )
+    frames = {
+        "molecule_core": pd.DataFrame(
+            [
+                {"mol_id": "mol_promoted", "seed_id": "seed_a", "entity_scope": "candidate", "model_inclusion": "yes"},
+                {"mol_id": "mol_tierd", "seed_id": "seed_d", "entity_scope": "candidate", "model_inclusion": "no"},
+            ]
+        ),
+        "seed_catalog": pd.DataFrame(
+            [
+                {"seed_id": "seed_a", "coverage_tier": "A", "model_inclusion": "yes"},
+                {"seed_id": "seed_d", "coverage_tier": "D", "model_inclusion": "no"},
+            ]
+        ),
+        "property_recommended": pd.DataFrame(
+            [
+                {
+                    "mol_id": "mol_promoted",
+                    "property_name": "boiling_point_c",
+                    "value": "1",
+                    "value_num": 1.0,
+                    "selected_source_id": "source_a",
+                }
+            ]
+        ),
+        "property_recommended_canonical": pd.DataFrame(),
+        "property_recommended_canonical_strict": pd.DataFrame(),
+        "model_ready": pd.DataFrame(),
+    }
+
+    report, _ = evaluate_research_task_readiness(frames=frames, schema_dir=schema_dir)
+
+    assert report.iloc[0]["status"] == "passed"
+    assert report.iloc[0]["molecule_count"] == 1
+
+
 def test_readiness_filter_missing_source_column_fails_explicitly(tmp_path) -> None:
     schema_dir = tmp_path / "schemas"
     schema_dir.mkdir()

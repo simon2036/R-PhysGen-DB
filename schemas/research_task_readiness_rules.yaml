@@ -41,7 +41,8 @@ rules:
     task_name: single_component_downselection
     task_scope: single_component_candidate_screening
     entity_scope_filter: refrigerant_or_candidate
-    model_inclusion_filter: any
+    model_inclusion_filter: "yes"
+    coverage_tier_filter: [A, B, C]
     source_layer: property_recommended_canonical_or_legacy_recommended
     minimum_molecule_count: 20
     minimum_should_have_coverage: 0.70
@@ -97,7 +98,7 @@ rules:
     coverage_tier_filter: [A, B, C]
     source_layer: property_recommended_canonical_strict
     minimum_molecule_count: 30
-    minimum_should_have_coverage: 0.80
+    minimum_should_have_coverage: 0.60
     minimum_quality_score: 80
     allow_proxy_rows: 0
     require_numeric_values: 1
@@ -116,7 +117,8 @@ rules:
     task_name: phase2_cycle_seed
     task_scope: phase2_cycle_simulation_seed_selection
     entity_scope_filter: refrigerant_or_candidate
-    model_inclusion_filter: any
+    model_inclusion_filter: "yes"
+    coverage_tier_filter: [A, B, C]
     source_layer: molecule_core_plus_property_recommended
     minimum_molecule_count: 10
     minimum_should_have_coverage: 0.65

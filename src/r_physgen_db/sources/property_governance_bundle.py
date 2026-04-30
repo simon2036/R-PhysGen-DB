@@ -799,6 +799,8 @@ def _merge_canonical_readiness(
 ) -> pd.DataFrame:
     readiness = readiness_rules.copy().fillna("")
     defaults: dict[str, Any] = {
+        "canonical_feature_key": "",
+        "canonical_property_id": "",
         "readiness_rule_id": "",
         "use_as_ml_feature": 0,
         "use_as_ml_target": 0,

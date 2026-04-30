@@ -12,7 +12,7 @@ import pandas as pd
 from r_physgen_db.constants import PARSER_VERSION
 from r_physgen_db.cycle_conditions import CYCLE_PROPERTIES, fill_cycle_observation_fields, infer_cycle_context
 from r_physgen_db.proxy_features import PROXY_FEATURE_KEYS
-from r_physgen_db.quantum_pilot import QUANTUM_FEATURE_KEYS
+from r_physgen_db.quantum_pilot import ALL_QUANTUM_FEATURE_KEYS
 
 
 HASH_FIELDS = [
@@ -204,7 +204,7 @@ def canonicalize_condition(
         condition["notes"] = "screening_proxy_condition_not_applicable"
         return condition
 
-    if prop in QUANTUM_FEATURE_KEYS:
+    if prop in ALL_QUANTUM_FEATURE_KEYS:
         condition["condition_role"] = "gas_phase_298k"
         condition["temperature_value"] = 298.15
         condition["temperature_unit"] = "K"

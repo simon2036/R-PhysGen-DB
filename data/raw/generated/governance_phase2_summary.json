@@ -1,0 +1,39 @@
+{
+  "blocker_count": 197,
+  "blocker_report": "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_phase2_blockers.csv",
+  "crest_external_request_count": 23,
+  "crest_request_count": 62,
+  "crest_requests": "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_phase2_crest_requests.csv",
+  "crest_singleton_request_count": 39,
+  "crest_xyz_manifest": "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_phase2_crest_xyz_manifest.csv",
+  "governance_substance_count": 135,
+  "mapped_substance_count": 62,
+  "mapping_report": "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_phase2_mapping_report.csv",
+  "orca_batch_count": 3,
+  "orca_full_request_count": 59,
+  "orca_request_files": [
+    "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_phase2_orca_optfreq_batch001.csv",
+    "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_phase2_orca_optfreq_batch002.csv",
+    "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_phase2_orca_optfreq_batch003.csv"
+  ],
+  "orca_smoke_request_count": 3,
+  "orca_smoke_requests": "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_phase2_orca_optfreq_smoke_requests.csv",
+  "orca_smoke_xyz_manifest": "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_phase2_orca_optfreq_smoke_xyz_manifest.csv",
+  "orca_xyz_manifest_files": [
+    "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_phase2_orca_optfreq_xyz_manifest_batch001.csv",
+    "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_phase2_orca_optfreq_xyz_manifest_batch002.csv",
+    "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_phase2_orca_optfreq_xyz_manifest_batch003.csv"
+  ],
+  "phase2_feature_keys": [
+    "quantum.conformer_count",
+    "quantum.conformer_energy_window",
+    "quantum.lowest_real_frequency",
+    "quantum.thermal_enthalpy_correction",
+    "quantum.thermal_gibbs_correction",
+    "quantum.zpe"
+  ],
+  "unmapped_substance_count": 73,
+  "xtb_hessian_request_count": 62,
+  "xtb_hessian_requests": "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_phase2_xtb_hessian_requests.csv",
+  "xtb_hessian_xyz_manifest": "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_phase2_xtb_hessian_xyz_manifest.csv"
+}

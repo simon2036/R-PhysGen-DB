@@ -17,6 +17,7 @@ columns:
 cycle_model_vocabulary:
   - subcritical_vapor_compression
   - transcritical_co2
+  - transcritical_generalized
   - custom
 eos_source_vocabulary:
   - CoolProp

@@ -33,6 +33,8 @@ category_vocabulary:
   - environmental
   - safety
   - quantum_electronic
+  - quantum_conformer
+  - quantum_vibrational
   - cycle_performance
   - synthesis_proxy
   - degradation_proxy
@@ -387,6 +389,122 @@ registry:
     is_condition_sensitive: 0
     default_condition_role: gas_phase_298k
     ml_default_role: feature
+
+  - canonical_feature_key: quantum.total_energy
+    legacy_property_name: total_energy_eh
+    aliases_json: '["total_energy", "total_energy_eh", "xtb_total_energy"]'
+    display_name: Total Electronic Energy
+    display_name_zh: 总电子能量
+    category: quantum_electronic
+    preferred_standard_unit: Eh
+    value_type: numeric
+    is_condition_sensitive: 0
+    default_condition_role: gas_phase_298k
+    ml_default_role: feature
+
+  - canonical_feature_key: quantum.dipole_moment
+    legacy_property_name: dipole_moment_debye
+    aliases_json: '["dipole_moment", "dipole_moment_debye", "molecular_dipole"]'
+    display_name: Dipole Moment
+    display_name_zh: 偶极矩
+    category: quantum_electronic
+    preferred_standard_unit: Debye
+    value_type: numeric
+    is_condition_sensitive: 0
+    default_condition_role: gas_phase_298k
+    ml_default_role: feature
+
+  - canonical_feature_key: quantum.polarizability
+    legacy_property_name: polarizability_au
+    aliases_json: '["polarizability", "polarizability_au", "alpha_0"]'
+    display_name: Static Polarizability
+    display_name_zh: 静态极化率
+    category: quantum_electronic
+    preferred_standard_unit: au
+    value_type: numeric
+    is_condition_sensitive: 0
+    default_condition_role: gas_phase_298k
+    ml_default_role: feature
+
+
+
+  - canonical_feature_key: quantum.zpe
+    legacy_property_name: zpe_eh
+    aliases_json: '["ZPE", "zero_point_energy", "zpe_eh"]'
+    display_name: Zero-Point Energy
+    display_name_zh: 零点能
+    category: quantum_vibrational
+    preferred_standard_unit: Eh
+    value_type: numeric
+    is_condition_sensitive: 0
+    default_condition_role: gas_phase_298k
+    ml_default_role: feature
+    notes: Phase-2 long-form quantum scalar; not projected to wide ML tables.
+
+  - canonical_feature_key: quantum.lowest_real_frequency
+    legacy_property_name: lowest_real_frequency_cm_inv
+    aliases_json: '["lowest_real_frequency", "lowest_frequency_cm_inv"]'
+    display_name: Lowest Real Vibrational Frequency
+    display_name_zh: 最低实振动频率
+    category: quantum_vibrational
+    preferred_standard_unit: cm^-1
+    value_type: numeric
+    is_condition_sensitive: 0
+    default_condition_role: gas_phase_298k
+    ml_default_role: feature
+    notes: Phase-2 Hessian/opt-freq quality scalar; imaginary modes remain in job metadata and vibrational detail tables.
+
+  - canonical_feature_key: quantum.thermal_enthalpy_correction
+    legacy_property_name: thermal_enthalpy_correction_eh
+    aliases_json: '["thermal_enthalpy_correction", "H(T)-H(0)"]'
+    display_name: Thermal Enthalpy Correction
+    display_name_zh: 热焓校正
+    category: quantum_vibrational
+    preferred_standard_unit: Eh
+    value_type: numeric
+    is_condition_sensitive: 0
+    default_condition_role: gas_phase_298k
+    ml_default_role: feature
+    notes: Phase-2 long-form quantum scalar; not a standard enthalpy of formation.
+
+  - canonical_feature_key: quantum.thermal_gibbs_correction
+    legacy_property_name: thermal_gibbs_correction_eh
+    aliases_json: '["thermal_gibbs_correction", "G(RRHO)"]'
+    display_name: Thermal Gibbs Correction
+    display_name_zh: 热吉布斯校正
+    category: quantum_vibrational
+    preferred_standard_unit: Eh
+    value_type: numeric
+    is_condition_sensitive: 0
+    default_condition_role: gas_phase_298k
+    ml_default_role: feature
+    notes: Phase-2 long-form quantum scalar; not a standard formation free energy.
+
+  - canonical_feature_key: quantum.conformer_count
+    legacy_property_name: conformer_count
+    aliases_json: '["crest_conformer_count", "conformer_count"]'
+    display_name: Conformer Count
+    display_name_zh: 构象数量
+    category: quantum_conformer
+    preferred_standard_unit: count
+    value_type: numeric
+    is_condition_sensitive: 0
+    default_condition_role: gas_phase_298k
+    ml_default_role: feature
+    notes: Phase-2 CREST/singleton conformer summary; conformer rows remain in detail tables.
+
+  - canonical_feature_key: quantum.conformer_energy_window
+    legacy_property_name: conformer_energy_window_kcal_mol
+    aliases_json: '["conformer_energy_window", "relative_energy_window"]'
+    display_name: Conformer Relative-Energy Window
+    display_name_zh: 构象相对能量窗口
+    category: quantum_conformer
+    preferred_standard_unit: kcal/mol
+    value_type: numeric
+    is_condition_sensitive: 0
+    default_condition_role: gas_phase_298k
+    ml_default_role: feature
+    notes: Phase-2 conformer ensemble energy spread; conformer-level energies remain in detail tables.
 
   - canonical_feature_key: synthesis.synthetic_accessibility_score
     legacy_property_name: synthetic_accessibility

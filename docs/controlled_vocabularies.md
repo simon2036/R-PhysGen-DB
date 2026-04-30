@@ -79,6 +79,8 @@ The formal machine-readable vocabularies live in `schemas/controlled_vocabularie
 - `vaporization_enthalpy_kjmol`
 - `cop_standard_cycle`
 - `volumetric_cooling_mjm3`
+- `pressure_ratio`
+- `discharge_temperature_c`
 - `gwp_20yr`
 - `gwp_100yr`
 - `gwp_ar4_100yr`

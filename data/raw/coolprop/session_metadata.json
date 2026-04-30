@@ -14,5 +14,72 @@
     "superheat_k": 5.0,
     "compressor_isentropic_efficiency": 0.7
   },
+  "production_cycle_points": {
+    "subcritical": [
+      {
+        "cycle_case_id": "subcritical_5c_35c_cycle",
+        "case_name": "5 degC evaporating / 35 degC condensing",
+        "evaporating_temperature_c": 5.0,
+        "condensing_temperature_c": 35.0,
+        "superheat_k": 5.0,
+        "subcooling_k": 5.0,
+        "compressor_isentropic_efficiency": 0.75
+      },
+      {
+        "cycle_case_id": "standard_subcritical_cycle",
+        "case_name": "5 degC evaporating / 50 degC condensing",
+        "evaporating_temperature_c": 5.0,
+        "condensing_temperature_c": 50.0,
+        "superheat_k": 5.0,
+        "subcooling_k": 5.0,
+        "compressor_isentropic_efficiency": 0.75
+      },
+      {
+        "cycle_case_id": "subcritical_minus10c_40c_cycle",
+        "case_name": "-10 degC evaporating / 40 degC condensing",
+        "evaporating_temperature_c": -10.0,
+        "condensing_temperature_c": 40.0,
+        "superheat_k": 5.0,
+        "subcooling_k": 5.0,
+        "compressor_isentropic_efficiency": 0.75
+      }
+    ],
+    "transcritical_co2": [
+      {
+        "cycle_case_id": "transcritical_co2_cycle",
+        "case_name": "-5 degC evaporating / 35 degC gas cooler / 9 MPa high side",
+        "evaporating_temperature_c": -5.0,
+        "gas_cooler_outlet_temperature_c": 35.0,
+        "high_side_pressure_mpa": 9.0,
+        "superheat_k": 5.0,
+        "compressor_isentropic_efficiency": 0.7
+      },
+      {
+        "cycle_case_id": "transcritical_co2_low_temp_cycle",
+        "case_name": "-10 degC evaporating / 35 degC gas cooler / 9 MPa high side",
+        "evaporating_temperature_c": -10.0,
+        "gas_cooler_outlet_temperature_c": 35.0,
+        "high_side_pressure_mpa": 9.0,
+        "superheat_k": 5.0,
+        "compressor_isentropic_efficiency": 0.7
+      },
+      {
+        "cycle_case_id": "transcritical_co2_high_lift_cycle",
+        "case_name": "0 degC evaporating / 40 degC gas cooler / 10 MPa high side",
+        "evaporating_temperature_c": 0.0,
+        "gas_cooler_outlet_temperature_c": 40.0,
+        "high_side_pressure_mpa": 10.0,
+        "superheat_k": 5.0,
+        "compressor_isentropic_efficiency": 0.7
+      }
+    ]
+  },
+  "transport_observations": {
+    "basis": "saturated_liquid_at_101325_pa",
+    "properties": [
+      "viscosity_liquid_pas",
+      "thermal_conductivity_liquid_wmk"
+    ]
+  },
   "available_fluid_count": 124
 }

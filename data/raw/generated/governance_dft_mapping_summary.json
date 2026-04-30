@@ -1,0 +1,68 @@
+{
+  "batch_size": 50,
+  "completed_psi4_dft_molecule_count": 62,
+  "completed_xtb_molecule_count": 62,
+  "dft_basis_set": "def2-SVP",
+  "dft_blocked_missing_xtb_geometry_count": 0,
+  "dft_program": "psi4",
+  "dft_theory_level": "B3LYP-D3BJ",
+  "executed_dft_failure_count": 0,
+  "executed_dft_request_batch_count": 2,
+  "executed_dft_request_count": 55,
+  "executed_dft_request_files": [
+    "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_dft_singlepoint_requests_batch001.csv",
+    "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_dft_singlepoint_requests_batch002.csv"
+  ],
+  "executed_dft_xyz_manifest_files": [
+    "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_dft_singlepoint_xyz_manifest_batch001.csv",
+    "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_dft_singlepoint_xyz_manifest_batch002.csv"
+  ],
+  "executed_xtb_failure_count": 0,
+  "executed_xtb_request_batch_count": 1,
+  "executed_xtb_request_count": 38,
+  "executed_xtb_request_files": [
+    "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_xtb_requests_batch001.csv"
+  ],
+  "executed_xtb_xyz_manifest_files": [
+    "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_xtb_xyz_manifest_batch001.csv"
+  ],
+  "execution_state": "completed_current_mapped_phase1_scalar_scope",
+  "executor_available": true,
+  "executor_status": "available",
+  "governance_substance_count": 135,
+  "latest_materialized_pending_request_count": 0,
+  "latest_materialized_pending_xyz_manifest_count": 0,
+  "mapped_substance_count": 62,
+  "mapping_report": "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_dft_mapping_report.csv",
+  "mode": "psi4-singlepoint",
+  "pending_dft_request_count": 0,
+  "pending_xtb_request_count": 0,
+  "phase1_dft_feature_keys": [
+    "quantum.homo_energy",
+    "quantum.lumo_energy",
+    "quantum.homo_lumo_gap",
+    "quantum.total_energy",
+    "quantum.dipole_moment",
+    "quantum.polarizability"
+  ],
+  "phase2_deferred_scope": [
+    "frequency/zpe/ir",
+    "nbo/resp/atomic_charges",
+    "thermochemistry",
+    "conformer_ensembles"
+  ],
+  "queue_row_count": 1350,
+  "request_batch_count": 2,
+  "request_count": 55,
+  "request_files": [
+    "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_dft_singlepoint_requests_batch001.csv",
+    "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_dft_singlepoint_requests_batch002.csv"
+  ],
+  "unmapped_substance_count": 73,
+  "xyz_generated_count": 55,
+  "xyz_manifest_count": 55,
+  "xyz_manifest_files": [
+    "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_dft_singlepoint_xyz_manifest_batch001.csv",
+    "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/governance_dft_singlepoint_xyz_manifest_batch002.csv"
+  ]
+}

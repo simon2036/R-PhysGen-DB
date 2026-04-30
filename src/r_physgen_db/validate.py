@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 from typing import Any
 
 import pandas as pd
@@ -38,6 +39,9 @@ from r_physgen_db.proxy_features import (
     proxy_feature_summary,
 )
 from r_physgen_db.quantum_pilot import (
+    ALL_QUANTUM_CANONICAL_FEATURE_KEYS,
+    ALL_QUANTUM_FEATURES,
+    ALL_QUANTUM_PROPERTY_NAMES,
     QUANTUM_CANONICAL_FEATURE_KEYS,
     QUANTUM_FEATURES,
     QUANTUM_FORBIDDEN_WIDE_COLUMNS,
@@ -332,11 +336,17 @@ def validate_dataset() -> dict[str, Any]:
     results["condition_migration_progress"] = _condition_migration_progress(property_observation_df, observation_condition_set_df)
     results["cycle_operating_point_summary"] = _cycle_operating_point_summary(property_observation_df, cycle_case_df, cycle_operating_point_df)
     results["mixture_summary"] = mixture_summary(mixture_composition_df, mixture_core_df, molecule_core_df)
+    quality_active_summary = quality_report_payload.get("active_learning_summary", {}) if isinstance(quality_report_payload, dict) else {}
+    active_learning_input_path = (
+        Path(quality_active_summary.get("input_path"))
+        if quality_active_summary.get("input_path")
+        else DATA_DIR / "raw" / "manual" / "active_learning_queue.csv"
+    )
     results["active_learning_summary"] = active_learning_summary(
         active_learning_queue_df,
         active_learning_decision_log_df,
         input_exists=not active_learning_queue_df.empty or not active_learning_decision_log_df.empty,
-        input_path=DATA_DIR / "raw" / "manual" / "active_learning_queue.csv",
+        input_path=active_learning_input_path,
         input_row_count=int(len(active_learning_queue_df)),
         decision_log_path=DATA_DIR / "raw" / "manual" / "active_learning_decision_log.csv",
         decision_input_row_count=int(len(active_learning_decision_log_df)),
@@ -349,6 +359,11 @@ def validate_dataset() -> dict[str, Any]:
         property_rows=_quantum_observation_rows(property_observation_df).to_dict(orient="records"),
         quantum_job=quantum_job_df,
         quantum_artifact=quantum_artifact_df,
+    )
+    quality_quantum_summary = quality_report_payload.get("quantum_pilot_summary", {}) if isinstance(quality_report_payload, dict) else {}
+    results["quantum_pilot_summary"] = _merge_quality_quantum_summary(
+        results["quantum_pilot_summary"],
+        quality_quantum_summary,
     )
     results["research_task_readiness"] = {
         "summary": readiness_summary,
@@ -369,6 +384,33 @@ def _build_inventory_convergence(
         "candidate_count": int((seed_catalog_df["entity_scope"].astype(str) == "candidate").sum()) if "entity_scope" in seed_catalog_df.columns else 0,
         "inventory_property_gaps": _inventory_property_gaps(seed_catalog_df, molecule_core_df, recommended_df),
     }
+
+
+def _merge_quality_quantum_summary(
+    validation_summary: dict[str, Any],
+    quality_quantum_summary: dict[str, Any] | object,
+) -> dict[str, Any]:
+    """Carry request-manifest and configured-input facts into validation output.
+
+    Validation derives observation/job/artifact counts from persisted Parquet
+    tables.  Request manifests are raw/generated CSV artifacts, so their
+    executor status and source-selection metadata live in the quality report
+    produced during the build.  Preserve those fields instead of replacing the
+    validation quantum summary with a lossy table-only view.
+    """
+
+    merged = dict(validation_summary)
+    if not isinstance(quality_quantum_summary, dict):
+        return merged
+
+    for key in ("input_status", "input_path", "input_row_count"):
+        value = quality_quantum_summary.get(key)
+        if value not in {None, ""}:
+            merged[key] = value
+
+    if "request_manifest" in quality_quantum_summary:
+        merged["request_manifest"] = quality_quantum_summary["request_manifest"]
+    return merged
 
 
 def _resolved_refrigerant_inventory(seed_catalog_df: pd.DataFrame, molecule_core_df: pd.DataFrame) -> int:
@@ -847,11 +889,11 @@ def _validate_quantum_pilot(
     canonical_keys = quantum_rows.get("canonical_feature_key", pd.Series("", index=quantum_rows.index)).fillna("").astype(str)
     _check(
         results,
-        set(canonical_keys.tolist()) <= QUANTUM_CANONICAL_FEATURE_KEYS,
+        set(canonical_keys.tolist()) <= ALL_QUANTUM_CANONICAL_FEATURE_KEYS,
         "quantum observations: canonical feature keys valid",
-        f"Unexpected quantum canonical feature keys: {sorted(set(canonical_keys.tolist()) - QUANTUM_CANONICAL_FEATURE_KEYS)}",
+        f"Unexpected quantum canonical feature keys: {sorted(set(canonical_keys.tolist()) - ALL_QUANTUM_CANONICAL_FEATURE_KEYS)}",
     )
-    expected_property_names = canonical_keys.map({key: value["property_name"] for key, value in QUANTUM_FEATURES.items()}).fillna("")
+    expected_property_names = canonical_keys.map({key: value["property_name"] for key, value in ALL_QUANTUM_FEATURES.items()}).fillna("")
     property_names = quantum_rows.get("property_name", pd.Series("", index=quantum_rows.index)).fillna("").astype(str)
     _check(
         results,
@@ -900,7 +942,11 @@ def _validate_quantum_pilot(
     artifact_requests.discard("")
     _check(results, not sorted(observation_request_ids - artifact_requests), "quantum observations: artifact references resolve", f"Quantum observations missing artifact rows: {sorted(observation_request_ids - artifact_requests)[:10]}")
 
-    recommended_quantum = recommended_df.loc[recommended_df["property_name"].astype(str).isin(QUANTUM_PROPERTY_NAMES)] if not recommended_df.empty else pd.DataFrame()
+    recommended_quantum = (
+        recommended_df.loc[recommended_df["property_name"].astype(str).isin(ALL_QUANTUM_PROPERTY_NAMES)]
+        if not recommended_df.empty
+        else pd.DataFrame()
+    )
     _check(
         results,
         set(recommended_quantum.get("property_name", pd.Series(dtype="object")).astype(str).unique().tolist()) == set(property_names.unique().tolist()),
@@ -934,7 +980,7 @@ def _quantum_observation_rows(property_observation_df: pd.DataFrame) -> pd.DataF
         return pd.DataFrame()
     names = property_observation_df["property_name"].fillna("").astype(str)
     keys = property_observation_df.get("canonical_feature_key", pd.Series("", index=property_observation_df.index)).fillna("").astype(str)
-    return property_observation_df.loc[names.isin(QUANTUM_PROPERTY_NAMES) | keys.isin(QUANTUM_CANONICAL_FEATURE_KEYS)].copy()
+    return property_observation_df.loc[names.isin(ALL_QUANTUM_PROPERTY_NAMES) | keys.isin(ALL_QUANTUM_CANONICAL_FEATURE_KEYS)].copy()
 
 
 def _quantum_request_ids_from_observations(quantum_rows: pd.DataFrame) -> set[str]:

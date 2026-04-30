@@ -9,21 +9,21 @@
     "tfa_risk_proxy"
   ],
   "summary": {
-    "proxy_observation_count": 11196,
-    "proxy_molecule_count": 5598,
-    "tfa_risk_proxy_count": 5598,
-    "synthetic_accessibility_count": 5598,
+    "proxy_observation_count": 41134,
+    "proxy_molecule_count": 20567,
+    "tfa_risk_proxy_count": 20567,
+    "synthetic_accessibility_count": 20567,
     "tfa_risk_distribution": {
-      "high": 393,
-      "low": 1785,
-      "medium": 606,
-      "none": 2801,
+      "high": 2546,
+      "low": 5312,
+      "medium": 1908,
+      "none": 10788,
       "unknown": 13
     },
     "synthetic_accessibility_score": {
-      "count": 5598,
+      "count": 20567,
       "min": 1.0,
-      "mean": 2.1977849231868523,
+      "mean": 2.3989517187727913,
       "max": 4.75
     }
   }

@@ -10,6 +10,7 @@ from typing import Any
 
 import duckdb
 import pandas as pd
+from rdkit import RDLogger
 
 from r_physgen_db.chemistry import compute_structure_features, standardize_smiles
 from r_physgen_db.constants import (
@@ -27,7 +28,7 @@ from r_physgen_db.constants import (
     SOURCE_PRIORITY,
 )
 from r_physgen_db.proxy_features import proxy_feature_summary
-from r_physgen_db.quantum_pilot import quantum_pilot_summary
+from r_physgen_db.quantum_pilot import ALL_QUANTUM_PROPERTY_NAMES, quantum_pilot_summary
 from r_physgen_db.sources.comptox_client import CompToxClient
 from r_physgen_db.sources.coolprop_source import CoolPropSource, UnsupportedCoolPropFluidError
 from r_physgen_db.sources.epa_gwp_reference_parser import EPATechnologyTransitionsGWPParser
@@ -41,6 +42,7 @@ from r_physgen_db.sources.pubchem import PubChemClient
 from r_physgen_db.utils import ensure_directory, load_yaml, now_iso, sha256_file, slugify, write_json, write_text
 
 _HTTP_SESSION = build_retry_session()
+_SOURCE_MANIFEST_CHECKSUM_CACHE: dict[tuple[str, int, int], str] = {}
 
 
 def _build_dataset_monolithic(refresh_remote: bool = False) -> dict[str, Any]:
@@ -485,7 +487,15 @@ def _paths() -> dict[str, Path]:
         "raw_epa": DATA_DIR / "raw" / "epa",
         "raw_coolprop_meta": DATA_DIR / "raw" / "coolprop" / "session_metadata.json",
         "raw_proxy_feature_metadata": DATA_DIR / "raw" / "generated" / "proxy_feature_heuristics_metadata.json",
+        "raw_quantum_pilot_requests": DATA_DIR / "raw" / "generated" / "quantum_pilot_requests.csv",
+        "raw_quantum_pilot_xyz_manifest": DATA_DIR / "raw" / "generated" / "quantum_pilot_xyz_manifest.csv",
+        "raw_quantum_dft_requests": DATA_DIR / "raw" / "generated" / "quantum_dft_requests.csv",
+        "raw_quantum_dft_xyz_manifest": DATA_DIR / "raw" / "generated" / "quantum_dft_xyz_manifest.csv",
         "raw_quantum_pilot_results": DATA_DIR / "raw" / "manual" / "quantum_pilot_results.csv",
+        "raw_cycle_backend_results": DATA_DIR / "raw" / "manual" / "cycle_backend_results.csv",
+        "raw_generated_active_learning_queue": DATA_DIR / "raw" / "generated" / "active_learning_queue.csv",
+        "raw_promoted_coverage_matrix": DATA_DIR / "raw" / "generated" / "promoted_coverage_matrix.csv",
+        "raw_promoted_enrichment_worklist": DATA_DIR / "raw" / "generated" / "promoted_enrichment_worklist.csv",
         "raw_active_learning_queue": DATA_DIR / "raw" / "manual" / "active_learning_queue.csv",
         "raw_active_learning_decision_log": DATA_DIR / "raw" / "manual" / "active_learning_decision_log.csv",
         "raw_mixture_fraction_curations": DATA_DIR / "raw" / "manual" / "mixture_fraction_curations.csv",
@@ -521,6 +531,7 @@ def _paths() -> dict[str, Path]:
         "gold_model_ready": DATA_DIR / "gold" / "model_ready.parquet",
         "gold_active_learning_queue": DATA_DIR / "gold" / "active_learning_queue.parquet",
         "gold_active_learning_decision_log": DATA_DIR / "gold" / "active_learning_decision_log.parquet",
+        "gold_property_recommended_canonical": DATA_DIR / "gold" / "property_recommended_canonical.parquet",
         "gold_property_recommended_canonical_strict": DATA_DIR / "gold" / "property_recommended_canonical_strict.parquet",
         "gold_property_recommended_canonical_review_queue": DATA_DIR / "gold" / "property_recommended_canonical_review_queue.parquet",
         "gold_research_task_readiness_report": DATA_DIR / "gold" / "research_task_readiness_report.parquet",
@@ -928,12 +939,20 @@ def _source_manifest_entry(
         "source_name": source_name,
         "license": license_name,
         "retrieved_at": now_iso(),
-        "checksum_sha256": sha256_file(local_path) if local_path.exists() else "",
+        "checksum_sha256": _source_manifest_checksum(local_path) if local_path.exists() else "",
         "local_path": _relpath(local_path) if local_path.exists() else "",
         "parser_version": PARSER_VERSION,
         "upstream_url": upstream_url,
         "status": status,
     }
+
+
+def _source_manifest_checksum(local_path: Path) -> str:
+    stat = local_path.stat()
+    cache_key = (str(local_path.resolve()), int(stat.st_size), int(stat.st_mtime_ns))
+    if cache_key not in _SOURCE_MANIFEST_CHECKSUM_CACHE:
+        _SOURCE_MANIFEST_CHECKSUM_CACHE[cache_key] = sha256_file(local_path)
+    return _SOURCE_MANIFEST_CHECKSUM_CACHE[cache_key]
 
 
 def _register_manual_sources(paths: dict[str, Path]) -> list[dict[str, Any]]:
@@ -947,6 +966,15 @@ def _register_manual_sources(paths: dict[str, Path]) -> list[dict[str, Any]]:
         ("source_pubchem_candidate_pool", "derived_harmonized", "PubChem Bulk Candidate Pool", paths["bronze_pubchem_candidate_pool"]),
         ("source_pubchem_candidate_filter_audit", "derived_harmonized", "PubChem Bulk Candidate Filter Audit", paths["bronze_pubchem_candidate_filter_audit"]),
     ]
+    if paths.get("raw_cycle_backend_results") is not None:
+        source_rows.append(
+            (
+                "source_r_physgen_cycle_backend_results",
+                "calculated_open_source",
+                "R-PhysGen-DB Cycle Backend Results",
+                paths["raw_cycle_backend_results"],
+            )
+        )
     for extra_path in sorted(paths["manual_observations_dir"].glob("*.csv")) if paths["manual_observations_dir"].exists() else []:
         source_rows.append(
             (
@@ -979,6 +1007,8 @@ def _register_manual_sources(paths: dict[str, Path]) -> list[dict[str, Any]]:
 def _load_manual_observations(paths: dict[str, Path]) -> pd.DataFrame:
     frames: list[pd.DataFrame] = []
     source_specs = [(paths["manual_observations"], "source_manual_property_observations")]
+    if paths.get("raw_cycle_backend_results") is not None:
+        source_specs.append((paths["raw_cycle_backend_results"], "source_r_physgen_cycle_backend_results"))
     if paths["manual_observations_dir"].exists():
         source_specs.extend(
             (path, f"source_manual_property_observations_{slugify(path.stem)}")
@@ -1360,6 +1390,7 @@ def _manual_property_rows(
                 "source_type": _clean_str(obs.get("source_type")),
                 "source_name": _clean_str(obs.get("source_name")),
                 "source_id": _clean_str(obs.get("manual_source_id")) or "source_manual_property_observations",
+                "source_record_id": _clean_str(obs.get("source_record_id")),
                 "method": _clean_str(obs.get("method")),
                 "uncertainty": _clean_str(obs.get("uncertainty")),
                 "quality_level": _clean_str(obs.get("quality_level")),
@@ -1369,6 +1400,11 @@ def _manual_property_rows(
                 "notes": _clean_str(obs.get("notes")),
                 "qc_status": "pass",
                 "qc_flags": "",
+                "cycle_case_id": _clean_str(obs.get("cycle_case_id")),
+                "operating_point_hash": _clean_str(obs.get("operating_point_hash")),
+                "cycle_model": _clean_str(obs.get("cycle_model")),
+                "eos_source": _clean_str(obs.get("eos_source")),
+                "convergence_flag": _optional_float(obs.get("convergence_flag")),
             }
         )
     return rows
@@ -1900,10 +1936,16 @@ def _effective_quality_score(row: pd.Series) -> float:
 
 def _build_structure_features(molecule_core: pd.DataFrame) -> pd.DataFrame:
     rows = []
-    for row in molecule_core.to_dict(orient="records"):
-        features = compute_structure_features(row["isomeric_smiles"])
-        features["mol_id"] = row["mol_id"]
-        rows.append(features)
+    RDLogger.DisableLog("rdApp.warning")
+    RDLogger.DisableLog("rdApp.error")
+    try:
+        for row in molecule_core.to_dict(orient="records"):
+            features = compute_structure_features(row["isomeric_smiles"])
+            features["mol_id"] = row["mol_id"]
+            rows.append(features)
+    finally:
+        RDLogger.EnableLog("rdApp.warning")
+        RDLogger.EnableLog("rdApp.error")
     return pd.DataFrame(rows).sort_values("mol_id") if rows else pd.DataFrame(columns=["mol_id"])
 
 
@@ -1944,6 +1986,7 @@ def _build_model_dataset_index(
         (property_recommended["mol_id"].isin(model_eligible))
         & (property_recommended["value_num"].notna() | (property_recommended["value"].astype(str).str.strip() != ""))
     ]
+    usable = usable.loc[~usable["property_name"].astype(str).isin(ALL_QUANTUM_PROPERTY_NAMES)]
     coverage = usable.groupby("mol_id")["property_name"].nunique().to_dict()
     avg_quality = (
         usable.assign(quality_score=usable["selected_quality_level"].map(QUALITY_SCORES).fillna(0.0))

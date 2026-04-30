@@ -23,8 +23,8 @@ def test_current_dataset_version_has_matching_migration_record() -> None:
     result = validate_dataset_migrations(PROJECT_ROOT)
 
     assert result["errors"] == []
-    assert result["current_version"] == "v1.5.0-draft"
-    assert "2026-04-24-v1.5.0-draft-baseline.md" in result["matching_current_version_records"]
+    assert result["current_version"] == "v1.6.3-draft"
+    assert "2026-04-30-v1.6.3-draft-phase2-quantum-handoff.md" in result["matching_current_version_records"]
 
 
 def test_valid_baseline_record_passes_validation(tmp_path: Path) -> None:
