@@ -8,10 +8,10 @@ Draft utility for P0/PR-C. It is intentionally conservative:
 
 Usage:
   python scripts/backfill_condition_set.py \
-      --property-observation data/silver/property_observation.parquet \
-      --out-observation data/silver/property_observation.backfilled.parquet \
-      --out-condition-set data/silver/observation_condition_set.parquet \
-      --report data/gold/condition_migration_report.json
+      --property-observation data/lake/silver/property_observation.parquet \
+      --out-observation data/lake/silver/property_observation.backfilled.parquet \
+      --out-condition-set data/lake/silver/observation_condition_set.parquet \
+      --report data/lake/gold/condition_migration_report.json
 """
 
 from __future__ import annotations

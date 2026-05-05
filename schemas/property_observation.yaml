@@ -1,6 +1,6 @@
 table_name: property_observation
 layer: silver
-path: data/silver/property_observation.parquet
+path: data/lake/silver/property_observation.parquet
 primary_key:
   - observation_id
 columns:

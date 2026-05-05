@@ -1,6 +1,6 @@
 table_name: pending_sources
 layer: bronze
-path: data/bronze/pending_sources.parquet
+path: data/lake/bronze/pending_sources.parquet
 primary_key:
   - pending_id
 columns:

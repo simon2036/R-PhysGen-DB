@@ -1,6 +1,6 @@
 table_name: source_manifest
 layer: bronze
-path: data/bronze/source_manifest.parquet
+path: data/lake/bronze/source_manifest.parquet
 primary_key:
   - source_id
 columns:

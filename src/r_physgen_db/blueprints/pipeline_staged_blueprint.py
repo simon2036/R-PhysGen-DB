@@ -183,7 +183,7 @@ def _persist_stage_manifest(
     """Write a stage execution manifest row.
 
     Production implementation should write Parquet to
-    data/bronze/stage_run_manifest.parquet. Blueprint writes JSONL for easy inspection.
+    data/lake/bronze/stage_run_manifest.parquet. Blueprint writes JSONL for easy inspection.
     """
     manifest_path = ctx.data_dir / "bronze" / "stage_run_manifest.blueprint.jsonl"
     manifest_path.parent.mkdir(parents=True, exist_ok=True)
@@ -472,7 +472,7 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     results = build_dataset_staged(
         project_root=Path(".").resolve(),
-        data_dir=Path("./data").resolve(),
+        data_dir=(Path("./data") / "lake").resolve(),
         refresh_remote=False,
     )
     for item in results:

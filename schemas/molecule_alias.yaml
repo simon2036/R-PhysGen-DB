@@ -1,6 +1,6 @@
 table_name: molecule_alias
 layer: silver
-path: data/silver/molecule_alias.parquet
+path: data/lake/silver/molecule_alias.parquet
 primary_key:
   - mol_id
   - alias_type

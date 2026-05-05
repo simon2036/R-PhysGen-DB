@@ -1,6 +1,6 @@
 table_name: property_recommended_canonical_strict
 layer: gold
-path: data/gold/property_recommended_canonical_strict.parquet
+path: data/lake/gold/property_recommended_canonical_strict.parquet
 primary_key:
   - mol_id
   - canonical_feature_key

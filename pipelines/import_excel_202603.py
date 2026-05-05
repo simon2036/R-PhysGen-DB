@@ -18,16 +18,17 @@ from r_physgen_db.sources.excel_202603 import (  # noqa: E402
     build_excel_202603_outputs,
     find_default_workbook_path,
 )
+from r_physgen_db.constants import DATA_DIR, DOCS_DIR  # noqa: E402
 from r_physgen_db.utils import ensure_directory, write_text  # noqa: E402
 
 
-DEFAULT_MOLECULE_CORE = ROOT / "data" / "silver" / "molecule_core.parquet"
-DEFAULT_MOLECULE_ALIAS = ROOT / "data" / "silver" / "molecule_alias.parquet"
-DEFAULT_PROPERTY_RECOMMENDED = ROOT / "data" / "gold" / "property_recommended.parquet"
-DEFAULT_OBSERVATIONS_OUT = ROOT / "data" / "raw" / "manual" / "observations" / "excel_202603_observations.csv"
-DEFAULT_CANDIDATES_OUT = ROOT / "data" / "raw" / "generated" / "excel_202603_tierd_candidates.csv"
-DEFAULT_STAGING_OUT = ROOT / "data" / "raw" / "generated" / "excel_202603_name_only_staging.csv"
-DEFAULT_REPORT_OUT = ROOT / "docs" / "excel_202603_brief_report.md"
+DEFAULT_MOLECULE_CORE = DATA_DIR / "silver" / "molecule_core.parquet"
+DEFAULT_MOLECULE_ALIAS = DATA_DIR / "silver" / "molecule_alias.parquet"
+DEFAULT_PROPERTY_RECOMMENDED = DATA_DIR / "gold" / "property_recommended.parquet"
+DEFAULT_OBSERVATIONS_OUT = DATA_DIR / "raw" / "manual" / "observations" / "excel_202603_observations.csv"
+DEFAULT_CANDIDATES_OUT = DATA_DIR / "raw" / "generated" / "excel_202603_tierd_candidates.csv"
+DEFAULT_STAGING_OUT = DATA_DIR / "raw" / "generated" / "excel_202603_name_only_staging.csv"
+DEFAULT_REPORT_OUT = DOCS_DIR / "reports" / "excel_202603_brief_report.md"
 
 
 def _read_required_parquet(path: Path, label: str) -> pd.DataFrame:

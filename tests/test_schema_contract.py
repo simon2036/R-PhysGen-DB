@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from r_physgen_db.constants import PROJECT_ROOT, SCHEMA_DIR
+from r_physgen_db.constants import DATA_DIR, PROJECT_ROOT, SCHEMA_DIR
 from r_physgen_db.utils import load_yaml
 
 MANUAL_OBSERVATION_COLUMNS = [
@@ -50,12 +50,12 @@ def test_property_observation_contract_contains_required_fields() -> None:
 
 
 def test_seed_catalog_exists() -> None:
-    path = PROJECT_ROOT / "data" / "raw" / "manual" / "seed_catalog.csv"
+    path = DATA_DIR / "raw" / "manual" / "seed_catalog.csv"
     assert path.exists()
 
 
 def test_seed_catalog_has_wave2_columns() -> None:
-    path = PROJECT_ROOT / "data" / "raw" / "manual" / "seed_catalog.csv"
+    path = DATA_DIR / "raw" / "manual" / "seed_catalog.csv"
     header = path.read_text(encoding="utf-8").splitlines()[0].split(",")
     for required in [
         "coverage_tier",
@@ -93,7 +93,7 @@ def test_wave2_schema_files_exist() -> None:
 
 
 def test_property_governance_unresolved_curations_contract_exists() -> None:
-    path = PROJECT_ROOT / "data" / "raw" / "manual" / "property_governance_20260422_unresolved_curations.csv"
+    path = DATA_DIR / "raw" / "manual" / "property_governance_20260422_unresolved_curations.csv"
     assert path.exists()
     header = path.read_text(encoding="utf-8").splitlines()[0].split(",")
     for required in [
@@ -113,7 +113,7 @@ def test_property_governance_unresolved_curations_contract_exists() -> None:
 
 
 def test_property_governance_canonical_review_decisions_contract_exists() -> None:
-    path = PROJECT_ROOT / "data" / "raw" / "manual" / "property_governance_20260422_canonical_review_decisions.csv"
+    path = DATA_DIR / "raw" / "manual" / "property_governance_20260422_canonical_review_decisions.csv"
     assert path.exists()
     header = path.read_text(encoding="utf-8").splitlines()[0].split(",")
     for required in [
@@ -131,7 +131,7 @@ def test_property_governance_canonical_review_decisions_contract_exists() -> Non
 
 
 def test_property_governance_proxy_acceptance_rules_contract_exists() -> None:
-    path = PROJECT_ROOT / "data" / "raw" / "manual" / "property_governance_20260422_proxy_acceptance_rules.csv"
+    path = DATA_DIR / "raw" / "manual" / "property_governance_20260422_proxy_acceptance_rules.csv"
     assert path.exists()
     header = path.read_text(encoding="utf-8").splitlines()[0].split(",")
     for required in [
@@ -158,7 +158,7 @@ def test_controlled_vocabularies_support_inventory_expansion() -> None:
 
 
 def test_supplement_combined_manual_observation_file_contract() -> None:
-    path = PROJECT_ROOT / "data" / "raw" / "manual" / "observations" / "manual_property_observations_supplement_combined_20260501.csv"
+    path = DATA_DIR / "raw" / "manual" / "observations" / "manual_property_observations_supplement_combined_20260501.csv"
 
     frame = pd.read_csv(path).fillna("")
 
@@ -167,10 +167,10 @@ def test_supplement_combined_manual_observation_file_contract() -> None:
     assert not frame.duplicated(subset=MANUAL_OBSERVATION_COLUMNS).any()
 
     legacy_sources = [
-        PROJECT_ROOT / "data" / "raw" / "manual" / "manual_property_observations.csv",
+        DATA_DIR / "raw" / "manual" / "manual_property_observations.csv",
         *[
             candidate
-            for candidate in sorted((PROJECT_ROOT / "data" / "raw" / "manual" / "observations").glob("*.csv"))
+            for candidate in sorted((DATA_DIR / "raw" / "manual" / "observations").glob("*.csv"))
             if candidate != path
         ],
     ]
@@ -181,7 +181,7 @@ def test_supplement_combined_manual_observation_file_contract() -> None:
 
 
 def test_supplement_combined_value_num_policy() -> None:
-    path = PROJECT_ROOT / "data" / "raw" / "manual" / "observations" / "manual_property_observations_supplement_combined_20260501.csv"
+    path = DATA_DIR / "raw" / "manual" / "observations" / "manual_property_observations_supplement_combined_20260501.csv"
     frame = pd.read_csv(path).fillna("")
 
     numeric = frame["property_name"].isin({"gwp_100yr", "gwp_20yr", "odp"})
@@ -194,17 +194,10 @@ def test_supplement_combined_value_num_policy() -> None:
 
 
 def test_review_only_inequality_observations_stay_outside_ingestion_path() -> None:
-    path = (
-        PROJECT_ROOT
-        / "data"
-        / "raw"
-        / "manual"
-        / "review_only"
-        / "review_only_inequality_observations_round2_20260501.csv"
-    )
+    path = DATA_DIR / "raw" / "manual" / "review_only" / "review_only_inequality_observations_round2_20260501.csv"
 
     frame = pd.read_csv(path).fillna("")
 
     assert len(frame) == 13
-    assert "observations" not in path.relative_to(PROJECT_ROOT / "data" / "raw" / "manual").parts
+    assert "observations" not in path.relative_to(DATA_DIR / "raw" / "manual").parts
     assert (frame["do_not_merge_reason"].str.contains("inequality/bound", regex=False)).all()

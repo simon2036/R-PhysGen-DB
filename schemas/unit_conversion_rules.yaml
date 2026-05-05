@@ -1,6 +1,6 @@
 table_name: unit_conversion_rules
 layer: gold
-path: data/gold/unit_conversion_rules.parquet
+path: data/lake/gold/unit_conversion_rules.parquet
 primary_key:
   - unit_conversion_rule_id
 columns:

@@ -4,7 +4,7 @@ status: p0_draft_ready
 path: schemas/research_task_readiness_rules.yaml
 note: >
   This YAML file is the validator-consumed configuration. Execution results are data products and should be written to
-  data/gold/research_task_readiness_report.parquet and validation_report.json.
+  data/lake/gold/research_task_readiness_report.parquet and validation_report.json.
 primary_key:
   - readiness_rule_id
 columns:

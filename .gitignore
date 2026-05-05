@@ -3,25 +3,25 @@ __pycache__/
 .pytest_cache/
 .cache/
 .trash/
-runs/
 *.baiduyun.uploading.cfg
-data/index/*.tmp
-data/index/*.local.duckdb
-data/index/*.local.*.duckdb
+data/artifacts/local/
+data/indexes/*.tmp
+data/indexes/*.local.duckdb
+data/indexes/*.local.*.duckdb
 
-# Local-only PubChem bulk assets; see docs/local_large_artifacts.md
-data/raw/pubchem_bulk/
-data/raw/pubchem/tierd_excel202603_*.json
-data/bronze/pubchem_candidate_pool.parquet
-data/bronze/pubchem_candidate_filter_audit.parquet
+# Local-only PubChem bulk assets; see docs/operations/local_large_artifacts.md
+data/lake/raw/pubchem_bulk/
+data/lake/raw/pubchem/tierd_excel202603_*.json
+data/lake/bronze/pubchem_candidate_pool.parquet
+data/lake/bronze/pubchem_candidate_filter_audit.parquet
 
-# Local-only executor artifact trees; see docs/local_large_artifacts.md
-data/raw/manual/quantum_pilot_artifacts/
-data/raw/manual/quantum_phase2_artifacts/
-data/raw/manual/cycle_backend_artifacts/
-data/raw/generated/quantum_xyz/
-data/raw/generated/quantum_dft_xyz/
-data/raw/generated/governance_xtb_xyz/
-data/raw/generated/governance_dft_singlepoint_xyz/
-data/raw/generated/governance_phase2_xyz/
+# Local-only executor artifact trees; see docs/operations/local_large_artifacts.md
+data/lake/raw/manual/quantum_pilot_artifacts/
+data/lake/raw/manual/quantum_phase2_artifacts/
+data/lake/raw/manual/cycle_backend_artifacts/
+data/lake/raw/generated/quantum_xyz/
+data/lake/raw/generated/quantum_dft_xyz/
+data/lake/raw/generated/governance_xtb_xyz/
+data/lake/raw/generated/governance_dft_singlepoint_xyz/
+data/lake/raw/generated/governance_phase2_xyz/
 deploy/lan/.auth.json

@@ -16,7 +16,7 @@ import pandas as pd
 from rdkit import Chem, RDLogger
 from rdkit.Chem import AllChem
 
-from r_physgen_db.constants import PROJECT_ROOT
+from r_physgen_db.constants import DATA_DIR, PROJECT_ROOT
 
 
 QUANTUM_SOURCE_ID = "source_r_physgen_quantum_pilot"
@@ -301,7 +301,7 @@ def build_quantum_pilot_request_manifest(
 
     max_requests = _quantum_max_requests() if max_requests is None else int(max_requests)
     executor_available = _quantum_executor_available() if tools_available is None else bool(tools_available)
-    xyz_dir = xyz_dir or Path("data/raw/generated/quantum_xyz")
+    xyz_dir = xyz_dir or DATA_DIR / "raw" / "generated" / "quantum_xyz"
     completed_requests = {_clean(request_id) for request_id in (completed_request_ids or set()) if _clean(request_id)}
     candidates = molecule_core.copy().fillna("")
     selected_records = _active_learning_quantum_candidate_records(candidates, active_learning_queue)
@@ -447,7 +447,7 @@ def build_psi4_dft_request_manifest(
 
     max_requests = _dft_max_requests() if max_requests is None else int(max_requests)
     executor_available = _psi4_executor_available() if tools_available is None else bool(tools_available)
-    xyz_dir = xyz_dir or Path("data/raw/generated/quantum_dft_xyz")
+    xyz_dir = xyz_dir or DATA_DIR / "raw" / "generated" / "quantum_dft_xyz"
     xtb_completed = _completed_xtb_mol_ids(xtb_results)
     xtb_optimized_xyz_by_mol = _completed_xtb_optimized_xyz_by_mol_id(xtb_results)
     completed_requests = {_clean(request_id) for request_id in (completed_request_ids or set()) if _clean(request_id)}
@@ -731,7 +731,6 @@ def _request_summary(
         "selection_source": selection_source,
         "status_counts": request_manifest["status"].value_counts().sort_index().to_dict() if not request_manifest.empty else {},
         "stale_xyz_trashed_count": int(len(stale_xyz_trashed)),
-        "stale_xyz_trashed_paths": stale_xyz_trashed[:20],
     }
 
 

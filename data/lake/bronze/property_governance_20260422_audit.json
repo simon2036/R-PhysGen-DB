@@ -1,0 +1,60 @@
+{
+  "bundle_file": "/home/ifs1/myDB/R-PhysGen-DB/data/sources/property_governance/refrigerant_seed_database_20260422_property_governance_bundle.zip",
+  "bundle_sha256": "c6a13391b8c01dff4acf2ff4d68eaca7fccde6b779f476a288a8e083d5d81743",
+  "bundle_table_count": 218,
+  "extension_table_count": 218,
+  "crosswalk": {
+    "matched_existing": 128,
+    "generated_new_seed": 7,
+    "unresolved": 0,
+    "inchikey_matches": 126,
+    "cas_matches": 2,
+    "r_number_matches": 0,
+    "canonical_smiles_matches": 0,
+    "external_resolution_count": 2
+  },
+  "canonical_observation_count": 1687,
+  "canonical_recommended_count": 1389,
+  "canonical_recommended_strict_count": 1304,
+  "canonical_review_queue_count": 0,
+  "canonical_proxy_selected_count": 466,
+  "canonical_proxy_only_count": 466,
+  "canonical_conflict_count": 1,
+  "canonical_source_divergence_count": 35,
+  "canonical_conflict_open_count": 0,
+  "canonical_source_divergence_open_count": 0,
+  "canonical_review_decision_count": 120,
+  "canonical_proxy_policy_count": 13,
+  "canonical_strict_proxy_accept_count": 396,
+  "canonical_review_reason_counts": {},
+  "canonical_review_decision_reason_counts": {
+    "below_minimum_quality": 80,
+    "source_divergence": 34,
+    "non_numeric_selected_value": 4,
+    "not_ml_relevant": 1,
+    "top_rank_conflict": 1
+  },
+  "canonical_review_decision_action_counts": {
+    "accept_out_of_strict": 85,
+    "accept_selected_source": 35
+  },
+  "canonical_proxy_policy_feature_counts": {
+    "identifier.molecular_weight": 5,
+    "environmental.atmospheric_lifetime": 1,
+    "molecular_descriptor.acentric_factor": 1,
+    "safety.safety_group": 1,
+    "thermodynamic.critical_density": 1,
+    "thermodynamic.critical_pressure": 1,
+    "thermodynamic.critical_temperature": 1,
+    "thermodynamic.triple_pressure": 1,
+    "thermodynamic.triple_temperature": 1
+  },
+  "row_count_audit": {
+    "status": "ok",
+    "expected_table_count": 218,
+    "actual_table_count": 218,
+    "missing_tables": [],
+    "extra_tables": [],
+    "row_mismatch_tables": []
+  }
+}

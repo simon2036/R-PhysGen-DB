@@ -81,6 +81,7 @@ class BuildState:
     structure_features: pd.DataFrame = field(default_factory=pd.DataFrame)
     property_matrix: pd.DataFrame = field(default_factory=pd.DataFrame)
     model_dataset_index: pd.DataFrame = field(default_factory=pd.DataFrame)
+    molecule_split_definition: pd.DataFrame = field(default_factory=pd.DataFrame)
     molecule_master: pd.DataFrame = field(default_factory=pd.DataFrame)
     model_ready: pd.DataFrame = field(default_factory=pd.DataFrame)
     source_manifest: pd.DataFrame = field(default_factory=pd.DataFrame)
@@ -127,7 +128,7 @@ class BuildState:
         except Exception:
             self.code_version = "unknown"
 
-        version_path = self.project_root / "data" / "gold" / "VERSION"
+        version_path = self.data_dir / "gold" / "VERSION"
         if version_path.exists():
             self.dataset_version = version_path.read_text(encoding="utf-8").strip()
         else:

@@ -567,16 +567,24 @@ def stage08_build_model_outputs(state: BuildState) -> StageResult:
         state.property_recommended,
         state.molecule_core,
     )
+    state.molecule_split_definition = legacy._build_molecule_split_definition(
+        state.model_dataset_index,
+        state.molecule_core,
+        dataset_version=state.dataset_version,
+        code_version=state.code_version,
+    )
     state.model_ready = legacy._build_model_ready(state.molecule_master, state.property_matrix, state.model_dataset_index)
     return StageResult(
         stage_id="08",
         status="succeeded",
         outputs=[
             state.logical_artifact("model_dataset_index", row_count=len(state.model_dataset_index)),
+            state.logical_artifact("molecule_split_definition", row_count=len(state.molecule_split_definition)),
             state.logical_artifact("model_ready", row_count=len(state.model_ready)),
         ],
         row_count_summary={
             "model_dataset_index": int(len(state.model_dataset_index)),
+            "molecule_split_definition": int(len(state.molecule_split_definition)),
             "model_ready": int(len(state.model_ready)),
         },
     )
@@ -694,6 +702,7 @@ def stage09_validate_and_publish(state: BuildState) -> StageResult:
     legacy._write_parquet(state.molecule_master, paths["gold_molecule_master"])
     legacy._write_parquet(state.property_matrix, paths["gold_property_matrix"])
     legacy._write_parquet(state.model_dataset_index, paths["gold_model_index"])
+    legacy._write_parquet(state.molecule_split_definition, paths["gold_molecule_split_definition"])
     legacy._write_parquet(state.model_ready, paths["gold_model_ready"])
     legacy._write_parquet(state.active_learning_queue, paths["gold_active_learning_queue"])
     legacy._write_parquet(state.active_learning_decision_log, paths["gold_active_learning_decision_log"])
@@ -757,6 +766,7 @@ def stage09_validate_and_publish(state: BuildState) -> StageResult:
             state.file_artifact("property_recommended_canonical", paths["gold_property_recommended_canonical"], kind="table"),
             state.file_artifact("property_recommended_canonical_strict", paths["gold_property_recommended_canonical_strict"], kind="table"),
             state.file_artifact("property_recommended_canonical_review_queue", paths["gold_property_recommended_canonical_review_queue"], kind="table"),
+            state.file_artifact("molecule_split_definition", paths["gold_molecule_split_definition"], kind="table"),
             state.file_artifact("dataset_version", paths["gold_version"], kind="file"),
             state.file_artifact("research_task_readiness_report", paths["gold_research_task_readiness_report"], kind="table"),
             state.file_artifact("quality_report", paths["gold_quality_report"], kind="file"),
@@ -773,6 +783,7 @@ def stage09_validate_and_publish(state: BuildState) -> StageResult:
             "mixture_composition": int(len(state.mixture_composition)),
             "active_learning_queue": int(len(state.active_learning_queue)),
             "active_learning_decision_log": int(len(state.active_learning_decision_log)),
+            "molecule_split_definition": int(len(state.molecule_split_definition)),
             "property_recommended_canonical": int(len(state.canonical_recommended)),
             "property_recommended_canonical_strict": int(len(state.canonical_recommended_strict)),
             "property_recommended_canonical_review_queue": int(len(state.canonical_review_queue)),
@@ -974,6 +985,8 @@ def _ensure_prc_paths(paths: dict[str, Path]) -> None:
         paths["gold_active_learning_queue"] = paths["gold_model_ready"].with_name("active_learning_queue.parquet")
     if "gold_active_learning_decision_log" not in paths and "gold_model_ready" in paths:
         paths["gold_active_learning_decision_log"] = paths["gold_model_ready"].with_name("active_learning_decision_log.parquet")
+    if "gold_molecule_split_definition" not in paths and "gold_model_ready" in paths:
+        paths["gold_molecule_split_definition"] = paths["gold_model_ready"].with_name("molecule_split_definition.parquet")
     if "gold_version" not in paths and "gold_model_ready" in paths:
         paths["gold_version"] = paths["gold_model_ready"].with_name("VERSION")
     if "raw_proxy_feature_metadata" not in paths and "raw_generated_pubchem_tierd_candidates" in paths:
@@ -1027,6 +1040,6 @@ STAGES: tuple[StageSpec, ...] = (
     StageSpec("06", "integrate_governance_bundle", 5, stage06_integrate_governance_bundle, required_inputs=("molecule_core_pre_governance", "molecule_alias_pre_governance"), produced_outputs=("molecule_core", "molecule_alias", "mixture_core", "mixture_composition", "governance_bundle")),
     StageSpec("05", "harmonize_observations", 6, stage05_harmonize_observations, required_inputs=("global_sources", "molecule_core", "molecule_alias", "governance_bundle"), produced_outputs=("property_observation", "observation_condition_set", "cycle_case", "cycle_operating_point", "proxy_feature_observation", "quantum_pilot_observation", "quantum_job", "quantum_artifact", "regulatory_status", "qc_issues")),
     StageSpec("07", "build_feature_and_recommendation_layers", 7, stage07_build_feature_and_recommendation_layers, required_inputs=("property_observation", "molecule_core", "molecule_alias"), produced_outputs=("property_recommended", "structure_features", "property_matrix", "molecule_master")),
-    StageSpec("08", "build_model_outputs", 8, stage08_build_model_outputs, required_inputs=("molecule_master", "property_matrix"), produced_outputs=("model_dataset_index", "model_ready")),
-    StageSpec("09", "validate_and_publish", 9, stage09_validate_and_publish, required_inputs=("model_ready",), produced_outputs=("stage_run_manifest", "mixture_core", "mixture_composition", "active_learning_queue", "active_learning_decision_log", "dataset_version", "quantum_job", "quantum_artifact", "quality_report", "duckdb_index")),
+    StageSpec("08", "build_model_outputs", 8, stage08_build_model_outputs, required_inputs=("molecule_master", "property_matrix"), produced_outputs=("model_dataset_index", "molecule_split_definition", "model_ready")),
+    StageSpec("09", "validate_and_publish", 9, stage09_validate_and_publish, required_inputs=("model_ready",), produced_outputs=("stage_run_manifest", "mixture_core", "mixture_composition", "active_learning_queue", "active_learning_decision_log", "molecule_split_definition", "dataset_version", "quantum_job", "quantum_artifact", "quality_report", "duckdb_index")),
 )

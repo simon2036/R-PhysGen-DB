@@ -8,7 +8,8 @@ from typing import Any
 
 import yaml
 
-from r_physgen_db.constants import PROJECT_ROOT
+from r_physgen_db.constants import DATA_DIR, PROJECT_ROOT
+from r_physgen_db.paths import dataset_migrations_dir
 
 REQUIRED_FRONT_MATTER_FIELDS = (
     "migration_id",
@@ -58,8 +59,16 @@ def validate_dataset_migrations(project_root: Path = PROJECT_ROOT) -> dict[str, 
     """Validate dataset migration records and current VERSION coverage."""
 
     project_root = Path(project_root)
-    version_path = project_root / "data" / "gold" / "VERSION"
-    migration_dir = project_root / "docs" / "dataset_migrations"
+    if project_root == PROJECT_ROOT:
+        version_path = DATA_DIR / "gold" / "VERSION"
+    else:
+        version_path = project_root / "data" / "lake" / "gold" / "VERSION"
+        legacy_version_path = project_root / "data" / "gold" / "VERSION"
+        if not version_path.exists() and legacy_version_path.exists():
+            version_path = legacy_version_path
+    migration_dir = dataset_migrations_dir() if project_root == PROJECT_ROOT else project_root / "docs" / "migrations" / "dataset"
+    if not migration_dir.exists() and project_root != PROJECT_ROOT:
+        migration_dir = project_root / "docs" / "dataset_migrations"
     errors: list[str] = []
     records: list[dict[str, Any]] = []
 

@@ -1,6 +1,6 @@
 table_name: property_source_priority_rules
 layer: gold
-path: data/gold/property_source_priority_rules.parquet
+path: data/lake/gold/property_source_priority_rules.parquet
 primary_key:
   - priority_rule_id
 columns:

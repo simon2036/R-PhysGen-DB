@@ -4,7 +4,7 @@ import importlib.util
 
 import pandas as pd
 
-from r_physgen_db.constants import PROJECT_ROOT
+from r_physgen_db.constants import DATA_DIR, PROJECT_ROOT
 
 
 _SPEC = importlib.util.spec_from_file_location(
@@ -18,8 +18,8 @@ compare_table = _MODULE.compare_table
 
 
 def test_dataset_version_file_matches_quality_report() -> None:
-    version_path = PROJECT_ROOT / "data" / "gold" / "VERSION"
-    quality_report_path = PROJECT_ROOT / "data" / "gold" / "quality_report.json"
+    version_path = DATA_DIR / "gold" / "VERSION"
+    quality_report_path = DATA_DIR / "gold" / "quality_report.json"
 
     assert version_path.exists()
     assert quality_report_path.exists()

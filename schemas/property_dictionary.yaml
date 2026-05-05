@@ -1,6 +1,6 @@
 table_name: property_dictionary
 layer: gold
-path: data/gold/property_dictionary.parquet
+path: data/lake/gold/property_dictionary.parquet
 primary_key:
   - canonical_property_id
 columns:

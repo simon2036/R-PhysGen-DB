@@ -3,7 +3,7 @@ from __future__ import annotations
 import pandas as pd
 import pytest
 
-from r_physgen_db.constants import PROJECT_ROOT
+from r_physgen_db.constants import DATA_DIR
 from r_physgen_db.mixtures import (
     MIXTURE_COMPONENT_CURATION_SOURCE_ID,
     MIXTURE_FRACTION_CURATION_SOURCE_ID,
@@ -17,8 +17,8 @@ from r_physgen_db.validate import _validate_mixtures
 
 
 def test_governance_mixture_extension_maps_to_production_tables() -> None:
-    root = PROJECT_ROOT / "data" / "extensions" / "property_governance_20260422"
-    molecule_core = pd.read_parquet(PROJECT_ROOT / "data" / "silver" / "molecule_core.parquet")
+    root = DATA_DIR / "extensions" / "property_governance_20260422"
+    molecule_core = pd.read_parquet(DATA_DIR / "silver" / "molecule_core.parquet")
 
     build = build_mixture_tables(
         pd.read_parquet(root / "mixture_core.parquet"),
@@ -211,11 +211,11 @@ def test_mixture_component_curations_require_traceable_source_metadata() -> None
 
 
 def test_mix511a_component_and_fraction_curations_replace_ethane_with_dimethyl_ether() -> None:
-    root = PROJECT_ROOT / "data" / "extensions" / "property_governance_20260422"
-    molecule_core = pd.read_parquet(PROJECT_ROOT / "data" / "silver" / "molecule_core.parquet")
+    root = DATA_DIR / "extensions" / "property_governance_20260422"
+    molecule_core = pd.read_parquet(DATA_DIR / "silver" / "molecule_core.parquet")
 
-    component_curations = load_mixture_component_curations(PROJECT_ROOT / "data" / "raw" / "manual" / "mixture_component_curations.csv")
-    fraction_curations = load_mixture_fraction_curations(PROJECT_ROOT / "data" / "raw" / "manual" / "mixture_fraction_curations.csv")
+    component_curations = load_mixture_component_curations(DATA_DIR / "raw" / "manual" / "mixture_component_curations.csv")
+    fraction_curations = load_mixture_fraction_curations(DATA_DIR / "raw" / "manual" / "mixture_fraction_curations.csv")
     build = build_mixture_tables(
         pd.read_parquet(root / "mixture_core.parquet"),
         pd.read_parquet(root / "mixture_component.parquet"),

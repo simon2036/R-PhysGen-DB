@@ -585,14 +585,14 @@ def test_integrate_property_governance_bundle_builds_crosswalk_and_canonical_lay
 
     extension_manifest = result["extension_manifest"]
     source_manifest = pd.DataFrame(result["source_manifest_rows"])
-    unit_conversion_rules = pd.read_parquet(tmp_path / "data" / "gold" / "unit_conversion_rules.parquet")
+    unit_conversion_rules = pd.read_parquet(tmp_path / "data" / "lake" / "gold" / "unit_conversion_rules.parquet")
     assert set(extension_manifest["table_name"]) == set(tables.keys())
     assert {"SRC_AUTH", "SRC_PROXY"}.issubset(set(source_manifest["source_id"]))
     assert unit_conversion_rules.loc[0, "standard_unit"] == "K"
-    assert (tmp_path / "data" / "silver" / "property_observation_canonical.parquet").exists()
-    assert (tmp_path / "data" / "gold" / "property_recommended_canonical.parquet").exists()
-    assert (tmp_path / "data" / "gold" / "property_recommended_canonical_strict.parquet").exists()
-    assert (tmp_path / "data" / "gold" / "property_recommended_canonical_review_queue.parquet").exists()
+    assert (tmp_path / "data" / "lake" / "silver" / "property_observation_canonical.parquet").exists()
+    assert (tmp_path / "data" / "lake" / "gold" / "property_recommended_canonical.parquet").exists()
+    assert (tmp_path / "data" / "lake" / "gold" / "property_recommended_canonical_strict.parquet").exists()
+    assert (tmp_path / "data" / "lake" / "gold" / "property_recommended_canonical_review_queue.parquet").exists()
 
 
 def test_integrate_property_governance_bundle_applies_high_confidence_curations(tmp_path: Path) -> None:
@@ -600,7 +600,7 @@ def test_integrate_property_governance_bundle_applies_high_confidence_curations(
     bundle_path = tmp_path / "synthetic_bundle.zip"
     _write_bundle(bundle_path, tables)
 
-    curation_path = tmp_path / "data" / "raw" / "manual" / "property_governance_20260422_unresolved_curations.csv"
+    curation_path = tmp_path / "data" / "lake" / "raw" / "manual" / "property_governance_20260422_unresolved_curations.csv"
     _write_unresolved_curations(
         curation_path,
         [
@@ -644,7 +644,7 @@ def test_integrate_property_governance_bundle_rejects_non_high_confidence_curati
     bundle_path = tmp_path / "synthetic_bundle.zip"
     _write_bundle(bundle_path, tables)
 
-    curation_path = tmp_path / "data" / "raw" / "manual" / "property_governance_20260422_unresolved_curations.csv"
+    curation_path = tmp_path / "data" / "lake" / "raw" / "manual" / "property_governance_20260422_unresolved_curations.csv"
     _write_unresolved_curations(
         curation_path,
         [
@@ -682,7 +682,7 @@ def test_integrate_property_governance_bundle_rejects_conflicting_curations(tmp_
     bundle_path = tmp_path / "synthetic_bundle.zip"
     _write_bundle(bundle_path, tables)
 
-    curation_path = tmp_path / "data" / "raw" / "manual" / "property_governance_20260422_unresolved_curations.csv"
+    curation_path = tmp_path / "data" / "lake" / "raw" / "manual" / "property_governance_20260422_unresolved_curations.csv"
     _write_unresolved_curations(
         curation_path,
         [
@@ -869,7 +869,7 @@ def test_proxy_acceptance_rules_promote_proxy_only_rows_into_strict(tmp_path: Pa
             }
         ]
     )
-    rule_path = tmp_path / "data" / "raw" / "manual" / "property_governance_20260422_proxy_acceptance_rules.csv"
+    rule_path = tmp_path / "data" / "lake" / "raw" / "manual" / "property_governance_20260422_proxy_acceptance_rules.csv"
     _write_proxy_acceptance_rules(
         rule_path,
         [
@@ -937,7 +937,7 @@ def test_proxy_acceptance_rules_reject_non_proxy_only_targets(tmp_path: Path) ->
             }
         ]
     )
-    rule_path = tmp_path / "data" / "raw" / "manual" / "property_governance_20260422_proxy_acceptance_rules.csv"
+    rule_path = tmp_path / "data" / "lake" / "raw" / "manual" / "property_governance_20260422_proxy_acceptance_rules.csv"
     _write_proxy_acceptance_rules(
         rule_path,
         [
@@ -1006,7 +1006,7 @@ def test_load_canonical_review_decisions_close_resolved_review_rows(tmp_path: Pa
             }
         ]
     )
-    decision_path = tmp_path / "data" / "raw" / "manual" / "property_governance_20260422_canonical_review_decisions.csv"
+    decision_path = tmp_path / "data" / "lake" / "raw" / "manual" / "property_governance_20260422_canonical_review_decisions.csv"
     _write_canonical_review_decisions(
         decision_path,
         [
@@ -1068,7 +1068,7 @@ def test_load_canonical_review_decisions_rejects_stale_selected_source(tmp_path:
             }
         ]
     )
-    decision_path = tmp_path / "data" / "raw" / "manual" / "property_governance_20260422_canonical_review_decisions.csv"
+    decision_path = tmp_path / "data" / "lake" / "raw" / "manual" / "property_governance_20260422_canonical_review_decisions.csv"
     _write_canonical_review_decisions(
         decision_path,
         [
@@ -1140,7 +1140,7 @@ def test_load_canonical_review_decisions_close_below_minimum_rows_out_of_strict(
             }
         ]
     )
-    decision_path = tmp_path / "data" / "raw" / "manual" / "property_governance_20260422_canonical_review_decisions.csv"
+    decision_path = tmp_path / "data" / "lake" / "raw" / "manual" / "property_governance_20260422_canonical_review_decisions.csv"
     _write_canonical_review_decisions(
         decision_path,
         [

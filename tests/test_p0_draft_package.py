@@ -9,11 +9,11 @@ from r_physgen_db.utils import load_yaml
 
 
 P0_DOCS = [
-    "p0_scope_and_exit_criteria.md",
-    "p0_phase2_interfaces_draft.md",
-    "p0_pipeline_stage_refactor_plan.md",
-    "p0_validation_rules_draft.md",
-    "p0_review_response_matrix.md",
+    Path("plans/p0/p0_scope_and_exit_criteria.md"),
+    Path("plans/p0/p0_phase2_interfaces_draft.md"),
+    Path("plans/p0/p0_pipeline_stage_refactor_plan.md"),
+    Path("plans/p0/p0_validation_rules_draft.md"),
+    Path("reviews/p0_review_response_matrix.md"),
 ]
 
 P0_DRAFT_SCHEMAS = [

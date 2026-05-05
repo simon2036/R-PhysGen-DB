@@ -1,6 +1,6 @@
 table_name: quantum_job
 layer: silver
-path: data/silver/quantum_job.parquet
+path: data/lake/silver/quantum_job.parquet
 primary_key:
   - request_id
 columns:

@@ -1,6 +1,6 @@
 table_name: model_dataset_index
 layer: gold
-path: data/gold/model_dataset_index.parquet
+path: data/lake/gold/model_dataset_index.parquet
 primary_key:
   - mol_id
 columns:
