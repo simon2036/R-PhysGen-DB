@@ -1,36 +1,50 @@
 {
-  "dataset_version": "v1.5.0-draft",
-  "seed_catalog_count": 5707,
+  "dataset_version": "v1.6.3-draft",
+  "seed_catalog_count": 20707,
   "refrigerant_count": 77,
-  "candidate_count": 5630,
-  "resolved_molecule_count": 5598,
-  "observation_count": 15707,
-  "recommended_count": 14035,
+  "candidate_count": 20630,
+  "resolved_molecule_count": 20567,
+  "observation_count": 60840,
+  "recommended_count": 56784,
   "regulatory_status_count": 96,
   "pending_source_count": 47,
   "qc_issue_count": 10,
   "recommended_property_coverage": {
-    "acentric_factor": 227,
+    "acentric_factor": 230,
     "ashrae_safety": 65,
     "atmospheric_lifetime_yr": 121,
-    "boiling_point_c": 357,
-    "cop_standard_cycle": 89,
+    "boiling_point_c": 359,
+    "conformer_count": 62,
+    "conformer_energy_window_kcal_mol": 62,
+    "cop_standard_cycle": 96,
     "critical_compressibility_factor": 127,
-    "critical_density_kgm3": 182,
-    "critical_pressure_mpa": 262,
-    "critical_temp_c": 262,
-    "discharge_temperature_c": 89,
-    "gwp_100yr": 146,
-    "gwp_20yr": 6,
+    "critical_density_kgm3": 186,
+    "critical_pressure_mpa": 264,
+    "critical_temp_c": 264,
+    "dipole_moment_debye": 2038,
+    "discharge_temperature_c": 96,
+    "gap_ev": 2038,
+    "gwp_100yr": 150,
+    "gwp_20yr": 20,
     "gwp_ar4_100yr": 16,
     "gwp_ar5_100yr": 17,
-    "odp": 506,
-    "pressure_ratio": 89,
-    "synthetic_accessibility": 5598,
-    "tfa_risk_proxy": 5598,
+    "homo_ev": 2038,
+    "lowest_real_frequency_cm_inv": 60,
+    "lumo_ev": 2038,
+    "odp": 548,
+    "polarizability_au": 2038,
+    "pressure_ratio": 96,
+    "synthetic_accessibility": 20567,
+    "tfa_risk_proxy": 20567,
+    "thermal_conductivity_liquid_wmk": 57,
+    "thermal_enthalpy_correction_eh": 60,
+    "thermal_gibbs_correction_eh": 60,
+    "total_energy_eh": 2038,
     "toxicity_class": 64,
     "vaporization_enthalpy_kjmol": 125,
-    "volumetric_cooling_mjm3": 89
+    "viscosity_liquid_pas": 61,
+    "volumetric_cooling_mjm3": 96,
+    "zpe_eh": 60
   },
   "tier_coverage": {
     "A": {
@@ -40,23 +54,37 @@
         "ashrae_safety": 0.90625,
         "atmospheric_lifetime_yr": 0.9375,
         "boiling_point_c": 1.0,
-        "cop_standard_cycle": 0.90625,
+        "conformer_count": 0.96875,
+        "conformer_energy_window_kcal_mol": 0.96875,
+        "cop_standard_cycle": 1.0,
         "critical_compressibility_factor": 0.78125,
         "critical_density_kgm3": 1.0,
         "critical_pressure_mpa": 1.0,
         "critical_temp_c": 1.0,
-        "discharge_temperature_c": 0.90625,
-        "gwp_100yr": 0.96875,
-        "gwp_20yr": 0.1875,
+        "dipole_moment_debye": 1.0,
+        "discharge_temperature_c": 1.0,
+        "gap_ev": 1.0,
+        "gwp_100yr": 1.0,
+        "gwp_20yr": 0.5,
         "gwp_ar4_100yr": 0.21875,
         "gwp_ar5_100yr": 0.21875,
+        "homo_ev": 1.0,
+        "lowest_real_frequency_cm_inv": 0.9375,
+        "lumo_ev": 1.0,
         "odp": 1.0,
-        "pressure_ratio": 0.90625,
+        "polarizability_au": 1.0,
+        "pressure_ratio": 1.0,
         "synthetic_accessibility": 1.0,
         "tfa_risk_proxy": 1.0,
+        "thermal_conductivity_liquid_wmk": 0.78125,
+        "thermal_enthalpy_correction_eh": 0.9375,
+        "thermal_gibbs_correction_eh": 0.9375,
+        "total_energy_eh": 1.0,
         "toxicity_class": 0.90625,
         "vaporization_enthalpy_kjmol": 1.0,
-        "volumetric_cooling_mjm3": 0.90625
+        "viscosity_liquid_pas": 0.8125,
+        "volumetric_cooling_mjm3": 1.0,
+        "zpe_eh": 0.9375
       }
     },
     "B": {
@@ -66,66 +94,107 @@
         "ashrae_safety": 0.5208333333333334,
         "atmospheric_lifetime_yr": 0.4375,
         "boiling_point_c": 1.0,
-        "cop_standard_cycle": 0.8125,
+        "conformer_count": 0.375,
+        "conformer_energy_window_kcal_mol": 0.375,
+        "cop_standard_cycle": 0.8958333333333334,
         "critical_compressibility_factor": 0.3333333333333333,
         "critical_density_kgm3": 1.0,
         "critical_pressure_mpa": 1.0,
         "critical_temp_c": 1.0,
-        "discharge_temperature_c": 0.8125,
-        "gwp_100yr": 0.5625,
+        "dipole_moment_debye": 0.4375,
+        "discharge_temperature_c": 0.8958333333333334,
+        "gap_ev": 0.4375,
+        "gwp_100yr": 0.6041666666666666,
+        "gwp_20yr": 0.08333333333333333,
         "gwp_ar4_100yr": 0.0625,
         "gwp_ar5_100yr": 0.0625,
-        "odp": 0.5833333333333334,
-        "pressure_ratio": 0.8125,
+        "homo_ev": 0.4375,
+        "lowest_real_frequency_cm_inv": 0.3541666666666667,
+        "lumo_ev": 0.4375,
+        "odp": 0.9583333333333334,
+        "polarizability_au": 0.4375,
+        "pressure_ratio": 0.8958333333333334,
         "synthetic_accessibility": 1.0,
         "tfa_risk_proxy": 1.0,
+        "thermal_conductivity_liquid_wmk": 0.3958333333333333,
+        "thermal_enthalpy_correction_eh": 0.3541666666666667,
+        "thermal_gibbs_correction_eh": 0.3541666666666667,
+        "total_energy_eh": 0.4375,
         "toxicity_class": 0.5,
         "vaporization_enthalpy_kjmol": 1.0,
-        "volumetric_cooling_mjm3": 0.8125
+        "viscosity_liquid_pas": 0.4583333333333333,
+        "volumetric_cooling_mjm3": 0.8958333333333334,
+        "zpe_eh": 0.3541666666666667
       }
     },
     "C": {
       "molecule_count": 40,
       "property_coverage": {
-        "acentric_factor": 0.875,
+        "acentric_factor": 0.95,
         "ashrae_safety": 0.175,
         "atmospheric_lifetime_yr": 0.1,
-        "boiling_point_c": 0.925,
+        "boiling_point_c": 0.975,
+        "conformer_count": 0.2,
+        "conformer_energy_window_kcal_mol": 0.2,
         "cop_standard_cycle": 0.525,
         "critical_compressibility_factor": 0.05,
-        "critical_density_kgm3": 0.825,
-        "critical_pressure_mpa": 0.925,
-        "critical_temp_c": 0.925,
+        "critical_density_kgm3": 0.925,
+        "critical_pressure_mpa": 0.975,
+        "critical_temp_c": 0.975,
+        "dipole_moment_debye": 0.2,
         "discharge_temperature_c": 0.525,
-        "gwp_100yr": 0.675,
-        "odp": 0.425,
+        "gap_ev": 0.2,
+        "gwp_100yr": 0.7,
+        "homo_ev": 0.2,
+        "lowest_real_frequency_cm_inv": 0.2,
+        "lumo_ev": 0.2,
+        "odp": 0.975,
+        "polarizability_au": 0.2,
         "pressure_ratio": 0.525,
         "synthetic_accessibility": 1.0,
         "tfa_risk_proxy": 1.0,
+        "thermal_conductivity_liquid_wmk": 0.325,
+        "thermal_enthalpy_correction_eh": 0.2,
+        "thermal_gibbs_correction_eh": 0.2,
+        "total_energy_eh": 0.2,
         "toxicity_class": 0.175,
         "vaporization_enthalpy_kjmol": 0.85,
-        "volumetric_cooling_mjm3": 0.525
+        "viscosity_liquid_pas": 0.325,
+        "volumetric_cooling_mjm3": 0.525,
+        "zpe_eh": 0.2
       }
     },
     "D": {
-      "molecule_count": 5478,
+      "molecule_count": 20447,
       "property_coverage": {
-        "acentric_factor": 0.02044541803577948,
-        "ashrae_safety": 0.0007301935012778386,
-        "atmospheric_lifetime_yr": 0.012048192771084338,
-        "boiling_point_c": 0.04381161007667032,
-        "critical_compressibility_factor": 0.01533406352683461,
-        "critical_density_kgm3": 0.012595837897042717,
-        "critical_pressure_mpa": 0.02646951442132165,
-        "critical_temp_c": 0.02646951442132165,
-        "gwp_100yr": 0.01113545089448704,
-        "gwp_ar4_100yr": 0.001095290251916758,
-        "gwp_ar5_100yr": 0.0012778386272362175,
-        "odp": 0.0783132530120482,
+        "acentric_factor": 0.005477576172543649,
+        "ashrae_safety": 0.00019562772044798748,
+        "atmospheric_lifetime_yr": 0.0032278573873917933,
+        "boiling_point_c": 0.011737663226879249,
+        "conformer_count": 0.00024453465055998433,
+        "conformer_energy_window_kcal_mol": 0.00024453465055998433,
+        "critical_compressibility_factor": 0.004108182129407737,
+        "critical_density_kgm3": 0.003374578177727784,
+        "critical_pressure_mpa": 0.0070915048662395464,
+        "critical_temp_c": 0.0070915048662395464,
+        "dipole_moment_debye": 0.0966890008314178,
+        "gap_ev": 0.0966890008314178,
+        "gwp_100yr": 0.002983322736831809,
+        "gwp_ar4_100yr": 0.0002934415806719812,
+        "gwp_ar5_100yr": 0.00034234851078397807,
+        "homo_ev": 0.0966890008314178,
+        "lowest_real_frequency_cm_inv": 0.00024453465055998433,
+        "lumo_ev": 0.0966890008314178,
+        "odp": 0.021078886878270652,
+        "polarizability_au": 0.0966890008314178,
         "synthetic_accessibility": 1.0,
         "tfa_risk_proxy": 1.0,
-        "toxicity_class": 0.0007301935012778386,
-        "vaporization_enthalpy_kjmol": 0.002008032128514056
+        "thermal_enthalpy_correction_eh": 0.00024453465055998433,
+        "thermal_gibbs_correction_eh": 0.00024453465055998433,
+        "total_energy_eh": 0.0966890008314178,
+        "toxicity_class": 0.00019562772044798748,
+        "vaporization_enthalpy_kjmol": 0.0005379762312319656,
+        "zpe_eh": 0.00024453465055998433
       }
     }
   },
@@ -133,13 +202,13 @@
     "candidate": {
       "B": {
         "gwp_100yr": {
-          "present_count": 6,
-          "missing_count": 15,
+          "present_count": 7,
+          "missing_count": 14,
           "total_count": 21
         },
         "odp": {
-          "present_count": 6,
-          "missing_count": 15,
+          "present_count": 19,
+          "missing_count": 2,
           "total_count": 21
         },
         "ashrae_safety": {
@@ -160,8 +229,8 @@
           "total_count": 34
         },
         "odp": {
-          "present_count": 16,
-          "missing_count": 18,
+          "present_count": 33,
+          "missing_count": 1,
           "total_count": 34
         },
         "ashrae_safety": {
@@ -178,31 +247,31 @@
       "D": {
         "gwp_100yr": {
           "present_count": 55,
-          "missing_count": 5520,
-          "total_count": 5575
+          "missing_count": 20520,
+          "total_count": 20575
         },
         "odp": {
-          "present_count": 422,
-          "missing_count": 5153,
-          "total_count": 5575
+          "present_count": 424,
+          "missing_count": 20151,
+          "total_count": 20575
         },
         "ashrae_safety": {
           "present_count": 4,
-          "missing_count": 5571,
-          "total_count": 5575
+          "missing_count": 20571,
+          "total_count": 20575
         },
         "toxicity_class": {
           "present_count": 4,
-          "missing_count": 5571,
-          "total_count": 5575
+          "missing_count": 20571,
+          "total_count": 20575
         }
       }
     },
     "refrigerant": {
       "A": {
         "gwp_100yr": {
-          "present_count": 31,
-          "missing_count": 1,
+          "present_count": 32,
+          "missing_count": 0,
           "total_count": 32
         },
         "odp": {
@@ -223,13 +292,13 @@
       },
       "B": {
         "gwp_100yr": {
-          "present_count": 21,
-          "missing_count": 6,
+          "present_count": 22,
+          "missing_count": 5,
           "total_count": 27
         },
         "odp": {
-          "present_count": 22,
-          "missing_count": 5,
+          "present_count": 27,
+          "missing_count": 0,
           "total_count": 27
         },
         "ashrae_safety": {
@@ -245,13 +314,13 @@
       },
       "C": {
         "gwp_100yr": {
-          "present_count": 1,
-          "missing_count": 5,
+          "present_count": 2,
+          "missing_count": 4,
           "total_count": 6
         },
         "odp": {
-          "present_count": 1,
-          "missing_count": 5,
+          "present_count": 6,
+          "missing_count": 0,
           "total_count": 6
         },
         "ashrae_safety": {
@@ -327,11 +396,6 @@
       "detail": "No tables found"
     },
     {
-      "seed_id": "seed_d4",
-      "stage": "coolprop",
-      "detail": "For now, we don't support p [26.3303 Pa] below ptriple [73.0661 Pa] when T [283.15] is less than Tmin [290.25] : PropsSI(\"Hmass\",\"T\",283.15,\"P\",26.33030043,\"D4\")"
-    },
-    {
       "seed_id": "seed_deuterium",
       "stage": "nist",
       "detail": "0 parsed observations"
@@ -342,24 +406,9 @@
       "detail": "0 parsed observations"
     },
     {
-      "seed_id": "seed_methylpalmitate",
-      "stage": "coolprop",
-      "detail": "For now, we don't support p [0.000569253 Pa] below ptriple [0.0164014 Pa] when T [283.15] is less than Tmin [302.71] : PropsSI(\"Hmass\",\"T\",283.15,\"P\",0.0005692530544,\"MethylPalmitate\")"
-    },
-    {
-      "seed_id": "seed_methylstearate",
-      "stage": "coolprop",
-      "detail": "For now, we don't support p [4.41931e-05 Pa] below ptriple [0.00601096 Pa] when T [283.15] is less than Tmin [311.84] : PropsSI(\"Hmass\",\"T\",283.15,\"P\",4.419307781e-05,\"MethylStearate\")"
-    },
-    {
       "seed_id": "seed_neon",
       "stage": "nist",
       "detail": "0 parsed observations"
-    },
-    {
-      "seed_id": "seed_p_xylene",
-      "stage": "coolprop",
-      "detail": "For now, we don't support p [338.125 Pa] below ptriple [580.085 Pa] when T [283.15] is less than Tmin [286.4] : PropsSI(\"Hmass\",\"T\",283.15,\"P\",338.1251812,\"p-Xylene\")"
     },
     {
       "seed_id": "tierc_candidate_1224ydz",
@@ -542,11 +591,6 @@
       "detail": "404 Client Error: PUGREST.NotFound for url: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/213248-61-4/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
     },
     {
-      "seed_id": "tierd_excel202603_name_149329_28_2",
-      "stage": "pubchem",
-      "detail": "404 Client Error: PUGREST.NotFound for url: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/149329-28-2/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
-    },
-    {
       "seed_id": "tierd_excel202603_name_2410754_10_6",
       "stage": "pubchem",
       "detail": "404 Client Error: PUGREST.NotFound for url: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/2410754-10-6/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
@@ -595,11 +639,6 @@
       "seed_id": "tierd_excel202603_name_1378824_14_6",
       "stage": "pubchem",
       "detail": "404 Client Error: PUGREST.NotFound for url: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/1378824-14-6/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
-    },
-    {
-      "seed_id": "tierd_excel202603_name_149329_30_6",
-      "stage": "pubchem",
-      "detail": "404 Client Error: PUGREST.NotFound for url: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/149329-30-6/property/CanonicalSMILES,IsomericSMILES,InChI,InChIKey,MolecularFormula,MolecularWeight/JSON"
     },
     {
       "seed_id": "tierd_excel202603_name_362631_59_2",
@@ -889,20 +928,20 @@
   ],
   "canonical_metrics": {
     "canonical_observation_count": 1687,
-    "canonical_recommended_count": 1389,
-    "canonical_recommended_strict_count": 1304,
+    "canonical_recommended_count": 57188,
+    "canonical_recommended_strict_count": 2553,
     "canonical_review_queue_count": 0,
-    "canonical_proxy_selected_count": 466,
-    "canonical_proxy_only_count": 466,
-    "canonical_conflict_count": 1,
+    "canonical_proxy_selected_count": 41600,
+    "canonical_proxy_only_count": 41600,
+    "canonical_conflict_count": 1564,
     "canonical_source_divergence_count": 35,
     "canonical_conflict_open_count": 0,
     "canonical_source_divergence_open_count": 0,
     "canonical_review_decision_count": 120,
     "canonical_proxy_policy_count": 13,
     "canonical_strict_proxy_accept_count": 396,
-    "canonical_feature_key_count": 30,
-    "canonical_strict_feature_key_count": 24,
+    "canonical_feature_key_count": 54,
+    "canonical_strict_feature_key_count": 25,
     "canonical_review_reason_counts": {},
     "canonical_review_decision_reason_counts": {
       "below_minimum_quality": 80,
@@ -931,7 +970,7 @@
     "row_count_audit_status": "ok"
   },
   "property_governance_bundle": {
-    "bundle_file": "D:/BaiduSyncdisk/ZJUwork/制冷剂/0_R-PhysGen-DB/methods/refrigerant_seed_database_20260422_property_governance_bundle.zip",
+    "bundle_file": "/home/ifs1/myDB/R-PhysGen-DB/methods/refrigerant_seed_database_20260422_property_governance_bundle.zip",
     "bundle_sha256": "c6a13391b8c01dff4acf2ff4d68eaca7fccde6b779f476a288a8e083d5d81743",
     "bundle_table_count": 218,
     "extension_table_count": 218,
@@ -988,75 +1027,143 @@
       "missing_tables": [],
       "extra_tables": [],
       "row_mismatch_tables": []
+    },
+    "native_canonical_projection": {
+      "native_projection_candidate_count": 56784,
+      "native_projection_added_count": 55799,
+      "native_projection_strict_added_count": 1255,
+      "canonical_recommended_count": 57188,
+      "canonical_recommended_strict_count": 2553
+    },
+    "promoted_coverage_worklist": {
+      "coverage_matrix_rows": 30,
+      "worklist_rows": 302
     }
   },
   "condition_migration_progress": {
-    "total": 15707,
-    "with_condition_set_id": 15707,
-    "auto_backfilled": 13910,
-    "needs_manual_review": 1797,
-    "condition_set_count": 103,
+    "total": 60840,
+    "with_condition_set_id": 60840,
+    "auto_backfilled": 58904,
+    "needs_manual_review": 1936,
+    "condition_set_count": 110,
     "manual_review_condition_set_count": 1,
     "manual_review_condition_set_ids_sample": [
       "cond_45d14797f4216b8b9ad9"
     ],
     "normalization_status_counts": {
-      "inferred_default": 2104,
-      "not_applicable": 11196,
-      "partially_normalized": 610,
-      "unresolved_text": 1797
+      "inferred_default": 15942,
+      "not_applicable": 41134,
+      "partially_normalized": 1828,
+      "unresolved_text": 1936
     },
     "coverage_fraction": 1.0,
-    "auto_backfill_fraction": 0.8855924110269306
+    "auto_backfill_fraction": 0.9681788297172913
   },
   "research_task_readiness": {
     "rule_count": 5,
     "status_counts": {
-      "failed": 3,
-      "passed": 2
+      "passed": 5
     },
-    "failed_rule_ids": [
-      "task01_single_component_downselection",
-      "task03_canonical_strict_ml",
-      "task04_phase2_cycle_seed"
-    ],
+    "failed_rule_ids": [],
     "degraded_rule_ids": []
   },
   "cycle_operating_point_summary": {
-    "cycle_observation_count": 398,
-    "resolved_cycle_observation_count": 398,
+    "cycle_observation_count": 1384,
+    "resolved_cycle_observation_count": 1384,
     "unresolved_cycle_observation_count": 0,
-    "cycle_case_count": 2,
-    "cycle_operating_point_count": 2
+    "cycle_case_count": 7,
+    "cycle_operating_point_count": 6
   },
   "proxy_feature_summary": {
-    "proxy_observation_count": 11196,
-    "proxy_molecule_count": 5598,
-    "tfa_risk_proxy_count": 5598,
-    "synthetic_accessibility_count": 5598,
+    "proxy_observation_count": 41134,
+    "proxy_molecule_count": 20567,
+    "tfa_risk_proxy_count": 20567,
+    "synthetic_accessibility_count": 20567,
     "tfa_risk_distribution": {
-      "high": 393,
-      "low": 1785,
-      "medium": 606,
-      "none": 2801,
+      "high": 2546,
+      "low": 5312,
+      "medium": 1908,
+      "none": 10788,
       "unknown": 13
     },
     "synthetic_accessibility_score": {
-      "count": 5598,
+      "count": 20567,
       "min": 1.0,
-      "mean": 2.1977849231868523,
+      "mean": 2.3989517187727913,
       "max": 4.75
     }
   },
   "quantum_pilot_summary": {
-    "input_status": "not_configured",
-    "input_path": "D:\\BaiduSyncdisk\\ZJUwork\\制冷剂\\0_R-PhysGen-DB\\data\\raw\\manual\\quantum_pilot_results.csv",
-    "input_row_count": 0,
-    "quantum_job_count": 0,
-    "quantum_artifact_count": 0,
-    "quantum_observation_count": 0,
-    "quantum_molecule_count": 0,
-    "feature_counts": {}
+    "input_status": "loaded",
+    "input_path": "/home/ifs1/myDB/R-PhysGen-DB/data/raw/manual/quantum_pilot_results.csv",
+    "input_row_count": 13830,
+    "quantum_job_count": 2367,
+    "quantum_artifact_count": 2367,
+    "quantum_observation_count": 13822,
+    "quantum_molecule_count": 2038,
+    "feature_counts": {
+      "quantum.conformer_count": 62,
+      "quantum.conformer_energy_window": 62,
+      "quantum.dipole_moment": 2243,
+      "quantum.homo_energy": 2243,
+      "quantum.homo_lumo_gap": 2243,
+      "quantum.lowest_real_frequency": 60,
+      "quantum.lumo_energy": 2243,
+      "quantum.polarizability": 2243,
+      "quantum.thermal_enthalpy_correction": 60,
+      "quantum.thermal_gibbs_correction": 60,
+      "quantum.total_energy": 2243,
+      "quantum.zpe": 60
+    },
+    "request_manifest": {
+      "request_count": 2000,
+      "xyz_manifest_count": 2000,
+      "xyz_generated_count": 2000,
+      "executor_available": false,
+      "executor_status": "unavailable",
+      "selection_source": "active_learning_queue",
+      "status_counts": {
+        "completed": 2000
+      },
+      "stale_xyz_trashed_count": 88,
+      "stale_xyz_trashed_paths": [
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_023fc363a5eed1d7.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_03721bb6b2f4c435.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_06df0839e7a30f4b.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_08203cbd4df5715f.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_08d808b9ebadea3b.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_08e1928ed2124469.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_10785462c7c9d313.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_1214cdaae4117eff.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_14af3f4f668e70dc.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_17f548aadccefbab.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_181d790bb9572695.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_195360bfb8d39ca5.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_232f4145282ab685.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_23819a123f66e55b.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_2470f555d2e7ef8d.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_251bc0387197ca85.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_258ae6cf1f745439.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_2725a92b5e5507a6.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_2968e9ed041dc5df.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_2bb701254a8634bc.xyz.20260505T061523"
+      ]
+    },
+    "dft_request_manifest": {
+      "request_count": 150,
+      "xyz_manifest_count": 150,
+      "xyz_generated_count": 150,
+      "executor_available": false,
+      "executor_status": "unavailable",
+      "selection_source": "completed_xtb_stratified",
+      "status_counts": {
+        "completed": 150
+      },
+      "stale_xyz_trashed_count": 0,
+      "stale_xyz_trashed_paths": [],
+      "completed_xtb_candidate_count": 2038,
+      "dft_target_count": 150
+    }
   },
   "mixture_summary": {
     "mixture_count": 123,
@@ -1066,21 +1173,29 @@
     },
     "dangling_component_count": 0,
     "fraction_sum_error_count": 0,
-    "fraction_sum_unresolved_count": 1,
+    "fraction_sum_unresolved_count": 0,
     "fraction_sum_max_abs_error": 2.220446049250313e-16
   },
   "active_learning_summary": {
-    "input_status": "not_configured",
-    "input_path": "D:\\BaiduSyncdisk\\ZJUwork\\制冷剂\\0_R-PhysGen-DB\\data\\raw\\manual\\active_learning_queue.csv",
-    "input_row_count": 0,
-    "queue_input_status": "not_configured",
+    "input_status": "loaded",
+    "input_path": "/home/ifs1/myDB/R-PhysGen-DB/data/raw/generated/active_learning_queue.csv",
+    "input_row_count": 2088,
+    "queue_input_status": "loaded",
     "decision_log_input_status": "not_configured",
-    "decision_log_input_path": "D:\\BaiduSyncdisk\\ZJUwork\\制冷剂\\0_R-PhysGen-DB\\data\\raw\\manual\\active_learning_decision_log.csv",
+    "decision_log_input_path": "/home/ifs1/myDB/R-PhysGen-DB/data/raw/manual/active_learning_decision_log.csv",
     "decision_log_input_row_count": 0,
-    "queue_entry_count": 0,
+    "queue_entry_count": 2088,
     "decision_count": 0,
-    "campaign_count": 0,
-    "recommended_next_action_counts": {},
-    "status_counts": {}
+    "campaign_count": 1,
+    "recommended_next_action_counts": {
+      "literature_search": 32,
+      "manual_curation": 39,
+      "run_cycle": 17,
+      "run_quantum": 2000
+    },
+    "status_counts": {
+      "completed": 2000,
+      "proposed": 88
+    }
   }
 }

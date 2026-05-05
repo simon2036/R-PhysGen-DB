@@ -11,15 +11,24 @@ from r_physgen_db import pipeline as legacy
 from r_physgen_db.active_learning import (
     ACTIVE_LEARNING_SOURCE_ID,
     ACTIVE_LEARNING_SOURCE_NAME,
+    active_learning_max_entries,
     build_active_learning_queue,
+    build_deterministic_active_learning_queue,
+    active_learning_summary,
+    production_quantum_request_target,
 )
+from r_physgen_db.canonical_projection import project_native_canonical_recommendations
 from r_physgen_db.condition_sets import backfill_condition_sets
 from r_physgen_db.constants import DATA_DIR, PARSER_VERSION
+from r_physgen_db.coverage_worklist import write_promoted_coverage_outputs
 from r_physgen_db.cycle_conditions import build_cycle_tables
 from r_physgen_db.mixtures import (
+    MIXTURE_COMPONENT_CURATION_SOURCE_ID,
+    MIXTURE_COMPONENT_CURATION_SOURCE_NAME,
     MIXTURE_FRACTION_CURATION_SOURCE_ID,
     MIXTURE_FRACTION_CURATION_SOURCE_NAME,
     build_mixture_tables,
+    load_mixture_component_curations,
     load_mixture_fraction_curations,
 )
 from r_physgen_db.pipeline_stages.artifacts import StageResult
@@ -34,13 +43,22 @@ from r_physgen_db.proxy_features import (
 from r_physgen_db.quantum_pilot import (
     QUANTUM_SOURCE_ID,
     QUANTUM_SOURCE_NAME,
+    build_psi4_dft_request_manifest,
     build_quantum_pilot,
+    build_quantum_pilot_request_manifest,
+    completed_psi4_request_ids,
+    completed_xtb_mol_ids,
+    completed_xtb_request_ids,
 )
 from r_physgen_db.readiness import evaluate_research_task_readiness
 
 
 def stage00_init_run(state: BuildState) -> StageResult:
     paths = legacy._paths()
+    if state.data_dir == DATA_DIR:
+        inferred_data_dir = _infer_data_dir_from_paths(paths)
+        if inferred_data_dir is not None:
+            state.data_dir = inferred_data_dir
     if state.data_dir != DATA_DIR:
         paths = {key: _remap_data_path(path, state.data_dir) for key, path in paths.items()}
     _ensure_prc_paths(paths)
@@ -136,6 +154,8 @@ def stage03_acquire_global_sources(state: BuildState) -> StageResult:
 def stage04_acquire_entity_sources(state: BuildState) -> StageResult:
     paths = state.paths
     coolprop_source_id = "source_coolprop_session"
+    legacy.RDLogger.DisableLog("rdApp.warning")
+    legacy.RDLogger.DisableLog("rdApp.error")
     for seed in state.seed_catalog.to_dict(orient="records"):
         seed_id = str(seed["seed_id"])
         pubchem_source_id = f"source_pubchem_{legacy.slugify(seed_id)}"
@@ -251,6 +271,8 @@ def stage04_acquire_entity_sources(state: BuildState) -> StageResult:
         _acquire_nist_for_seed(state, seed, seed_id, nist_source_id, r_number)
         _acquire_coolprop_for_seed(state, seed, seed_id, r_number, coolprop_source_id)
 
+    legacy.RDLogger.EnableLog("rdApp.warning")
+    legacy.RDLogger.EnableLog("rdApp.error")
     state.molecule_core = legacy._ensure_columns(
         pd.DataFrame(sorted(state.molecule_rows.values(), key=lambda item: item["mol_id"])),
         legacy._molecule_core_columns(),
@@ -311,16 +333,30 @@ def stage06_integrate_governance_bundle(state: BuildState) -> StageResult:
     state.canonical_recommended_strict = state.bundle_integration.get("canonical_recommended_strict", pd.DataFrame())
     state.canonical_review_queue = state.bundle_integration.get("canonical_review_queue", pd.DataFrame())
     state.property_governance_audit = state.bundle_integration.get("audit", {})
+    component_curations = load_mixture_component_curations(state.paths["raw_mixture_component_curations"])
     fraction_curations = load_mixture_fraction_curations(state.paths["raw_mixture_fraction_curations"])
     mixture_build = build_mixture_tables(
         state.bundle_integration.get("mixture_core", pd.DataFrame()),
         state.bundle_integration.get("mixture_component", pd.DataFrame()),
         state.molecule_core,
+        component_curations=component_curations,
         fraction_curations=fraction_curations,
     )
     state.mixture_core_table = mixture_build.mixture_core
     state.mixture_composition = mixture_build.mixture_composition
     state.mixture_summary = mixture_build.summary
+    if not component_curations.empty:
+        state.source_manifest_rows.append(
+            legacy._source_manifest_entry(
+                source_id=MIXTURE_COMPONENT_CURATION_SOURCE_ID,
+                source_type="manual_curated_reference",
+                source_name=MIXTURE_COMPONENT_CURATION_SOURCE_NAME,
+                license_name="project-local manual curation",
+                local_path=state.paths["raw_mixture_component_curations"],
+                upstream_url="",
+                status="loaded",
+            )
+        )
     if not fraction_curations.empty:
         state.source_manifest_rows.append(
             legacy._source_manifest_entry(
@@ -403,6 +439,7 @@ def stage05_harmonize_observations(state: BuildState) -> StageResult:
     state.quantum_job = quantum_build.quantum_job
     state.quantum_artifact = quantum_build.quantum_artifact
     state.quantum_pilot_summary = quantum_build.summary
+    quantum_request_manifest, _ = _write_quantum_request_outputs(state)
     if quantum_build.input_exists:
         state.source_manifest_rows.append(
             legacy._source_manifest_entry(
@@ -415,6 +452,17 @@ def stage05_harmonize_observations(state: BuildState) -> StageResult:
                 status="loaded",
             )
         )
+    state.source_manifest_rows.append(
+        legacy._source_manifest_entry(
+            source_id="source_r_physgen_quantum_pilot_requests",
+            source_type="derived_harmonized",
+            source_name="R-PhysGen-DB Quantum Pilot Request Manifest",
+            license_name="project-local deterministic queue",
+            local_path=state.paths["raw_quantum_pilot_requests"],
+            upstream_url="",
+            status="generated",
+        )
+    )
 
     state.property_observation = legacy._ensure_columns(pd.DataFrame(state.property_rows), legacy._property_observation_columns())
     state.property_observation = legacy._assign_observation_ids(state.property_observation)
@@ -439,6 +487,8 @@ def stage05_harmonize_observations(state: BuildState) -> StageResult:
             state.logical_artifact("cycle_operating_point", row_count=len(state.cycle_operating_point)),
             state.logical_artifact("proxy_feature_observation", row_count=len(proxy_rows)),
             state.logical_artifact("quantum_pilot_observation", row_count=len(quantum_build.property_rows)),
+            state.file_artifact("quantum_pilot_requests", state.paths["raw_quantum_pilot_requests"], kind="file"),
+            state.file_artifact("quantum_pilot_xyz_manifest", state.paths["raw_quantum_pilot_xyz_manifest"], kind="file"),
             state.logical_artifact("quantum_job", row_count=len(state.quantum_job)),
             state.logical_artifact("quantum_artifact", row_count=len(state.quantum_artifact)),
             state.logical_artifact("regulatory_status", row_count=len(state.regulatory_status)),
@@ -451,6 +501,7 @@ def stage05_harmonize_observations(state: BuildState) -> StageResult:
             "cycle_operating_point": int(len(state.cycle_operating_point)),
             "proxy_feature_observation": int(len(proxy_rows)),
             "quantum_pilot_observation": int(len(quantum_build.property_rows)),
+            "quantum_pilot_requests": int(len(quantum_request_manifest)),
             "quantum_job": int(len(state.quantum_job)),
             "quantum_artifact": int(len(state.quantum_artifact)),
             "regulatory_status": int(len(state.regulatory_status)),
@@ -462,6 +513,25 @@ def stage05_harmonize_observations(state: BuildState) -> StageResult:
 
 def stage07_build_feature_and_recommendation_layers(state: BuildState) -> StageResult:
     state.property_recommended = legacy._select_recommended(state.property_observation)
+    readiness_rules_path = state.data_dir / "gold" / "property_modeling_readiness_rules.parquet"
+    readiness_rules = pd.read_parquet(readiness_rules_path) if readiness_rules_path.exists() else pd.DataFrame()
+    canonical_projection = project_native_canonical_recommendations(
+        property_recommended=state.property_recommended,
+        existing_canonical_recommended=state.canonical_recommended,
+        existing_canonical_recommended_strict=state.canonical_recommended_strict,
+        readiness_rules=readiness_rules,
+    )
+    state.canonical_recommended = canonical_projection.canonical_recommended
+    state.canonical_recommended_strict = canonical_projection.canonical_recommended_strict
+    state.property_governance_audit["native_canonical_projection"] = canonical_projection.summary
+    coverage_summary = write_promoted_coverage_outputs(
+        seed_catalog=state.seed_catalog,
+        molecule_core=state.molecule_core,
+        property_recommended=state.property_recommended,
+        coverage_path=state.paths["raw_promoted_coverage_matrix"],
+        worklist_path=state.paths["raw_promoted_enrichment_worklist"],
+    )
+    state.property_governance_audit["promoted_coverage_worklist"] = coverage_summary
     state.structure_features = legacy._build_structure_features(state.molecule_core)
     state.property_matrix = legacy._build_property_matrix(state.property_recommended)
     state.molecule_master = legacy._build_molecule_master(state.molecule_core, state.alias_df, state.structure_features)
@@ -470,12 +540,20 @@ def stage07_build_feature_and_recommendation_layers(state: BuildState) -> StageR
         status="succeeded",
         outputs=[
             state.logical_artifact("property_recommended", row_count=len(state.property_recommended)),
+            state.logical_artifact("property_recommended_canonical", row_count=len(state.canonical_recommended)),
+            state.logical_artifact("property_recommended_canonical_strict", row_count=len(state.canonical_recommended_strict)),
+            state.file_artifact("promoted_coverage_matrix", state.paths["raw_promoted_coverage_matrix"], kind="file"),
+            state.file_artifact("promoted_enrichment_worklist", state.paths["raw_promoted_enrichment_worklist"], kind="file"),
             state.logical_artifact("structure_features", row_count=len(state.structure_features)),
             state.logical_artifact("property_matrix", row_count=len(state.property_matrix)),
             state.logical_artifact("molecule_master", row_count=len(state.molecule_master)),
         ],
         row_count_summary={
             "property_recommended": int(len(state.property_recommended)),
+            "property_recommended_canonical": int(len(state.canonical_recommended)),
+            "property_recommended_canonical_strict": int(len(state.canonical_recommended_strict)),
+            "promoted_coverage_matrix": int(coverage_summary["coverage_matrix_rows"]),
+            "promoted_enrichment_worklist": int(coverage_summary["worklist_rows"]),
             "structure_features": int(len(state.structure_features)),
             "property_matrix": int(len(state.property_matrix)),
             "molecule_master": int(len(state.molecule_master)),
@@ -511,10 +589,10 @@ def stage09_validate_and_publish(state: BuildState) -> StageResult:
         state.molecule_core,
         decision_log_path=paths["raw_active_learning_decision_log"],
     )
-    state.active_learning_queue = active_learning_build.queue
-    state.active_learning_decision_log = active_learning_build.decision_log
-    state.active_learning_summary = active_learning_build.summary
     if active_learning_build.input_exists:
+        state.active_learning_queue = active_learning_build.queue
+        state.active_learning_decision_log = active_learning_build.decision_log
+        state.active_learning_summary = active_learning_build.summary
         active_learning_local_path = (
             paths["raw_active_learning_queue"]
             if paths["raw_active_learning_queue"].exists()
@@ -531,6 +609,57 @@ def stage09_validate_and_publish(state: BuildState) -> StageResult:
                 status="loaded",
             )
         )
+    else:
+        state.active_learning_queue = build_deterministic_active_learning_queue(
+            molecule_core=state.molecule_core,
+            seed_catalog=state.seed_catalog,
+            property_recommended=state.property_recommended,
+            completed_quantum_mol_ids=completed_xtb_mol_ids(_raw_quantum_results(state)),
+            max_entries=active_learning_max_entries(max(250, production_quantum_request_target())),
+            min_quantum_entries=production_quantum_request_target(),
+            model_version=state.dataset_version,
+        )
+        state.active_learning_decision_log = pd.DataFrame(columns=active_learning_build.decision_log.columns)
+        state.active_learning_queue.drop(columns=["source_id"], errors="ignore").to_csv(
+            paths["raw_generated_active_learning_queue"],
+            index=False,
+        )
+        state.active_learning_summary = active_learning_summary(
+            state.active_learning_queue,
+            state.active_learning_decision_log,
+            input_exists=True,
+            input_path=paths["raw_generated_active_learning_queue"],
+            input_row_count=len(state.active_learning_queue),
+            decision_log_path=paths["raw_active_learning_decision_log"],
+            decision_input_row_count=0,
+            queue_input_exists=True,
+            decision_input_exists=False,
+        )
+        state.source_manifest_rows.append(
+            legacy._source_manifest_entry(
+                source_id=ACTIVE_LEARNING_SOURCE_ID,
+                source_type="derived_harmonized",
+                source_name=ACTIVE_LEARNING_SOURCE_NAME,
+                license_name="project-local deterministic active-learning policy",
+                local_path=paths["raw_generated_active_learning_queue"],
+                upstream_url="",
+                status="generated",
+            )
+        )
+
+    _write_quantum_request_outputs(state, active_learning_queue=state.active_learning_queue)
+    _write_psi4_dft_request_outputs(state, active_learning_queue=state.active_learning_queue)
+    state.source_manifest_rows.append(
+        legacy._source_manifest_entry(
+            source_id="source_r_physgen_quantum_dft_requests",
+            source_type="derived_harmonized",
+            source_name="R-PhysGen-DB Psi4 DFT Request Manifest",
+            license_name="project-local deterministic DFT queue",
+            local_path=paths["raw_quantum_dft_requests"],
+            upstream_url="",
+            status="generated",
+        )
+    )
 
     state.source_manifest = legacy._ensure_columns(
         pd.DataFrame(state.source_manifest_rows).drop_duplicates(subset=["source_id"], keep="first"),
@@ -568,6 +697,9 @@ def stage09_validate_and_publish(state: BuildState) -> StageResult:
     legacy._write_parquet(state.model_ready, paths["gold_model_ready"])
     legacy._write_parquet(state.active_learning_queue, paths["gold_active_learning_queue"])
     legacy._write_parquet(state.active_learning_decision_log, paths["gold_active_learning_decision_log"])
+    legacy._write_parquet(state.canonical_recommended, paths["gold_property_recommended_canonical"])
+    legacy._write_parquet(state.canonical_recommended_strict, paths["gold_property_recommended_canonical_strict"])
+    legacy._write_parquet(state.canonical_review_queue, paths["gold_property_recommended_canonical_review_queue"])
     legacy.write_text(paths["gold_version"], f"{state.dataset_version}\n")
 
     state.research_task_readiness_report, state.research_task_readiness_summary = evaluate_research_task_readiness(
@@ -622,6 +754,9 @@ def stage09_validate_and_publish(state: BuildState) -> StageResult:
             state.file_artifact("mixture_composition", paths["silver_mixture_composition"], kind="table"),
             state.file_artifact("active_learning_queue", paths["gold_active_learning_queue"], kind="table"),
             state.file_artifact("active_learning_decision_log", paths["gold_active_learning_decision_log"], kind="table"),
+            state.file_artifact("property_recommended_canonical", paths["gold_property_recommended_canonical"], kind="table"),
+            state.file_artifact("property_recommended_canonical_strict", paths["gold_property_recommended_canonical_strict"], kind="table"),
+            state.file_artifact("property_recommended_canonical_review_queue", paths["gold_property_recommended_canonical_review_queue"], kind="table"),
             state.file_artifact("dataset_version", paths["gold_version"], kind="file"),
             state.file_artifact("research_task_readiness_report", paths["gold_research_task_readiness_report"], kind="table"),
             state.file_artifact("quality_report", paths["gold_quality_report"], kind="file"),
@@ -638,9 +773,57 @@ def stage09_validate_and_publish(state: BuildState) -> StageResult:
             "mixture_composition": int(len(state.mixture_composition)),
             "active_learning_queue": int(len(state.active_learning_queue)),
             "active_learning_decision_log": int(len(state.active_learning_decision_log)),
+            "property_recommended_canonical": int(len(state.canonical_recommended)),
+            "property_recommended_canonical_strict": int(len(state.canonical_recommended_strict)),
+            "property_recommended_canonical_review_queue": int(len(state.canonical_review_queue)),
             "research_task_readiness_report": int(len(state.research_task_readiness_report)),
         },
     )
+
+
+def _write_quantum_request_outputs(
+    state: BuildState,
+    *,
+    active_learning_queue: pd.DataFrame | None = None,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    quantum_request_manifest, quantum_xyz_manifest, quantum_request_summary = build_quantum_pilot_request_manifest(
+        state.molecule_core,
+        active_learning_queue=active_learning_queue,
+        completed_request_ids=completed_xtb_request_ids(_raw_quantum_results(state)),
+        xyz_dir=state.paths["raw_quantum_pilot_xyz_manifest"].parent / "quantum_xyz",
+    )
+    quantum_request_manifest.to_csv(state.paths["raw_quantum_pilot_requests"], index=False)
+    quantum_xyz_manifest.to_csv(state.paths["raw_quantum_pilot_xyz_manifest"], index=False)
+    state.quantum_pilot_summary["request_manifest"] = quantum_request_summary
+    return quantum_request_manifest, quantum_xyz_manifest
+
+
+def _write_psi4_dft_request_outputs(
+    state: BuildState,
+    *,
+    active_learning_queue: pd.DataFrame | None = None,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    raw_results = (
+        pd.read_csv(state.paths["raw_quantum_pilot_results"]).fillna("")
+        if state.paths["raw_quantum_pilot_results"].exists()
+        else pd.DataFrame()
+    )
+    dft_request_manifest, dft_xyz_manifest, dft_request_summary = build_psi4_dft_request_manifest(
+        state.molecule_core,
+        xtb_results=raw_results,
+        active_learning_queue=active_learning_queue,
+        completed_request_ids=completed_psi4_request_ids(raw_results),
+        xyz_dir=state.paths["raw_quantum_dft_xyz_manifest"].parent / "quantum_dft_xyz",
+    )
+    dft_request_manifest.to_csv(state.paths["raw_quantum_dft_requests"], index=False)
+    dft_xyz_manifest.to_csv(state.paths["raw_quantum_dft_xyz_manifest"], index=False)
+    state.quantum_pilot_summary["dft_request_manifest"] = dft_request_summary
+    return dft_request_manifest, dft_xyz_manifest
+
+
+def _raw_quantum_results(state: BuildState) -> pd.DataFrame:
+    path = state.paths["raw_quantum_pilot_results"]
+    return pd.read_csv(path).fillna("") if path.exists() else pd.DataFrame()
 
 
 def _acquire_nist_for_seed(state: BuildState, seed: dict[str, Any], seed_id: str, nist_source_id: str, r_number: str) -> None:
@@ -737,7 +920,40 @@ def _remap_data_path(path: Path, data_dir: Path) -> Path:
         return path
 
 
+def _infer_data_dir_from_paths(paths: dict[str, Path]) -> Path | None:
+    """Infer the active data root from monkeypatched legacy path maps.
+
+    Tests often monkeypatch ``legacy._paths()`` instead of passing an explicit
+    ``data_dir`` to the staged orchestrator.  Stage manifest writes use
+    ``state.data_dir``, so infer the root before Stage 00 returns and the
+    orchestrator persists its first manifest row.
+    """
+
+    path = paths.get("seed_catalog")
+    if path is not None and path.name == "seed_catalog.csv" and path.parent.name == "manual" and path.parent.parent.name == "raw":
+        return path.parent.parent.parent
+
+    for key in ("bronze_source_manifest", "silver_molecule_core", "gold_model_ready"):
+        path = paths.get(key)
+        if path is not None and path.parent.name in {"bronze", "silver", "gold"}:
+            return path.parent.parent
+
+    path = paths.get("raw_generated_pubchem_tierd_candidates")
+    if path is not None and path.parent.name == "generated" and path.parent.parent.name == "raw":
+        return path.parent.parent.parent
+
+    return None
+
+
 def _ensure_prc_paths(paths: dict[str, Path]) -> None:
+    raw_generated_base = (
+        paths["raw_generated_pubchem_tierd_candidates"].parent
+        if "raw_generated_pubchem_tierd_candidates" in paths
+        else DATA_DIR / "raw" / "generated"
+    )
+    raw_manual_base = paths["seed_catalog"].parent if "seed_catalog" in paths else DATA_DIR / "raw" / "manual"
+    gold_base = paths["gold_model_ready"].parent if "gold_model_ready" in paths else DATA_DIR / "gold"
+
     if "silver_observation_condition_set" not in paths and "silver_property_observation" in paths:
         paths["silver_observation_condition_set"] = paths["silver_property_observation"].with_name("observation_condition_set.parquet")
     if "silver_cycle_case" not in paths and "silver_property_observation" in paths:
@@ -764,14 +980,42 @@ def _ensure_prc_paths(paths: dict[str, Path]) -> None:
         paths["raw_proxy_feature_metadata"] = paths["raw_generated_pubchem_tierd_candidates"].with_name(
             "proxy_feature_heuristics_metadata.json"
         )
+    if "raw_quantum_pilot_requests" not in paths:
+        paths["raw_quantum_pilot_requests"] = raw_generated_base / "quantum_pilot_requests.csv"
+    if "raw_quantum_pilot_xyz_manifest" not in paths:
+        paths["raw_quantum_pilot_xyz_manifest"] = raw_generated_base / "quantum_pilot_xyz_manifest.csv"
+    if "raw_quantum_dft_requests" not in paths:
+        paths["raw_quantum_dft_requests"] = raw_generated_base / "quantum_dft_requests.csv"
+    if "raw_quantum_dft_xyz_manifest" not in paths:
+        paths["raw_quantum_dft_xyz_manifest"] = raw_generated_base / "quantum_dft_xyz_manifest.csv"
+    if "raw_generated_active_learning_queue" not in paths:
+        paths["raw_generated_active_learning_queue"] = raw_generated_base / "active_learning_queue.csv"
+    if "raw_promoted_coverage_matrix" not in paths:
+        paths["raw_promoted_coverage_matrix"] = raw_generated_base / "promoted_coverage_matrix.csv"
+    if "raw_promoted_enrichment_worklist" not in paths:
+        paths["raw_promoted_enrichment_worklist"] = raw_generated_base / "promoted_enrichment_worklist.csv"
     if "raw_quantum_pilot_results" not in paths:
-        paths["raw_quantum_pilot_results"] = DATA_DIR / "raw" / "manual" / "quantum_pilot_results.csv"
+        paths["raw_quantum_pilot_results"] = raw_manual_base / "quantum_pilot_results.csv"
+    if "raw_cycle_backend_results" not in paths:
+        paths["raw_cycle_backend_results"] = raw_manual_base / "cycle_backend_results.csv"
     if "raw_active_learning_queue" not in paths:
-        paths["raw_active_learning_queue"] = DATA_DIR / "raw" / "manual" / "active_learning_queue.csv"
+        paths["raw_active_learning_queue"] = raw_manual_base / "active_learning_queue.csv"
     if "raw_active_learning_decision_log" not in paths:
-        paths["raw_active_learning_decision_log"] = DATA_DIR / "raw" / "manual" / "active_learning_decision_log.csv"
+        paths["raw_active_learning_decision_log"] = raw_manual_base / "active_learning_decision_log.csv"
+    if "raw_mixture_component_curations" not in paths:
+        paths["raw_mixture_component_curations"] = raw_manual_base / "mixture_component_curations.csv"
     if "raw_mixture_fraction_curations" not in paths:
-        paths["raw_mixture_fraction_curations"] = DATA_DIR / "raw" / "manual" / "mixture_fraction_curations.csv"
+        paths["raw_mixture_fraction_curations"] = raw_manual_base / "mixture_fraction_curations.csv"
+    if "raw_review_only_inequality_observations" not in paths:
+        paths["raw_review_only_inequality_observations"] = (
+            raw_manual_base / "review_only" / "review_only_inequality_observations_round2_20260501.csv"
+        )
+    if "gold_property_recommended_canonical" not in paths and "gold_model_ready" in paths:
+        paths["gold_property_recommended_canonical"] = gold_base / "property_recommended_canonical.parquet"
+    if "gold_property_recommended_canonical_strict" not in paths:
+        paths["gold_property_recommended_canonical_strict"] = gold_base / "property_recommended_canonical_strict.parquet"
+    if "gold_property_recommended_canonical_review_queue" not in paths:
+        paths["gold_property_recommended_canonical_review_queue"] = gold_base / "property_recommended_canonical_review_queue.parquet"
 
 
 STAGES: tuple[StageSpec, ...] = (

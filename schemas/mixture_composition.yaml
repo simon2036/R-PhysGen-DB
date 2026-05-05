@@ -21,10 +21,12 @@ composition_basis_vocabulary:
   - volume_fraction
 source_id_vocabulary:
   - source_property_governance_mixture_component
+  - source_manual_mixture_component_curations
   - source_manual_mixture_fraction_curations
 design_rules:
   - Complete fraction groups must sum to 1.0 within tolerance 1e-6.
   - Source rows with missing fractions remain traceable and are counted as unresolved, not imputed.
   - Manual fraction curations must carry source_id and source_name metadata and may only update existing mixture/component/basis rows.
+  - Manual component curations must carry source_id and source_name metadata and may only replace existing mixture/component/basis rows.
   - component_mol_id must reference molecule_core.mol_id.
   - PR-G does not add mixture composition columns to model_ready or property_matrix.

@@ -2,8 +2,32 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pandas as pd
+
 from r_physgen_db.constants import PROJECT_ROOT, SCHEMA_DIR
 from r_physgen_db.utils import load_yaml
+
+MANUAL_OBSERVATION_COLUMNS = [
+    "seed_id",
+    "r_number",
+    "property_name",
+    "value",
+    "value_num",
+    "unit",
+    "temperature",
+    "pressure",
+    "phase",
+    "source_type",
+    "source_name",
+    "source_url",
+    "method",
+    "uncertainty",
+    "quality_level",
+    "assessment_version",
+    "time_horizon",
+    "year",
+    "notes",
+]
 
 
 def test_property_observation_contract_contains_required_fields() -> None:
@@ -131,3 +155,56 @@ def test_controlled_vocabularies_support_inventory_expansion() -> None:
     assert {"computed_standard", "computed_high", "estimated_group_contrib"}.issubset(set(vocab["quality_levels"]))
     assert {"homo_ev", "lumo_ev", "gap_ev"}.issubset(set(vocab["property_names"]))
     assert "eV" in vocab["units"]
+
+
+def test_supplement_combined_manual_observation_file_contract() -> None:
+    path = PROJECT_ROOT / "data" / "raw" / "manual" / "observations" / "manual_property_observations_supplement_combined_20260501.csv"
+
+    frame = pd.read_csv(path).fillna("")
+
+    assert list(frame.columns) == MANUAL_OBSERVATION_COLUMNS
+    assert len(frame) == 95
+    assert not frame.duplicated(subset=MANUAL_OBSERVATION_COLUMNS).any()
+
+    legacy_sources = [
+        PROJECT_ROOT / "data" / "raw" / "manual" / "manual_property_observations.csv",
+        *[
+            candidate
+            for candidate in sorted((PROJECT_ROOT / "data" / "raw" / "manual" / "observations").glob("*.csv"))
+            if candidate != path
+        ],
+    ]
+    legacy_rows = pd.concat([pd.read_csv(source).fillna("") for source in legacy_sources if source.exists()], ignore_index=True)
+
+    merged = frame.merge(legacy_rows[MANUAL_OBSERVATION_COLUMNS], how="inner", on=MANUAL_OBSERVATION_COLUMNS)
+    assert merged.empty
+
+
+def test_supplement_combined_value_num_policy() -> None:
+    path = PROJECT_ROOT / "data" / "raw" / "manual" / "observations" / "manual_property_observations_supplement_combined_20260501.csv"
+    frame = pd.read_csv(path).fillna("")
+
+    numeric = frame["property_name"].isin({"gwp_100yr", "gwp_20yr", "odp"})
+    categorical = frame["property_name"].isin({"ashrae_safety", "toxicity_class"})
+
+    assert numeric.sum() == 38
+    assert categorical.sum() == 57
+    assert pd.to_numeric(frame.loc[numeric, "value_num"], errors="coerce").notna().all()
+    assert (frame.loc[categorical, "value_num"].astype(str) == "").all()
+
+
+def test_review_only_inequality_observations_stay_outside_ingestion_path() -> None:
+    path = (
+        PROJECT_ROOT
+        / "data"
+        / "raw"
+        / "manual"
+        / "review_only"
+        / "review_only_inequality_observations_round2_20260501.csv"
+    )
+
+    frame = pd.read_csv(path).fillna("")
+
+    assert len(frame) == 13
+    assert "observations" not in path.relative_to(PROJECT_ROOT / "data" / "raw" / "manual").parts
+    assert (frame["do_not_merge_reason"].str.contains("inequality/bound", regex=False)).all()

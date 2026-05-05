@@ -18,32 +18,39 @@ Wave 2 extends the V1 base with:
 - `2026-04-22` property-governance bundle alignment with canonical observation/recommended tables and a strict ML-filtered canonical slice
 - explicit manual adjudication of reviewed canonical queue rows without widening the legacy projection layer
 - controlled proxy-only strict acceptance for governed canonical features when no non-proxy candidate exists
+- phase-2 governance quantum handoff for xTB Hessian and CREST conformer summaries, with ORCA opt/freq kept blocked on a real ORCA QC executable
+- residual CoolProp cycle backend computations for the open active-learning `run_cycle` queue where the open-source backend can resolve the fluid
 
 Most files in [`methods`](methods) remain reference material only. The exception is [`methods/refrigerant_seed_database_20260422_property_governance_bundle.zip`](methods/refrigerant_seed_database_20260422_property_governance_bundle.zip), which is now ingested into the extension and canonical-property layers. The random data generator in `methods/refrigerant_data_project/refrigerant_data_pipeline.py` is not treated as source-of-truth.
 
 P0 review packages in `methods`, including `R-PhysGen-DB_P0_package_v3.zip` and `R-PhysGen-DB_P0_review.md`, are treated as review inputs. Accepted P0 assets now live in `docs/p0_*`, `schemas/`, `schemas/drafts/`, `scripts/`, `src/r_physgen_db/blueprints/`, and the staged production pipeline. PR-A through PR-H have been incorporated locally: staged orchestration, condition sets, research-task readiness, structured cycle operating points, screening proxy features, offline quantum pilot ingestion, governed mixture tables, active-learning queue outputs, dataset `VERSION`, and CI contract tests are now part of the build/validate path. Remaining work is tracked in [`docs/p0_remaining_backlog.md`](docs/p0_remaining_backlog.md).
 
-Current local baseline after the `2026-04-22` governance alignment:
+Current local baseline after the `v1.6.3-draft` phase-2 quantum handoff and residual computation pass:
 
-- curated base `seed_catalog.csv`: `5700` rows (`70` refrigerants + `5630` candidates)
-- effective build inventory (`seed_catalog.csv` plus generated governance seeds): `5707` rows (`77` refrigerants + `5630` candidates)
-- `resolved_molecule_count`: `5598`
+- dataset version: `v1.6.3-draft`
+- `seed_catalog_count`: `20707` rows (`77` refrigerants + `20630` candidates)
+- `resolved_molecule_count`: `20567`
 - `model_dataset_index_count`: `120`
-- `property_observation`: `15689`
-- `property_recommended`: `14017`
-- `property_observation_canonical_count`: `1687`
-- `property_recommended_canonical_count`: `1389`
-- `property_recommended_canonical_strict_count`: `1304`
-- `observation_condition_set_count`: `103`
-- `cycle_case_count`: `2`
-- `cycle_operating_point_count`: `2`
+- `property_observation`: `60752`
+- `property_recommended`: `56770`
+- `property_recommended_canonical_count`: `57174`
+- `property_recommended_canonical_strict_count`: `2539`
+- `observation_condition_set_count`: `110`
+- `cycle_case_count`: `7`
+- `cycle_operating_point_count`: `6`
 - `mixture_core_count`: `123`
 - `mixture_composition_count`: `378`
-- `quantum_job_count`: `0` when optional quantum CSV is absent
-- `quantum_artifact_count`: `0` when optional quantum CSV is absent
-- `active_learning_queue_count`: `0` when optional active-learning CSV is absent
-- `active_learning_decision_log_count`: `0` when optional active-learning CSV is absent
-- PR-E proxy observations: `11196` across `5598` molecules
+- `quantum_job_count`: `2367` (`2365` succeeded, `2` failed xTB Hessian attempts retained for audit)
+- `quantum_artifact_count`: `2367`
+- `quantum_observation_count`: `13822`
+- phase-2 xTB Hessian: `62` attempted, `60` accepted, `2` failed due imaginary frequencies
+- phase-2 CREST conformer summaries: `62` succeeded, `124` scalar observations
+- Psi4 DFT expansion manifest: `150` requests now marked completed from existing `900` Psi4 scalar rows
+- residual cycle backend pass: `21` attempted, `4` CoolProp successes (`16` rows), `17` still blocked on REFPROP root / backend coverage
+- ORCA opt/freq: manifests generated (`3` smoke + `59` full requests), blocked because no ORCA quantum-chemistry executable is configured
+- `active_learning_queue_count`: `2088` (`2000` completed `run_quantum` + `88` proposed follow-ups, including `17` remaining `run_cycle`)
+- `active_learning_decision_log_count`: `0`
+- PR-E proxy observations: `41134` across `20567` molecules
 - `property_recommended_canonical_review_queue_count`: `0`
 - open canonical conflict/source-divergence review rows: `0`
 - proxy-only rows promoted into strict via policy: `396`
@@ -70,6 +77,15 @@ Current local baseline after the `2026-04-22` governance alignment:
 - `data/raw/manual/property_governance_20260422_proxy_acceptance_rules.csv`
 - `data/raw/manual/observations/*.csv`
 - `data/raw/generated/property_governance_20260422_seed_catalog.csv`
+- `data/raw/generated/governance_phase2_summary.json`
+- `data/raw/generated/governance_phase2_mapping_report.csv`
+- `data/raw/generated/governance_phase2_xtb_hessian_requests.csv`
+- `data/raw/generated/governance_phase2_crest_requests.csv`
+- `data/raw/generated/governance_phase2_orca_optfreq_*.csv`
+- `data/raw/manual/quantum_pilot_results.csv`
+- `data/raw/manual/cycle_backend_results.csv`
+- `data/raw/manual/quantum_phase2_vibrational_modes.csv`
+- `data/raw/manual/quantum_phase2_conformer_ensemble.csv`
 - `data/bronze/source_manifest.parquet`
 - `data/bronze/pending_sources.parquet`
 - `data/bronze/property_governance_20260422_substance_crosswalk.parquet`
@@ -110,6 +126,12 @@ Current local baseline after the `2026-04-22` governance alignment:
 
 - [docs/current_status.md](docs/current_status.md)
   Current project state: completed work, latest coverage, active risks, and next priorities.
+- [docs/v1.6.3_data_enhancement_report.md](docs/v1.6.3_data_enhancement_report.md)
+  Phase-2 quantum handoff report: xTB Hessian and CREST accepted outputs, ORCA manifest-only boundary, and verification scope.
+- [docs/v1.6.3_residual_compute_completion_summary.md](docs/v1.6.3_residual_compute_completion_summary.md)
+  Residual computation completion record: Psi4 DFT manifest reconciliation, xTB Hessian retries, CoolProp cycle successes, and remaining ORCA/REFPROP blockers.
+- [docs/local_large_artifacts.md](docs/local_large_artifacts.md)
+  Local-only large artifact policy for PubChem bulk files and executor artifact directories.
 - [docs/wave2_implementation.md](docs/wave2_implementation.md)
   Wave 2 implementation notes: coverage tiers, new tables, source adapters, validation targets, and current boundaries.
 - [docs/project_scope.md](docs/project_scope.md)

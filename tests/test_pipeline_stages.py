@@ -5,10 +5,13 @@ import inspect
 import pandas as pd
 import pytest
 
+from r_physgen_db import pipeline
 from r_physgen_db.pipeline import _assign_scaffold_splits, _load_or_fetch_json, build_dataset
+from r_physgen_db.constants import DATA_DIR
 from r_physgen_db.pipeline_stages.artifacts import StageResult
 from r_physgen_db.pipeline_stages.context import BuildState
 from r_physgen_db.pipeline_stages.orchestrator import StageSpec, run_stages
+from r_physgen_db.pipeline_stages.stages import stage00_init_run
 
 
 def test_build_dataset_public_signature_is_compatible() -> None:
@@ -28,6 +31,41 @@ def test_private_pipeline_helpers_remain_importable() -> None:
         )
     )
     assert split_map == {"a": "train", "b": "train"}
+
+
+def test_source_manifest_entry_caches_duplicate_file_hashes(tmp_path, monkeypatch) -> None:
+    local_path = tmp_path / "shared_bulk_source.csv"
+    local_path.write_text("seed_id,value\nseed_a,1\n", encoding="utf-8")
+    calls = {"count": 0}
+
+    def fake_sha256_file(path):
+        calls["count"] += 1
+        return f"digest-{path.name}"
+
+    pipeline._SOURCE_MANIFEST_CHECKSUM_CACHE.clear()
+    monkeypatch.setattr(pipeline, "sha256_file", fake_sha256_file)
+
+    first = pipeline._source_manifest_entry(
+        source_id="source_a",
+        source_type="derived_harmonized",
+        source_name="Bulk",
+        license_name="project",
+        local_path=local_path,
+        upstream_url="",
+        status="generated",
+    )
+    second = pipeline._source_manifest_entry(
+        source_id="source_b",
+        source_type="derived_harmonized",
+        source_name="Bulk",
+        license_name="project",
+        local_path=local_path,
+        upstream_url="",
+        status="generated",
+    )
+
+    assert calls["count"] == 1
+    assert first["checksum_sha256"] == second["checksum_sha256"] == "digest-shared_bulk_source.csv"
 
 
 def test_required_input_guard_writes_failed_manifest(tmp_path) -> None:
@@ -63,6 +101,28 @@ def test_unhandled_stage_exception_writes_failed_manifest(tmp_path) -> None:
     manifest = pd.read_parquet(tmp_path / "data" / "bronze" / "stage_run_manifest.parquet")
     assert manifest.iloc[0]["error_message"] == "stage exploded"
     assert "ValueError" in manifest.iloc[0]["exception_traceback"]
+
+
+def test_stage00_infers_tmp_data_dir_from_monkeypatched_paths(tmp_path, monkeypatch) -> None:
+    from r_physgen_db import pipeline as legacy
+
+    tmp_data_dir = tmp_path / "data"
+    original_paths = legacy._paths()
+
+    def remap(path):
+        try:
+            return tmp_data_dir / path.relative_to(DATA_DIR)
+        except ValueError:
+            return path
+
+    monkeypatch.setattr(legacy, "_paths", lambda: {key: remap(path) for key, path in original_paths.items()})
+
+    state = BuildState(data_dir=DATA_DIR, run_id="run_monkeypatched_paths")
+
+    stage00_init_run(state)
+
+    assert state.data_dir == tmp_data_dir
+    assert state.paths["bronze_source_manifest"] == tmp_data_dir / "bronze" / "source_manifest.parquet"
 
 
 def test_stop_after_stops_after_requested_stage(tmp_path) -> None:

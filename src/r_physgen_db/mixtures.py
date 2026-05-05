@@ -13,6 +13,8 @@ MIXTURE_CORE_SOURCE_ID = "source_property_governance_mixture_core"
 MIXTURE_COMPONENT_SOURCE_ID = "source_property_governance_mixture_component"
 MIXTURE_CORE_SOURCE_NAME = "Property Governance Normalized Mixture Core"
 MIXTURE_COMPONENT_SOURCE_NAME = "Property Governance Normalized Mixture Component"
+MIXTURE_COMPONENT_CURATION_SOURCE_ID = "source_manual_mixture_component_curations"
+MIXTURE_COMPONENT_CURATION_SOURCE_NAME = "Manual Mixture Component Curations"
 MIXTURE_FRACTION_CURATION_SOURCE_ID = "source_manual_mixture_fraction_curations"
 MIXTURE_FRACTION_CURATION_SOURCE_NAME = "Manual Mixture Fraction Curations"
 
@@ -54,6 +56,7 @@ def build_mixture_tables(
     extension_mixture_component: pd.DataFrame | None,
     molecule_core: pd.DataFrame | None = None,
     *,
+    component_curations: pd.DataFrame | None = None,
     fraction_curations: pd.DataFrame | None = None,
 ) -> MixtureBuild:
     """Promote governance mixture extension tables into production silver tables."""
@@ -67,6 +70,7 @@ def build_mixture_tables(
     components = extension_mixture_component.copy()
     core_out = _build_core(core)
     composition_out = _build_composition(components, core_out)
+    composition_out = apply_mixture_component_curations(composition_out, component_curations)
     composition_out = apply_mixture_fraction_curations(composition_out, fraction_curations)
     summary = mixture_summary(composition_out, core_out, molecule_core)
     return MixtureBuild(
@@ -80,6 +84,84 @@ def load_mixture_fraction_curations(path: Path) -> pd.DataFrame:
     if not path.exists():
         return pd.DataFrame(columns=_mixture_fraction_curation_columns())
     return pd.read_csv(path).fillna("")
+
+
+def load_mixture_component_curations(path: Path) -> pd.DataFrame:
+    if not path.exists():
+        return pd.DataFrame(columns=_mixture_component_curation_columns())
+    return pd.read_csv(path).fillna("")
+
+
+def apply_mixture_component_curations(
+    mixture_composition: pd.DataFrame,
+    component_curations: pd.DataFrame | None,
+) -> pd.DataFrame:
+    """Apply traceable manual mixture component identity replacements."""
+
+    out = _ensure_columns(mixture_composition.copy(), MIXTURE_COMPOSITION_COLUMNS)
+    if component_curations is None or component_curations.empty:
+        return out
+
+    curations = _ensure_columns(component_curations.copy().fillna(""), _mixture_component_curation_columns())
+    for row in curations.to_dict(orient="records"):
+        mixture_id = _clean(row.get("mixture_id"))
+        current_component_mol_id = _clean(row.get("current_component_mol_id"))
+        replacement_component_mol_id = _clean(row.get("replacement_component_mol_id"))
+        composition_basis = _clean(row.get("composition_basis"))
+        source_id = _clean(row.get("source_id")) or MIXTURE_COMPONENT_CURATION_SOURCE_ID
+        source_name = _clean(row.get("source_name"))
+        source_url = _clean(row.get("source_url"))
+        if not mixture_id or not current_component_mol_id or not replacement_component_mol_id:
+            raise ValueError(
+                "Mixture component curation rows require mixture_id, current_component_mol_id, "
+                "and replacement_component_mol_id"
+            )
+        if not source_id or not source_name:
+            raise ValueError(
+                f"Mixture component curation requires source_id and source_name: "
+                f"{mixture_id}/{current_component_mol_id}"
+            )
+
+        mask = (
+            out["mixture_id"].fillna("").astype(str).eq(mixture_id)
+            & out["component_mol_id"].fillna("").astype(str).eq(current_component_mol_id)
+        )
+        if composition_basis:
+            mask &= out["composition_basis"].fillna("").astype(str).eq(composition_basis)
+        if not bool(mask.any()):
+            basis_suffix = f"/{composition_basis}" if composition_basis else ""
+            raise ValueError(
+                f"Mixture component curation target not found: "
+                f"{mixture_id}/{current_component_mol_id}{basis_suffix}"
+            )
+
+        duplicate_mask = (
+            out["mixture_id"].fillna("").astype(str).eq(mixture_id)
+            & out["component_mol_id"].fillna("").astype(str).eq(replacement_component_mol_id)
+            & out["composition_basis"].fillna("").astype(str).isin(
+                out.loc[mask, "composition_basis"].fillna("").astype(str).tolist()
+            )
+            & ~mask
+        )
+        if bool(duplicate_mask.any()):
+            raise ValueError(
+                f"Mixture component curation would create duplicate target rows: "
+                f"{mixture_id}/{replacement_component_mol_id}"
+            )
+
+        for index in out.index[mask]:
+            note = _join_notes(
+                _clean(out.at[index, "notes"]),
+                "component_curated_from_manual_source",
+                f"replaced_component_mol_id={current_component_mol_id}",
+                f"source_url={source_url}" if source_url else "",
+                _clean(row.get("notes")),
+            )
+            out.at[index, "component_mol_id"] = replacement_component_mol_id
+            out.at[index, "source_id"] = source_id
+            out.at[index, "source_name"] = source_name
+            out.at[index, "notes"] = note
+    return _ensure_columns(out, MIXTURE_COMPOSITION_COLUMNS)
 
 
 def apply_mixture_fraction_curations(
@@ -275,6 +357,19 @@ def _mixture_fraction_curation_columns() -> list[str]:
         "component_mol_id",
         "composition_basis",
         "fraction_value",
+        "source_id",
+        "source_name",
+        "source_url",
+        "notes",
+    ]
+
+
+def _mixture_component_curation_columns() -> list[str]:
+    return [
+        "mixture_id",
+        "current_component_mol_id",
+        "replacement_component_mol_id",
+        "composition_basis",
         "source_id",
         "source_name",
         "source_url",
