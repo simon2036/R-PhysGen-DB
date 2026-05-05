@@ -9,6 +9,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 import tarfile
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
@@ -300,7 +301,10 @@ def _run_one_xtb_job(
             env["OMP_NUM_THREADS"] = str(max(1, int(threads_per_job or 1)))
             env["MKL_NUM_THREADS"] = str(max(1, int(threads_per_job or 1)))
             env["OPENBLAS_NUM_THREADS"] = str(max(1, int(threads_per_job or 1)))
-            command = [str(xtb_bin), str(xyz_path.resolve()), "--gfn", "2", "--opt", "loose", "--json", "--alpha"]
+            command = _xtb_subprocess_command(
+                xtb_bin,
+                [xyz_path.resolve(), "--gfn", "2", "--opt", "loose", "--json", "--alpha"],
+            )
             completed = subprocess.run(
                 command,
                 cwd=job_dir,
@@ -724,8 +728,9 @@ def _run_xtb_command(
     env["MKL_NUM_THREADS"] = threads
     env["OPENBLAS_NUM_THREADS"] = threads
     env.setdefault("OMP_STACKSIZE", "4G")
+    command = _xtb_subprocess_command(xtb_bin, args)
     completed = subprocess.run(
-        [str(xtb_bin), *[str(arg) for arg in args]],
+        command,
         cwd=cwd,
         env=env,
         text=True,
@@ -736,6 +741,22 @@ def _run_xtb_command(
     stdout_path.write_text(completed.stdout, encoding="utf-8")
     stderr_path.write_text(completed.stderr, encoding="utf-8")
     returncode_path.write_text(str(completed.returncode), encoding="utf-8")
+
+
+def _xtb_subprocess_command(xtb_bin: Path, args: list[Path | str]) -> list[str]:
+    """Return a platform-safe xTB subprocess command.
+
+    Python-script shims execute via shebang on POSIX, but Windows cannot launch
+    a ``.py`` path directly with ``CreateProcess``. Tests and local fake
+    executors often use Python scripts, so route those through the active
+    interpreter while preserving real xTB executable invocation unchanged.
+    """
+
+    executable = str(xtb_bin)
+    resolved_args = [str(arg) for arg in args]
+    if xtb_bin.suffix.lower() in {".py", ".pyw"}:
+        return [sys.executable, executable, *resolved_args]
+    return [executable, *resolved_args]
 
 
 def _write_rdkit_preoptimized_xyz(request_row: dict[str, Any], fallback_xyz: Path, output_xyz: Path) -> None:

@@ -23,6 +23,7 @@ from r_physgen_db.quantum_pilot import (
     build_quantum_pilot,
     merge_quantum_result_rows,
 )
+from r_physgen_db import xtb_quantum
 from r_physgen_db.xtb_quantum import parse_xtb_scalar_features, run_xtb_quantum_pilot
 from r_physgen_db.validate import _merge_quality_quantum_summary, _validate_quantum_pilot
 
@@ -547,6 +548,16 @@ print("   full:        0.000       0.000       0.500       1.25")
     assert fail_rows.iloc[0]["converged"] == 0
     assert ok_rows["artifact_sha256"].str.fullmatch(r"[0-9a-f]{64}").all()
     assert fail_rows["artifact_sha256"].str.fullmatch(r"[0-9a-f]{64}").all()
+
+
+def test_xtb_python_script_executor_is_invoked_through_current_interpreter(tmp_path) -> None:
+    fake_xtb = tmp_path / "fake_xtb.py"
+    fake_xtb.write_text("print('fake')\n", encoding="utf-8")
+
+    command = xtb_quantum._xtb_subprocess_command(fake_xtb, [tmp_path / "input.xyz", "--json"])
+
+    assert command[:2] == [sys.executable, str(fake_xtb)]
+    assert command[2:] == [str(tmp_path / "input.xyz"), "--json"]
 
 
 def test_xtb_executor_can_write_missing_executor_audit_artifact(tmp_path) -> None:
