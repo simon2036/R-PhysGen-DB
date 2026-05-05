@@ -2,13 +2,14 @@
 
 ## Purpose
 
-This document lists the large local-only files created or consumed by the PubChem bulk Tier D workflow, executor workflows, and local database indexing. These files are needed for reproducible bulk screening or fast local querying on a workstation, but they should not be pushed to the normal GitHub repository history.
+This document lists the large local-only files created or consumed by the PubChem bulk Tier D workflow, executor workflows, local database indexing, and static frontend export. Most of these files are needed for reproducible bulk screening or fast local querying on a workstation, but they should not be pushed to normal GitHub repository history. The intentional exception is `data/index/r_physgen_v2.duckdb`, which is published through Git LFS when the refreshed index is part of a release/update PR.
 
 The main reasons are:
 
 - the raw PubChem FTP archives are very large
 - the bulk screening parquet outputs are regenerated artifacts
-- the local DuckDB index can exceed GitHub's single-file size limit after rebuilds
+- the local DuckDB index can exceed GitHub's single-file size limit after rebuilds, so publish it through Git LFS when it is intentionally versioned
+- the static single-file HTML exports are large because they embed the synced dataset payload
 - these files would make normal Git pushes impractical and can exceed GitHub-friendly repository size
 
 ## Files That Should Not Be Committed
@@ -76,24 +77,49 @@ because they can be regenerated from their CSV request/XYZ manifests:
 - `data/raw/generated/governance_dft_singlepoint_xyz/`
 - `data/raw/generated/governance_phase2_xyz/`
 
-### Local DuckDB index snapshots
+### DuckDB index snapshots and Git LFS-published index
 
 The DuckDB files under `data/index/` are convenience query indexes over the
 reviewable CSV/Parquet layers. They are not source-of-truth: they can be rebuilt
 from `data/raw`, `data/bronze`, `data/silver`, and `data/gold`.
 
-| Path | Current local size | What it contains | GitHub-visible substitute |
+| Path | Current local size | What it contains | GitHub handling |
 | --- | ---: | --- | --- |
-| `data/index/r_physgen_v2.duckdb` | `~106 MiB` after the v1.6.3 residual rebuild | DuckDB copy/index of the current layered dataset, including source manifest, molecule/property tables, quantum audit tables, active-learning queue, and gold model tables | Keep regenerated snapshots local when they exceed GitHub-friendly limits; use committed Parquet/CSV tables plus `quality_report.json`/`validation_report.json` to inspect the same dataset scope |
+| `data/index/r_physgen_v2.duckdb` | `~106 MiB` after the 2026-05-05 SupplementData rebuild | DuckDB copy/index of the current layered dataset, including source manifest, molecule/property tables, quantum audit tables, active-learning queue, and gold model tables | Tracked with Git LFS via `.gitattributes`; do not commit this as a normal Git blob over 100 MiB |
 | `data/index/r_physgen_v2.v1.6.3-draft.local.duckdb` | local-only optional backup | Local backup of the rebuilt v1.6.3 draft DuckDB index before upload-history cleanup | Documented here; not required for GitHub review |
 
-If a GitHub push would include a newly rebuilt `data/index/r_physgen_v2.duckdb`
-larger than the platform limit, exclude that binary delta and document the
-database state through committed reports/tables instead. Reviewers can rebuild
-the local index with:
+Before pushing a refreshed `data/index/r_physgen_v2.duckdb`, confirm Git LFS is
+active and has no pending objects after the push:
+
+```bash
+git check-attr filter -- data/index/r_physgen_v2.duckdb
+git lfs status
+```
+
+If LFS is unavailable, exclude the DuckDB binary delta and document the database
+state through committed reports/tables instead. Reviewers can rebuild the local
+index with:
 
 ```bash
 PYTHONPATH=src .venv/bin/python pipelines/build_v1_dataset.py
+```
+
+### Static frontend exports
+
+The root and LAN HTML entry points embed a compressed/synced static dataset
+payload generated from the current layered data. They are intentionally tracked
+because they are the deployable frontend artifact, but they are large enough for
+GitHub to warn on push.
+
+| Path | Current local size | What it contains | GitHub handling |
+| --- | ---: | --- | --- |
+| `R-PhysGen-DB.html` | `~62 MiB` after the 2026-05-05 SupplementData rebuild | root static frontend with embedded `window.DB` dataset payload | normal Git; below GitHub's 100 MiB hard limit but above the 50 MiB recommendation |
+| `deploy/lan/index.html` | `~62 MiB` after the 2026-05-05 SupplementData rebuild | LAN/offline static frontend variant with local vendor paths and the same embedded dataset payload | normal Git; below GitHub's 100 MiB hard limit but above the 50 MiB recommendation |
+
+Regenerate both files after a dataset rebuild with:
+
+```bash
+PYTHONPATH=src .venv/bin/python scripts/sync_frontend_data.py
 ```
 
 ## What Can Still Be Committed
@@ -107,6 +133,8 @@ The following smaller files are still reasonable to version when intentionally r
 - `data/raw/manual/quantum_phase2_vibrational_modes.csv`
 - `data/raw/manual/quantum_phase2_conformer_ensemble.csv`
 - `data/raw/manual/seed_catalog.csv`
+- `data/index/r_physgen_v2.duckdb` only when Git LFS is active for the path
+- `R-PhysGen-DB.html` and `deploy/lan/index.html` when the frontend payload is intentionally refreshed
 - docs, code, tests, and configuration
 
 Those files carry the selected Tier D supplement and the curated inventory state. They are much smaller than the raw FTP bundles and are directly useful for review.
@@ -187,4 +215,6 @@ Sample failing rows from the current audit table:
 - Do commit code, tests, docs, and small reviewed CSV outputs.
 - Do not commit raw PubChem FTP archives.
 - Do not commit regenerated bulk-screening parquet outputs unless the repository policy explicitly changes.
-- If a future push needs the large-file state reproduced elsewhere, regenerate it from the documented scripts instead of storing it in normal Git history.
+- Do not commit `data/index/r_physgen_v2.duckdb` as a normal Git blob when it exceeds GitHub's 100 MiB hard limit; use Git LFS or leave the regenerated index local-only.
+- Expect GitHub warnings for the tracked static HTML exports while they remain above 50 MiB; keep them below 100 MiB or move to an alternate release/deploy channel.
+- If a future push needs other large-file state reproduced elsewhere, regenerate it from the documented scripts instead of storing it in normal Git history.
