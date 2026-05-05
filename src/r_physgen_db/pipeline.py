@@ -498,7 +498,11 @@ def _paths() -> dict[str, Path]:
         "raw_promoted_enrichment_worklist": DATA_DIR / "raw" / "generated" / "promoted_enrichment_worklist.csv",
         "raw_active_learning_queue": DATA_DIR / "raw" / "manual" / "active_learning_queue.csv",
         "raw_active_learning_decision_log": DATA_DIR / "raw" / "manual" / "active_learning_decision_log.csv",
+        "raw_mixture_component_curations": DATA_DIR / "raw" / "manual" / "mixture_component_curations.csv",
         "raw_mixture_fraction_curations": DATA_DIR / "raw" / "manual" / "mixture_fraction_curations.csv",
+        "raw_review_only_inequality_observations": (
+            DATA_DIR / "raw" / "manual" / "review_only" / "review_only_inequality_observations_round2_20260501.csv"
+        ),
         "seed_catalog": DATA_DIR / "raw" / "manual" / "seed_catalog.csv",
         "property_governance_bundle": default_bundle_path(PROJECT_ROOT),
         "refrigerant_inventory": DATA_DIR / "raw" / "manual" / "refrigerant_inventory.csv",
@@ -973,6 +977,15 @@ def _register_manual_sources(paths: dict[str, Path]) -> list[dict[str, Any]]:
                 "calculated_open_source",
                 "R-PhysGen-DB Cycle Backend Results",
                 paths["raw_cycle_backend_results"],
+            )
+        )
+    if paths.get("raw_review_only_inequality_observations") is not None:
+        source_rows.append(
+            (
+                "source_manual_review_only_inequality_observations_20260501",
+                "manual_curated_reference",
+                "Review-only Inequality Observations (2026-05-01)",
+                paths["raw_review_only_inequality_observations"],
             )
         )
     for extra_path in sorted(paths["manual_observations_dir"].glob("*.csv")) if paths["manual_observations_dir"].exists() else []:

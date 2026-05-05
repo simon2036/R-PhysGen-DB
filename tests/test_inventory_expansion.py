@@ -66,6 +66,54 @@ def test_load_manual_observations_merges_legacy_and_directory_without_duplicates
     assert loaded.iloc[0]["r_number"] == "R-999"
 
 
+def test_review_only_inequality_file_is_manifested_but_not_ingested(tmp_path: Path) -> None:
+    raw_manual = tmp_path / "data" / "raw" / "manual"
+    raw_manual.mkdir(parents=True)
+    observations_dir = raw_manual / "observations"
+    observations_dir.mkdir()
+    review_only_dir = raw_manual / "review_only"
+    review_only_dir.mkdir()
+
+    header = (
+        "seed_id,r_number,property_name,value,value_num,unit,temperature,pressure,phase,source_type,"
+        "source_name,source_url,method,uncertainty,quality_level,assessment_version,time_horizon,year,notes\n"
+    )
+    row = (
+        "seed_x,R-999,gwp_100yr,10,10,dimensionless,,,,manual_curated_reference,Example,https://example.com,"
+        "manual,,manual_curated_reference,AR6,100,2026,test row\n"
+    )
+    review_header = (
+        "candidate_key,seed_id,r_number,property_name,reported_value,unit,source_name,source_url,"
+        "do_not_merge_reason,recommended_next_step,notes\n"
+    )
+    review_row = (
+        "candidate,seed_x,R-999,gwp_100yr,<<1,dimensionless,Example,https://example.com,"
+        "source reports inequality/bound rather than exact numeric value,add bound semantics,review only\n"
+    )
+    (raw_manual / "manual_property_observations.csv").write_text(header + row, encoding="utf-8")
+    review_path = review_only_dir / "review_only_inequality_observations_round2_20260501.csv"
+    review_path.write_text(review_header + review_row, encoding="utf-8")
+
+    paths = {
+        "seed_catalog": raw_manual / "seed_catalog.csv",
+        "refrigerant_inventory": raw_manual / "refrigerant_inventory.csv",
+        "manual_observations": raw_manual / "manual_property_observations.csv",
+        "manual_observations_dir": observations_dir,
+        "coolprop_aliases": raw_manual / "coolprop_aliases.yaml",
+        "raw_generated_pubchem_tierd_candidates": tmp_path / "data" / "raw" / "generated" / "pubchem_tierd_candidates.csv",
+        "bronze_pubchem_candidate_pool": tmp_path / "data" / "bronze" / "pubchem_candidate_pool.parquet",
+        "bronze_pubchem_candidate_filter_audit": tmp_path / "data" / "bronze" / "pubchem_candidate_filter_audit.parquet",
+        "raw_review_only_inequality_observations": review_path,
+    }
+
+    loaded = pipeline._load_manual_observations(paths)
+    source_ids = {row["source_id"] for row in pipeline._register_manual_sources(paths)}
+
+    assert len(loaded) == 1
+    assert set(loaded["r_number"]) == {"R-999"}
+    assert "source_manual_review_only_inequality_observations_20260501" in source_ids
+
+
 def test_epa_grouped_candidate_mapping_skips_refrigerant_inventory_rows() -> None:
     gwp_df = pd.DataFrame(
         [

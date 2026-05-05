@@ -2,10 +2,10 @@
 
 ## Snapshot
 
-Status date: `2026-04-30`
+Status date: `2026-05-05`
 Dataset version: `v1.6.3-draft`
 
-R-PhysGen-DB is at the v1.6.3 phase-2 quantum handoff draft plus residual computation pass. The build preserves the v1.6.2 governance xTB/Psi4 scalar baseline, adds accepted phase-2 xTB Hessian and CREST conformer summaries, reconciles completed Psi4 DFT manifest rows, ingests the CoolProp cycle rows that can be resolved locally, records ORCA opt/freq as blocked on a real ORCA QC executable, and keeps all quantum descriptors restricted to long-form observations plus `quantum_job`/`quantum_artifact` audit tables. No GWP/safety, mixture, xTB, CREST, Psi4, ORCA, or cycle values were fabricated.
+R-PhysGen-DB is at the v1.6.3 phase-2 quantum handoff draft plus residual computation pass and the 2026-05-01 SupplementData integration. The build preserves the v1.6.2 governance xTB/Psi4 scalar baseline, adds accepted phase-2 xTB Hessian and CREST conformer summaries, reconciles completed Psi4 DFT manifest rows, ingests the CoolProp cycle rows that can be resolved locally, records ORCA opt/freq as blocked on a real ORCA QC executable, integrates strict ASHRAE/EPA supplement observations, corrects the R-511A component/fraction curation, and keeps all quantum descriptors restricted to long-form observations plus `quantum_job`/`quantum_artifact` audit tables. No GWP/safety, mixture, xTB, CREST, Psi4, ORCA, or cycle values were fabricated.
 
 Latest local rebuild/validation summary:
 
@@ -13,13 +13,13 @@ Latest local rebuild/validation summary:
 - readiness summary: `5 passed`, `0 failed`, `0 degraded`
 - `seed_catalog_count`: `20707` = `77` refrigerants + `20630` candidates
 - `resolved_molecule_count`: `20567`
-- `property_observation`: `60752`
-- `property_recommended`: `56770`
-- `property_recommended_canonical`: `57174`
-- `property_recommended_canonical_strict`: `2539`
+- `property_observation`: `60840`
+- `property_recommended`: `56784`
+- `property_recommended_canonical`: `57188`
+- `property_recommended_canonical_strict`: `2553`
 - `model_dataset_index`: `120`
 - `model_ready`: `120` (`train=84`, `validation=18`, `test=18`)
-- `source_manifest`: `21204`
+- `source_manifest`: `21208`
 - `observation_condition_set`: `110`
 - `cycle_case`: `7`
 - `cycle_operating_point`: `6`

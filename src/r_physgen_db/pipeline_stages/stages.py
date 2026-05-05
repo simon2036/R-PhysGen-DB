@@ -23,9 +23,12 @@ from r_physgen_db.constants import DATA_DIR, PARSER_VERSION
 from r_physgen_db.coverage_worklist import write_promoted_coverage_outputs
 from r_physgen_db.cycle_conditions import build_cycle_tables
 from r_physgen_db.mixtures import (
+    MIXTURE_COMPONENT_CURATION_SOURCE_ID,
+    MIXTURE_COMPONENT_CURATION_SOURCE_NAME,
     MIXTURE_FRACTION_CURATION_SOURCE_ID,
     MIXTURE_FRACTION_CURATION_SOURCE_NAME,
     build_mixture_tables,
+    load_mixture_component_curations,
     load_mixture_fraction_curations,
 )
 from r_physgen_db.pipeline_stages.artifacts import StageResult
@@ -330,16 +333,30 @@ def stage06_integrate_governance_bundle(state: BuildState) -> StageResult:
     state.canonical_recommended_strict = state.bundle_integration.get("canonical_recommended_strict", pd.DataFrame())
     state.canonical_review_queue = state.bundle_integration.get("canonical_review_queue", pd.DataFrame())
     state.property_governance_audit = state.bundle_integration.get("audit", {})
+    component_curations = load_mixture_component_curations(state.paths["raw_mixture_component_curations"])
     fraction_curations = load_mixture_fraction_curations(state.paths["raw_mixture_fraction_curations"])
     mixture_build = build_mixture_tables(
         state.bundle_integration.get("mixture_core", pd.DataFrame()),
         state.bundle_integration.get("mixture_component", pd.DataFrame()),
         state.molecule_core,
+        component_curations=component_curations,
         fraction_curations=fraction_curations,
     )
     state.mixture_core_table = mixture_build.mixture_core
     state.mixture_composition = mixture_build.mixture_composition
     state.mixture_summary = mixture_build.summary
+    if not component_curations.empty:
+        state.source_manifest_rows.append(
+            legacy._source_manifest_entry(
+                source_id=MIXTURE_COMPONENT_CURATION_SOURCE_ID,
+                source_type="manual_curated_reference",
+                source_name=MIXTURE_COMPONENT_CURATION_SOURCE_NAME,
+                license_name="project-local manual curation",
+                local_path=state.paths["raw_mixture_component_curations"],
+                upstream_url="",
+                status="loaded",
+            )
+        )
     if not fraction_curations.empty:
         state.source_manifest_rows.append(
             legacy._source_manifest_entry(
@@ -985,8 +1002,14 @@ def _ensure_prc_paths(paths: dict[str, Path]) -> None:
         paths["raw_active_learning_queue"] = raw_manual_base / "active_learning_queue.csv"
     if "raw_active_learning_decision_log" not in paths:
         paths["raw_active_learning_decision_log"] = raw_manual_base / "active_learning_decision_log.csv"
+    if "raw_mixture_component_curations" not in paths:
+        paths["raw_mixture_component_curations"] = raw_manual_base / "mixture_component_curations.csv"
     if "raw_mixture_fraction_curations" not in paths:
         paths["raw_mixture_fraction_curations"] = raw_manual_base / "mixture_fraction_curations.csv"
+    if "raw_review_only_inequality_observations" not in paths:
+        paths["raw_review_only_inequality_observations"] = (
+            raw_manual_base / "review_only" / "review_only_inequality_observations_round2_20260501.csv"
+        )
     if "gold_property_recommended_canonical" not in paths and "gold_model_ready" in paths:
         paths["gold_property_recommended_canonical"] = gold_base / "property_recommended_canonical.parquet"
     if "gold_property_recommended_canonical_strict" not in paths:

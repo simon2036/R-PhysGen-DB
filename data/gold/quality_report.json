@@ -4,8 +4,8 @@
   "refrigerant_count": 77,
   "candidate_count": 20630,
   "resolved_molecule_count": 20567,
-  "observation_count": 60752,
-  "recommended_count": 56770,
+  "observation_count": 60840,
+  "recommended_count": 56784,
   "regulatory_status_count": 96,
   "pending_source_count": 47,
   "qc_issue_count": 10,
@@ -25,7 +25,7 @@
     "discharge_temperature_c": 96,
     "gap_ev": 2038,
     "gwp_100yr": 150,
-    "gwp_20yr": 6,
+    "gwp_20yr": 20,
     "gwp_ar4_100yr": 16,
     "gwp_ar5_100yr": 17,
     "homo_ev": 2038,
@@ -65,7 +65,7 @@
         "discharge_temperature_c": 1.0,
         "gap_ev": 1.0,
         "gwp_100yr": 1.0,
-        "gwp_20yr": 0.1875,
+        "gwp_20yr": 0.5,
         "gwp_ar4_100yr": 0.21875,
         "gwp_ar5_100yr": 0.21875,
         "homo_ev": 1.0,
@@ -105,6 +105,7 @@
         "discharge_temperature_c": 0.8958333333333334,
         "gap_ev": 0.4375,
         "gwp_100yr": 0.6041666666666666,
+        "gwp_20yr": 0.08333333333333333,
         "gwp_ar4_100yr": 0.0625,
         "gwp_ar5_100yr": 0.0625,
         "homo_ev": 0.4375,
@@ -927,8 +928,8 @@
   ],
   "canonical_metrics": {
     "canonical_observation_count": 1687,
-    "canonical_recommended_count": 57174,
-    "canonical_recommended_strict_count": 2539,
+    "canonical_recommended_count": 57188,
+    "canonical_recommended_strict_count": 2553,
     "canonical_review_queue_count": 0,
     "canonical_proxy_selected_count": 41600,
     "canonical_proxy_only_count": 41600,
@@ -1028,11 +1029,11 @@
       "row_mismatch_tables": []
     },
     "native_canonical_projection": {
-      "native_projection_candidate_count": 56770,
-      "native_projection_added_count": 55785,
-      "native_projection_strict_added_count": 1241,
-      "canonical_recommended_count": 57174,
-      "canonical_recommended_strict_count": 2539
+      "native_projection_candidate_count": 56784,
+      "native_projection_added_count": 55799,
+      "native_projection_strict_added_count": 1255,
+      "canonical_recommended_count": 57188,
+      "canonical_recommended_strict_count": 2553
     },
     "promoted_coverage_worklist": {
       "coverage_matrix_rows": 30,
@@ -1040,10 +1041,10 @@
     }
   },
   "condition_migration_progress": {
-    "total": 60752,
-    "with_condition_set_id": 60752,
+    "total": 60840,
+    "with_condition_set_id": 60840,
     "auto_backfilled": 58904,
-    "needs_manual_review": 1848,
+    "needs_manual_review": 1936,
     "condition_set_count": 110,
     "manual_review_condition_set_count": 1,
     "manual_review_condition_set_ids_sample": [
@@ -1053,10 +1054,10 @@
       "inferred_default": 15942,
       "not_applicable": 41134,
       "partially_normalized": 1828,
-      "unresolved_text": 1848
+      "unresolved_text": 1936
     },
     "coverage_fraction": 1.0,
-    "auto_backfill_fraction": 0.9695812483539636
+    "auto_backfill_fraction": 0.9681788297172913
   },
   "research_task_readiness": {
     "rule_count": 5,
@@ -1126,26 +1127,26 @@
       },
       "stale_xyz_trashed_count": 88,
       "stale_xyz_trashed_paths": [
-        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_023fc363a5eed1d7.xyz.20260430T090001",
-        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_03721bb6b2f4c435.xyz.20260430T090001",
-        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_06df0839e7a30f4b.xyz.20260430T090001",
-        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_08203cbd4df5715f.xyz.20260430T090001",
-        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_08d808b9ebadea3b.xyz.20260430T090001",
-        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_08e1928ed2124469.xyz.20260430T090001",
-        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_10785462c7c9d313.xyz.20260430T090001",
-        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_1214cdaae4117eff.xyz.20260430T090001",
-        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_14af3f4f668e70dc.xyz.20260430T090001",
-        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_17f548aadccefbab.xyz.20260430T090001",
-        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_181d790bb9572695.xyz.20260430T090001",
-        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_195360bfb8d39ca5.xyz.20260430T090001",
-        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_232f4145282ab685.xyz.20260430T090001",
-        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_23819a123f66e55b.xyz.20260430T090001",
-        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_2470f555d2e7ef8d.xyz.20260430T090001",
-        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_251bc0387197ca85.xyz.20260430T090001",
-        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_258ae6cf1f745439.xyz.20260430T090001",
-        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_2725a92b5e5507a6.xyz.20260430T090001",
-        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_2968e9ed041dc5df.xyz.20260430T090001",
-        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_2bb701254a8634bc.xyz.20260430T090001"
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_023fc363a5eed1d7.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_03721bb6b2f4c435.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_06df0839e7a30f4b.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_08203cbd4df5715f.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_08d808b9ebadea3b.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_08e1928ed2124469.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_10785462c7c9d313.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_1214cdaae4117eff.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_14af3f4f668e70dc.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_17f548aadccefbab.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_181d790bb9572695.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_195360bfb8d39ca5.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_232f4145282ab685.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_23819a123f66e55b.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_2470f555d2e7ef8d.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_251bc0387197ca85.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_258ae6cf1f745439.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_2725a92b5e5507a6.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_2968e9ed041dc5df.xyz.20260505T061523",
+        "/home/ifs1/myDB/R-PhysGen-DB/.trash/data/raw/generated/quantum_xyz/qreq_2bb701254a8634bc.xyz.20260505T061523"
       ]
     },
     "dft_request_manifest": {
@@ -1172,7 +1173,7 @@
     },
     "dangling_component_count": 0,
     "fraction_sum_error_count": 0,
-    "fraction_sum_unresolved_count": 1,
+    "fraction_sum_unresolved_count": 0,
     "fraction_sum_max_abs_error": 2.220446049250313e-16
   },
   "active_learning_summary": {
