@@ -502,7 +502,7 @@ def _load_quality_report() -> dict[str, Any]:
 
 def _validate_property_governance_extension_mirror() -> dict[str, Any] | None:
     bundle_path = default_bundle_path(PROJECT_ROOT)
-    extension_manifest_path = PROJECT_ROOT / "data" / "extensions" / "property_governance_20260422" / "extension_manifest.parquet"
+    extension_manifest_path = DATA_DIR / "extensions" / "property_governance_20260422" / "extension_manifest.parquet"
     if not bundle_path.exists() or not extension_manifest_path.exists():
         return None
 

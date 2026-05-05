@@ -264,7 +264,7 @@ def test_quantum_request_manifest_uses_env_request_count_and_trashes_stale_xyz(t
             for idx in range(3)
         ]
     )
-    xyz_dir = tmp_path / "data" / "raw" / "generated" / "quantum_xyz"
+    xyz_dir = tmp_path / "data" / "lake" / "raw" / "generated" / "quantum_xyz"
     xyz_dir.mkdir(parents=True)
     stale_xyz = xyz_dir / "stale_old_request.xyz"
     stale_xyz.write_text("1\nstale\nH 0 0 0\n", encoding="utf-8")
@@ -284,7 +284,7 @@ def test_quantum_request_manifest_uses_env_request_count_and_trashes_stale_xyz(t
     assert summary["request_count"] == 2
     assert summary["stale_xyz_trashed_count"] == 1
     assert not stale_xyz.exists()
-    assert (tmp_path / ".trash" / "data" / "raw" / "generated" / "quantum_xyz" / "stale_old_request.xyz").exists()
+    assert (tmp_path / ".trash" / "data" / "lake" / "raw" / "generated" / "quantum_xyz" / "stale_old_request.xyz").exists()
 
 
 def test_psi4_dft_request_manifest_stratifies_completed_xtb_molecules(tmp_path) -> None:
@@ -683,7 +683,7 @@ def test_validation_quantum_summary_keeps_quality_report_request_manifest_and_in
     }
     quality_summary = {
         "input_status": "loaded",
-        "input_path": "data/raw/manual/quantum_pilot_results.csv",
+        "input_path": "data/lake/raw/manual/quantum_pilot_results.csv",
         "input_row_count": 3,
         "request_manifest": {
             "request_count": 2,
@@ -696,7 +696,7 @@ def test_validation_quantum_summary_keeps_quality_report_request_manifest_and_in
     merged = _merge_quality_quantum_summary(validation_summary, quality_summary)
 
     assert merged["input_status"] == "loaded"
-    assert merged["input_path"] == "data/raw/manual/quantum_pilot_results.csv"
+    assert merged["input_path"] == "data/lake/raw/manual/quantum_pilot_results.csv"
     assert merged["input_row_count"] == 3
     assert merged["request_manifest"] == quality_summary["request_manifest"]
 

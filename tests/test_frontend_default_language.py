@@ -6,9 +6,12 @@ from pathlib import Path
 
 import pandas as pd
 
+from r_physgen_db.constants import DATA_DIR
+from r_physgen_db.paths import STATIC_FRONTEND_HTML
+
 ROOT = Path(__file__).resolve().parents[1]
 FRONTEND_FILES = [
-    ROOT / "R-PhysGen-DB.html",
+    STATIC_FRONTEND_HTML,
     ROOT / "deploy" / "lan" / "index.html",
 ]
 
@@ -32,7 +35,7 @@ def test_frontend_entries_include_shared_auth_shell_styles() -> None:
 
 
 def test_lan_entry_matches_root_except_expected_offline_paths() -> None:
-    root_text = (ROOT / "R-PhysGen-DB.html").read_text(encoding="utf-8")
+    root_text = STATIC_FRONTEND_HTML.read_text(encoding="utf-8")
     lan_text = (ROOT / "deploy" / "lan" / "index.html").read_text(encoding="utf-8")
 
     normalized_root = root_text
@@ -65,16 +68,16 @@ def _frontend_stats(text: str) -> dict[str, object]:
 
 
 def test_frontend_embedded_data_matches_latest_gold_version_and_counts() -> None:
-    expected_version = (ROOT / "data" / "gold" / "VERSION").read_text(encoding="utf-8").strip()
+    expected_version = (DATA_DIR / "gold" / "VERSION").read_text(encoding="utf-8").strip()
     expected_counts = {
-        "resolved_molecules": len(pd.read_parquet(ROOT / "data" / "gold" / "molecule_master.parquet")),
-        "property_observation": len(pd.read_parquet(ROOT / "data" / "silver" / "property_observation.parquet")),
-        "property_recommended": len(pd.read_parquet(ROOT / "data" / "gold" / "property_recommended.parquet")),
-        "property_recommended_canonical": len(pd.read_parquet(ROOT / "data" / "gold" / "property_recommended_canonical.parquet")),
-        "property_recommended_canonical_strict": len(pd.read_parquet(ROOT / "data" / "gold" / "property_recommended_canonical_strict.parquet")),
-        "model_dataset_index": len(pd.read_parquet(ROOT / "data" / "gold" / "model_dataset_index.parquet")),
-        "regulatory": len(pd.read_parquet(ROOT / "data" / "silver" / "regulatory_status.parquet")),
-        "mixtures": len(pd.read_parquet(ROOT / "data" / "silver" / "mixture_core.parquet")),
+        "resolved_molecules": len(pd.read_parquet(DATA_DIR / "gold" / "molecule_master.parquet")),
+        "property_observation": len(pd.read_parquet(DATA_DIR / "silver" / "property_observation.parquet")),
+        "property_recommended": len(pd.read_parquet(DATA_DIR / "gold" / "property_recommended.parquet")),
+        "property_recommended_canonical": len(pd.read_parquet(DATA_DIR / "gold" / "property_recommended_canonical.parquet")),
+        "property_recommended_canonical_strict": len(pd.read_parquet(DATA_DIR / "gold" / "property_recommended_canonical_strict.parquet")),
+        "model_dataset_index": len(pd.read_parquet(DATA_DIR / "gold" / "model_dataset_index.parquet")),
+        "regulatory": len(pd.read_parquet(DATA_DIR / "silver" / "regulatory_status.parquet")),
+        "mixtures": len(pd.read_parquet(DATA_DIR / "silver" / "mixture_core.parquet")),
     }
 
     for path in FRONTEND_FILES:

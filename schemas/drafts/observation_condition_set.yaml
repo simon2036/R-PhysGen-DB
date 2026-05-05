@@ -1,7 +1,7 @@
 table_name: observation_condition_set
 layer: silver
 status: p0_draft_ready
-path: data/silver/observation_condition_set.parquet
+path: data/lake/silver/observation_condition_set.parquet
 primary_key:
   - condition_set_id
 columns:

@@ -1,6 +1,6 @@
 table_name: molecule_core
 layer: silver
-path: data/silver/molecule_core.parquet
+path: data/lake/silver/molecule_core.parquet
 primary_key:
   - mol_id
 columns:

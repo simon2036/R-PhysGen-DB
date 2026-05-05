@@ -39,7 +39,7 @@ def test_seed_catalog_build_rows_supports_inventory_tail() -> None:
 
 
 def test_load_manual_observations_merges_legacy_and_directory_without_duplicates(tmp_path: Path) -> None:
-    raw_manual = tmp_path / "data" / "raw" / "manual"
+    raw_manual = tmp_path / "data" / "lake" / "raw" / "manual"
     raw_manual.mkdir(parents=True)
     observations_dir = raw_manual / "observations"
     observations_dir.mkdir()
@@ -67,7 +67,7 @@ def test_load_manual_observations_merges_legacy_and_directory_without_duplicates
 
 
 def test_review_only_inequality_file_is_manifested_but_not_ingested(tmp_path: Path) -> None:
-    raw_manual = tmp_path / "data" / "raw" / "manual"
+    raw_manual = tmp_path / "data" / "lake" / "raw" / "manual"
     raw_manual.mkdir(parents=True)
     observations_dir = raw_manual / "observations"
     observations_dir.mkdir()
@@ -100,9 +100,9 @@ def test_review_only_inequality_file_is_manifested_but_not_ingested(tmp_path: Pa
         "manual_observations": raw_manual / "manual_property_observations.csv",
         "manual_observations_dir": observations_dir,
         "coolprop_aliases": raw_manual / "coolprop_aliases.yaml",
-        "raw_generated_pubchem_tierd_candidates": tmp_path / "data" / "raw" / "generated" / "pubchem_tierd_candidates.csv",
-        "bronze_pubchem_candidate_pool": tmp_path / "data" / "bronze" / "pubchem_candidate_pool.parquet",
-        "bronze_pubchem_candidate_filter_audit": tmp_path / "data" / "bronze" / "pubchem_candidate_filter_audit.parquet",
+        "raw_generated_pubchem_tierd_candidates": tmp_path / "data" / "lake" / "raw" / "generated" / "pubchem_tierd_candidates.csv",
+        "bronze_pubchem_candidate_pool": tmp_path / "data" / "lake" / "bronze" / "pubchem_candidate_pool.parquet",
+        "bronze_pubchem_candidate_filter_audit": tmp_path / "data" / "lake" / "bronze" / "pubchem_candidate_filter_audit.parquet",
         "raw_review_only_inequality_observations": review_path,
     }
 

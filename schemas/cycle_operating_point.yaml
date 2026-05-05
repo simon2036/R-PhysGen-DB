@@ -1,6 +1,6 @@
 table_name: cycle_operating_point
 layer: silver
-path: data/silver/cycle_operating_point.parquet
+path: data/lake/silver/cycle_operating_point.parquet
 primary_key:
   - operating_point_hash
 columns:

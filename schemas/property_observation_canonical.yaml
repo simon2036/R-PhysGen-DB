@@ -1,6 +1,6 @@
 table_name: property_observation_canonical
 layer: silver
-path: data/silver/property_observation_canonical.parquet
+path: data/lake/silver/property_observation_canonical.parquet
 primary_key:
   - observation_id
 columns:

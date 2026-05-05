@@ -1,7 +1,7 @@
 table_name: molecule_split_definition
 layer: gold
 status: p0_draft_ready
-path: data/gold/molecule_split_definition.parquet
+path: data/lake/gold/molecule_split_definition.parquet
 primary_key:
   - split_run_id
   - mol_id

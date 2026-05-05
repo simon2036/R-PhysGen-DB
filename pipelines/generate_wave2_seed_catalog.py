@@ -13,11 +13,12 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
+from r_physgen_db.constants import DATA_DIR  # noqa: E402
 
-OUTPUT = ROOT / "data" / "raw" / "manual" / "seed_catalog.csv"
-PUBLIC_REFRIGERANT_INVENTORY = ROOT / "data" / "raw" / "manual" / "refrigerant_inventory.csv"
-GENERATED_PUBCHEM_TIERD_CANDIDATES = ROOT / "data" / "raw" / "generated" / "pubchem_tierd_candidates.csv"
-GENERATED_EXCEL_202603_TIERD_CANDIDATES = ROOT / "data" / "raw" / "generated" / "excel_202603_tierd_candidates.csv"
+OUTPUT = DATA_DIR / "raw" / "manual" / "seed_catalog.csv"
+PUBLIC_REFRIGERANT_INVENTORY = DATA_DIR / "raw" / "manual" / "refrigerant_inventory.csv"
+GENERATED_PUBCHEM_TIERD_CANDIDATES = DATA_DIR / "raw" / "generated" / "pubchem_tierd_candidates.csv"
+GENERATED_EXCEL_202603_TIERD_CANDIDATES = DATA_DIR / "raw" / "generated" / "excel_202603_tierd_candidates.csv"
 
 BASELINE_TIER_B_COUNT = 48
 BASELINE_TIER_C_COUNT = 40

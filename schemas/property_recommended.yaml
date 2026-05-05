@@ -1,6 +1,6 @@
 table_name: property_recommended
 layer: gold
-path: data/gold/property_recommended.parquet
+path: data/lake/gold/property_recommended.parquet
 primary_key:
   - mol_id
   - property_name

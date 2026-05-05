@@ -121,14 +121,16 @@ class MatchRecord:
 
 
 def find_default_workbook_path(root: Path) -> Path:
-    methods_dir = root / "methods"
-    candidates = sorted(path for path in methods_dir.glob("*.xlsx") if "202603" in path.stem)
-    if candidates:
-        return candidates[0]
-    fallback = methods_dir / WORKBOOK_FILE_NAME
-    if fallback.exists():
-        return fallback
-    raise FileNotFoundError(f"Could not locate {WORKBOOK_FILE_NAME} under {methods_dir}")
+    source_dir = root / "data" / "sources" / "excel"
+    legacy_methods_dir = root / "methods"
+    for directory in [source_dir, legacy_methods_dir]:
+        candidates = sorted(path for path in directory.glob("*.xlsx") if "202603" in path.stem)
+        if candidates:
+            return candidates[0]
+        fallback = directory / WORKBOOK_FILE_NAME
+        if fallback.exists():
+            return fallback
+    raise FileNotFoundError(f"Could not locate {WORKBOOK_FILE_NAME} under {source_dir} or {legacy_methods_dir}")
 
 
 def parse_excel_202603_workbook(path: Path) -> dict[str, list[dict[str, object]]]:

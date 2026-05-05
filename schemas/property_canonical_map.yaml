@@ -1,6 +1,6 @@
 table_name: property_canonical_map
 layer: gold
-path: data/gold/property_canonical_map.parquet
+path: data/lake/gold/property_canonical_map.parquet
 primary_key:
   - canonical_map_id
 columns:

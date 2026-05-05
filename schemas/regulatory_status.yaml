@@ -1,6 +1,6 @@
 table_name: regulatory_status
 layer: silver
-path: data/silver/regulatory_status.parquet
+path: data/lake/silver/regulatory_status.parquet
 primary_key:
   - regulatory_status_id
 columns:

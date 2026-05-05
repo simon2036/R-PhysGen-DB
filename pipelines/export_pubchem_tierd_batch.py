@@ -18,13 +18,14 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from r_physgen_db.sources.pubchem_bulk import export_tierd_seed_rows  # noqa: E402
+from r_physgen_db.constants import DATA_DIR  # noqa: E402
 from pipelines.generate_wave2_seed_catalog import FIELDNAMES  # noqa: E402
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Export PubChem bulk Tier D seed rows.")
-    parser.add_argument("--input-pool", default=str(ROOT / "data" / "bronze" / "pubchem_candidate_pool.parquet"))
-    parser.add_argument("--output", default=str(ROOT / "data" / "raw" / "generated" / "pubchem_tierd_candidates.csv"))
+    parser.add_argument("--input-pool", default=str(DATA_DIR / "bronze" / "pubchem_candidate_pool.parquet"))
+    parser.add_argument("--output", default=str(DATA_DIR / "raw" / "generated" / "pubchem_tierd_candidates.csv"))
     parser.add_argument("--limit", type=int, default=5000)
     args = parser.parse_args()
 

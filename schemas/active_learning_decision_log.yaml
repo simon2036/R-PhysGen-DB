@@ -1,6 +1,6 @@
 table_name: active_learning_decision_log
 layer: gold
-path: data/gold/active_learning_decision_log.parquet
+path: data/lake/gold/active_learning_decision_log.parquet
 primary_key:
   - decision_id
 columns:
@@ -23,5 +23,5 @@ decision_status_vocabulary:
   - closed
 design_rules:
   - queue_entry_id must reference active_learning_queue.queue_entry_id.
-  - Optional data/raw/manual/active_learning_decision_log.csv ingestion writes this table.
+  - Optional data/lake/raw/manual/active_learning_decision_log.csv ingestion writes this table.
   - Missing manual decision log CSV writes an empty decision log.

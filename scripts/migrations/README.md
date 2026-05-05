@@ -14,4 +14,4 @@ Script requirements:
 - Read explicit input paths and write explicit output paths.
 - Do not mutate raw source artifacts in place.
 - Preserve source traceability and audit notes.
-- Include a matching migration record in `docs/dataset_migrations/`.
+- Include a matching migration record in `docs/migrations/dataset/`.

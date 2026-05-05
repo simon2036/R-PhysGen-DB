@@ -1,6 +1,6 @@
 table_name: property_governance_issues
 layer: gold
-path: data/gold/property_governance_issues.parquet
+path: data/lake/gold/property_governance_issues.parquet
 primary_key:
   - issue_id
 columns:

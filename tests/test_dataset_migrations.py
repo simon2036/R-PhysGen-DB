@@ -7,7 +7,7 @@ from r_physgen_db.dataset_migrations import validate_dataset_migrations
 
 
 def _write_version(root: Path, version: str) -> None:
-    version_path = root / "data" / "gold" / "VERSION"
+    version_path = root / "data" / "lake" / "gold" / "VERSION"
     version_path.parent.mkdir(parents=True)
     version_path.write_text(version + "\n", encoding="utf-8")
 

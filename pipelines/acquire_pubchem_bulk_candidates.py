@@ -14,6 +14,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
+from r_physgen_db.constants import DATA_DIR  # noqa: E402
 from r_physgen_db.sources.pubchem_bulk import (  # noqa: E402
     DEFAULT_EXTRAS_FILES,
     build_pubchem_coarse_filter_summary,
@@ -73,7 +74,7 @@ def _build_coarse_summary_payload(summary: pd.DataFrame, metadata: dict[str, obj
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Acquire PubChem bulk candidate pool for Tier D screening.")
-    parser.add_argument("--extras-dir", default=str(ROOT / "data" / "raw" / "pubchem_bulk" / "extras"))
+    parser.add_argument("--extras-dir", default=str(DATA_DIR / "raw" / "pubchem_bulk" / "extras"))
     parser.add_argument("--refresh-remote", action="store_true")
     parser.add_argument("--skip-download", action="store_true")
     parser.add_argument("--download-only", action="store_true", help="Download PubChem Extras files without building the candidate pool.")
@@ -116,8 +117,8 @@ def main() -> None:
         print(json.dumps(payload, indent=2, ensure_ascii=False))
         return
 
-    coarse_summary_path = ROOT / "data" / "bronze" / "coarse_filter_summary.parquet"
-    coarse_summary_json_path = ROOT / "data" / "bronze" / "coarse_filter_summary.json"
+    coarse_summary_path = DATA_DIR / "bronze" / "coarse_filter_summary.parquet"
+    coarse_summary_json_path = DATA_DIR / "bronze" / "coarse_filter_summary.json"
     coarse_summary_path.parent.mkdir(parents=True, exist_ok=True)
 
     coarse_summary, coarse_summary_metadata = build_pubchem_coarse_filter_summary(
@@ -140,7 +141,7 @@ def main() -> None:
         print(json.dumps(payload, indent=2, ensure_ascii=False))
         return
 
-    existing_molecule_core_path = ROOT / "data" / "silver" / "molecule_core.parquet"
+    existing_molecule_core_path = DATA_DIR / "silver" / "molecule_core.parquet"
     existing_molecule_core = pd.read_parquet(existing_molecule_core_path) if existing_molecule_core_path.exists() else pd.DataFrame()
 
     builder = build_pubchem_candidate_pool if args.cid_limit is not None else build_pubchem_candidate_pool_streaming
@@ -154,8 +155,8 @@ def main() -> None:
         cid_limit=args.cid_limit,
     )
 
-    candidate_pool_path = ROOT / "data" / "bronze" / "pubchem_candidate_pool.parquet"
-    audit_path = ROOT / "data" / "bronze" / "pubchem_candidate_filter_audit.parquet"
+    candidate_pool_path = DATA_DIR / "bronze" / "pubchem_candidate_pool.parquet"
+    audit_path = DATA_DIR / "bronze" / "pubchem_candidate_filter_audit.parquet"
     candidate_pool_path.parent.mkdir(parents=True, exist_ok=True)
     candidate_pool.to_parquet(candidate_pool_path, index=False)
     audit.to_parquet(audit_path, index=False)

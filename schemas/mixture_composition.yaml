@@ -1,6 +1,6 @@
 table_name: mixture_composition
 layer: silver
-path: data/silver/mixture_composition.parquet
+path: data/lake/silver/mixture_composition.parquet
 primary_key:
   - mixture_id
   - component_mol_id

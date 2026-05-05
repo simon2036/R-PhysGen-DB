@@ -33,6 +33,45 @@ def test_private_pipeline_helpers_remain_importable() -> None:
     assert split_map == {"a": "train", "b": "train"}
 
 
+def test_molecule_split_definition_records_model_split_provenance() -> None:
+    model_dataset_index = pd.DataFrame(
+        [
+            {"mol_id": "mol_b", "split": "validation", "scaffold_key": "S2"},
+            {"mol_id": "mol_a", "split": "train", "scaffold_key": "S1"},
+        ]
+    )
+    molecule_core = pd.DataFrame(
+        [
+            {"mol_id": "mol_a", "family": "HFO"},
+            {"mol_id": "mol_b", "family": "HFC"},
+        ]
+    )
+
+    split_definition = pipeline._build_molecule_split_definition(
+        model_dataset_index,
+        molecule_core,
+        dataset_version="v-test",
+        code_version="test-code",
+    )
+
+    assert list(split_definition.columns) == [
+        "split_run_id",
+        "mol_id",
+        "split_strategy",
+        "split",
+        "scaffold_key",
+        "family",
+        "random_seed",
+        "code_version",
+        "dataset_version",
+        "created_at",
+    ]
+    assert split_definition["mol_id"].tolist() == ["mol_a", "mol_b"]
+    assert split_definition["split_strategy"].tolist() == ["scaffold", "scaffold"]
+    assert split_definition["dataset_version"].tolist() == ["v-test", "v-test"]
+    assert split_definition["code_version"].tolist() == ["test-code", "test-code"]
+
+
 def test_source_manifest_entry_caches_duplicate_file_hashes(tmp_path, monkeypatch) -> None:
     local_path = tmp_path / "shared_bulk_source.csv"
     local_path.write_text("seed_id,value\nseed_a,1\n", encoding="utf-8")
@@ -69,7 +108,7 @@ def test_source_manifest_entry_caches_duplicate_file_hashes(tmp_path, monkeypatc
 
 
 def test_required_input_guard_writes_failed_manifest(tmp_path) -> None:
-    state = BuildState(data_dir=tmp_path / "data", run_id="run_missing_input")
+    state = BuildState(data_dir=tmp_path / "data" / "lake", run_id="run_missing_input")
     specs = (
         StageSpec(
             "01",
@@ -83,13 +122,13 @@ def test_required_input_guard_writes_failed_manifest(tmp_path) -> None:
     results = run_stages(state, specs)
 
     assert results[0].status == "failed"
-    manifest = pd.read_parquet(tmp_path / "data" / "bronze" / "stage_run_manifest.parquet")
+    manifest = pd.read_parquet(tmp_path / "data" / "lake" / "bronze" / "stage_run_manifest.parquet")
     assert manifest.iloc[0]["status"] == "failed"
     assert manifest.iloc[0]["error_message"] == "Required inputs missing"
 
 
 def test_unhandled_stage_exception_writes_failed_manifest(tmp_path) -> None:
-    state = BuildState(data_dir=tmp_path / "data", run_id="run_exception")
+    state = BuildState(data_dir=tmp_path / "data" / "lake", run_id="run_exception")
 
     def boom(_: BuildState) -> StageResult:
         raise ValueError("stage exploded")
@@ -98,7 +137,7 @@ def test_unhandled_stage_exception_writes_failed_manifest(tmp_path) -> None:
     results = run_stages(state, specs)
 
     assert results[0].status == "failed"
-    manifest = pd.read_parquet(tmp_path / "data" / "bronze" / "stage_run_manifest.parquet")
+    manifest = pd.read_parquet(tmp_path / "data" / "lake" / "bronze" / "stage_run_manifest.parquet")
     assert manifest.iloc[0]["error_message"] == "stage exploded"
     assert "ValueError" in manifest.iloc[0]["exception_traceback"]
 
@@ -106,7 +145,7 @@ def test_unhandled_stage_exception_writes_failed_manifest(tmp_path) -> None:
 def test_stage00_infers_tmp_data_dir_from_monkeypatched_paths(tmp_path, monkeypatch) -> None:
     from r_physgen_db import pipeline as legacy
 
-    tmp_data_dir = tmp_path / "data"
+    tmp_data_dir = tmp_path / "data" / "lake"
     original_paths = legacy._paths()
 
     def remap(path):
@@ -126,7 +165,7 @@ def test_stage00_infers_tmp_data_dir_from_monkeypatched_paths(tmp_path, monkeypa
 
 
 def test_stop_after_stops_after_requested_stage(tmp_path) -> None:
-    state = BuildState(data_dir=tmp_path / "data", run_id="run_stop_after")
+    state = BuildState(data_dir=tmp_path / "data" / "lake", run_id="run_stop_after")
 
     def stage(stage_id: str):
         return lambda ctx: StageResult(stage_id=stage_id, status="succeeded", outputs=[ctx.logical_artifact(stage_id)])
@@ -138,12 +177,12 @@ def test_stop_after_stops_after_requested_stage(tmp_path) -> None:
     results = run_stages(state, specs, stop_after="00")
 
     assert [result.stage_id for result in results] == ["00"]
-    manifest = pd.read_parquet(tmp_path / "data" / "bronze" / "stage_run_manifest.parquet")
+    manifest = pd.read_parquet(tmp_path / "data" / "lake" / "bronze" / "stage_run_manifest.parquet")
     assert manifest["stage_id"].tolist() == ["00"]
 
 
 def test_stage_resume_restores_parent_manifest_artifacts(tmp_path) -> None:
-    data_dir = tmp_path / "data"
+    data_dir = tmp_path / "data" / "lake"
     artifact_path = data_dir / "silver" / "input.parquet"
 
     def produce(ctx: BuildState) -> StageResult:
@@ -177,7 +216,7 @@ def test_build_dataset_staged_raises_on_failed_stage(tmp_path) -> None:
     from r_physgen_db.pipeline_stages.orchestrator import build_dataset_staged
 
     with pytest.raises(RuntimeError, match="Stage 01 failed"):
-        build_dataset_staged(selected_stage_ids=("01",), data_dir=tmp_path / "data", run_id="run_selected_missing")
+        build_dataset_staged(selected_stage_ids=("01",), data_dir=tmp_path / "data" / "lake", run_id="run_selected_missing")
 
 
 def test_stage_registry_exposes_p0_followup_outputs() -> None:
@@ -194,5 +233,6 @@ def test_stage_registry_exposes_p0_followup_outputs() -> None:
         "mixture_composition",
         "active_learning_queue",
         "active_learning_decision_log",
+        "molecule_split_definition",
         "dataset_version",
     }.issubset(set(by_id["09"].produced_outputs))

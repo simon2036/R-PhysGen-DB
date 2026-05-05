@@ -1,7 +1,7 @@
 table_name: stage_run_manifest
 layer: bronze
 status: p0_draft_ready
-path: data/bronze/stage_run_manifest.parquet
+path: data/lake/bronze/stage_run_manifest.parquet
 primary_key:
   - run_id
   - stage_id

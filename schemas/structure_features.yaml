@@ -1,6 +1,6 @@
 table_name: structure_features
 layer: gold
-path: data/gold/structure_features.parquet
+path: data/lake/gold/structure_features.parquet
 primary_key:
   - mol_id
 columns:

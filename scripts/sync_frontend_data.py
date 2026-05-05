@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import math
 import re
+import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -13,7 +14,14 @@ from typing import Any
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-ROOT_HTML = ROOT / "R-PhysGen-DB.html"
+SRC = ROOT / "src"
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))
+
+from r_physgen_db.constants import DATA_DIR  # noqa: E402
+from r_physgen_db.paths import STATIC_FRONTEND_HTML  # noqa: E402
+
+ROOT_HTML = STATIC_FRONTEND_HTML
 LAN_HTML = ROOT / "deploy" / "lan" / "index.html"
 
 
@@ -39,11 +47,11 @@ def js_json(value: Any) -> str:
 
 
 def read_parquet(rel: str) -> pd.DataFrame:
-    return pd.read_parquet(ROOT / rel)
+    return pd.read_parquet(DATA_DIR / rel)
 
 
 def read_optional_parquet(rel: str) -> pd.DataFrame:
-    path = ROOT / rel
+    path = DATA_DIR / rel
     if not path.exists():
         return pd.DataFrame()
     return pd.read_parquet(path)
@@ -387,28 +395,29 @@ def build_stats(
 
 
 def build_db_script() -> tuple[str, str, dict[str, Any]]:
-    version = (ROOT / "data" / "gold" / "VERSION").read_text(encoding="utf-8").strip()
-    snapshot_date = datetime.fromtimestamp((ROOT / "data" / "gold" / "VERSION").stat().st_mtime).date().isoformat()
-    quality = json.loads((ROOT / "data" / "gold" / "quality_report.json").read_text(encoding="utf-8"))
-    validation = json.loads((ROOT / "data" / "gold" / "validation_report.json").read_text(encoding="utf-8"))
+    version_path = DATA_DIR / "gold" / "VERSION"
+    version = version_path.read_text(encoding="utf-8").strip()
+    snapshot_date = datetime.fromtimestamp(version_path.stat().st_mtime).date().isoformat()
+    quality = json.loads((DATA_DIR / "gold" / "quality_report.json").read_text(encoding="utf-8"))
+    validation = json.loads((DATA_DIR / "gold" / "validation_report.json").read_text(encoding="utf-8"))
 
-    molecule_master = read_parquet("data/gold/molecule_master.parquet")
-    property_recommended = read_parquet("data/gold/property_recommended.parquet")
-    property_canonical = read_parquet("data/gold/property_recommended_canonical.parquet")
-    property_strict = read_parquet("data/gold/property_recommended_canonical_strict.parquet")
-    property_dictionary = read_parquet("data/gold/property_dictionary.parquet")
-    model_index = read_parquet("data/gold/model_dataset_index.parquet")
-    observations = read_parquet("data/silver/property_observation.parquet")
-    regulatory = read_parquet("data/silver/regulatory_status.parquet")
-    mixture_core = read_parquet("data/silver/mixture_core.parquet")
-    mixture_composition = read_parquet("data/silver/mixture_composition.parquet")
-    seed_catalog = pd.read_csv(ROOT / "data" / "raw" / "manual" / "seed_catalog.csv")
-    pending_sources = read_parquet("data/bronze/pending_sources.parquet")
-    qc_issues = read_parquet("data/silver/qc_issues.parquet")
-    active_learning = read_parquet("data/gold/active_learning_queue.parquet")
-    active_decisions = read_parquet("data/gold/active_learning_decision_log.parquet")
-    cycle_case = read_parquet("data/silver/cycle_case.parquet")
-    cycle_operating_point = read_parquet("data/silver/cycle_operating_point.parquet")
+    molecule_master = read_parquet("gold/molecule_master.parquet")
+    property_recommended = read_parquet("gold/property_recommended.parquet")
+    property_canonical = read_parquet("gold/property_recommended_canonical.parquet")
+    property_strict = read_parquet("gold/property_recommended_canonical_strict.parquet")
+    property_dictionary = read_parquet("gold/property_dictionary.parquet")
+    model_index = read_parquet("gold/model_dataset_index.parquet")
+    observations = read_parquet("silver/property_observation.parquet")
+    regulatory = read_parquet("silver/regulatory_status.parquet")
+    mixture_core = read_parquet("silver/mixture_core.parquet")
+    mixture_composition = read_parquet("silver/mixture_composition.parquet")
+    seed_catalog = pd.read_csv(DATA_DIR / "raw" / "manual" / "seed_catalog.csv")
+    pending_sources = read_parquet("bronze/pending_sources.parquet")
+    qc_issues = read_parquet("silver/qc_issues.parquet")
+    active_learning = read_parquet("gold/active_learning_queue.parquet")
+    active_decisions = read_parquet("gold/active_learning_decision_log.parquet")
+    cycle_case = read_parquet("silver/cycle_case.parquet")
+    cycle_operating_point = read_parquet("silver/cycle_operating_point.parquet")
 
     stats = build_stats(
         quality,
@@ -444,7 +453,7 @@ def build_db_script() -> tuple[str, str, dict[str, Any]]:
     }
     script = (
         "window.DB = (function () {\n"
-        "  // Synced from data/gold + data/silver by scripts/sync_frontend_data.py.\n"
+        "  // Synced from data/lake/gold + data/lake/silver by scripts/sync_frontend_data.py.\n"
         f"  const DATA = {js_json(db)};\n"
         "  return DATA;\n"
         "})();"

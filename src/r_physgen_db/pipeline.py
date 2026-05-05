@@ -16,6 +16,7 @@ from r_physgen_db.chemistry import compute_structure_features, standardize_smile
 from r_physgen_db.constants import (
     CATEGORICAL_PROPERTIES,
     DATA_DIR,
+    DATA_INDEX_DIR,
     DUCKDB_TABLES,
     EPA_TECHNOLOGY_TRANSITIONS_GWP_URL,
     GWP_PREFERENCE_ORDER,
@@ -429,6 +430,12 @@ def _build_dataset_monolithic(refresh_remote: bool = False) -> dict[str, Any]:
     structure_features = _build_structure_features(molecule_core)
     property_matrix = _build_property_matrix(property_recommended)
     model_dataset_index = _build_model_dataset_index(structure_features, property_recommended, molecule_core)
+    molecule_split_definition = _build_molecule_split_definition(
+        model_dataset_index,
+        molecule_core,
+        dataset_version="v1.6.3-draft",
+        code_version=PARSER_VERSION,
+    )
     molecule_master = _build_molecule_master(molecule_core, alias_df, structure_features)
     model_ready = _build_model_ready(molecule_master, property_matrix, model_dataset_index)
 
@@ -449,6 +456,7 @@ def _build_dataset_monolithic(refresh_remote: bool = False) -> dict[str, Any]:
     _write_parquet(molecule_master, paths["gold_molecule_master"])
     _write_parquet(property_matrix, paths["gold_property_matrix"])
     _write_parquet(model_dataset_index, paths["gold_model_index"])
+    _write_parquet(molecule_split_definition, paths["gold_molecule_split_definition"])
     _write_parquet(model_ready, paths["gold_model_ready"])
 
     report = _build_quality_report(
@@ -532,6 +540,7 @@ def _paths() -> dict[str, Path]:
         "gold_molecule_master": DATA_DIR / "gold" / "molecule_master.parquet",
         "gold_property_matrix": DATA_DIR / "gold" / "property_matrix.parquet",
         "gold_model_index": DATA_DIR / "gold" / "model_dataset_index.parquet",
+        "gold_molecule_split_definition": DATA_DIR / "gold" / "molecule_split_definition.parquet",
         "gold_model_ready": DATA_DIR / "gold" / "model_ready.parquet",
         "gold_active_learning_queue": DATA_DIR / "gold" / "active_learning_queue.parquet",
         "gold_active_learning_decision_log": DATA_DIR / "gold" / "active_learning_decision_log.parquet",
@@ -541,7 +550,7 @@ def _paths() -> dict[str, Path]:
         "gold_research_task_readiness_report": DATA_DIR / "gold" / "research_task_readiness_report.parquet",
         "gold_quality_report": DATA_DIR / "gold" / "quality_report.json",
         "gold_version": DATA_DIR / "gold" / "VERSION",
-        "duckdb_path": DATA_DIR / "index" / "r_physgen_v2.duckdb",
+        "duckdb_path": DATA_INDEX_DIR / "r_physgen_v2.duckdb",
     }
 
 
@@ -557,6 +566,8 @@ def _output_root_from_paths(paths: dict[str, Path]) -> Path:
     raw_root = paths.get("raw_root")
     if isinstance(raw_root, Path):
         try:
+            if raw_root.parent.name == "lake":
+                return raw_root.parents[2]
             return raw_root.parents[1]
         except IndexError:
             pass
@@ -2052,6 +2063,44 @@ def _assign_scaffold_splits(df: pd.DataFrame, train_ratio: float = 0.7, val_rati
     return assignment
 
 
+def _build_molecule_split_definition(
+    model_dataset_index: pd.DataFrame,
+    molecule_core: pd.DataFrame,
+    *,
+    dataset_version: str,
+    code_version: str,
+    split_run_id: str = "scaffold_v1",
+    random_seed: int = 0,
+) -> pd.DataFrame:
+    columns = [
+        "split_run_id",
+        "mol_id",
+        "split_strategy",
+        "split",
+        "scaffold_key",
+        "family",
+        "random_seed",
+        "code_version",
+        "dataset_version",
+        "created_at",
+    ]
+    if model_dataset_index.empty:
+        return pd.DataFrame(columns=columns)
+
+    core_fields = ["mol_id", "family"]
+    family_df = molecule_core[core_fields].drop_duplicates("mol_id") if set(core_fields).issubset(molecule_core.columns) else pd.DataFrame(columns=core_fields)
+    merged = pd.merge(model_dataset_index[["mol_id", "scaffold_key", "split"]], family_df, on="mol_id", how="left")
+    created_at = now_iso()
+    merged.insert(0, "split_run_id", split_run_id)
+    merged["split_strategy"] = "scaffold"
+    merged["family"] = merged["family"].fillna("")
+    merged["random_seed"] = int(random_seed)
+    merged["code_version"] = code_version
+    merged["dataset_version"] = dataset_version
+    merged["created_at"] = created_at
+    return merged[columns].sort_values(["split_run_id", "mol_id"]).reset_index(drop=True)
+
+
 def _build_molecule_master(molecule_core: pd.DataFrame, alias_df: pd.DataFrame, structure_features: pd.DataFrame) -> pd.DataFrame:
     primary_r = (
         alias_df.loc[(alias_df["alias_type"] == "r_number") & (alias_df["is_primary"]), ["mol_id", "alias_value"]]
@@ -2411,6 +2460,7 @@ def _build_duckdb_index(paths: dict[str, Path]) -> None:
         "molecule_master": paths["gold_molecule_master"],
         "property_matrix": paths["gold_property_matrix"],
         "model_dataset_index": paths["gold_model_index"],
+        "molecule_split_definition": paths["gold_molecule_split_definition"],
         "model_ready": paths["gold_model_ready"],
     }
 
@@ -2428,24 +2478,24 @@ def _build_duckdb_index(paths: dict[str, Path]) -> None:
         "mixture_composition": paths["silver_mixture_composition"],
         "active_learning_queue": paths["gold_active_learning_queue"],
         "active_learning_decision_log": paths["gold_active_learning_decision_log"],
-        "property_dictionary": PROJECT_ROOT / "data" / "gold" / "property_dictionary.parquet",
-        "property_canonical_map": PROJECT_ROOT / "data" / "gold" / "property_canonical_map.parquet",
-        "unit_conversion_rules": PROJECT_ROOT / "data" / "gold" / "unit_conversion_rules.parquet",
-        "property_source_priority_rules": PROJECT_ROOT / "data" / "gold" / "property_source_priority_rules.parquet",
-        "property_modeling_readiness_rules": PROJECT_ROOT / "data" / "gold" / "property_modeling_readiness_rules.parquet",
-        "property_governance_issues": PROJECT_ROOT / "data" / "gold" / "property_governance_issues.parquet",
-        "property_observation_canonical": PROJECT_ROOT / "data" / "silver" / "property_observation_canonical.parquet",
-        "property_recommended_canonical": PROJECT_ROOT / "data" / "gold" / "property_recommended_canonical.parquet",
-        "property_recommended_canonical_strict": PROJECT_ROOT / "data" / "gold" / "property_recommended_canonical_strict.parquet",
-        "property_recommended_canonical_review_queue": PROJECT_ROOT / "data" / "gold" / "property_recommended_canonical_review_queue.parquet",
+        "property_dictionary": DATA_DIR / "gold" / "property_dictionary.parquet",
+        "property_canonical_map": DATA_DIR / "gold" / "property_canonical_map.parquet",
+        "unit_conversion_rules": DATA_DIR / "gold" / "unit_conversion_rules.parquet",
+        "property_source_priority_rules": DATA_DIR / "gold" / "property_source_priority_rules.parquet",
+        "property_modeling_readiness_rules": DATA_DIR / "gold" / "property_modeling_readiness_rules.parquet",
+        "property_governance_issues": DATA_DIR / "gold" / "property_governance_issues.parquet",
+        "property_observation_canonical": DATA_DIR / "silver" / "property_observation_canonical.parquet",
+        "property_recommended_canonical": DATA_DIR / "gold" / "property_recommended_canonical.parquet",
+        "property_recommended_canonical_strict": DATA_DIR / "gold" / "property_recommended_canonical_strict.parquet",
+        "property_recommended_canonical_review_queue": DATA_DIR / "gold" / "property_recommended_canonical_review_queue.parquet",
         "research_task_readiness_report": paths["gold_research_task_readiness_report"],
     }
     for table_name, parquet_path in supplemental_tables.items():
         if parquet_path.exists():
             con.execute(f"CREATE TABLE {table_name} AS SELECT * FROM read_parquet('{parquet_path.resolve().as_posix()}')")
 
-    extension_manifest = PROJECT_ROOT / "data" / "extensions" / "property_governance_20260422" / "extension_manifest.parquet"
-    extension_root = PROJECT_ROOT / "data" / "extensions" / "property_governance_20260422" / "tables"
+    extension_manifest = DATA_DIR / "extensions" / "property_governance_20260422" / "extension_manifest.parquet"
+    extension_root = DATA_DIR / "extensions" / "property_governance_20260422" / "tables"
     if extension_manifest.exists():
         con.execute("CREATE SCHEMA IF NOT EXISTS property_governance_ext")
         manifest_df = pd.read_parquet(extension_manifest).fillna("")
@@ -2460,8 +2510,8 @@ def _build_duckdb_index(paths: dict[str, Path]) -> None:
                 )
 
     normalized_extension_tables = {
-        "mixture_core": PROJECT_ROOT / "data" / "extensions" / "property_governance_20260422" / "mixture_core.parquet",
-        "mixture_component": PROJECT_ROOT / "data" / "extensions" / "property_governance_20260422" / "mixture_component.parquet",
+        "mixture_core": DATA_DIR / "extensions" / "property_governance_20260422" / "mixture_core.parquet",
+        "mixture_component": DATA_DIR / "extensions" / "property_governance_20260422" / "mixture_component.parquet",
     }
     if any(path.exists() for path in normalized_extension_tables.values()):
         con.execute("CREATE SCHEMA IF NOT EXISTS extensions")

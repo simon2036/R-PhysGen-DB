@@ -20,6 +20,7 @@ from r_physgen_db.cycle_retry import (  # noqa: E402
     build_run_cycle_retry_manifest,
     run_cycle_retry,
 )
+from r_physgen_db.constants import DATA_DIR  # noqa: E402
 from r_physgen_db.utils import ensure_directory, load_yaml, write_json  # noqa: E402
 
 
@@ -30,11 +31,11 @@ def main() -> None:
     parser.add_argument("--completion-required", action="store_true", help="Exit non-zero unless every manifest entry succeeds.")
     parser.add_argument("--write-results", action="store_true", help="Write successful property rows to cycle_backend_results.csv.")
     parser.add_argument("--probe-only", action="store_true", help="Write manifest/probe/blockers but do not persist result rows.")
-    parser.add_argument("--active-learning-queue", type=Path, default=ROOT / "data" / "gold" / "active_learning_queue.parquet")
-    parser.add_argument("--molecule-core", type=Path, default=ROOT / "data" / "silver" / "molecule_core.parquet")
-    parser.add_argument("--molecule-alias", type=Path, default=ROOT / "data" / "silver" / "molecule_alias.parquet")
-    parser.add_argument("--seed-catalog", type=Path, default=ROOT / "data" / "raw" / "manual" / "seed_catalog.csv")
-    parser.add_argument("--coolprop-aliases", type=Path, default=ROOT / "data" / "raw" / "manual" / "coolprop_aliases.yaml")
+    parser.add_argument("--active-learning-queue", type=Path, default=DATA_DIR / "gold" / "active_learning_queue.parquet")
+    parser.add_argument("--molecule-core", type=Path, default=DATA_DIR / "silver" / "molecule_core.parquet")
+    parser.add_argument("--molecule-alias", type=Path, default=DATA_DIR / "silver" / "molecule_alias.parquet")
+    parser.add_argument("--seed-catalog", type=Path, default=DATA_DIR / "raw" / "manual" / "seed_catalog.csv")
+    parser.add_argument("--coolprop-aliases", type=Path, default=DATA_DIR / "raw" / "manual" / "coolprop_aliases.yaml")
     parser.add_argument("--artifact-dir", type=Path, default=DEFAULT_ARTIFACT_DIR)
     parser.add_argument("--results-path", type=Path, default=DEFAULT_RESULTS_PATH)
     args = parser.parse_args()

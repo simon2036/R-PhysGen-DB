@@ -2,12 +2,22 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DATA_DIR = PROJECT_ROOT / "data"
-SCHEMA_DIR = PROJECT_ROOT / "schemas"
-DOCS_DIR = PROJECT_ROOT / "docs"
+from r_physgen_db.paths import (
+    BRONZE_DATA_DIR,
+    DATA_ARTIFACTS_LOCAL_DIR,
+    DATA_DIR,
+    DATA_INDEX_DIR,
+    DATA_LAKE_DIR,
+    DATA_ROOT,
+    DATA_SOURCES_DIR,
+    DOCS_DIR,
+    EXTENSIONS_DATA_DIR,
+    GOLD_DATA_DIR,
+    PROJECT_ROOT,
+    RAW_DATA_DIR,
+    SCHEMA_DIR,
+    SILVER_DATA_DIR,
+)
 
 PARSER_VERSION = "r-physgen-db-v2"
 
@@ -215,5 +225,6 @@ DUCKDB_TABLES = [
     "molecule_master",
     "property_matrix",
     "model_dataset_index",
+    "molecule_split_definition",
     "model_ready",
 ]

@@ -101,19 +101,31 @@ class PropertyGovernanceBundle:
 
 
 def default_bundle_path(project_root: Path) -> Path:
-    return project_root / "methods" / BUNDLE_FILE_NAME
+    preferred = project_root / "data" / "sources" / "property_governance" / BUNDLE_FILE_NAME
+    legacy = project_root / "methods" / BUNDLE_FILE_NAME
+    if preferred.exists() or not legacy.exists():
+        return preferred
+    return legacy
 
 
 def default_unresolved_curation_path(project_root: Path) -> Path:
-    return project_root / "data" / "raw" / "manual" / UNRESOLVED_CURATION_FILE_NAME
+    return _manual_raw_path(project_root, UNRESOLVED_CURATION_FILE_NAME)
 
 
 def default_canonical_review_decision_path(project_root: Path) -> Path:
-    return project_root / "data" / "raw" / "manual" / CANONICAL_REVIEW_DECISION_FILE_NAME
+    return _manual_raw_path(project_root, CANONICAL_REVIEW_DECISION_FILE_NAME)
 
 
 def default_proxy_acceptance_path(project_root: Path) -> Path:
-    return project_root / "data" / "raw" / "manual" / PROXY_ACCEPTANCE_FILE_NAME
+    return _manual_raw_path(project_root, PROXY_ACCEPTANCE_FILE_NAME)
+
+
+def _manual_raw_path(project_root: Path, file_name: str) -> Path:
+    preferred = project_root / "data" / "lake" / "raw" / "manual" / file_name
+    legacy = project_root / "data" / "raw" / "manual" / file_name
+    if preferred.exists() or not legacy.exists():
+        return preferred
+    return legacy
 
 
 def integrate_property_governance_bundle(
@@ -1047,7 +1059,7 @@ def _empty_integration() -> dict[str, Any]:
 
 
 def _output_paths(output_root: Path) -> dict[str, Path]:
-    data_root = output_root / "data"
+    data_root = output_root / "data" / "lake"
     extension_root = data_root / "extensions" / "property_governance_20260422"
     return {
         "extension_tables": extension_root / "tables",

@@ -6,8 +6,8 @@ and the staged pipeline. It is intended as a CI gate for PR-B.
 
 Usage:
   python scripts/pr_b_equivalence_check.py \
-      --before /path/to/before/data/gold \
-      --after /path/to/after/data/gold \
+      --before /path/to/before/data/lake/gold \
+      --after /path/to/after/data/lake/gold \
       --tables model_ready.parquet property_matrix.parquet molecule_master.parquet
 """
 

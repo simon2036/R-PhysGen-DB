@@ -1,6 +1,6 @@
 table_name: property_modeling_readiness_rules
 layer: gold
-path: data/gold/property_modeling_readiness_rules.parquet
+path: data/lake/gold/property_modeling_readiness_rules.parquet
 primary_key:
   - readiness_rule_id
 columns:

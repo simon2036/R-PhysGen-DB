@@ -1,7 +1,7 @@
 table_name: property_observation
 layer: silver
 status: p0_draft_ready
-path: data/silver/property_observation.parquet
+path: data/lake/silver/property_observation.parquet
 primary_key:
   - observation_id
 columns:
@@ -48,7 +48,7 @@ description: >
   standard_value_num 和更明确的 value parsing 语义。P0 目标是新增字段和验证规则，不要求一次性删除旧字段。
 foreign_keys:
   - {column: canonical_feature_key, references: schemas/canonical_feature_registry.yaml::canonical_feature_key, required_when_populated: true}
-  - {column: condition_set_id, references: data/silver/observation_condition_set.parquet::condition_set_id, required_when_populated: true}
+  - {column: condition_set_id, references: data/lake/silver/observation_condition_set.parquet::condition_set_id, required_when_populated: true}
   - {column: normalization_rule_id, references: schemas/normalization_rules.yaml::normalization_rule_id, required_when_populated: true}
 value_num_bound_type_vocabulary:
   - exact

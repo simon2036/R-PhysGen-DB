@@ -1,6 +1,6 @@
 table_name: cycle_case
 layer: silver
-path: data/silver/cycle_case.parquet
+path: data/lake/silver/cycle_case.parquet
 primary_key:
   - cycle_case_id
 columns:

@@ -1,7 +1,7 @@
 table_name: mixture_composition
 layer: silver
 status: reserved_for_v1_5_but_p0_defined
-path: data/silver/mixture_composition.parquet
+path: data/lake/silver/mixture_composition.parquet
 primary_key:
   - mixture_id
   - component_mol_id

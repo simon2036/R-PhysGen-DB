@@ -1,6 +1,6 @@
 table_name: quantum_artifact
 layer: silver
-path: data/silver/quantum_artifact.parquet
+path: data/lake/silver/quantum_artifact.parquet
 primary_key:
   - artifact_id
 columns:

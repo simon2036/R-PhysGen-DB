@@ -1,6 +1,6 @@
 table_name: active_learning_queue
 layer: gold
-path: data/gold/active_learning_queue.parquet
+path: data/lake/gold/active_learning_queue.parquet
 primary_key:
   - queue_entry_id
 columns:

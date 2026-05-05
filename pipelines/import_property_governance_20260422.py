@@ -14,7 +14,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from r_physgen_db.constants import PARSER_VERSION  # noqa: E402
+from r_physgen_db.constants import DATA_DIR, PARSER_VERSION  # noqa: E402
 from r_physgen_db.sources.property_governance_bundle import (  # noqa: E402
     default_bundle_path,
     default_unresolved_curation_path,
@@ -23,9 +23,9 @@ from r_physgen_db.sources.property_governance_bundle import (  # noqa: E402
 from r_physgen_db.utils import now_iso  # noqa: E402
 
 
-DEFAULT_MOLECULE_CORE = ROOT / "data" / "silver" / "molecule_core.parquet"
-DEFAULT_MOLECULE_ALIAS = ROOT / "data" / "silver" / "molecule_alias.parquet"
-DEFAULT_SEED_CATALOG = ROOT / "data" / "raw" / "manual" / "seed_catalog.csv"
+DEFAULT_MOLECULE_CORE = DATA_DIR / "silver" / "molecule_core.parquet"
+DEFAULT_MOLECULE_ALIAS = DATA_DIR / "silver" / "molecule_alias.parquet"
+DEFAULT_SEED_CATALOG = DATA_DIR / "raw" / "manual" / "seed_catalog.csv"
 
 
 def _read_required_parquet(path: Path, label: str) -> pd.DataFrame:
